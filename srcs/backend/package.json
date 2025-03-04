@@ -12,7 +12,8 @@
 		"fastify": "^5.0.0",
 		"i": "^0.3.7",
 		"env-schema": "^3.0.0",
-		"@fastify/mysql": "^5.0.0"
+		"@fastify/mysql": "^5.0.0",
+		"uuid": "^9.0.0"
 	},
 	"devDependencies": {
 		"@types/node": "^20.11.19",

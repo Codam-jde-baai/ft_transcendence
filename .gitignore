@@ -7,3 +7,8 @@
 # installed dependencies etc
 **/.pnpm-store
 **/node_modules
+
+#locally installed packages
+./package-lock.json
+./package.json
+./node_modules

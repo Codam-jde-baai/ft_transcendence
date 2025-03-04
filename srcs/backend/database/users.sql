@@ -1,0 +1,10 @@
+CREATE TABLE users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    uuid TEXT NOT NULL UNIQUE,
+    username TEXT NOT NULL UNIQUE,
+    password TEXT NOT NULL,
+    alias TEXT NOT NULL UNIQUE,
+    profile_pic BLOB,
+    wins INTEGER DEFAULT 0,
+    losses INTEGER DEFAULT 0
+);

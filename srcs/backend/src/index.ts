@@ -13,13 +13,20 @@ const fastify = Fastify({
 await fastify.register(swagger, {
 	swagger: {
 		info: {
-			title: 'fastify-api',
-			description: 'Testing the Fastify swagger API',
-			version: '0.1.0',
-			routePrefix: '/docs'
+			title: 'Your API',
+			description: 'API documentation',
+			version: '1.0.0'
 		},
+		securityDefinitions: {
+			apiKey: {
+				type: 'apiKey',
+				name: 'Authorization',
+				in: 'header',
+				description: 'Enter token with Bearer prefix, e.g., "Bearer your-token-here"'
+			}
+		}
 	}
-})
+});
 
 await fastify.register(swaggerUi, {
 	routePrefix: '/docs',
