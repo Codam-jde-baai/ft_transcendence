@@ -2,6 +2,7 @@ import { setupUserHome } from './home';
 import { setupAdmin } from './admin';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
+import { setupSignUp } from './signUp';
 
 export function setupLogIn() {
 	const root = document.getElementById('app');
@@ -30,15 +31,16 @@ export function setupLogIn() {
 			<h1 class="header" data-i18n="LogIn_Header"></h1>
 			
 			<p class="p1" data-i18n="LogIn_Name"></p>
-			<input type="Login_Name" id="username" class="input-field" data-i18n-placeholder="LogIn_placeholder1">
+			<input type="Login_Name" required minlength="3" maxlength= "17" id="username" class="input-field" data-i18n-placeholder="LogIn_placeholder1">
 
 			<p class="p1" data-i18n="Password"></p>
-			<input type="Password" id="password" class="input-field">
+			<input type="Password" required minlength="6" maxlength="117" id="password" class="input-field">
 			
 			<div class="buttons">
 				<button class="btn" id="Home" data-i18n="btn_LogIn"></button>
 			</div>
 			<div class="buttons">
+				<button class="btn" id="SignUp" data-i18n="btn_SignUp"></button>
 				<button class="btn" id="Admin">Admin (Gonna be removed later)</button>
 			</div>
 		</div>
@@ -70,6 +72,11 @@ export function setupLogIn() {
 		document.getElementById('Admin')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/admin');
 			setupAdmin();
+		});
+		document.getElementById('SignUp')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/signUp');
+			setupSignUp();
+			//TO DO: Make The SignUp Button Look Better
 		});
 	}
 }

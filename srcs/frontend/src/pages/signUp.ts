@@ -2,6 +2,7 @@ import { setupUserHome } from './home';
 import { setupError404 } from './error404';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
+import { setupLogIn } from './logIn';
 
 export function setupSignUp() {
 	const root = document.getElementById('app');
@@ -35,19 +36,22 @@ export function setupSignUp() {
 			</button>
 
 			<p class="p1" data-i18n="LogIn_Name"></p>
-			<input type="Login_Name" id="username" class="input-field" data-i18n-placeholder="SignUp_placeholder1">
+			<input type="Login_Name" required minlength="3" maxlength= "17" id="username" class="input-field" data-i18n-placeholder="SignUp_placeholder1">
 
 			<p class="p1" data-i18n="SignUp_Alias"></p>
-			<input type="Alias_Name" id="alias" class="input-field" data-i18n-placeholder="SignUp_placeholder2">
+			<input type="Alias_Name" required minlength="3" maxlength= "17" id="alias" class="input-field" data-i18n-placeholder="SignUp_placeholder2">
 
 			<p class="p1" data-i18n="Password"></p>
-			<input type="Password" id="password" class="input-field">
+			<input type="Password" required minlength="6" maxlength="117" id="password" class="input-field">
 
 			<p class="p1" data-i18n="ConfirmPassword"></p>
-			<input type="Password" id="password_confirm" class="input-field">
+			<input type="Password" required minlength="6" maxlength="117" id="password_confirm" class="input-field">
 				
 			<div class="buttons">
 				<button class="btn" id="Home" data-i18n="btn_SignUp"></button>
+			</div> 
+			<div class="buttons">
+				<button class="btn" id="LogIn" data-i18n="btn_LogIn"></button>
 			</div> 
 		</div>
 		`);
@@ -70,10 +74,6 @@ export function setupSignUp() {
 				} else {
 					console.log("Sign-up failed")
 					console.log(response)
-
-
-
-
 					// // ----- Rm later --------
 				}
 			}).catch(() => {
@@ -84,6 +84,11 @@ export function setupSignUp() {
 
 			// window.history.pushState({}, '', '/home');
 			// setupUserHome();
+		});
+		document.getElementById('LogIn')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/logIn');
+			setupLogIn()
+			//TO DO: Make The Login Button Look Better
 		});
 	}
 }
