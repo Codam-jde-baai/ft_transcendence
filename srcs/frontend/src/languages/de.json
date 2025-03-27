@@ -29,6 +29,8 @@
     "Request_Header": "Freundschaftsanfragen",
     
     "Index_P": "Spiele klassisches Pong mit deinen Freunden!",
+    "LogIn_P": "Du hast kein Konto?",
+    "SignUp_P": "Du  hast bereits ein Konto?",
     "History_P": "Von",
     "Admin_P": "Von",
 

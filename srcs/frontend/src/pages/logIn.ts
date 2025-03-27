@@ -1,4 +1,5 @@
 import { setupUserHome } from './home';
+import { setupSignUp } from './signUp';
 import { setupAdmin } from './admin';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
@@ -41,18 +42,37 @@ export function setupLogIn() {
 			<div class="buttons">
 				<button class="btn" id="Admin">Admin (Gonna be removed later)</button>
 			</div>
+
+			<p>
+				<span data-i18n="LogIn_P"></span>
+				<a id="SignUp" style="color: rgb(209, 7, 128); margin-left: 5px; text-decoration: underline;" data-i18n="btn_SignUp"></a>
+			</p>
+
 		</div>
 		`);
 
 		getLanguage();
+		document.getElementById('SignUp')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/signUp');
+			setupSignUp();
+		});
+
 		document.getElementById('Home')?.addEventListener('click', () => {
 			const content: string = inputToContent(["username", "password"])
 			const body = requestBody("POST", content)
 			const response = connectFunc("http://localhost:3000/user/login", body);
+
 			response.then((response) => {
 				if (response.ok) {
-					window.history.pushState({}, '', '/home'); // can be moved into the response.then section for proper usage
-					setupUserHome();
+					// For ADMIN
+					const elem = document.getElementById("username") as HTMLInputElement
+					if (elem.value.toUpperCase() === "ADMIN") {
+						window.history.pushState({}, '', '/admin');
+						setupAdmin();
+					} else {
+						window.history.pushState({}, '', '/home'); // can be moved into the response.then section for proper usage
+						setupUserHome();
+					}
 				}
 				else {
 					// css
@@ -67,9 +87,9 @@ export function setupLogIn() {
 			})
 		});
 
-		document.getElementById('Admin')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/admin');
-			setupAdmin();
-		});
+		// document.getElementById('Admin')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/admin');
+		// 	setupAdmin();
+		// });
 	}
 }

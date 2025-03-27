@@ -4,11 +4,6 @@ export function inputToContent(input: string[]) {
 	let str: string = "";
 	input.forEach(element => {
 		const elem = document.getElementById(element) as HTMLInputElement
-
-		// Might not be set from the user (This is then the default value)
-		if (elem.id === "profilePic")
-			elem.value = "src/component/Pictures/flagIcon-en.png";
-
 		str += `"${elem.id}": "${elem.value}",`
 	});
 	str = str.slice(0, -1);

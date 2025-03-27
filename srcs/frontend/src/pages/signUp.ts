@@ -1,4 +1,5 @@
 import { setupUserHome } from './home';
+import { setupLogIn } from './logIn';
 import { setupError404 } from './error404';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
@@ -49,14 +50,37 @@ export function setupSignUp() {
 			<div class="buttons">
 				<button class="btn" id="Home" data-i18n="btn_SignUp"></button>
 			</div> 
+
+			<p>
+				<span data-i18n="SignUp_P"></span>
+				<a id="LogIn" style="color: rgb(209, 7, 128); margin-left: 5px; text-decoration: underline;" data-i18n="btn_LogIn"></a>
+			</p>
+
 		</div>
 		`);
 
 		getLanguage();
+		document.getElementById('LogIn')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/logIn');
+			setupLogIn();
+		});
+
 		document.getElementById('Home')?.addEventListener('click', () => {
+			{
+				// ADMIN username not allowed
+				const elem = document.getElementById("username") as HTMLInputElement
+				if (elem.value.toUpperCase() === "ADMIN")
+					console.log("Using admin username not allowed"); // Replace this with actual response to user.
+			}
 			{
 				if ((document.getElementById("password") as HTMLInputElement).value != (document.getElementById("password_confirm") as HTMLInputElement).value)
 					console.log("Passwords Don't Match"); // Replace this with actual response to user.
+			}
+			{
+				// Might not be set from the user (This is then the default value)
+				const elem = document.getElementById("profilePic") as HTMLInputElement
+				if (elem.value == null)
+					elem.value = "src/component/Pictures/flagIcon-en.png";
 			}
 			const content: string = inputToContent(["username", "alias", "password", "password_confirm", "profilePic"])
 			const body = requestBody("POST", content) // Used for requests where the frontend has to send info to the backend (like making a new user). Will return null in case of GET
@@ -64,26 +88,19 @@ export function setupSignUp() {
 			response.then((response) => {
 				if (response.ok) {
 					console.log("User signed up successfully");
-					// // ----- If successfull go to home page --------
+					
+					// ----- If successfull go to home page --------
 					window.history.pushState({}, '', '/home');
 					setupUserHome();
 				} else {
 					console.log("Sign-up failed")
 					console.log(response)
-
-
-
-
-					// // ----- Rm later --------
 				}
 			}).catch(() => {
 				// Server/ Network error
 				window.history.pushState({}, '', '/error404');
 				setupError404();
 			});
-
-			// window.history.pushState({}, '', '/home');
-			// setupUserHome();
 		});
 	}
 }
