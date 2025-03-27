@@ -2,6 +2,7 @@ import { setupUserHome } from './home';
 import { setupAdmin } from './admin';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
+import { createLoginCookie } from '../script/cookie';
 
 export function setupLogIn() {
 	const root = document.getElementById('app');
@@ -46,13 +47,19 @@ export function setupLogIn() {
 
 		getLanguage();
 		document.getElementById('Home')?.addEventListener('click', () => {
-			const content: string = inputToContent(["username", "password"])
+			// const content: string = inputToContent(["username", "password"])
+			const content: string = "\"username\": \"user\", \"password\": \"password\""
 			const body = requestBody("POST", content)
 			const response = connectFunc("http://localhost:3000/user/login", body);
 			response.then((response) => {
 				if (response.ok) {
-					window.history.pushState({}, '', '/home'); // can be moved into the response.then section for proper usage
-					setupUserHome();
+					createLoginCookie("testid", "testtoken");
+					// {
+					// 	const cookie = document.getElementById("testid")
+					// 	console.log("cookie =", cookie)
+					// }
+					// window.history.pushState({}, '', '/home');
+					// setupUserHome();
 				}
 				else {
 					// css
