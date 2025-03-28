@@ -2,7 +2,7 @@ import { setupUserHome } from './home';
 import { setupLogIn } from './logIn';
 import { setupError404 } from './error404';
 import { getLanguage } from '../script/language';
-import { connectFunc, requestBody, inputToContent } from '../script/connections';
+import { connectFunc, requestBody, inputToContent, errorDisplay, errorRMDisplay } from '../script/connections';
 
 export function setupSignUp() {
 	const root = document.getElementById('app');
@@ -35,16 +35,16 @@ export function setupSignUp() {
 				<img id="profilePic" src="src/component/Pictures/defaultPP.avif">
 			</button>
 
-			<p class="p1" data-i18n="LogIn_Name"></p>
+			<p class="p1" id="login-name" data-i18n="LogIn_Name"></p>
 			<input type="Login_Name" id="username" class="input-field" data-i18n-placeholder="SignUp_placeholder1">
 
-			<p class="p1" data-i18n="SignUp_Alias"></p>
+			<p class="p1" id="alias-name" data-i18n="SignUp_Alias"></p>
 			<input type="Alias_Name" id="alias" class="input-field" data-i18n-placeholder="SignUp_placeholder2">
 
 			<p class="p1" data-i18n="Password"></p>
 			<input type="Password" id="password" class="input-field">
 
-			<p class="p1" data-i18n="ConfirmPassword"></p>
+			<p class="p1" id="password-match" data-i18n="ConfirmPassword"></p>
 			<input type="Password" id="password_confirm" class="input-field">
 				
 			<div class="buttons">
@@ -63,18 +63,38 @@ export function setupSignUp() {
 		document.getElementById('LogIn')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/logIn');
 			setupLogIn();
-		});
+		});	
 
 		document.getElementById('Home')?.addEventListener('click', () => {
 			{
 				// ADMIN username not allowed
-				const elem = document.getElementById("username") as HTMLInputElement
+				const elem = document.getElementById("username") as HTMLInputElement;
+				const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
+
 				if (elem.value.toUpperCase() === "ADMIN")
-					console.log("Using admin username not allowed"); // Replace this with actual response to user.
+					errorDisplay(elem, errorMsg, "SignUp_error_admin");
+				else
+					errorRMDisplay(elem, errorMsg, "LogIn_Name");
 			}
 			{
+				// ADMIN alias not allowed
+				const elem = document.getElementById("alias") as HTMLInputElement
+				const errorMsg = document.getElementById("alias-name") as HTMLParagraphElement;
+
+				if (elem.value.toUpperCase() === "ADMIN")
+					errorDisplay(elem, errorMsg, "SignUp_error_admin");
+				else 
+					errorRMDisplay(elem, errorMsg, "SignUp_Alias");
+			}
+			{
+				// PASSWORD does NOT Match
+				const elem = document.getElementById("password_confirm") as HTMLInputElement
+				const errorMsg = document.getElementById("password-match") as HTMLParagraphElement;
+				
 				if ((document.getElementById("password") as HTMLInputElement).value != (document.getElementById("password_confirm") as HTMLInputElement).value)
-					console.log("Passwords Don't Match"); // Replace this with actual response to user.
+					errorDisplay(elem, errorMsg, "SignUp_error_password");
+				else
+					errorRMDisplay(elem, errorMsg, "ConfirmPassword"); 
 			}
 			{
 				// Might not be set from the user (This is then the default value)

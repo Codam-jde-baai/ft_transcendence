@@ -71,6 +71,11 @@
     "3": "3e plaats",
     "wins_": "overwinningen: ",
     "losses_": "verliezen: ",
+
+    "SignUp_error_admin": "Admin-naam niet toegestaan",
+    "SignUp_error_password": "Wachtwoorden komen niet overeen",
+    "LogIn_error_user": "Gebruiker niet gevonden",
+    "LogIn_error_paswword": "Fout wachtwoord",
     
     "EndOfFile": ""
 }

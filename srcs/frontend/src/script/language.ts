@@ -8,6 +8,13 @@ interface LangData {
 	[key: string]: string;
 }
 
+export function getTranslation(key: string): string {
+
+	const lang = localStorage.getItem('selectedLang') || 'en';
+	const langData: LangData = lang === 'de' ? de : lang === 'nl' ? nl : en;
+	return langData[key] || key;
+}
+
 // Function to switch language
 export function switchLanguage(lang: string) {
 	let langData: LangData;
@@ -20,7 +27,7 @@ export function switchLanguage(lang: string) {
 		case 'de':
 			langData = de;
 			break;
-		case 'nl':  // Change to match 'nl.json' for Dutch
+		case 'nl':
 			langData = nl;
 			break;
 		default:

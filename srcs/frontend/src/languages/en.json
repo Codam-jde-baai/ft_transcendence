@@ -73,5 +73,10 @@
     "wins_": "wins: ",
     "losses_": "losses:",
 
+    "SignUp_error_admin": "Admin name not allowed",
+    "SignUp_error_password": "Passwords Don't Match",
+    "LogIn_error_user": "User not found",
+    "LogIn_error_paswword": "Wrong Password",
+
     "EndOfFile": ""
 }
