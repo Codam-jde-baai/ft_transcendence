@@ -31,21 +31,22 @@ export function setupSignUp() {
 			<h1 class="header" data-i18n="SignUp_Header"></h1>
 				
 			<p class="p1" data-i18n="SignUp_Avatar"></p>
-			<button class="edit-picture">
+			<button class="edit-picture" onclick="document.getElementById('avatar').click()">
 				<img id="profilePic" src="src/component/Pictures/defaultPP.avif">
 			</button>
+			<input type="file" id="avatar" accept="image/*" style="display: none;">
 
 			<p class="p1" id="login-name" data-i18n="LogIn_Name"></p>
-			<input type="Login_Name" id="username" class="input-field" data-i18n-placeholder="SignUp_placeholder1">
+			<input type="Login_Name" required minlength="3" maxlength= "17" id="username" class="input-field" data-i18n-placeholder="SignUp_placeholder1">
 
 			<p class="p1" id="alias-name" data-i18n="SignUp_Alias"></p>
-			<input type="Alias_Name" id="alias" class="input-field" data-i18n-placeholder="SignUp_placeholder2">
+			<input type="Alias_Name" required minlength="3" maxlength= "17" id="alias" class="input-field" data-i18n-placeholder="SignUp_placeholder2">
 
 			<p class="p1" data-i18n="Password"></p>
-			<input type="Password" id="password" class="input-field">
+			<input type="Password" required minlength="6" maxlength="117" id="password" class="input-field">
 
 			<p class="p1" id="password-match" data-i18n="ConfirmPassword"></p>
-			<input type="Password" id="password_confirm" class="input-field">
+			<input type="Password" required minlength="6" maxlength="117" id="password_confirm" class="input-field">
 				
 			<div class="buttons">
 				<button class="btn" id="Home" data-i18n="btn_SignUp"></button>
@@ -64,6 +65,23 @@ export function setupSignUp() {
 			window.history.pushState({}, '', '/logIn');
 			setupLogIn();
 		});	
+
+		// Add Avatar
+		document.getElementById('avatar')?.addEventListener('change', (event) => {
+			const file = event.target.files[0];
+			const reader = new FileReader();
+
+			reader.onload = function(e) {
+				const profilePic = document.getElementById('profilePic');
+				if (profilePic && e.target?.result) {
+					profilePic.src = e.target.result; // Set the profile picture to the selected image
+				}
+			};
+
+			if (file) {
+				reader.readAsDataURL(file); // Read the selected file as a data URL
+			}
+		});
 
 		document.getElementById('Home')?.addEventListener('click', () => {
 			{
@@ -99,8 +117,10 @@ export function setupSignUp() {
 			{
 				// Might not be set from the user (This is then the default value)
 				const elem = document.getElementById("profilePic") as HTMLInputElement
-				if (elem.value == null)
+				if (elem.src == null)
 					elem.value = "src/component/Pictures/flagIcon-en.png";
+				else
+					elem.value = elem.src; // Get the src of the profile picture image
 			}
 			const content: string = inputToContent(["username", "alias", "password", "password_confirm", "profilePic"])
 			const body = requestBody("POST", content) // Used for requests where the frontend has to send info to the backend (like making a new user). Will return null in case of GET
@@ -124,4 +144,3 @@ export function setupSignUp() {
 		});
 	}
 }
-
