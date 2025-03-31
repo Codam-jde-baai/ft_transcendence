@@ -196,6 +196,18 @@ p {
 	height: 15px;
 }
 
+/* Eye icon for password */
+.field-icon {
+    cursor: pointer;
+    position: absolute;
+    margin-left: -35px; 
+    margin-top: 10px; 
+}
+.field-icon img {
+    width: 25px;
+    height: 20px;
+}
+
 
 /* Error Messages */
 .input-error {

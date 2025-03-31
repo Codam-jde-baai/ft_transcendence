@@ -1,3 +1,4 @@
+/* ---> These Functions handle different language options <--- */
 // Import language files
 import en from '../languages/en.json';
 import de from '../languages/de.json';

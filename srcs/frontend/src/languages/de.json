@@ -75,7 +75,10 @@
     "SignUp_error_admin": "Admin-Name nicht erlaubt",
     "SignUp_error_password": "Passwörter stimmen nicht überein",
     "LogIn_error_user": "Benutzer nicht gefunden",
-    "LogIn_error_paswword": "Falsches Passwort",
+    "LogIn_error_password": "Falsches Passwort",
+    "SignUp_error_user": "Benutzername muss zwischen 3 und 17 Zeichen lang sein",
+    "SignUp_error_alias": "Alias-Name muss zwischen 3 und 17 Zeichen lang sein",
+    "SignUp_error_userPass": "Passwort muss zwischen 6 und 117 Zeichen lang sein",
 
     "EndOfFile": ""
 }
