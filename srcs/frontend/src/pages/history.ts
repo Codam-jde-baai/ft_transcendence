@@ -3,6 +3,7 @@ import { setupUserHome } from './home';
 import { setupSetting } from './setting';
 import { setupFriends } from './friends';
 import { getLanguage } from '../script/language';
+import { dropDownBar } from '../script/dropDownBar';
 
 export function  setupMatchHistory () {
 	const root = document.getElementById('app');
@@ -14,12 +15,12 @@ export function  setupMatchHistory () {
 		<div class="overlay"></div>
 		<div class="topBar">
 			<div class="dropdown">
-				<button class="dropdown-btn">
+				<button class="dropdown-btn" id="dropdown-btn">
 					<img class="settingIcon" src="src/component/Pictures/setting-btn.png"/></img>
 				</button>
-				<div class="dropdown-content">
+				<div class="dropdown-content" id="language-btn">
 					
-					<button class="language-btn">
+					<button class="language-btn" id="language-content">
 						<span data-i18n="Language"></span> <img id="selected-flag" src="src/component/Pictures/flagIcon-en.png">
 					</button>
 					<div class="language-content">
@@ -95,6 +96,8 @@ export function  setupMatchHistory () {
 		`);
 
 		getLanguage();
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
 			renderPage();

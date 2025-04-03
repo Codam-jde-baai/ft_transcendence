@@ -18,7 +18,7 @@ export function errorRMDisplay(elem: HTMLInputElement, errorMsg: HTMLParagraphEl
 		errorMsg.textContent = getTranslation(oldString);	// Gets the value from the json language (data-i18n)
 }
 
-// Check for empty fiels
+// Check for empty fiels 
 export function checkFields(input: string[]): boolean {
 	let isValid = true;
 	
@@ -80,6 +80,85 @@ export function checkFields(input: string[]): boolean {
 				elem.value = "src/component/Pictures/flagIcon-en.png";
 			else
 				elem.value = elem.src; // Get the src of the profile picture image
+		}
+	});
+	return isValid;
+}
+
+
+// Check for empty fiels for LogIn.ts
+export function emptyFields(input: string[]): boolean {
+	let isValid = true;
+	
+	input.forEach(element => {
+		const elem = document.getElementById(element) as HTMLInputElement
+		
+		if (elem.id === "username")
+		{
+			const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
+			if (elem.value.length < 3 || elem.value.length > 17)
+			{
+				errorDisplay(elem, errorMsg, "LogIn_error_user");
+				isValid = false;
+			}
+			else
+				errorRMDisplay(elem, errorMsg, "LogIn_Name");
+		}
+		if (elem.id === "password")
+		{
+			const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;
+			if (elem.value.length < 6 || elem.value.length > 117)
+			{
+				errorDisplay(elem, errorMsg, "LogIn_error_password");
+				isValid = false;
+			}
+			else
+				errorRMDisplay(elem, errorMsg, "Password");
+		}
+	});
+	return isValid;
+}
+
+
+// Check for the password fiels in setting
+export function passwordFields(input: string[]): boolean {
+	let isValid = true;
+	
+	input.forEach(element => {
+		const elem = document.getElementById(element) as HTMLInputElement
+		
+		// If a new alias ia created
+		if (elem.id === "alias" && elem.value !== "")
+		{
+			const errorMsg = document.getElementById("alias-name") as HTMLParagraphElement;
+			if (elem.value.length < 3 || elem.value.length > 17)
+			{
+				errorDisplay(elem, errorMsg, "SignUp_error_alias");
+				isValid = false;		
+			}
+			else if (elem.value.toUpperCase() === "ADMIN") // ADMIN alias not allowed
+			{
+				errorDisplay(elem, errorMsg, "SignUp_error_admin");
+				isValid = false;
+			}
+			else
+				errorRMDisplay(elem, errorMsg, "Setting_Alias");
+		}
+		if (elem.id === "password" && elem.value !== "")
+		{
+			const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;
+			if (elem.value.length < 6 || elem.value.length > 117)
+			{
+				errorDisplay(elem, errorMsg, "SignUp_error_userPass");
+				isValid = false;
+			}
+			else if (elem.value != (document.getElementById("password_confirm") as HTMLInputElement).value)
+			{
+				errorDisplay(elem, errorMsg, "SignUp_error_password"); // PASSWORD does NOT Match
+				isValid = false;
+			}
+			else
+				errorRMDisplay(elem, errorMsg, "Change_Password");
 		}
 	});
 	return isValid;

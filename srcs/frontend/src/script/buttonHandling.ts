@@ -1,7 +1,7 @@
 /* ---> These Functions handle the small buttons of each page <--- */
 
-// Buttons for SignUp:
-export function signUpButtons(input: string[]) {
+// Button for the eye-Icon show and hide password:
+export function eyeIcon_Button(input: string[]) {
 	input.forEach(element => {
 		const elem = document.getElementById(element) as HTMLInputElement
 
@@ -14,7 +14,6 @@ export function signUpButtons(input: string[]) {
 				console.log(eyeIcon);
 
 				if (passwordField && eyeIcon) {
-					console.log("YESSS");
 					change_eyeIcon(passwordField, eyeIcon);
 				}
 			});
@@ -50,9 +49,6 @@ export function signUpButtons(input: string[]) {
 		}
 	});
 }
-
-// Buttons for LogIn:
-
 
 // Utils for buttons
 export function change_eyeIcon(passwordField: HTMLElement, eyeIcon: HTMLElement) {

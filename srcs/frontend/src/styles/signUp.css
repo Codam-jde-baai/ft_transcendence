@@ -213,7 +213,6 @@ p {
 .input-error {
 	border: 3px solid rgb(255, 0, 0);
 }
-
 .error-text {
 	color: rgb(228, 73, 73);
 	font-size: 1rem;

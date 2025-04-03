@@ -3,8 +3,8 @@ import { setupLogIn } from './logIn';
 import { setupError404 } from './error404';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
-import { checkFields } from '../script/errorFunctions';
-import { signUpButtons } from '../script/buttonHandling';
+import { checkFields, errorDisplay } from '../script/errorFunctions';
+import { eyeIcon_Button } from '../script/buttonHandling';
 
 
 export function setupSignUp() {
@@ -70,7 +70,7 @@ export function setupSignUp() {
 		`);
 
 		getLanguage();
-		signUpButtons(["show-password", "show-password_confirm", "avatar"]);
+		eyeIcon_Button(["show-password", "show-password_confirm", "avatar"]);
 		
 		document.getElementById('LogIn')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/logIn');
@@ -82,19 +82,40 @@ export function setupSignUp() {
 			if (!isValid)
 				return; // Stop execution if validation fails
 
-			const content: string = inputToContent(["username", "alias", "password", "password_confirm", "profilePic"])
+			const content: string = inputToContent(["username", "alias", "password", "profilePic"])
 			const body = requestBody("POST", content) // Used for requests where the frontend has to send info to the backend (like making a new user). Will return null in case of GET
-			const response = connectFunc("http://localhost:3000/users/new", body); // saves the response.json. this can be changed to response.text in connections.ts (automatically does so if a response.json cannot be generated)
+			const response = connectFunc("/users/new", body); // saves the response.json. this can be changed to response.text in connections.ts (automatically does so if a response.json cannot be generated)
 			response.then((response) => {
 				if (response.ok) {
-					console.log("User signed up successfully");
-					
-					// ----- If successfull go to home page --------
-					// window.history.pushState({}, '', '/home');
-					// setupUserHome();
+					response.json().then((data) => {
+						// Get server token
+						const token = data.token;
+						localStorage.setItem('authToken', token); // Store the token securely
+						window.history.pushState({}, '', '/home');
+						setupUserHome();
+					});
+
 				} else {
-					console.log("Sign-up failed")
-					console.log(response)
+					response.json().then((data) => {
+						if (data.error === "UNIQUE constraint failed: users_table.username")
+						{	
+							// Username already exist in database
+							const elem = document.getElementById("username") as HTMLInputElement
+							const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
+							errorDisplay(elem, errorMsg, "SignUp_error_user_exist");
+						} 
+						else if (data.error === "UNIQUE constraint failed: users_table.alias")
+						{
+							// Alias already exist in database
+							const elem = document.getElementById("alias") as HTMLInputElement
+							const errorMsg = document.getElementById("alias-name") as HTMLParagraphElement;
+							errorDisplay(elem, errorMsg, "SignUp_error_alias_exist");
+						}
+					}).catch(() => {
+						// Server/ Network error
+						window.history.pushState({}, '', '/error404');
+						setupError404();
+					});
 				}
 			}).catch(() => {
 				// Server/ Network error

@@ -18,7 +18,6 @@ export function requestBody(method: string, content: string | null) {
 	if (method.toUpperCase() === 'GET') {
 		const headers = {
 			"Authorization": `Bearer ${envConfig.privateKey}`,
-			"Accept": "application/json",
 		}
 		return { "method": method, "headers": headers }
 	}
@@ -26,7 +25,6 @@ export function requestBody(method: string, content: string | null) {
 		const headers = {
 			"Authorization": `Bearer ${envConfig.privateKey}`,
 			"Content-Type": "application/json",
-			"Accept": "application/json",
 		}
 		const body = '{' + content + '}'
 		return { "method": method, "headers": headers, "body": body };
@@ -35,14 +33,12 @@ export function requestBody(method: string, content: string | null) {
 		const headers = {
 			"Authorization": `Bearer ${envConfig.privateKey}`,
 			"Content-Type": "application/json",
-			"Accept": "application/json",
 		}
 		const body = '{' + content + '}'
 		return { "method": method, "headers": headers, "body": body };
 	}
 	return `ERROR (requestBody): Method ${method} Not Recognized`
 }
-// return { method, headers, body: content }; // content is already a JSON string
 
 async function httpGet(url: string, request: any | null): Promise<Response> {
 	return fetch(url, request)
@@ -63,6 +59,6 @@ async function httpGet(url: string, request: any | null): Promise<Response> {
 export async function connectFunc(url: string, request: any | null): Promise<Response> {
 	console.log("Connect To " + url + " Using:")
 	console.log(request)
-	const response = await httpGet(url, request);
+	const response = await httpGet("http://localhost:3000" + url, request);
 	return response
 }

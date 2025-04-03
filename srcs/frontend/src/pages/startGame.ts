@@ -4,6 +4,7 @@ import { setupSetting } from './setting';
 import { setupFriends } from './friends';
 import { setupMatchHistory } from './history';
 import { getLanguage } from '../script/language';
+import { dropDownBar } from '../script/dropDownBar';
 
 export function setupStartGame () {
 	const root = document.getElementById('app');
@@ -15,15 +16,15 @@ export function setupStartGame () {
 		<div class="overlay"></div>
 		<div class="topBar">
 			<div class="dropdown">
-				<button class="dropdown-btn">
+				<button class="dropdown-btn" id="dropdown-btn">
 					<img class="settingIcon" src="src/component/Pictures/setting-btn.png"/></img>
 				</button>
 				<div class="dropdown-content">
 					
-					<button class="language-btn">
+					<button class="language-btn" id="language-btn">
 						<span data-i18n="Language"></span> <img id="selected-flag" src="src/component/Pictures/flagIcon-en.png">
 					</button>
-					<div class="language-content">
+					<div class="language-content" id="language-content">
 							<div class="language-option" id="gb">
 								<img src="src/component/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
 							</div>
@@ -71,6 +72,8 @@ export function setupStartGame () {
 		`);
 
 		getLanguage();
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
 			renderPage();

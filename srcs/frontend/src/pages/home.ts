@@ -3,69 +3,11 @@ import { setupSetting } from './setting';
 import { setupFriends } from './friends';
 import { setupMatchHistory } from './history';
 import { setupStartGame } from './startGame';
-import { switchLanguage } from '../script/language';
 import { getLanguage } from '../script/language';
-
-// DropDown Function
-document.addEventListener('DOMContentLoaded', () => {
-	// Handle click events for toggling settings dropdown
-	document.addEventListener('click', (event) => {
-		const dropdown = document.querySelector('.dropdown-content');
-		const dropdownBtn = document.querySelector('.dropdown-btn');
-		
-		if (dropdown && dropdownBtn) {
-			if (dropdownBtn.contains(event.target as Node)) {
-				// Toggle dropdown visibility when clicking the button
-				dropdown.classList.toggle('show');
-			} else if (!dropdown.contains(event.target as Node)) {
-				// Hide dropdown if clicking outside of it
-				dropdown.classList.remove('show');
-			}
-		}
-	});
-
-	// Close both dropdowns when clicking outside
-	document.addEventListener("click", (event) => {
-		const languageDropdown = document.querySelector('.language-content');
-		const languageBtn = document.querySelector('.language-btn');
-
-		if (languageDropdown && languageBtn) {
-			if (languageBtn.contains(event.target as Node)) {
-				// Toggle dropdown visibility when clicking the button
-				languageDropdown.classList.toggle('showLang');
-			} else if (!languageDropdown.contains(event.target as Node)) {
-				// Hide dropdown if clicking outside of it
-				languageDropdown.classList.remove('showLang');
-			}
-		}
-	});
-
-// document.getElementById('gb')?.addEventListener('click', () => {
-// 	document.querySelectorAll(".language-option").forEach(item => {
-	document.addEventListener('click', (event) => {
-		const gb = document.getElementById('gb');
-		const de = document.getElementById('de');
-		const nl = document.getElementById('nl');
-		
-		if (gb) {
-			if (gb.contains(event.target as Node)) {
-				switchLanguage("en");
-			}
-		}
-		if (de) {
-			if (de.contains(event.target as Node)) {
-				switchLanguage("de");
-			}
-		}
-		if (nl) {
-			if (nl.contains(event.target as Node)) {
-				switchLanguage("nl");
-			}
-		}
-	});
-
-});
-
+import { dropDownBar } from '../script/dropDownBar';
+import { connectFunc, requestBody, inputToContent } from '../script/connections';
+import { errorDisplay } from '../script/errorFunctions';
+import { setupError404 } from './error404';
 
 export function setupUserHome () {
 	const root = document.getElementById('app');
@@ -77,15 +19,15 @@ export function setupUserHome () {
 		<div class="overlay"></div>
 		<div class="topBar">
 			<div class="dropdown">
-				<button class="dropdown-btn">
+				<button class="dropdown-btn" id="dropdown-btn">
 					<img class="settingIcon" src="src/component/Pictures/setting-btn.png"/></img>
 				</button>
 				<div class="dropdown-content">
 					
-					<button class="language-btn">
+					<button class="language-btn" id="language-btn">
 						<span data-i18n="Language"></span> <img id="selected-flag" src="src/component/Pictures/flagIcon-en.png">
 					</button>
-					<div class="language-content">
+					<div class="language-content" id="language-content">
 							<div class="language-option" id="gb">
 								<img src="src/component/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
 							</div>
@@ -196,6 +138,8 @@ export function setupUserHome () {
 		`);
 
 		getLanguage();
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
 			renderPage();
@@ -225,6 +169,32 @@ export function setupUserHome () {
 			window.history.pushState({}, '', '/startGame');
 			setupStartGame();
 		});
+
+		const token = localStorage.getItem('authToken'); // Retrieve the token
+		console.log("USER " + token);  // -> RM <-
+
+		if (token) {
+
+			const body = requestBody("GET", null); // GET requests typically don't have a body
+			const response = connectFunc("/users", body); // Pass headers to connectFunc
+
+			response.then((response) => {
+				if (response.ok) {
+					response.json().then((data) => {
+						console.log("User data fetched successfully:", data);
+						// Use the fetched data (e.g., display user stats, leaderboard, etc.)
+					});
+				} else {
+					console.error("Failed to fetch user data");
+				}
+			}).catch(() => {
+				console.error("Network or server error");
+				window.history.pushState({}, '', '/error404');
+				setupError404();
+			});
+		} else {
+			console.error("No auth token found. Redirecting to login.");
+		}
 
 	}
 }

@@ -75,11 +75,16 @@
 
     "SignUp_error_admin": "Admin name not allowed",
     "SignUp_error_password": "Passwords Don't Match",
-    "LogIn_error_user": "User not found",
-    "LogIn_error_password": "Wrong Password",
     "SignUp_error_user": "Username must be between 3 and 17 characters",
     "SignUp_error_alias": "Alias name must be between 3 and 17 characters",
     "SignUp_error_userPass": "Password must be between 6 and 117 characters",
+    "SignUp_error_user_exist": "Username taken. Try another!",
+    "SignUp_error_alias_exist": "Alias taken. Try another!",
+    
+    "LogIn_error_user": "User not found",
+    "LogIn_error_password": "Wrong Password",
+    "LogIn_error": "Wrong Password",
+
 
     "EndOfFile": ""
 }
