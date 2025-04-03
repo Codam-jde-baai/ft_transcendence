@@ -27,6 +27,13 @@ export const usersTable = sqliteTable("users_table", {
 	loss: int("loss").default(0)
 });
 
+// table with sessionId cookies
+export const sessionIdTable = sqliteTable("session_id_table", {
+	sessionid:	text("sessionId").notNull().unique(),
+	expiry:	int("expiry").notNull(),
+	userID: text("uuid").references(() => usersTable.uuid).notNull()
+});
+
 export enum matchStatus {
 	COMPLETED = 0,
 	INTERRUPTED = 1

@@ -16,12 +16,12 @@ export function inputToContent(input: string[]) {
 	return str;
 }
 
-export function requestBody(method: string, content: string | null) {
+export function requestBody(method: string, content?: string) {
 	if (method.toUpperCase() === 'GET') {
 		const headers = {
 			"Authorization": `Bearer ${envConfig.privateKey}`,
 		}
-		return { "method": method, "headers": headers }
+		return { "method": method, "headers": headers, "credentials": "include" }
 	}
 	if (method.toUpperCase() === 'POST') {
 		const headers = {
@@ -29,7 +29,7 @@ export function requestBody(method: string, content: string | null) {
 			"Content-Type": "application/json",
 		}
 		const body = '{' + content + '}'
-		return { "method": method, "headers": headers, "body": body };
+		return { "method": method, "headers": headers, "body": body, "credentials": "include" };
 	}
 	if (method.toUpperCase() === 'DELETE') {
 		const headers = {
@@ -37,7 +37,7 @@ export function requestBody(method: string, content: string | null) {
 			"Content-Type": "application/json",
 		}
 		const body = '{' + content + '}'
-		return { "method": method, "headers": headers, "body": body };
+		return { "method": method, "headers": headers, "body": body, "credentials": "include" };
 	}
 	return `ERROR (requestBody): Method ${method} Not Recognized`
 }
@@ -45,11 +45,6 @@ export function requestBody(method: string, content: string | null) {
 async function httpGet(url: string, request: any | null): Promise<Response> {
 	return fetch(url, request)
 		.then((response) => {
-			//const contentType = response.headers.get("Content-Type");
-			// if (contentType && contentType.includes("application/json"))
-			// 	return response.json();
-			// else
-			// 	return response.text();
 			return (response)
 		})
 		.catch((error) => {

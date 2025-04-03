@@ -6,6 +6,7 @@ import swaggerUi from '@fastify/swagger-ui';
 import multipart from '@fastify/multipart';
 import friendsRoutes from './routes/friends.ts';
 import fastifyCors from '@fastify/cors'
+import cookieRoutes from './routes/cookie.ts';
 
 console.log("reading from index.ts backend");
 
@@ -21,14 +22,33 @@ const fastify = Fastify({
 	}
 })
 
-
 // Setting Up The CORS Plugin First
 fastify.register(fastifyCors, {
-	origin: '*',
+	origin: ['http://localhost:5173'] ,
 	methods: ['GET', 'POST', 'DELETE'],
-	allowedHeaders: ['Content-Type', 'Authorization'],
+	credentials: true,
+	allowedHeaders: ['Origin', 'Content-Type', 'Authorization'],
 });
 // 'Origin', 'X-Requested-With', 'Accept'
+
+// Setting up The Secure Session (Login) Plugin
+
+import fastifySecureSession from "@fastify/secure-session";
+fastify.register();
+
+
+// fastify.register(require('@fastify/secure-session'), {
+// 	secret: "Super Cool And Secret Key",
+// 	sessionName: 'session',
+// 	cookieName: 'Session-Cookie',
+// 	expiry: 60 * 60,
+// 	cookie: {
+// 		path:		'/',
+// 		Secure:		false,
+// 	}
+// });
+// HttpOnly:	true,
+// SameSite:	'Lax',
 
 await fastify.register(swagger, {
 	openapi: {  // Change from 'swagger' to 'openapi'
@@ -71,6 +91,8 @@ await fastify.register(swaggerUi, {
 
 fastify.register(userRoutes);
 fastify.register(friendsRoutes);
+//fastify.register(matchesRoutes);
+fastify.register(cookieRoutes);
 
 // defining a function in TS
 const start = async () => {

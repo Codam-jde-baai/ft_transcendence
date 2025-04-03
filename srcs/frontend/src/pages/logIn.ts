@@ -31,18 +31,23 @@ export function setupLogIn() {
 
 		getLanguage();
 		document.getElementById('Home')?.addEventListener('click', () => {
-			const content: string = inputToContent(["username", "password"])
-			const body = requestBody("POST", content)
-			const response = connectFunc("http://localhost:3000/user/login", body);
+			// const content:string = inputToContent(["username", "password"])
+			// const content:string = "\"username\": \"user\", \"password\": \"password\""
+			// const body = requestBody("POST", content)
+			// const response = connectFunc("http://localhost:3000/user/login", body);
+			// const body = requestBody("post", "\"Make\":\"Cookie\"")
+			// const response = connectFunc("http://localhost:3000/cookie-create", body);
+			const body = requestBody("get")
+			const response = connectFunc("http://localhost:3000/cookie-login", body);
 			response.then((response) => {
 				if (response.ok) {
-					window.history.pushState({}, '', '/home'); // can be moved into the response.then section for proper usage
-					setupUserHome();
+					// window.history.pushState({}, '', '/home');
+					// setupUserHome();
 				}
 				else {
 					// css
-					console.log("User & Password Do Not Match");
-					console.log(response.statusText);
+					// console.log("User & Password Do Not Match");
+					// console.log(response.statusText);
 					// response.json().then((data) => {
 					// 	console.log("Payload from response:", data);
 					// }).catch((error) => {
