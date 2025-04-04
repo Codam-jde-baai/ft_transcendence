@@ -101,9 +101,10 @@ export function setupSetting () {
 			if (!isValid)
 				return; // Stop execution if validation fails
 
-			const content: string = inputToContent(["alias", "password", "profilePic"])
+			const content: string = inputToContent(["alias", "password", "profilePic"]) // Only send the variable sthat need to be udated
 			const body = requestBody("POST", content) 
-			const response = connectFunc("?", body); // ????????????
+			// const response = connectFunc("/user/updatepw", body);
+			const response = connectFunc("/users/{uuid}/profile-pic", body);
 			response.then((response) => {
 				if (response.ok) {
 					console.log("YES, it SAVED!!!");
@@ -114,7 +115,7 @@ export function setupSetting () {
 					console.log("Something went wrong with the SAVE");
 				}
 			}).catch(() => {
-				// Server/ Network error
+				// Network or server error
 				window.history.pushState({}, '', '/error404');
 				setupError404();
 			});

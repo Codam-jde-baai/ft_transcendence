@@ -5,9 +5,7 @@ import { setupMatchHistory } from './history';
 import { setupStartGame } from './startGame';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
-import { connectFunc, requestBody, inputToContent } from '../script/connections';
-import { errorDisplay } from '../script/errorFunctions';
-import { setupError404 } from './error404';
+import { fillHome } from '../script/fillHome';
 
 export function setupUserHome () {
 	const root = document.getElementById('app');
@@ -46,9 +44,9 @@ export function setupUserHome () {
 				</div>
 			</div>
 			<div class="topBarFrame">
-				<div class="aliasName">cool alias</div>
+				<div class="aliasName" id="aliasName"></div>
 				<div class="profile-picture">
-					<img src="src/component/Pictures/defaultPP.avif" alt="Profile Picture">
+					<img id="profile-picture" src="src/component/Pictures/defaultPP.avif" alt="Profile Picture">
 				</div>
 			</div>
 		</div>
@@ -59,12 +57,12 @@ export function setupUserHome () {
 
 				<div class="user-stats">
 					<div class="stat-box">
-						<div class="total-score">
-							<img src="src/component/Pictures/totalScore.png">
+						<div class="best-score">
+							<img src="src/component/Pictures/bestScore.png">
 						</div>
 						<div class="text-container">
-							<div class="total-score-text" data-i18n="Total_Score"></div>
-							<div class="score-number"> >-1200-< </div>
+							<div class="best-score-text" data-i18n="Score"></div>
+							<div id="best-score" class="score-number"> >-1200-< </div>
 						</div>
 					</div>
 
@@ -75,7 +73,7 @@ export function setupUserHome () {
 							</div>
 							<div class="text-container">
 								<div class="score-text" data-i18n="Wins"></div>
-								<div class="score-number"> >-1200-< </div>
+								<div id="win" class="score-number"></div>
 							</div>
 						</div>
 
@@ -85,7 +83,7 @@ export function setupUserHome () {
 							</div>
 							<div class="text-container">
 								<div class="score-text" data-i18n="Losses"></div>
-								<div class="score-number"> >-900-< </div>
+								<div id="loss" class="score-number"> </div>
 							</div>
 						</div>
 					</div>
@@ -103,9 +101,13 @@ export function setupUserHome () {
 							</div>
 							<div class="text-container">
 								<div class="position" data-i18n="1"></div>
-								<div class="text"> $user123</div>
-								<div class="number" data-i18n="wins_"></div>
-								<div class="number" data-i18n="losses_"></div>
+								<div id="aliasName1" class="text"></div>
+								<div class="number">
+									<span data-i18n="wins_"></span> <span id="win1" class="number"></span>
+								</div>
+								<div class="number">
+									<span data-i18n="losses_"></span> <span id="loss1" class="number"></span>
+								</div>
 							</div>
 						</div>
 					<div class="leaderboard-entry">
@@ -114,9 +116,13 @@ export function setupUserHome () {
 						</div>
 						<div class="test-container">
 							<div class="position" data-i18n="2"></div>
-							<div class="text">$welp</div>
-							<div class="number" data-i18n="wins_"></div>
-							<div class="number" data-i18n="losses_"></div>
+							<div id="aliasName2" class="text"></div>
+							<div class="number">
+								<span data-i18n="wins_"></span> <span id="win2" class="number"></span>
+							</div>
+							<div class="number">
+								<span data-i18n="losses_"></span> <span id="loss2" class="number"></span>
+							</div>v>
 						</div>
 					</div>
 					<div class="leaderboard-entry">
@@ -125,9 +131,13 @@ export function setupUserHome () {
 						</div>
 						<div class="test-container">
 							<div class="position" data-i18n="3"></div>
-							<div class="text">$coolalias</div>
-							<div class="number" data-i18n="wins_"></div>
-							<div class="number" data-i18n="losses_"></div>
+							<div id="aliasName3" class="text"></div>
+							<div class="number">
+								<span data-i18n="wins_"></span> <span id="win3" class="number"></span>
+							</div>
+							<div class="number">
+								<span data-i18n="losses_"></span> <span id="loss3" class="number"></span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -139,6 +149,7 @@ export function setupUserHome () {
 
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+		fillHome(); // Retrieve user uuid
 
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
@@ -169,32 +180,6 @@ export function setupUserHome () {
 			window.history.pushState({}, '', '/startGame');
 			setupStartGame();
 		});
-
-		const token = localStorage.getItem('authToken'); // Retrieve the token
-		console.log("USER " + token);  // -> RM <-
-
-		if (token) {
-
-			const body = requestBody("GET", null); // GET requests typically don't have a body
-			const response = connectFunc("/users", body); // Pass headers to connectFunc
-
-			response.then((response) => {
-				if (response.ok) {
-					response.json().then((data) => {
-						console.log("User data fetched successfully:", data);
-						// Use the fetched data (e.g., display user stats, leaderboard, etc.)
-					});
-				} else {
-					console.error("Failed to fetch user data");
-				}
-			}).catch(() => {
-				console.error("Network or server error");
-				window.history.pushState({}, '', '/error404');
-				setupError404();
-			});
-		} else {
-			console.error("No auth token found. Redirecting to login.");
-		}
 
 	}
 }

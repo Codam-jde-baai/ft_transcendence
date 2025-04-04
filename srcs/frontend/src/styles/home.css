@@ -59,7 +59,7 @@
 	font-weight: bold;
 	color: #dcdbdb;
 }
-.total-score-text {
+.best-score-text {
 	font-size: 26px;
 	font-weight: bold;
 	color: #dcdbdb;
@@ -68,13 +68,13 @@
 	font-size: 20px;
 	color: #dcdbdb;
 }
-.total-score img {
-	width: 250px;
-	height: 250px;
+.best-score img {
+	width: 270px;
+	height: 270px;
 	object-fit: cover;
 	border-radius: 50%;
 	margin-top: -50px;
-	margin-bottom: -40px;
+	margin-bottom: -60px;
 }
 .win-losse img {
 	width: 35px;

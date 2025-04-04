@@ -88,9 +88,16 @@ export function setupSignUp() {
 			response.then((response) => {
 				if (response.ok) {
 					response.json().then((data) => {
-						// Get server token
-						const token = data.token;
-						localStorage.setItem('authToken', token); // Store the token securely
+						// Get user ID  -> user uuid
+						const userID = data.uuid;
+						if (!userID) {
+							// Network or server error
+							window.history.pushState({}, '', '/error404');
+							setupError404();
+							return ;
+						}
+						localStorage.setItem('userID', userID); // Store userID securely
+						
 						window.history.pushState({}, '', '/home');
 						setupUserHome();
 					});
@@ -112,7 +119,7 @@ export function setupSignUp() {
 							errorDisplay(elem, errorMsg, "SignUp_error_alias_exist");
 						}
 					}).catch(() => {
-						// Server/ Network error
+						// Network or server error
 						window.history.pushState({}, '', '/error404');
 						setupError404();
 					});

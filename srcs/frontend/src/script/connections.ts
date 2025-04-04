@@ -43,11 +43,6 @@ export function requestBody(method: string, content: string | null) {
 async function httpGet(url: string, request: any | null): Promise<Response> {
 	return fetch(url, request)
 		.then((response) => {
-			// const contentType = response.headers.get("Content-Type");
-			// if (contentType && contentType.includes("application/json"))
-			// 	return response.json();
-			// else
-			// 	return response.text();
 			return (response)
 		})
 		.catch((error) => {

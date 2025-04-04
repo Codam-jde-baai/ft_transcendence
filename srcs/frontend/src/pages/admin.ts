@@ -1,5 +1,10 @@
 import { renderPage } from './index';
 import { getLanguage } from '../script/language';
+import { dropDownBar } from '../script/dropDownBar';
+import { setupError404 } from './error404';
+import { setupAdminUserSetting } from './adminUserSetting';
+import { setupAdminSetting } from './adminSettings';
+import { connectFunc, requestBody, inputToContent } from '../script/connections';
 
 export function setupAdmin() {
 	const root = document.getElementById('app');
@@ -10,15 +15,15 @@ export function setupAdmin() {
 		<div class="overlay"></div>
 		<div class="topBar">
 			<div class="dropdown">
-				<button class="dropdown-btn">
+				<button class="dropdown-btn" id="dropdown-btn">
 					<img class="settingIcon" src="src/component/Pictures/setting-btn.png"/></img>
 				</button>
 				<div class="dropdown-content">
 					
-					<button class="language-btn">
+					<button class="language-btn" id="language-btn">
 						<span data-i18n="Language"></span> <img id="selected-flag" src="src/component/Pictures/flagIcon-en.png">
 					</button>
-					<div class="language-content">
+					<div class="language-content" id="language-content">
 							<div class="language-option" id="gb">
 								<img src="src/component/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
 							</div>
@@ -29,6 +34,8 @@ export function setupAdmin() {
 								<img src="src/component/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
 							</div>
 					</div>
+					<div class="dropdown-item" id="Home" data-i18n="Home"></div>
+					<div class="dropdown-item" id="Setting" data-i18n="Settings"></div>
 					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
 				</div>
 			</div>
@@ -67,6 +74,7 @@ export function setupAdmin() {
 								<button class="btn" id="AdminSet" data-i18n="Change_Password"></button>
 							</td>
 						</tr>
+
 						<!--- REMOVE THIS ONE -> Just an example --- -->
 						<tr>
 							<td>JohnDoe</td>
@@ -88,14 +96,52 @@ export function setupAdmin() {
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		
+		document.getElementById('Home')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/admin');
+			setupAdmin();
+		});
+		document.getElementById('Setting')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/adminSettings');
+			setupAdminSetting();
+		});
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
 			renderPage();
 		});
 		document.getElementById('AdminSet')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/adminSetting');
-			renderPage();
+			window.history.pushState({}, '', '/adminUserSetting');
+			setupAdminUserSetting();
 		});
+
+		// Retrieve user uuid
+		const userID = localStorage.getItem('userID');
+		if (userID) {
+			const response = connectFunc(`/user/${userID}`, requestBody("GET", null));
+			response.then((response) => {
+				if (response.ok) {
+					response.json().then((data) => {
+						console.log("FULL RESPONSE (admin)", data); // -> FOR TESTING
+						console.log("FULL RESPONSE (admin)", data.username); // -> FOR TESTING
+						// console.log("FULL RESPONSE (admin)", data.profile_pic.data); // -> FOR TESTING
+
+						// console.log("User data fetched successfully:", data);
+						// Use the fetched data (e.g., display user stats, leaderboard, etc.)
+					});
+				} else {
+					console.error("Failed to fetch user data");
+					// window.history.pushState({}, '', '/error404');
+					// setupError404();
+				}
+			}).catch(() => {
+				// Network or server error
+				window.history.pushState({}, '', '/error404');
+				setupError404();
+			});
+		} else {
+			// Network or server error
+			window.history.pushState({}, '', '/error404');
+			setupError404();
+		}
 		
 	}
 }

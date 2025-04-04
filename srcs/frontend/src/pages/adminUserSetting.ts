@@ -1,7 +1,12 @@
 import { renderPage } from './index';
 import { getLanguage } from '../script/language';
+import { dropDownBar } from '../script/dropDownBar';
+import { setupAdmin } from './admin';
+import { setupAdminSetting } from './adminSettings';
+import { setupError404 } from './error404';
+import { connectFunc, requestBody, inputToContent } from '../script/connections';
 
-export function setupAdminSetting() {
+export function setupAdminUserSetting() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
@@ -11,15 +16,15 @@ export function setupAdminSetting() {
 		<div class="overlay"></div>
 		<div class="topBar">
 			<div class="dropdown">
-				<button class="dropdown-btn">
+				<button class="dropdown-btn" id="dropdown-btn">
 					<img class="settingIcon" src="src/component/Pictures/setting-btn.png"/></img>
 				</button>
 				<div class="dropdown-content">
 					
-					<button class="language-btn">
+					<button class="language-btn" id="language-btn">
 						<span data-i18n="Language"></span> <img id="selected-flag" src="src/component/Pictures/flagIcon-en.png">
 					</button>
-					<div class="language-content">
+					<div class="language-content" id="language-content">
 							<div class="language-option" id="gb">
 								<img src="src/component/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
 							</div>
@@ -30,6 +35,8 @@ export function setupAdminSetting() {
 								<img src="src/component/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
 							</div>
 					</div>
+					<div class="dropdown-item" id="Home" data-i18n="Home"></div>
+					<div class="dropdown-item" id="Setting" data-i18n="Settings"></div>
 					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
 				</div>
 			</div>
@@ -73,11 +80,25 @@ export function setupAdminSetting() {
 		</div>
 		`);
 
-		getLanguage();
-		document.getElementById('LogOut')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/index');
-			renderPage();
-		});
+			getLanguage();
+			dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+			
+			document.getElementById('Home')?.addEventListener('click', () => {
+				window.history.pushState({}, '', '/admin');
+				setupAdmin();
+			});
+			document.getElementById('Setting')?.addEventListener('click', () => {
+				window.history.pushState({}, '', '/adminSettings');
+				setupAdminSetting();
+			});
+			document.getElementById('LogOut')?.addEventListener('click', () => {
+				window.history.pushState({}, '', '/index');
+				renderPage();
+			});
+			document.getElementById('AdminSet')?.addEventListener('click', () => {
+				window.history.pushState({}, '', '/adminUserSetting');
+				setupAdminUserSetting();
+			});
 		
 	}
 }

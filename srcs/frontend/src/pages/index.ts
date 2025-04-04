@@ -6,7 +6,8 @@ import { setupFriends } from './friends';
 import { setupMatchHistory } from './history';
 import { setupStartGame } from './startGame';
 import { setupAdmin } from './admin';
-import { setupAdminSetting } from './adminSetting';
+import { setupAdminUserSetting } from './adminUserSetting';
+import { setupAdminSetting } from './adminSettings';
 import { setupError404 } from './error404';
 import { getLanguage } from '../script/language';
 
@@ -41,8 +42,10 @@ export function renderPage() {
 			setupError404();
 		} else if (window.location.pathname === '/admin') {
 			setupAdmin();
-		} else if (window.location.pathname === '/adminSetting') {
+		} else if (window.location.pathname === '/adminSettings') {
 			setupAdminSetting();
+		} else if (window.location.pathname === '/adminUserSetting') {
+			setupAdminUserSetting();
 		} else {
 			root.innerHTML = "";
 			root.insertAdjacentHTML("beforeend", `

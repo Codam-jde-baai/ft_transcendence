@@ -73,18 +73,23 @@ export function setupLogIn() {
 			response.then((response) => {
 				if (response.ok) {
 					response.json().then((data) => {
-						// Get server token
-						const token = data.token;
-						// console.log("TOKEN " + token); // -> RM <-
-						localStorage.setItem('authToken', token); // Store the token securely
+						
+						// Get user ID  -> user uuid
+						const userID = data.uuid;
+						if (!userID) {
+							// Network or server error
+							window.history.pushState({}, '', '/error404');
+							setupError404();
+							return ;
+						}
+						localStorage.setItem('userID', userID); // Store userID securely
 			
 						const elem = document.getElementById("username") as HTMLInputElement;
 						if (elem.value.toUpperCase() === "ADMIN") {
 
 							// For ADMIN
-							console.log("YESS< I am ADMIN");
-							// window.history.pushState({}, '', '/admin');
-							// setupAdmin();
+							window.history.pushState({}, '', '/admin');
+							setupAdmin();
 						} else {
 
 							// For USER
@@ -102,13 +107,13 @@ export function setupLogIn() {
 							errorDisplay(elem, errorMsg, "LogIn_error");
 						}
 					}).catch(() => {
-						// Server/ Network error
+						// Network or server error
 						window.history.pushState({}, '', '/error404');
 						setupError404();
 					});
 				}
 			}).catch(() => {
-				// Server/ Network error
+				// Network or server error
 				window.history.pushState({}, '', '/error404');
 				setupError404();
 			});
