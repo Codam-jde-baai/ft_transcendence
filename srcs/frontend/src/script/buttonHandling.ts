@@ -1,3 +1,5 @@
+import { connectFunc, requestBody, inputToContent } from '../script/connections';
+// import { setupError404 } from './error404';
 /* ---> These Functions handle the small buttons of each page <--- */
 
 // Button for the eye-Icon show and hide password:
@@ -59,4 +61,54 @@ export function change_eyeIcon(passwordField: HTMLElement, eyeIcon: HTMLElement)
 		passwordField.type = "password";
 		eyeIcon.src = "src/component/Pictures/eyeIcon.png"; 
 	}
+}
+
+
+// Save button (settings.ts)
+export function updateUserSettings(input: string[], fields: { id: string, endpoint: string }[]): boolean {
+
+	let isValid = true;
+	let successfulUpdates = 0;
+
+	input.forEach(element => {
+		const inputElement = document.getElementById(element) as HTMLInputElement
+		
+		const field = fields.find(f => f.id === element);
+		if (!field)
+			return false;
+
+		if (inputElement.value !== "" && inputElement.value !== null )
+		{
+			// Profile Picture is undefined. set it to null if not edit
+			console.log("IAMIN");
+			console.log(inputElement.id);
+			console.log(inputElement.value);
+			console.log(field.id);
+			console.log(field.endpoint);
+
+			const content: string = inputToContent([element])
+			const body = requestBody("POST", content) 
+			const response = connectFunc(field.endpoint, body);
+			response.then((response) => {
+				if (response.ok) {
+					console.log("successfulUpdates");
+					successfulUpdates += 1;
+					
+				} else {
+					console.log("Something went wrong with the SAVE");
+					successfulUpdates = 0;
+				}
+			}).catch(() => {
+				return false ;
+			});
+		}
+	});
+
+	// Final success check
+	if (successfulUpdates !== 0)
+		isValid = true;
+	else
+		isValid = false;
+
+	return isValid;
 }

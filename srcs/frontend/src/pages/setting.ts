@@ -7,7 +7,7 @@ import { dropDownBar } from '../script/dropDownBar';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { passwordFields } from '../script/errorFunctions';
 import { setupError404 } from './error404';
-import { connectFunc, requestBody, inputToContent } from '../script/connections';
+import { updateUserSettings } from '../script/buttonHandling';
 
 export function setupSetting () {
 	const root = document.getElementById('app');
@@ -101,24 +101,22 @@ export function setupSetting () {
 			if (!isValid)
 				return; // Stop execution if validation fails
 
-			const content: string = inputToContent(["alias", "password", "profilePic"]) // Only send the variable sthat need to be udated
-			const body = requestBody("POST", content) 
-			// const response = connectFunc("/user/updatepw", body);
-			const response = connectFunc("/users/{uuid}/profile-pic", body);
-			response.then((response) => {
-				if (response.ok) {
-					console.log("YES, it SAVED!!!");
+			const fields = [
+				{ id: "alias", endpoint: "/user/updatepw" },
+				{ id: "password", endpoint: "/user/updatepw" },
+				{ id: "profilePic", endpoint: "/users/{uuid}/profile-pic" }
+			];
+
+			if (updateUserSettings(["alias", "password", "profilePic"], fields)) {
+				console.log("YES, it SAVED!!!");
 					// window.history.pushState({}, '', '/home');
 					// setupUserHome();
-
-				} else {
-					console.log("Something went wrong with the SAVE");
-				}
-			}).catch(() => {
+			}
+			else {
 				// Network or server error
 				window.history.pushState({}, '', '/error404');
 				setupError404();
-			});
+			}
 		});
 
 		document.getElementById('Friends')?.addEventListener('click', () => {
