@@ -17,7 +17,6 @@ class DropdownMenu extends HTMLElement {
 	
 	render() {
 		const currentPage = window.location.pathname
-		// const currentPage = window.history
 		this.innerHTML = "";
 		this.insertAdjacentHTML("beforeend", `
 		<div class="topBar">
