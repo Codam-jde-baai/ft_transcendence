@@ -1,11 +1,13 @@
-import envConfig from './config/env.ts';
 import Fastify from 'fastify';
-import userRoutes from './routes/users.ts';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import multipart from '@fastify/multipart';
-import friendsRoutes from './routes/friends.ts';
 import fastifyCors from '@fastify/cors'
+import secureSession from '@fastify/secure-session';
+import userRoutes from './routes/users.ts';
+import friendsRoutes from './routes/friends.ts';
+import envConfig from './config/env.ts';
+import sessionKey from './config/session-key.ts';
 
 console.log("reading from index.ts backend");
 
@@ -29,6 +31,22 @@ fastify.register(fastifyCors, {
 	allowedHeaders: ['Content-Type', 'Authorization'],
 });
 // 'Origin', 'X-Requested-With', 'Accept'
+
+
+// https://github.com/fastify/fastify-secure-session
+fastify.register(secureSession, {
+	key: [sessionKey],
+	cookie: {
+		httpOnly: true, // hides it from user
+		secure: true, // only sends over https
+		path: '/',                  // Restrict cookie to specific path
+		maxAge: 7200,               // Session timeout in seconds (e.g., 2 hours)
+		sameSite: 'strict',         // Restrict cross-site requests
+		domain: 'yourdomain.com'    // Restrict cookie to your domain
+		// cookie options: https://github.com/fastify/fastify-cookie
+	}
+
+})
 
 await fastify.register(swagger, {
 	openapi: {  // Change from 'swagger' to 'openapi'
