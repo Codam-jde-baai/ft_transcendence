@@ -1,3 +1,0 @@
-
-
-node ./node_modules/@fastify/secure-session/genkey.js > cookie-key/secret-key

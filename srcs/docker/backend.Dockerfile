@@ -1,5 +1,5 @@
-# Use Node.js LTS version - changing from 23 to 20 (current LTS)
-FROM node:20-alpine
+# Use Node.js LTS version
+FROM node:23-bookworm-slim
 
 # Set working directory
 WORKDIR /app
@@ -7,31 +7,29 @@ WORKDIR /app
 RUN mkdir data
 
 # Install necessary build dependencies
-RUN apk add --no-cache sqlite sqlite-dev python3 make g++ gcc musl-dev \
-	libtool autoconf automake git libstdc++ libsodium libsodium-dev
-
-# Install pnpm
-RUN npm install -g pnpm
+RUN apt-get update && apt-get install -y \
+	sqlite3 libsqlite3-dev python3 make g++ gcc \
+	libtool autoconf automake git libstdc++6 libsodium-dev \
+	&& apt-get clean \
+	&& rm -rf /var/lib/apt/lists/*
 
 # Copy all
 COPY . .
 
-RUN pnpm add sodium-native@latest --force
+# Install pnpm
+RUN npm install -g pnpm
 
-# Explicitly clean and rebuild the native modules
-RUN rm -rf node_modules/.pnpm/sodium-native*
-RUN rm -rf node_modules/.pnpm/better-sqlite3*
+RUN pnpm install --force
+
 RUN pnpm rebuild better-sqlite3
 RUN pnpm rebuild sodium-native
 
-# Verify sodium-native installation
-RUN node -e "require('sodium-native')" || (echo "Sodium-native still not working" && exit 1)
+RUN ls 
 
+RUN cat docker-entrypoint/generateDb.sh
 
+RUN chmod +x docker-entrypoint/generateDb.sh
 # Database setup
-RUN pnpm db:generate
-RUN pnpm db:migrate
-RUN pnpm db:push
 
 # Expose backend port
 EXPOSE 3000
