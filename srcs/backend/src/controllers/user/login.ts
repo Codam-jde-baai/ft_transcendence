@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm'
 
 // files
 import { usersTable, userStatus } from '../../db/schema.ts';
-import { toPublicUser, verifyPassword, hashPassword } from '../../models/users.ts';
+import { toPublicUser, verifyPassword } from '../../models/users.ts';
 
 
 export const loginUser = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -53,50 +53,3 @@ export const loginUser = async (request: FastifyRequest, reply: FastifyReply) =>
 		if (sqlite) sqlite.close();
 	}
 }
-
-export const updatePassword = async (request: FastifyRequest, reply: FastifyReply) => {
-	let sqlite = null;
-	try {
-		const { username, password, newPassword } = request.body as { username?: string; password?: string, newPassword?: string };
-		if (!username || !password || !newPassword) {
-			reply.code(400).send({ error: 'Username, password and the new password are required' });
-			return;
-		}
-		if (newPassword.length < 6) {
-			return reply.code(400).send({ error: 'New Password length should be at least 6 characters' })
-		}
-		// for time consistency 
-		let userFound = false;
-		let user = null;
-		let storedHash = '$argon2id$v=19$m=65536,t=3,p=4$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
-
-
-		sqlite = new Database('./data/data.db', { verbose: console.log });
-		const db = drizzle(sqlite);
-		const userArray = await db.select().from(usersTable).where(eq(usersTable.username, username));
-
-		if (userArray.length > 0) {
-			userFound = true;
-			user = userArray[0];
-			storedHash = user.password
-		}
-		const samePassword = await verifyPassword(password, storedHash);
-
-		if (!userFound || !samePassword) {
-			reply.code(401).send({ error: 'username and password combination do not match database entry' });
-			return;
-		}
-
-		const hashedPassword = await hashPassword(newPassword);
-		await db.update(usersTable)
-			.set({ password: hashedPassword })
-			.where(eq(usersTable.username, username));
-		return reply.code(200).send();
-	} catch (error) {
-		request.log.error('getAllUsers failed:', error);
-		return reply.code(500).send({ error: 'Failed to retrieve users' });
-	} finally {
-		if (sqlite) sqlite.close();
-	}
-}
-
