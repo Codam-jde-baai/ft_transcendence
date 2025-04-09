@@ -45,8 +45,8 @@ export function setupSignUp() {
 			}
 			const content: string = inputToContent(["username", "alias", "password", "password_confirm", "profilePic"])
 			const body = requestBody("POST", content) // Used for requests where the frontend has to send info to the backend (like making a new user). Will return null in case of GET
-			connectFunc("/users/new", body)
-				.then((response) => {
+			const response = connectFunc("http://localhost:3000/users/new", body); // saves the response.json. this can be changed to response.text in connections.ts (automatically does so if a response.json cannot be generated)
+			response.then((response) => {
 				if (response.ok) {
 					console.log("User signed up successfully");
 					// // ----- If successfull go to home page --------
@@ -55,13 +55,20 @@ export function setupSignUp() {
 				} else {
 					console.log("Sign-up failed")
 					console.log(response)
+
+
+
+
 					// // ----- Rm later --------
 				}
-				}).catch(() => {
+			}).catch(() => {
 				// Server/ Network error
 				window.history.pushState({}, '', '/error404');
 				setupError404();
-				});
+			});
+
+			// window.history.pushState({}, '', '/home');
+			// setupUserHome();
 		});
 	}
 }
