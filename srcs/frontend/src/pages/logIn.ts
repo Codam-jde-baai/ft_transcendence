@@ -33,8 +33,8 @@ export function setupLogIn() {
 		document.getElementById('Home')?.addEventListener('click', () => {
 			const content: string = inputToContent(["username", "password"])
 			const body = requestBody("POST", content)
-			const response = connectFunc("http://localhost:3000/user/login", body);
-			response.then((response) => {
+			connectFunc("/user/login", body)
+				.then((response) => {
 				if (response.ok) {
 					window.history.pushState({}, '', '/home'); // can be moved into the response.then section for proper usage
 					setupUserHome();

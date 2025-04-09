@@ -11,9 +11,10 @@ import { setupError404 } from './error404';
 import { getLanguage } from '../script/language';
 import '../component/topbar'
 import '../component/languageMenu'
+import '../component/publicUser'
 
 document.addEventListener('DOMContentLoaded', () => {
-	renderPage();	
+	renderPage();
 });
 
 export function renderPage() {
@@ -45,12 +46,12 @@ export function renderPage() {
 				<h1 class="header" data-i18n="Index_Header"></h1>
 				<p data-i18n="Index_P"></p>
 				<div class="buttons">
-					<button class="btn" id="LogIn" data-i18n="btn_LogIn"></button>
-					<button class="btn" id="SignUp" data-i18n="btn_SignUp"></button>
-					<!-- <button class="btn" id="Connect" data-i18n="Connect"> ConneCt </button> -->
+				<button class="btn" id="LogIn" data-i18n="btn_LogIn"></button>
+				<button class="btn" id="SignUp" data-i18n="btn_SignUp"></button>
+				<!-- <button class="btn" id="Connect" data-i18n="Connect"> ConneCt </button> -->
 				</div>
-			</div>
-			`);
+				</div>
+				`);
 
 			getLanguage();
 			document.getElementById('LogIn')?.addEventListener('click', () => {
