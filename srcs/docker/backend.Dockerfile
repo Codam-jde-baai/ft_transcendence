@@ -22,11 +22,11 @@ RUN pnpm install --force
 # Rebuild better-sqlite3 for alpine
 RUN pnpm rebuild better-sqlite3
 
-# RUN pnpm db:generate
+RUN pnpm db:generate
 
-# RUN pnpm db:migrate
+RUN pnpm db:migrate
 
-# RUN pnpm db:push
+RUN pnpm db:push
 
 # Expose backend port
 EXPOSE 3000

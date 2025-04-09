@@ -109,6 +109,7 @@ export function setupFriends() {
 					`).join('')}
 					<public-user type="friend" alias="Friend X"> </public-user>
 					</div>
+					<!-- ^^^^^^^^^^^^^^^^^^^^^^^^ -->
 
 				</div>
 				<!-- ^^^ -->
