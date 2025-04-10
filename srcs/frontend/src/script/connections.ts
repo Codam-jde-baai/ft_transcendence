@@ -17,7 +17,13 @@ export function inputToContent(input: string[]) {
 	return str;
 }
 
-// simplified to only set everything once. baseRequest optoins always contain baseHeaders(auth + method then body is conditional)
+export enum ContentType {
+	JSON = "application/json",
+	MultipartFormData = "multipart/form-data"
+}
+
+// simplified to only set everything once. baseRequest options always contain baseHeaders(currently Bearer token) + method, content and ContentType have if statements
+// contentType needs to be a param because contentType for uploading a profile-pic should be multipart/formdata and for jsons should be json as we have it
 export function requestBody(method: string, content?: string | null, contentType?: string | null | undefined): RequestInit {
 	const baseHeaders: Record<string, string> = {
 		"Authorization": `Bearer ${envConfig.privateKey}`,
