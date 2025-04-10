@@ -6,7 +6,7 @@
 
 /* Container for forms */
 .container {
-	background: rgba(0, 0, 0, 0);
+	background: rgba(0, 0, 0, 0.8);
 	padding: 40px;
 	border-radius: 15px;
 	width: 77%;
@@ -16,7 +16,9 @@
 	position: fixed;
 	justify-content: center;
 	text-align: center;
-	z-index: 1; 
+	min-height: fit-content;
+	height: 70%;
+	z-index: 1;
 }
 
 /* Title styling */
@@ -48,7 +50,9 @@
 	margin-top: 20px;
 	background-color: #ffffff;
 }
-.userTable th, .userTable td {
+
+.userTable th,
+.userTable td {
 	padding: 12px;
 	text-align: left;
 	color: rgb(0, 0, 0);
@@ -56,6 +60,7 @@
 	font-size: 15px;
 	font-family: Arial, sans-serif;
 }
+
 .userTable th {
 	color: rgb(0, 0, 0);
 	background-color: #d7d7d7;

@@ -8,16 +8,19 @@
 .container {
     width: 100%;
     max-width: 100%;
-	height: 100%;
+    height: 100%;
     max-height: 95%;
     padding: 20px;
     border-radius: 15px;
+    height: 70%;
+    min-height: fit-content;
+    background: rgba(0, 0, 0, 0.8);
 }
 
 /* Headers */
 .header {
     font-size: 30px;
-	font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
     text-align: left;
     color: #ffffff;
     margin-bottom: 10px;
@@ -51,12 +54,14 @@
     border-radius: 8px;
     box-shadow: 5px 5px 5px rgba(144, 32, 99);
 }
+
 .friend img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     margin-right: 15px;
 }
+
 .friend p {
     flex-grow: 1;
     font-size: 16px;
@@ -73,12 +78,14 @@
     border-radius: 8px;
     box-shadow: 5px 5px 5px rgba(144, 32, 99);
 }
+
 .publicUser img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
     margin-right: 15px;
 }
+
 .publicUser p {
     flex-grow: 1;
     font-size: 16px;
@@ -97,68 +104,78 @@
     background-color: #8a3f6c;
     color: white;
 }
+
 .btn.accept {
     background-color: #4CAF50;
     color: white;
 }
+
 .btn.decline {
     background-color: #f44336;
     color: white;
 }
+
 .btn.blok {
     background-color: #ffffff;
     color: rgb(0, 0, 0);
     border: 1px solid black;
 }
+
 .btn.blok:hover {
     background: #b86a8a;
     color: rgb(255, 255, 255);
     border: 1px solid rgb(255, 255, 255);
 }
+
 .btn:hover {
     background: #b86a8a;
 }
 
 /* Search Bar Styling */
 .userSearch {
-	width: 700px;
-	padding: 10px;
-	margin-bottom: 15px;
-	border-radius: 5px;
-	font-size: 16px;
-	top: 6.5px;
-	margin-left: 43px;
-	position: relative;
-	font-size: 15px;
-	font-family: Arial, sans-serif;
+    width: 700px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    top: 6.5px;
+    margin-left: 43px;
+    position: relative;
+    font-size: 15px;
+    font-family: Arial, sans-serif;
 }
+
 .search-container {
-	position: relative;
-	display: flex;
-	align-items: center;
-	width: fit-content;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: fit-content;
 }
+
 .search-btn {
-	background: white;
-	border: none;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: absolute;
-	border-radius: 5px;
-	height: 40px;
-	width: 40px;
+    background: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    border-radius: 5px;
+    height: 40px;
+    width: 40px;
 }
+
 .searchIcon {
-	height: 40px;
-	width: 40px;
-	border-radius: 5px;
-	z-index: 1;
+    height: 40px;
+    width: 40px;
+    border-radius: 5px;
+    z-index: 1;
 }
+
 .search-btn:hover {
-	background-color: #902063;
+    background-color: #902063;
 }
+
 .search-results {
     margin-top: -10px;
     display: flex;
