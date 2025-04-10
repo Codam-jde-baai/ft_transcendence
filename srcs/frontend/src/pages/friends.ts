@@ -17,48 +17,41 @@ export function setupFriends() {
 		blocked: []
 	};
 	// const uuid = ""
-	const uuid = "fedc3ec8-8392-4c63-ae8c-6c94ab836b60"
-	connectFunc(`/friends/${uuid}`, requestBody("GET", null))
-		.then((response) => {
-			if (response.ok) {
-				return response.json()
-			}
-			else {
-				if (response.status === 400) {
-					console.log("User not found");
-				} else if (response.status === 404) {
-					console.log("No friends found for this user");
+	const uuid = "fedc3ec8-8392-4c63-ae8c-6c94ab836b60" // get uuID from session-cookie
+	// using promise instead of multiple .thens()
+	// promse.all() method can take multiple promises as input ( connectfunc returns a promse) and promise.all() continues once all promises conclude
+	Promise.all([
+		// request friend relations -> friendslists
+		connectFunc(`/friends/${uuid}`, requestBody("GET"))
+			.then(response => {
+				if (response.ok) {
+					return response.json();
 				} else {
-					console.log(`Unexpected error: ${response.status}`);
+					if (response.status === 400) {
+						console.log("User not found");
+					} else if (response.status === 404) {
+						console.log("No friends found for this user");
+					} else {
+						console.log(`Unexpected error: ${response.status}`);
+					}
+					return friendRelations;
 				}
-				return friendRelations;
-			}
-		})
-		.then((array) => {
-			friendRelations = array;
-			return connectFunc("/public/users", requestBody("GET", null))
-		})
-		.then((response) => {
-			if (response.ok) {
-				return response.json()
-			}
-			else {
-				console.log("Couldn't Retrieve Users From Database");
-				return [];
-			}
-		})
-		.then((array) => {
-			publicUsers = array;
-		})
-		.then(() => {
+			}),
+		// request public users -> for search bar
+		connectFunc("/public/users", requestBody("GET"))
+			.then(response => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					console.log({ msg: "error with /public/users call", status: response.status, message: response.body });
+					return [];
+				}
+			})
+	])
+		.then(([friendData, publicData]) => {
+			friendRelations = friendData;
+			publicUsers = publicData;
 			if (root) {
-				//const x: number = 0
-				// console.log(publicUsers[x].profile_pic)
-				// console.log(friendRelations.receivedRequests)
-				// 	const html = publicUsers.map((element:any) => `
-				// 		<public-user type="unfriend" alias=${element.alias} profilePicData=${element.profile_pic.data} profilePicMimeType=${element.profile_pic.mimeType}></public-user>
-				// 	`).join('')
-				//   console.log(html);
 				root.innerHTML = "";
 				root.insertAdjacentHTML("beforeend", `
 			<link rel="stylesheet" href="src/styles/userMain.css">
@@ -110,6 +103,9 @@ export function setupFriends() {
 					<public-user type="friend" alias="Friend X"> </public-user>
 					</div>
 
+					<h1 class="header" data-il8n="Blocked_Header"></h1>
+
+
 				</div>
 				<!-- ^^^ -->
 			</div>
@@ -154,7 +150,8 @@ export function setupFriends() {
 		})
 		.catch((error) => {
 			console.log("ERROR (SetupFriends): ", error)
-		})
+		}
+		)
 }
 
 
