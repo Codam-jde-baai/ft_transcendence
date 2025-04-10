@@ -61,17 +61,18 @@ export function setupFriends() {
 			
 			<div class="middle">
 				<div class="container">
-					<div class="search-container">
-						<input type="text" class="userSearch" data-i18n-placeholder="Friends_placeholder1">
-						<button class="search-btn">
+				<div class="search-container">
+					<form id="searchForm">
+						<button type="button" id="searchButton" class="search-btn">
 							<img class="searchIcon" src="src/component/Pictures/searchIcon.png"/>
 						</button>
+						<input type="search" id="friendSearch" class="userSearch" data-i18n-placeholder="Friends_placeholder1">
+					</form>
+				</div>
 						<div class="dropdown">
 							<div id="search-results" class="dropdown-content">
 								<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
 							</div>
-							button class="btn" data-i18n="btn_Add_Friend"></button>
-						</div>
 					</div>
 					
 					<div class="search-results">
@@ -147,8 +148,20 @@ export function setupFriends() {
 					window.history.pushState({}, '', '/history');
 					setupMatchHistory();
 				});
-				document.querySelector('.userSearch')?.addEventListener('keyup', () => {
-					searchBar();
+				document.getElementById('searchForm')?.addEventListener('submit', (e) => {
+					e.preventDefault();
+					const searchInput = document.getElementById('friendSearch') as HTMLInputElement;
+					if (!searchInput.value)
+						return;
+					const query = searchInput?.value || '';
+					searchBar(query, publicUsers);
+				});
+				document.getElementById('searchButton')?.addEventListener('click', () => {
+					const searchInput = document.getElementById('friendSearch') as HTMLInputElement;
+					if (!searchInput.value)
+						return;
+					const query = searchInput?.value || '';
+					searchBar(query, publicUsers);
 				});
 			}
 		})
