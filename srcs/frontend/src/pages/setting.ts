@@ -17,41 +17,7 @@ export function setupSetting () {
 		<link rel="stylesheet" href="src/styles/userMain.css"> <!-- Link to the CSS file -->
 		<link rel="stylesheet" href="src/styles/setting.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
-		<div class="topBar">
-			<div class="dropdown">
-				<button class="dropdown-btn" id="dropdown-btn">
-					<img class="settingIcon" src="src/component/Pictures/setting-btn.png"/></img>
-				</button>
-				<div class="dropdown-content" id="language-btn">
-					
-					<button class="language-btn" id="language-content">
-						<span data-i18n="Language"></span> <img id="selected-flag" src="src/component/Pictures/flagIcon-en.png">
-					</button>
-					<div class="language-content">
-							<div class="language-option" id="gb">
-								<img src="src/component/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
-							</div>
-							<div class="language-option" id="de">
-								<img src="src/component/Pictures/flagIcon-de.png"> <span data-i18n="German"></span>
-							</div>
-							<div class="language-option" id="nl">
-								<img src="src/component/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
-							</div>
-					</div>
-					<div class="dropdown-item" id="Home" data-i18n="Home"></div>
-					<div class="dropdown-item" id="Settings" data-i18n="Settings"></div>
-					<div class="dropdown-item" id="Friends" data-i18n="Friends"></div>
-					<div class="dropdown-item" id="History" data-i18n="History"></div>
-					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
-				</div>
-			</div>
-			<div class="topBarFrame">
-				<div class="aliasName">cool alias</div>
-				<div class="profile-picture">
-					<img src="src/component/Pictures/defaultPP.avif" alt="Profile Picture">
-				</div>
-			</div>
-		</div>
+		<dropdown-menu></dropdown-menu>
 		
 		<div class="middle">
 			<!-- BODY CHANGE -->
@@ -61,7 +27,7 @@ export function setupSetting () {
 					
 				<p class="p1" data-i18n="Setting_Avatar"></p>
 				<button class="edit-picture" onclick="document.getElementById('avatar').click()">
-					<img id="profilePic" src="src/component/Pictures/defaultPP.avif">
+					<img id="profilePic" src="src/Pictures/defaultPP.avif">
 				</button>
 				<input type="file" id="avatar" accept="image/*" style="display: none;">
 	
@@ -74,13 +40,13 @@ export function setupSetting () {
 				<p class="p1" id="userPass" data-i18n="Change_Password"></p>
 				<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
 				<span id="show-password" class="field-icon">
-					<img src="src/component/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
+					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
 				</span>
 	
 				<p class="p1" id="password-match" data-i18n="ConfirmPassword"></p>
 				<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field">
 				<span id="show-password_confirm" class="field-icon">
-					<img src="src/component/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
+					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
 				</span>	
 					
 				<div class="buttons">

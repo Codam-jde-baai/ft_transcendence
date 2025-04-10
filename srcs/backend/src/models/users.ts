@@ -54,10 +54,10 @@ export function toPublicUser(user: User | null | undefined): PublicUser {
 		uuid: user.uuid,
 		username: user.username,
 		alias: user.alias,
-		profile_pic: user.profile_pic instanceof Buffer ? {
-			data: blobToPicture(user.profile_pic),
-			mimeType: getMimeType(user.profile_pic)
-		} : undefined,
+		profile_pic: {
+			data: user.profile_pic instanceof Buffer ? blobToPicture(user.profile_pic) : null,
+			mimeType: user.profile_pic instanceof Buffer ? getMimeType(user.profile_pic) : null
+		},
 		status: user.status,
 		language: user.language,
 		win: user.win,

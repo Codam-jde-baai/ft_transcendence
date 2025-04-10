@@ -56,10 +56,10 @@ export function eyeIcon_Button(input: string[]) {
 export function change_eyeIcon(passwordField: HTMLElement, eyeIcon: HTMLElement) {
 	if (passwordField.type === "password") {
 		passwordField.type = "text";
-		eyeIcon.src = "src/component/Pictures/Closed_eyeIcon.png";
+		eyeIcon.src = "src/Pictures/Closed_eyeIcon.png";
 	} else {
 		passwordField.type = "password";
-		eyeIcon.src = "src/component/Pictures/eyeIcon.png"; 
+		eyeIcon.src = "src/Pictures/eyeIcon.png"; 
 	}
 }
 

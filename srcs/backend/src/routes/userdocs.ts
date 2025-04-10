@@ -1,4 +1,9 @@
-import { userStatus, eLanguage } from '../db/schema.ts';
+export const errorResponseSchema = {
+	type: 'object',
+	properties: {
+		error: { type: 'string' }
+	}
+};
 
 // Security schema for swagger
 export const securitySchemes = {
@@ -33,7 +38,7 @@ const userProperties = {
 	loss: { type: 'number' }
 };
 
-const publicUserProperties = {
+export const publicUserProperties = {
 	alias: { type: 'string' },
 	profile_pic: {
 		type: 'object',
@@ -68,7 +73,8 @@ export const imageOptions = {
 						description: 'Error message if image not found'
 					}
 				}
-			}
+			},
+			500: errorResponseSchema
 		}
 	}
 };
@@ -91,18 +97,31 @@ export const getUserOptions = {
 				type: 'object',
 				properties: userProperties
 			},
-			403: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			},
-			404: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
+			404: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+export const getUserAliasOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Get user by UUID',
+		tags: ['users'],
+		params: {
+			type: 'object',
+			required: ['alias'],
+			properties: {
+				alias: { type: 'string' }
 			}
+		},
+		response: {
+			200: {
+				type: 'object',
+				properties: userProperties
+			},
+			404: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };
@@ -120,18 +139,9 @@ export const getUsersOptions = {
 					properties: userProperties
 				}
 			},
-			403: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			},
-			404: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			}
+			403: errorResponseSchema,
+			404: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };
@@ -149,18 +159,9 @@ export const getPublicUsersOptions = {
 					properties: publicUserProperties
 				}
 			},
-			403: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			},
-			404: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			}
+			403: errorResponseSchema,
+			404: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };
@@ -187,12 +188,8 @@ export const createUserOptions = {
 				type: 'object',
 				properties: userProperties
 			},
-			400: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			}
+			400: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };
@@ -217,18 +214,9 @@ export const updateProfilePicOptions = {
 			type: 'object',
 			properties: userProperties
 		},
-		400: {
-			type: 'object',
-			properties: {
-				error: { type: 'string' }
-			}
-		},
-		404: {
-			type: 'object',
-			properties: {
-				error: { type: 'string' }
-			}
-		}
+		400: errorResponseSchema,
+		404: errorResponseSchema,
+		500: errorResponseSchema
 	}
 };
 
@@ -248,24 +236,9 @@ export const loginUserOptions = {
 				type: 'object',
 				properties: userProperties
 			},
-			400: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			},
-			401: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			},
-			500: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			}
+			400: errorResponseSchema,
+			401: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };
@@ -278,7 +251,7 @@ export const updatePasswordProperties = {
 		consumes: ['application/json'],
 		body: {
 			type: 'object',
-			required: ['username', 'password', 'newPassword'],
+			required: ['uuid', 'password', 'newPassword'],
 			properties: {
 				...loginProperties,
 				newPassword: { type: 'string', minLength: 6 }
@@ -286,24 +259,56 @@ export const updatePasswordProperties = {
 		},
 		response: {
 			200: {},
-			400: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			},
-			401: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			},
-			500: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
+			400: errorResponseSchema,
+			401: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+export const updateUserStatusOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Updates the user status',
+		tags: ['users'],
+		params: {
+			type: 'object',
+			properties: {
+				uuid: {
+					type: 'string',
+					description: 'user uuid'
 				}
 			}
+		},
+		response: {
+			200: {},
+			404: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+export const updateUserProperties = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Updates only the user data that is sent',
+		tags: ['users'],
+		consumes: ['application/json'],
+		body: {
+			type: 'object',
+			required: ['uuid'],
+			properties: {
+				uuid: { type: 'string' },
+				username: { type: 'string', minLength: 3 },
+				alias: { type: 'string', minLength: 3 },
+				language: { type: 'string' }
+			}
+		},
+		response: {
+			200: userProperties,
+			400: errorResponseSchema,
+			404: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };
@@ -314,13 +319,28 @@ export const deleteUserOptions = {
 		summary: 'deletes a user',
 		tags: ['users'],
 		response: {
-			204: {},
-			500: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			}
+			204: {
+				type: 'null',
+				description: 'User successfully deleted'
+			},
+			404: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+export const deleteProfilePicOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'set profilePic to NULL in database',
+		tags: ['users'],
+		response: {
+			204: {
+				type: 'null',
+				description: 'Profile picture successfully deleted'
+			},
+			404: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };

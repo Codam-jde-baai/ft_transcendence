@@ -14,22 +14,7 @@ export function setupLogIn() {
 		root.insertAdjacentHTML("beforeend", `
 		<link rel="stylesheet" href="src/styles/logIn.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
-		<div class="btn-container">
-			<button class="language-btn">
-				<span data-i18n="Language"></span> <img id="selected-flag" src="src/component/Pictures/flagIcon-en.png">
-			</button>
-			<div class="language-content">
-				<div class="language-option" id="gb">
-					<img src="src/component/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
-				</div>
-				<div class="language-option" id="de">
-					<img src="src/component/Pictures/flagIcon-de.png"> <span data-i18n="German"></span>
-				</div>
-				<div class="language-option" id="nl">
-					<img src="src/component/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
-				</div>
-			</div>
-		</div>
+		<language-menu></language-menu>
 		<div class="container">
 			<h1 class="header" data-i18n="LogIn_Header"></h1>
 			
@@ -39,7 +24,7 @@ export function setupLogIn() {
 			<p class="p1" id="userPass" data-i18n="Password"></p>
 			<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
 			<span id="show-password" class="field-icon">
-				<img src="src/component/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
+				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
 			</span>
 			
 			<div class="buttons">

@@ -24,11 +24,10 @@ export const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) 
 
 		// Use the toPublicUser helper to map users to public format
 		const publicUsers = userArray.map(toPublicUser);
-
-		reply.send(publicUsers);
+		return reply.send(publicUsers);
 	} catch (error) {
-		request.log.error('getAllUsers failed:', error);
-		reply.code(500).send({ error: 'Failed to retrieve users' });
+		const errorMessage = error instanceof Error ? error.message : 'getUsers errorr';
+		return reply.status(500).send({ error: errorMessage })
 	} finally {
 		if (sqlite) sqlite.close();
 	}
@@ -53,12 +52,39 @@ export const getUser = async (
 		}
 
 		const user = userArray[0];
-
 		const publicUser = toPublicUser(user);
 		reply.code(200).send(publicUser);
 	} catch (error) {
-		request.log.error('getAllUsers failed:', error);
-		reply.code(500).send({ error: 'Failed to retrieve users' });
+		const errorMessage = error instanceof Error ? error.message : 'getUser errorr';
+		return reply.status(500).send({ error: errorMessage })
+	} finally {
+		if (sqlite) sqlite.close();
+	}
+}
+
+export const getUserAlias = async (
+	request: FastifyRequest<{ Params: { alias: string } }>,
+	reply: FastifyReply) => {
+	let sqlite = null;
+	try {
+		const alias = request.params.alias;
+
+		sqlite = new Database('./data/data.db', { verbose: console.log });
+		const db = drizzle(sqlite);
+
+		const userArray = await db.select().from(usersTable).where(eq(usersTable.alias, alias));
+
+		if (userArray.length === 0) {
+			reply.code(404).send({ error: 'User not found' });
+			return;
+		}
+
+		const user = userArray[0];
+		const publicUser = toPublicUser(user);
+		reply.code(200).send(publicUser);
+	} catch (error) {
+		const errorMessage = error instanceof Error ? error.message : 'getUserAlias errorr';
+		return reply.status(500).send({ error: errorMessage })
 	} finally {
 		if (sqlite) sqlite.close();
 	}

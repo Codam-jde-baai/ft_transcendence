@@ -1,4 +1,4 @@
-import { int, sqliteTable, text, blob } from "drizzle-orm/sqlite-core";
+import { int, sqliteTable, text, blob, uniqueIndex } from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
 
 
@@ -16,12 +16,12 @@ export enum eLanguage {
 // table with all users
 export const usersTable = sqliteTable("users_table", {
 	id: int("id").primaryKey({ autoIncrement: true }),
-	uuid: text("uuid").notNull().unique(),
-	username: text("username").notNull().unique(),
-	password: text("password").notNull(),
-	alias: text("alias").notNull().unique(),
+	uuid: text("uuid", { length: 264 }).notNull().unique(),
+	username: text("username", { length: 264 }).notNull().unique(),
+	password: text("password", { length: 264 }).notNull(),
+	alias: text("alias", { length: 264 }).notNull().unique(),
 	profile_pic: blob("profile_pic"),
-	language: text("language").$type<eLanguage>().default(eLanguage.ENGLISH),
+	language: text("language", { length: 264 }).$type<eLanguage>().default(eLanguage.ENGLISH),
 	status: int("status").$type<userStatus>().default(0),
 	win: int("wins").default(0),
 	loss: int("loss").default(0)
@@ -41,15 +41,15 @@ export enum eWinner {
 // table with all matches
 export const matchesTable = sqliteTable("matches", {
 	id: int("id").primaryKey({ autoIncrement: true }),
-	uuid: text("uuid").notNull().unique(),
-	p1Alias: text("p1Alias").notNull(),
-	p2Alias: text("p2Alias").notNull(),
-	p1_id: text("p1_id").references(() => usersTable.uuid),
-	p2_id: text("p2_id").references(() => usersTable.uuid),
+	uuid: text("uuid", { length: 264 }).notNull().unique(),
+	p1Alias: text("p1Alias", { length: 264 }).notNull(),
+	p2Alias: text("p2Alias", { length: 264 }).notNull(),
+	p1_id: text("p1_id", { length: 264 }).references(() => usersTable.uuid),
+	p2_id: text("p2_id", { length: 264 }).references(() => usersTable.uuid),
 	status: int("status").$type<matchStatus>().notNull(),
 	winner_id: int("winner").$type<eWinner>().default(eWinner.NOWINNER),
-	start_time: text("start_time").default(sql`(current_timestamp)`),
-	end_time: text("end_time").default(sql`(current_timestamp)`),
+	start_time: text("start_time", { length: 264 }).default(sql`(current_timestamp)`),
+	end_time: text("end_time", { length: 264 }).default(sql`(current_timestamp)`),
 	duration: int("duration").default(0)
 });
 
@@ -62,7 +62,8 @@ export enum friendStatus {
 
 // friends-relations table
 export const friendsTable = sqliteTable("friends", {
-	requester: text("requester").references(() => usersTable.uuid),
-	recipient: text("recipient").references(() => usersTable.uuid),
-	status: int("status").$type<friendStatus>().default(friendStatus.PENDING)
-})
+	id: int("id").primaryKey({ autoIncrement: true }),
+	reqUUid: text("requester", { length: 264 }).references(() => usersTable.uuid).notNull(),
+	recUUid: text("recipient", { length: 264 }).references(() => usersTable.uuid).notNull(),
+	status: int("status").$type<friendStatus>().default(friendStatus.PENDING).notNull()
+});

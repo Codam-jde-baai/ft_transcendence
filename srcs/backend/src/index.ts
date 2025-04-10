@@ -4,13 +4,21 @@ import userRoutes from './routes/users.ts';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import multipart from '@fastify/multipart';
-import matchesRoutes from './routes/matches.ts';
+import friendsRoutes from './routes/friends.ts';
 import fastifyCors from '@fastify/cors'
 
 console.log("reading from index.ts backend");
 
 const fastify = Fastify({
-	logger: true
+	logger: true,
+	ajv: {
+		customOptions: {
+			removeAdditional: true,
+			useDefaults: true,
+			coerceTypes: true,
+			allErrors: true
+		}
+	}
 })
 
 
@@ -61,8 +69,9 @@ await fastify.register(swaggerUi, {
 	routePrefix: '/docs'
 });
 
+
 fastify.register(userRoutes);
-//fastify.register(matchesRoutes);
+fastify.register(friendsRoutes);
 
 // defining a function in TS
 const start = async () => {

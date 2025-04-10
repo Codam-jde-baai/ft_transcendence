@@ -14,28 +14,13 @@ export function setupSignUp() {
 		root.insertAdjacentHTML("beforeend", `
 		<link rel="stylesheet" href="src/styles/signUp.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
-		<div class="btn-container">
-			<button class="language-btn">
-				<span data-i18n="Language"></span> <img id="selected-flag" src="src/component/Pictures/flagIcon-en.png">
-			</button>
-			<div class="language-content">
-				<div class="language-option" id="gb">
-					<img src="src/component/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
-				</div>
-				<div class="language-option" id="de">
-					<img src="src/component/Pictures/flagIcon-de.png"> <span data-i18n="German"></span>
-				</div>
-				<div class="language-option" id="nl">
-					<img src="src/component/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
-				</div>
-			</div>
-		</div>
+		<language-menu></language-menu>
 		<div class="container">
 			<h1 class="header" data-i18n="SignUp_Header"></h1>
 				
 			<p class="p1" data-i18n="SignUp_Avatar"></p>
 			<button class="edit-picture" onclick="document.getElementById('avatar').click()">
-				<img id="profilePic" src="src/component/Pictures/defaultPP.avif">
+				<img id="profilePic" src="src/Pictures/defaultPP.avif">
 			</button>
 			<input type="file" id="avatar" accept="image/*" style="display: none;">
 
@@ -48,13 +33,13 @@ export function setupSignUp() {
 			<p class="p1" id="userPass" data-i18n="Password"></p>
 			<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
 			<span id="show-password" class="field-icon">
-				<img src="src/component/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
+				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
 			</span>
 
 			<p class="p1" id="password-match" data-i18n="ConfirmPassword"></p>
 			<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field">
 			<span id="show-password_confirm" class="field-icon">
-				<img src="src/component/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
+				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
 			</span>	
 
 			<div class="buttons">
@@ -84,8 +69,8 @@ export function setupSignUp() {
 
 			const content: string = inputToContent(["username", "alias", "password", "profilePic"])
 			const body = requestBody("POST", content) // Used for requests where the frontend has to send info to the backend (like making a new user). Will return null in case of GET
-			const response = connectFunc("/users/new", body); // saves the response.json. this can be changed to response.text in connections.ts (automatically does so if a response.json cannot be generated)
-			response.then((response) => {
+			connectFunc("/users/new", body)
+				.then((response) => {
 				if (response.ok) {
 					response.json().then((data) => {
 						// Get user ID  -> user uuid
@@ -124,7 +109,7 @@ export function setupSignUp() {
 						setupError404();
 					});
 				}
-			}).catch(() => {
+				}).catch(() => {
 				// Server/ Network error
 				window.history.pushState({}, '', '/error404');
 				setupError404();

@@ -38,7 +38,7 @@ export function switchLanguage(lang: string) {
 
 	updateContent(langData);
 	if (document.getElementById("selected-flag"))
-		document.getElementById("selected-flag")!.src = `src/component/Pictures/flagIcon-${lang}.png`;
+		document.getElementById("selected-flag")!.src = `src/Pictures/flagIcon-${lang}.png`;
 	localStorage.setItem('selectedLang', lang);
 }
 
@@ -67,7 +67,7 @@ export function getLanguage()
 	// code for setting the language button to the correct language
 	updateContent(langData);
 	if (document.getElementById("selected-flag"))
-		document.getElementById("selected-flag")!.src = `src/component/Pictures/flagIcon-${lang}.png`;
+		document.getElementById("selected-flag")!.src = `src/Pictures/flagIcon-${lang}.png`;
 }
 
 // Function to update content based on selected language
@@ -88,7 +88,6 @@ function updateContent(langData: LangData): void {
 		}
 	});
 }
-
 
 
 // Load saved language or default to English

@@ -77,7 +77,7 @@ export function checkFields(input: string[]): boolean {
 		{
 			// Might not be set from the user (This is then the default value)
 			if (elem.src == null)
-				elem.value = "src/component/Pictures/flagIcon-en.png";
+				elem.value = "src/Pictures/flagIcon-en.png";
 			else
 				elem.value = elem.src; // Get the src of the profile picture image
 		}

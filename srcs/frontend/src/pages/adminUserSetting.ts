@@ -3,8 +3,8 @@ import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupAdmin } from './admin';
 import { setupAdminSetting } from './adminSettings';
-import { setupError404 } from './error404';
-import { connectFunc, requestBody, inputToContent } from '../script/connections';
+// import { setupError404 } from './error404';
+// import { connectFunc, requestBody, inputToContent } from '../script/connections';
 
 export function setupAdminUserSetting() {
 	const root = document.getElementById('app');
@@ -17,22 +17,22 @@ export function setupAdminUserSetting() {
 		<div class="topBar">
 			<div class="dropdown">
 				<button class="dropdown-btn" id="dropdown-btn">
-					<img class="settingIcon" src="src/component/Pictures/setting-btn.png"/></img>
+					<img class="settingIcon" src="src/Pictures/setting-btn.png"/></img>
 				</button>
 				<div class="dropdown-content">
 					
 					<button class="language-btn" id="language-btn">
-						<span data-i18n="Language"></span> <img id="selected-flag" src="src/component/Pictures/flagIcon-en.png">
+						<span data-i18n="Language"></span> <img id="selected-flag" src="src/Pictures/flagIcon-en.png">
 					</button>
 					<div class="language-content" id="language-content">
 							<div class="language-option" id="gb">
-								<img src="src/component/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
+								<img src="src/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
 							</div>
 							<div class="language-option" id="de">
-								<img src="src/component/Pictures/flagIcon-de.png"> <span data-i18n="German"></span>
+								<img src="src/Pictures/flagIcon-de.png"> <span data-i18n="German"></span>
 							</div>
 							<div class="language-option" id="nl">
-								<img src="src/component/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
+								<img src="src/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
 							</div>
 					</div>
 					<div class="dropdown-item" id="Home" data-i18n="Home"></div>
@@ -43,7 +43,7 @@ export function setupAdminUserSetting() {
 			<div class="topBarFrame">
 				<div class="adminName" data-i18n="Admin"></div>
 				<div class="profile-picture">
-					<img src="src/component/Pictures/defaultPP.avif" alt="Profile Picture">
+					<img src="src/Pictures/defaultPP.avif" alt="Profile Picture">
 				</div>
 			</div>
 		</div>
@@ -56,7 +56,7 @@ export function setupAdminUserSetting() {
 				<p class="p2">$USERNAME</p>
 					
 				<button class="user-picture">
-					<img src="src/component/Pictures/defaultPP.avif">
+					<img src="src/Pictures/defaultPP.avif">
 				</button>
 	
 				<p class="p1" data-i18n="LogIn_Name"></p>

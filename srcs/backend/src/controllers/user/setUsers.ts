@@ -42,17 +42,16 @@ export const addUser = async (request: FastifyRequest<{
 		// Add to database
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);
-		await db.insert(usersTable).values(userData);
-
-		const createdUser = await db.select().from(usersTable).where(eq(usersTable.username, userData.username));
+		const createdUser = await db.insert(usersTable).values(userData).returning();
 
 		// Use the helper function to create the public user object
-		reply.code(201).send(toPublicUser(createdUser[0]));
+		return reply.code(201).send(toPublicUser(createdUser[0]));
 	}
 	catch (error) {
 		const errorMessage = error instanceof Error ? error.message : 'addUser error';
-		request.log.error('User creation failed:', error);
-		reply.status(400).send({ error: errorMessage });
+		if (error instanceof Error && error.message.startsWith("Validation failed:"))
+			reply.status(400).send({ error: errorMessage })
+		return reply.status(500).send({ error: errorMessage });
 	}
 	finally {
 		if (sqlite) sqlite.close();
@@ -86,25 +85,23 @@ export const updateUserProfilePic = async (
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);
 		const existingUser = await db.select().from(usersTable).where(eq(usersTable.uuid, uuid));
-		if (existingUser.length === 0) {
+
+		// Update the profile picture
+		const updatedUser = await db.update(usersTable)
+			.set({ profile_pic: profilePic })
+			.where(eq(usersTable.uuid, uuid))
+			.returning();
+		if (updatedUser.length === 0) {
 			reply.code(404).send({ error: 'User not found' });
 			return;
 		}
 
-		// Update the profile picture
-		await db.update(usersTable)
-			.set({ profile_pic: profilePic })
-			.where(eq(usersTable.uuid, uuid));
-
-		// Get the updated user
-		const updatedUser = await db.select().from(usersTable).where(eq(usersTable.uuid, uuid));
-		const user = updatedUser[0];
-		reply.code(200).send(toPublicUser(user));
+		return reply.code(200).send(toPublicUser(updatedUser[0]));
 	}
 	catch (error) {
 		const errorMessage = error instanceof Error ? error.message : 'Update profile picture error';
 		request.log.error('Profile picture update failed:', error);
-		reply.status(400).send({ error: errorMessage });
+		return reply.status(500).send({ error: errorMessage });
 	}
 	finally {
 		if (sqlite) sqlite.close();

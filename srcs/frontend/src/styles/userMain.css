@@ -129,6 +129,10 @@
 .dropdown-item:hover {
 	background: #b86a8a;
 }
+.dropdown-item.currentPage {
+    background: #661747;
+	/*TODO: J please add style to the style*/
+}
 .hidden {
 	display: none;
 }
