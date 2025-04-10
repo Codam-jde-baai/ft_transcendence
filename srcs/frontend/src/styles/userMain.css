@@ -111,7 +111,6 @@
 	left: 0px;
 	width: 220px; 
 	height: 100%;
-	/* background: #902063; */
 	background: #902063;
 	border-radius: 5px;
 }
@@ -130,8 +129,21 @@
 	background: #b86a8a;
 }
 .dropdown-item.currentPage {
-    background: #661747;
-	/*TODO: J please add style to the style*/
+    font-weight: bold;
+	background: #ab2d78;
+    position: relative;
+}
+.dropdown-item.currentPage:hover {
+	background: #b86a8a;
+}
+.dropdown-item.currentPage::after {
+    content: '▶';
+    font-size: 14px;
+    color: #ffffff;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 .hidden {
 	display: none;

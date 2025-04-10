@@ -5,6 +5,7 @@ import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
 import { checkFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
+import { dropDownBar } from '../script/dropDownBar';
 
 
 export function setupSignUp() {
@@ -55,6 +56,7 @@ export function setupSignUp() {
 		`);
 
 		getLanguage();
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		eyeIcon_Button(["show-password", "show-password_confirm", "avatar"]);
 		
 		document.getElementById('LogIn')?.addEventListener('click', () => {
