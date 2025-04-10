@@ -1,5 +1,6 @@
 import envConfig from '../config/env';
 
+// we might have to change the profilePic replacement thingie.
 export function inputToContent(input: string[]) {
 	let str: string = "";
 	input.forEach(element => {
@@ -16,49 +17,45 @@ export function inputToContent(input: string[]) {
 	return str;
 }
 
-export function requestBody(method: string, content: string | null) {
-	if (method.toUpperCase() === 'GET') {
-		const headers = {
-			"Authorization": `Bearer ${envConfig.privateKey}`,
-		}
-		return { "method": method, "headers": headers }
+// simplified to only set everything once. baseRequest optoins always contain baseHeaders(auth + method then body is conditional)
+export function requestBody(method: string, content?: string | null, contentType?: string | null | undefined): RequestInit {
+	const baseHeaders: Record<string, string> = {
+		"Authorization": `Bearer ${envConfig.privateKey}`,
+	};
+
+	const uCaseMethod: string = method.toUpperCase();
+	const validMethods = ['GET', 'POST', 'PUT', 'DELETE'];
+	if (!validMethods.includes(uCaseMethod)) {
+		throw new Error(`requestBody: Method ${method} we dont use`);
 	}
-	if (method.toUpperCase() === 'POST') {
-		const headers = {
-			"Authorization": `Bearer ${envConfig.privateKey}`,
-			"Content-Type": "application/json",
-		}
-		const body = '{' + content + '}'
-		return { "method": method, "headers": headers, "body": body };
+
+	const baseRequestOptions: RequestInit = {
+		method: method,
+		headers: baseHeaders
 	}
-	if (method.toUpperCase() === 'DELETE') {
-		const headers = {
-			"Authorization": `Bearer ${envConfig.privateKey}`,
-			"Content-Type": "application/json",
-		}
-		const body = '{' + content + '}'
-		return { "method": method, "headers": headers, "body": body };
+	if (content) {
+		baseRequestOptions.body = `{${content}}`;
 	}
-	return `ERROR (requestBody): Method ${method} Not Recognized`
+	if (contentType) {
+		baseRequestOptions.headers = {
+			...baseHeaders,
+			"Content-Type": contentType,
+		};
+	}
+	return (baseRequestOptions);
 }
 
-async function httpGet(url: string, request: any | null): Promise<Response> {
-	return fetch(url, request)
-		.then((response) => {
-			//const contentType = response.headers.get("Content-Type");
-			// if (contentType && contentType.includes("application/json"))
-			// 	return response.json();
-			// else
-			// 	return response.text();
-			return (response)
-		})
-		.catch((error) => {
-			console.log(error)
-			return (error)
-		})
+// simplified httpGet
+async function httpGet(url: string, request: RequestInit): Promise<Response> {
+	try {
+		return await fetch(url, request);
+	} catch (error) {
+		console.error("HTTP Request Error:", error);
+		throw error;
+	}
 }
 
-export async function connectFunc(url: string, request: any | null): Promise<Response> {
+export async function connectFunc(url: string, request: RequestInit): Promise<Response> {
 	console.log("Connect To " + url + " Using:")
 	console.log(request)
 	const response = await httpGet("http://localhost:3000" + url, request);
