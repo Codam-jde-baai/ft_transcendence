@@ -1,24 +1,22 @@
 class PublicUser extends HTMLElement {
-    constructor() {
-        super();
-    }
+	constructor() {
+		super();
+	}
 
-    connectedCallback() {
-        this.render();
-    }
+	connectedCallback() {
+		this.render();
+	}
 
 	render() {
-		const type:string = this.getAttribute("type") || "Could Not Load User"
-		const alias:string = this.getAttribute("alias") || "Alias"
-		const profilePicData:string = this.getAttribute("profilePicData") || "null"
-		const profilePicMimeType:string = this.getAttribute("profilePicMimeType") || "null"
+		const type: string = this.getAttribute("type") || "Could Not Load User"
+		const alias: string = this.getAttribute("alias") || "Alias"
+		const profilePicData: string = this.getAttribute("profilePicData") || "null"
+		const profilePicMimeType: string = this.getAttribute("profilePicMimeType") || "null"
 		let image = ""
-		if (profilePicData != "null" && profilePicMimeType != "null")
-		{
+		if (profilePicData != "null" && profilePicMimeType != "null") {
 			image = `data:${profilePicMimeType};base64,${profilePicData}`;
 		}
-		else
-		{
+		else {
 			image = "src/component/Pictures/defaultPP.avif"
 		}
 		this.innerHTML = "";
@@ -37,6 +35,10 @@ class PublicUser extends HTMLElement {
 			<button class="btn" ${type === "unfriend" ? '' : 'hidden'} data-i18n="btn_Add_Friend"> </button>
 			<button class="btn" ${type === "unfriend" ? '' : 'hidden'} id="UserHistory" data-i18n="History"> </button>
 
+			<button class="btn" ${type === "blocked" ? '' : 'hidden'} data-i18n="btn_Unblock_User"> </button>
+
+
+			<button class="btn accept" ${type === "sentRequest" ? '' : 'hidden'} data-i18n="btn_Cancel" style="background: grey;"> </button>
 		</div>`)
 	}
 }

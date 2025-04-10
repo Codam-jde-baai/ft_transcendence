@@ -13,6 +13,8 @@
     "btn_Accept": "Akzeptieren",
     "btn_Decline": "Ablehnen",
     "btn_Block": "Blockieren",
+    "btn_Unblock_User": "deblokkeren",
+    "btn_Cancel": "stornieren",
 
     "Password": "Passwort",
     "ConfirmPassword": "Passwort bestätigen",
@@ -28,6 +30,8 @@
     "Game_Header": "Wähle dein Spiel",
     "Friends_Header": "Deine Freunde",
     "Request_Header": "Freundschaftsanfragen",
+    "Blocked_Header": "Deaktivierter Benutzer",
+    "Sent_Requests_Header": "Sent RequestsDE",
     
     "Index_P": "Spiele klassisches Pong mit deinen Freunden!",
     "History_P": "Von",

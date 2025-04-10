@@ -13,6 +13,8 @@
     "btn_Accept": "Accepteren",
     "btn_Decline": "Weigeren",
     "btn_Block": "Blokkeren",
+    "btn_Unblock_User": "Deblokkeer",
+    "btn_Cancel": "Annuleren",
 
     "Password": "Wachtwoord",
     "ConfirmPassword": "Bevestig wachtwoord",
@@ -28,6 +30,8 @@
     "Game_Header": "Kies je spel",
     "Friends_Header": "Jouw vrienden",
     "Request_Header": "Vriendschapsverzoeken",
+    "Blocked_Header": "Geblokeerde Gebruikers",
+    "Sent_Requests_Header": "Verzonden Vriendschapsverzoeken",
     
     "Index_P": "Speel klassieke Pong met je vrienden!",
     "History_P": "Van",

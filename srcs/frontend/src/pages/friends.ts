@@ -60,8 +60,6 @@ export function setupFriends() {
 			<dropdown-menu></dropdown-menu>
 			
 			<div class="middle">
-				<!-- BODY CHANGE -->
-
 				<div class="container">
 					<div class="search-container">
 						<input type="text" class="userSearch" data-i18n-placeholder="Friends_placeholder1">
@@ -76,34 +74,40 @@ export function setupFriends() {
 						</div>
 					</div>
 					
-					
-					<!-- Should Be A DROPDOWN
-					^^^^^^^^^^^^^^^^^^^ -->
-					
 					<div class="search-results">
 					  ${publicUsers.map((element: any) => `
     					<public-user type="unfriend" alias=${element.alias} profilePicData=${element.profile_pic.data} profilePicMimeType=${element.profile_pic.mimeType}></public-user>
 					`).join('')}
 						<public-user type="unfriend" alias="Potential Friend X"> </public-user>
 					</div>
-
-					<h1 class="header" data-i18n="Request_Header"></h1>
-					<div class="friend-requests">
-					${friendRelations.receivedRequests.map((element: any) => `
-    					<public-user type="friend-request" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-					`).join('')}
-					<public-user type="friend-request" alias="Wannabe Friend X"> </public-user>
-					</div>
-
+					
 					<h1 class="header" data-i18n="Friends_Header"></h1>
 					<div class="friends-list">
 					${friendRelations.friends.map((element: any) => `
-    					<public-user type="friend" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+						<public-user type="friend" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
 					`).join('')}
-					<public-user type="friend" alias="Friend X"> </public-user>
 					</div>
 
-					<h1 class="header" data-il8n="Blocked_Header"></h1>
+					<h1 class="header" data-i18n="Request_Header"></h1>
+					<div class="friends-list">
+					${friendRelations.receivedRequests.map((element: any) => `
+    					<public-user type="friend-request" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+					`).join('')}
+					</div>
+
+					<h1 class="header" data-i18n="Blocked_Header"></h1>
+					<div class="friends-list">
+					${friendRelations.blocked.map((element: any) => `
+						<public-user type="blocked" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+						`).join('')}
+					</div>
+
+					<h1 class="header" data-i18n="Sent_Requests_Header"></h1>
+					<div class="friends-list">
+					${friendRelations.sentRequests.map((element: any) => `
+    					<public-user type="sentRequest" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+					`).join('')}
+					</div>
 
 
 				</div>
