@@ -38,7 +38,7 @@ class PublicUser extends HTMLElement {
 			<button class="btn" ${type === "blocked" ? '' : 'hidden'} data-i18n="btn_Unblock_User"> </button>
 
 
-			<button class="btn accept" ${type === "sentRequest" ? '' : 'hidden'} data-i18n="btn_Cancel" style="background: grey;"> </button>
+			<button class="btn accept" ${type === "pendingRequest" ? '' : 'hidden'} data-i18n="btn_Cancel" style="background: grey;"> </button>
 		</div>`)
 	}
 }

@@ -103,10 +103,10 @@ export function setupFriends() {
 						`).join('')}
 					</div>
 
-					<h1 class="header" data-i18n="Sent_Requests_Header"></h1>
+					<h1 class="header" data-i18n="Pending_Requests_Header"></h1>
 					<div class="friends-list">
 					${friendRelations.sentRequests.map((element: any) => `
-    					<public-user type="sentRequest" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+    					<public-user type="pendingRequests" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
 					`).join('')}
 					</div>
 

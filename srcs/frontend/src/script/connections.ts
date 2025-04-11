@@ -1,21 +1,28 @@
 import envConfig from '../config/env';
 
 // we might have to change the profilePic replacement thingie.
-export function inputToContent(input: string[]) {
+/**
+ * @brief input to JSON
+ * @param input 
+ * @returns 
+ */
+export function inputToContent(input: string[]): string {
 	let str: string = "";
 	input.forEach(element => {
 		const elem = document.getElementById(element) as HTMLInputElement
-
-		// Might not be set from the user (This is then the default value)
-		if (elem.id === "profilePic")
-			elem.value = "src/component/Pictures/flagIcon-en.png";
-
 		str += `"${elem.id}": "${elem.value}",`
 	});
 	str = str.slice(0, -1);
 	console.log("string = " + str);
 	return str;
 }
+
+export function inputToFormData(filename: string, file: File | Blob): FormData {
+	const form = new FormData();
+	form.append(filename, file);
+	return (form)
+}
+
 
 export enum ContentType {
 	JSON = "application/json",
@@ -24,7 +31,7 @@ export enum ContentType {
 
 // simplified to only set everything once. baseRequest options always contain baseHeaders(currently Bearer token) + method, content and ContentType have if statements
 // contentType needs to be a param because contentType for uploading a profile-pic should be multipart/formdata and for jsons should be json as we have it
-export function requestBody(method: string, content?: string | null, contentType?: string | null | undefined): RequestInit {
+export function requestBody(method: string, content?: string | FormData | null, contentType?: string | null | undefined): RequestInit {
 	const baseHeaders: Record<string, string> = {
 		"Authorization": `Bearer ${envConfig.privateKey}`,
 	};
@@ -40,7 +47,7 @@ export function requestBody(method: string, content?: string | null, contentType
 		headers: baseHeaders
 	}
 	if (content) {
-		baseRequestOptions.body = `{${content}}`;
+		baseRequestOptions.body = content;
 	}
 	if (contentType) {
 		baseRequestOptions.headers = {

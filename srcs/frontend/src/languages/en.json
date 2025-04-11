@@ -32,7 +32,7 @@
     "Friends_Header": "Your Friends",
     "Request_Header": "Friend Requests",
     "Blocked_Header": "Blocked users",
-    "Sent_Requests_Header": "Sent Requests",
+    "Pending_Requests_Header": "Pending Requests",
     
     "Index_P": "Play classic Pong with your friends!",
     "History_P": "Of",
