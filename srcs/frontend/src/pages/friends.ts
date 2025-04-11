@@ -6,9 +6,19 @@ import { getLanguage } from '../script/language';
 import { searchBar } from '../script/searchFriends';
 import { connectFunc, requestBody } from "../script/connections"
 
+export type PubUserSchema = {
+	alias: string;
+	profile_pic: {
+		data: string;
+		mimeType: string;
+	};
+	win: number;
+	loss: number;
+};
+
 export function setupFriends() {
 	const root = document.getElementById('app');
-	let publicUsers: any = [];
+	let publicUsers: PubUserSchema[] = [];
 	let friendRelations: any = {
 		friends: [],
 		receivedRequests: [],
@@ -69,19 +79,10 @@ export function setupFriends() {
 						<input type="search" id="friendSearch" class="userSearch" data-i18n-placeholder="Friends_placeholder1">
 					</form>
 				</div>
-						<div class="dropdown">
-							<div id="search-results" class="dropdown-content">
-								<input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-							</div>
-					</div>
-					
-					<div class="search-results">
-					  ${publicUsers.map((element: any) => `
-    					<public-user type="unfriend" alias=${element.alias} profilePicData=${element.profile_pic.data} profilePicMimeType=${element.profile_pic.mimeType}></public-user>
-					`).join('')}
-						<public-user type="unfriend" alias="Potential Friend X"> </public-user>
-					</div>
-					
+
+				<div class="search-results" id="searchResults">
+				</div>
+
 					<h1 class="header" data-i18n="Friends_Header"></h1>
 					<div class="friends-list">
 					${friendRelations.friends.map((element: any) => `
@@ -148,20 +149,50 @@ export function setupFriends() {
 					window.history.pushState({}, '', '/history');
 					setupMatchHistory();
 				});
-				document.getElementById('searchForm')?.addEventListener('submit', (e) => {
-					e.preventDefault();
+				function performSearch() {
 					const searchInput = document.getElementById('friendSearch') as HTMLInputElement;
-					if (!searchInput.value)
+					const resultsContainer = document.getElementById('searchResults');
+					if (resultsContainer) {
+						resultsContainer.innerHTML = '';
+					}
+					if (!searchInput.value) {
 						return;
-					const query = searchInput?.value || '';
-					searchBar(query, publicUsers);
+					}
+					let matches: number = 0;
+					const query = searchInput.value;
+					for (const user of publicUsers) {
+						if (user.alias.includes(query)) {
+							matches += 1;
+							let userElement = document.createElement('public-user');
+							userElement.setAttribute('type', 'unfriend');
+							userElement.setAttribute('alias', user.alias);
+							userElement.setAttribute('profilePicData', user.profile_pic.data);
+							userElement.setAttribute('profilePicMimeType', user.profile_pic.mimeType);
+							resultsContainer?.appendChild(userElement);
+						}
+					}
+
+					if (matches === 0) {
+						let userElement = document.createElement('public-user');
+						userElement.setAttribute('alias', 'no results');
+						resultsContainer?.appendChild(userElement);
+						console.log("no matches found");
+					}
+				}
+				function delayFunc(func: Function, delay: number) {
+					let timeoutId: number;
+					return function (...args: any[]) {
+						clearTimeout(timeoutId);
+						timeoutId = setTimeout(() => func(...args), delay);
+					};
+				}
+				const delaySearch = delayFunc(performSearch, 100);
+				document.getElementById('friendSearch')?.addEventListener('input', () => {
+					delaySearch();
 				});
+
 				document.getElementById('searchButton')?.addEventListener('click', () => {
-					const searchInput = document.getElementById('friendSearch') as HTMLInputElement;
-					if (!searchInput.value)
-						return;
-					const query = searchInput?.value || '';
-					searchBar(query, publicUsers);
+					performSearch();
 				});
 			}
 		})
@@ -170,5 +201,3 @@ export function setupFriends() {
 		}
 		)
 }
-
-
