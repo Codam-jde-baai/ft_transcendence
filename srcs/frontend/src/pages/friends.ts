@@ -3,7 +3,6 @@ import { setupUserHome } from './home';
 import { setupSetting } from './setting';
 import { setupMatchHistory } from './history';
 import { getLanguage } from '../script/language';
-import { searchBar } from '../script/searchFriends';
 import { connectFunc, requestBody } from "../script/connections"
 
 export type PubUserSchema = {
