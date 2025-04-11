@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import { renderPage } from './index';
 import { setupUserHome } from './home';
 import { setupSetting } from './setting';
@@ -149,16 +150,15 @@ export function setupFriends() {
 					setupMatchHistory();
 				});
 				function performSearch() {
-					const searchInput = document.getElementById('friendSearch') as HTMLInputElement;
+					const searchElement = document.getElementById('friendSearch') as HTMLInputElement;
+					const query = DOMPurify.sanitize(searchElement.value);
 					const resultsContainer = document.getElementById('searchResults');
 					if (resultsContainer) {
 						resultsContainer.innerHTML = '';
 					}
-					if (!searchInput.value) {
+					if (!query)
 						return;
-					}
 					let matches: number = 0;
-					const query = searchInput.value;
 					for (const user of publicUsers) {
 						if (user.alias.includes(query)) {
 							matches += 1;
