@@ -73,18 +73,9 @@ export function checkFields(input: string[]): boolean {
 			else
 				errorRMDisplay(elem, errorMsg, "Password");
 		}
-		if (elem.id === "profilePic")
-		{
-			// Might not be set from the user (This is then the default value)
-			if (elem.src == null)
-				elem.value = "src/Pictures/flagIcon-en.png";
-			else
-				elem.value = elem.src; // Get the src of the profile picture image
-		}
 	});
 	return isValid;
 }
-
 
 // Check for empty fiels for LogIn.ts
 export function emptyFields(input: string[]): boolean {

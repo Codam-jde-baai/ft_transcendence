@@ -6,8 +6,8 @@ export function fillHome() {
 	// Retrieve user uuid
 	const userID = localStorage.getItem('userID');
 	if (userID) {
-		const userInfoResponse = connectFunc(`/user/${userID}`, requestBody("GET", null));
-		userInfoResponse.then((userInfoResponse) => {
+		connectFunc(`/user/${userID}`, requestBody("GET", null))
+		.then((userInfoResponse) => {
 			if (userInfoResponse.ok) {
 				userInfoResponse.json().then((data) => {
 
@@ -17,10 +17,10 @@ export function fillHome() {
 						aliasElem.textContent = data.alias;
 
 					// Profile-pic
-					// const pictureElem = document.getElementById("profile-picture");
-					// if (pictureElem)
-					// 	pictureElem.src = data.profile_pic;
-					// // ^^^^^ NOT WORKING YET (NO data.profile_pic) ^^^^^^^^^^^^^^^^
+					const pictureElem = document.getElementById("profile-picture") as HTMLImageElement;
+					if (pictureElem && data.profile_pic && data.profile_pic.data) {
+						pictureElem.src = `data:${data.profile_pic.mimeType};base64,${data.profile_pic.data}`;
+					}
 
 					// // Best Score
 					// const bestScoreElem = document.getElementById("best-score");

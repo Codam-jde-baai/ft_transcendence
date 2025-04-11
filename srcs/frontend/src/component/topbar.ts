@@ -49,7 +49,7 @@ class DropdownMenu extends HTMLElement {
 			<div class="topBarFrame">
 				<div class="aliasName" id="aliasName"></div>
 				<div class="profile-picture">
-					<img id="profile-picture" src="src/Pictures/defaultPP.avif" alt="Profile Picture">
+					<img id="profile-picture" src="src/Pictures/defaultPP.png" alt="Profile Picture">
 				</div>
 			</div>
 		</div>`)

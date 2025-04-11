@@ -19,7 +19,7 @@ class PublicUser extends HTMLElement {
 		}
 		else
 		{
-			image = "src/Pictures/defaultPP.avif"
+			image = "src/Pictures/defaultPP.png"
 		}
 		this.innerHTML = "";
 		this.insertAdjacentHTML("beforeend", `

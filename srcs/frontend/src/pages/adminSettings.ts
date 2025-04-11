@@ -42,7 +42,7 @@ export function setupAdminSetting() {
 			<div class="topBarFrame">
 				<div class="adminName" data-i18n="Admin"></div>
 				<div class="profile-picture">
-					<img src="src/Pictures/defaultPP.avif" alt="Profile Picture">
+					<img src="src/Pictures/defaultPP.png" alt="Profile Picture">
 				</div>
 			</div>
 		</div>
@@ -54,7 +54,7 @@ export function setupAdminSetting() {
 					
 				<p class="p1" data-i18n="Setting_Avatar"></p>
 				<button class="user-picture" onclick="document.getElementById('avatar').click()">
-					<img id="profilePic" src="src/Pictures/defaultPP.avif">
+					<img id="profilePic" src="src/Pictures/defaultPP.png">
 				</button>
 				<input type="file" id="avatar" accept="image/*" style="display: none;">
 	

@@ -42,14 +42,13 @@ export function setupAdmin() {
 			<div class="topBarFrame">
 				<div class="adminName" data-i18n="Admin"></div>
 				<div class="profile-picture">
-					<img src="src/Pictures/defaultPP.avif" alt="Profile Picture">
+					<img src="src/Pictures/defaultPP.png" alt="Profile Picture">
 				</div>
 			</div>
 		</div>
 		
 		<div class="middle">
 			<div class="container">
-			<!-- BODY CHANGE -->
 
 				<div class="search-container">
 					<input type="text" class="userSearch" data-i18n-placeholder="Admin_placeholder1" onkeyup="searchUsers()">
@@ -57,38 +56,7 @@ export function setupAdmin() {
 						<img class="searchIcon" src="src/Pictures/searchIcon.png"/>
 					</button>
 				</div>
-				<table class="userTable">
-					<thead>
-						<tr>
-							<th data-i18n="LogIn_Name"></th>
-							<th data-i18n="SignUp_Alias"></th>
-							<th data-i18n="Action"></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>JohnDoe</td>
-							<td>coolAlias</td>
-							<td>
-								<button class="btn" data-i18n="btn_Remove"></button>
-								<button class="btn" id="AdminSet" data-i18n="Change_Password"></button>
-							</td>
-						</tr>
-
-						<!--- REMOVE THIS ONE -> Just an example --- -->
-						<tr>
-							<td>JohnDoe</td>
-							<td>coolAlias</td>
-							<td>
-								<button class="btn" >Remove</button>
-								<button class="btn" >Change password</button>
-							</td>
-						</tr>
-						<!-- --- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
-					</tbody>
-				</table>
-
-			<!-- ^^^ -->
+				<user-table></user-table>
 			</div>
 		</div>
 		`);

@@ -27,7 +27,7 @@ export function setupSetting () {
 					
 				<p class="p1" data-i18n="Setting_Avatar"></p>
 				<button class="edit-picture" onclick="document.getElementById('avatar').click()">
-					<img id="profilePic" src="src/Pictures/defaultPP.avif">
+					<img id="profilePic" src="src/Pictures/defaultPP.png">
 				</button>
 				<input type="file" id="avatar" accept="image/*" style="display: none;">
 	

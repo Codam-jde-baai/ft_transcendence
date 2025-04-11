@@ -43,7 +43,7 @@ export function setupAdminUserSetting() {
 			<div class="topBarFrame">
 				<div class="adminName" data-i18n="Admin"></div>
 				<div class="profile-picture">
-					<img src="src/Pictures/defaultPP.avif" alt="Profile Picture">
+					<img src="src/Pictures/defaultPP.png" alt="Profile Picture">
 				</div>
 			</div>
 		</div>
@@ -56,7 +56,7 @@ export function setupAdminUserSetting() {
 				<p class="p2">$USERNAME</p>
 					
 				<button class="user-picture">
-					<img src="src/Pictures/defaultPP.avif">
+					<img src="src/Pictures/defaultPP.png">
 				</button>
 	
 				<p class="p1" data-i18n="LogIn_Name"></p>
