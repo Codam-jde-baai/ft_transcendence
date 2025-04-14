@@ -7,7 +7,7 @@ import { checkFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
 // import envConfig from '../config/env';
-import { sendPicture } from '../script/POST_pic';
+import { sendPicture } from '../script/sendPic';
 
 
 

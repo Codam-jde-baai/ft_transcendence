@@ -6,14 +6,6 @@ class DropdownMenu extends HTMLElement {
     connectedCallback() {
         this.render();
     }
-
-    // static get observedAttributes() {
-    //     return ['selected-flag', 'home-label', 'settings-label', 'friends-label'];
-    // }
-
-    // attributeChangedCallback(name, oldValue, newValue) {
-    //     this.render();
-    // }
 	
 	render() {
 		const currentPage = window.location.pathname

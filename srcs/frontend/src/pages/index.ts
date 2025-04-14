@@ -14,6 +14,8 @@ import { dropDownBar } from '../script/dropDownBar';
 import '../component/topbar'
 import '../component/languageMenu'
 import '../component/publicUser'
+import '../component/adminTopbar'
+import '../component/admin_userTable'
 
 document.addEventListener('DOMContentLoaded', () => {
 	renderPage();
@@ -31,7 +33,7 @@ export function renderPage() {
 		'/friends': setupFriends,
 		'/error404': setupError404,
 		'/admin': setupAdmin,
-		'/adminSetting': setupAdminSetting,
+		'/adminSettings': setupAdminSetting,
 		'/adminUserSetting': setupAdminUserSetting
 	};
 	if (root) {

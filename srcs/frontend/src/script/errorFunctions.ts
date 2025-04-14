@@ -154,3 +154,31 @@ export function passwordFields(input: string[]): boolean {
 	});
 	return isValid;
 }
+
+
+// Check for the password fiels in Admin setting
+export function adminPasswordFields(input: string[]): boolean {
+	let isValid = true;
+	
+	input.forEach(element => {
+		const elem = document.getElementById(element) as HTMLInputElement
+
+		if (elem.id === "password" && elem.value !== "")
+		{
+			const errorMsg = document.getElementById("adminPass") as HTMLParagraphElement;
+			if (elem.value.length < 6 || elem.value.length > 117)
+			{
+				errorDisplay(elem, errorMsg, "SignUp_error_userPass");
+				isValid = false;
+			}
+			else if (elem.value != (document.getElementById("password_confirm") as HTMLInputElement).value)
+			{
+				errorDisplay(elem, errorMsg, "SignUp_error_password"); // PASSWORD does NOT Match
+				isValid = false;
+			}
+			else
+				errorRMDisplay(elem, errorMsg, "Change_Password");
+		}
+	});
+	return isValid;
+}

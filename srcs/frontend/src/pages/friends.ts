@@ -5,6 +5,7 @@ import { setupMatchHistory } from './history';
 import { getLanguage } from '../script/language';
 import { searchBar } from '../script/searchFriends';
 import { connectFunc, requestBody } from "../script/connections"
+import { fillTopbar } from '../script/fillTopbar';
 
 export function setupFriends() {
 	const root = document.getElementById('app');
@@ -115,6 +116,7 @@ export function setupFriends() {
 			</div>
 			`);
 				getLanguage();
+				fillTopbar();
 				document.getElementById('LogOut')?.addEventListener('click', () => {
 					window.history.pushState({}, '', '/index');
 					renderPage();

@@ -5,6 +5,7 @@ import { setupError404 } from './error404';
 import { setupAdminUserSetting } from './adminUserSetting';
 import { setupAdminSetting } from './adminSettings';
 import { connectFunc, requestBody } from '../script/connections';
+import { fillTopbar } from '../script/fillTopbar';
 
 export function setupAdmin() {
 	const root = document.getElementById('app');
@@ -12,40 +13,10 @@ export function setupAdmin() {
 		root.innerHTML = "";
 		root.insertAdjacentHTML("beforeend", `
 		<link rel="stylesheet" href="src/styles/admin.css"> <!-- Link to the CSS file -->
+		<link rel="stylesheet" href="src/styles/adminSet.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
-		<div class="topBar">
-			<div class="dropdown">
-				<button class="dropdown-btn" id="dropdown-btn">
-					<img class="settingIcon" src="src/Pictures/setting-btn.png"/></img>
-				</button>
-				<div class="dropdown-content">
-					
-					<button class="language-btn" id="language-btn">
-						<span data-i18n="Language"></span> <img id="selected-flag" src="src/Pictures/flagIcon-en.png">
-					</button>
-					<div class="language-content" id="language-content">
-							<div class="language-option" id="gb">
-								<img src="src/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
-							</div>
-							<div class="language-option" id="de">
-								<img src="src/Pictures/flagIcon-de.png"> <span data-i18n="German"></span>
-							</div>
-							<div class="language-option" id="nl">
-								<img src="src/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
-							</div>
-					</div>
-					<div class="dropdown-item" id="Home" data-i18n="Home"></div>
-					<div class="dropdown-item" id="Setting" data-i18n="Settings"></div>
-					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
-				</div>
-			</div>
-			<div class="topBarFrame">
-				<div class="adminName" data-i18n="Admin"></div>
-				<div class="profile-picture">
-					<img src="src/Pictures/defaultPP.png" alt="Profile Picture">
-				</div>
-			</div>
-		</div>
+		
+		<admin-topbar></admin-topbar>
 		
 		<div class="middle">
 			<div class="container">
@@ -63,6 +34,7 @@ export function setupAdmin() {
 
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+		fillTopbar();
 		
 		document.getElementById('Home')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/admin');
@@ -84,21 +56,17 @@ export function setupAdmin() {
 		// Retrieve user uuid
 		const userID = localStorage.getItem('userID');
 		if (userID) {
-			const response = connectFunc(`/user/${userID}`, requestBody("GET", null));
-			response.then((response) => {
-				if (response.ok) {
-					response.json().then((data) => {
-						console.log("FULL RESPONSE (admin)", data); // -> FOR TESTING
-						console.log("FULL RESPONSE (admin)", data.username); // -> FOR TESTING
-						// console.log("FULL RESPONSE (admin)", data.profile_pic.data); // -> FOR TESTING
+			connectFunc(`/user/${userID}`, requestBody("GET", null))
+			.then((userInfoResponse) => {
+				if (userInfoResponse.ok) {
+					userInfoResponse.json().then((data) => {
 
-						// console.log("User data fetched successfully:", data);
-						// Use the fetched data (e.g., display user stats, leaderboard, etc.)
+						// Profile-pic
+						const pictureElem = document.getElementById("profile-picture") as HTMLImageElement;
+						if (pictureElem && data.profile_pic && data.profile_pic.data) {
+							pictureElem.src = `data:${data.profile_pic.mimeType};base64,${data.profile_pic.data}`;
+						}
 					});
-				} else {
-					console.error("Failed to fetch user data");
-					// window.history.pushState({}, '', '/error404');
-					// setupError404();
 				}
 			}).catch(() => {
 				// Network or server error

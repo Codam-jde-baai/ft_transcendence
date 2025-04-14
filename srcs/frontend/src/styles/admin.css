@@ -129,6 +129,23 @@
 .dropdown-item:hover {
 	background: #b86a8a;
 }
+.dropdown-item.adminCurrentPage {
+    font-weight: bold;
+	background: #ab2d78;
+    position: relative;
+}
+.dropdown-item.adminCurrentPage:hover {
+	background: #b86a8a;
+}
+.dropdown-item.adminCurrentPage::after {
+    content: '▶';
+    font-size: 14px;
+    color: #ffffff;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
 .hidden {
 	display: none;
 }
