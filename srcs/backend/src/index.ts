@@ -25,7 +25,7 @@ const fastify = Fastify({
 // Setting Up The CORS Plugin First
 fastify.register(fastifyCors, {
 	origin: '*',
-	methods: ['GET', 'POST', 'DELETE'],
+	methods: ['GET', 'POST', 'DELETE', 'PUT'],
 	allowedHeaders: ['Content-Type', 'Authorization'],
 });
 // 'Origin', 'X-Requested-With', 'Accept'
