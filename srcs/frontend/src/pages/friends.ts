@@ -6,6 +6,12 @@ import { setupMatchHistory } from './history';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody } from "../script/connections"
 
+
+/*
+ blocked is not used at the moment, could be implemented for livechat
+ for implementing: would need to call blocked users list in promose.all()
+*/
+
 export type PubUserSchema = {
 	alias: string;
 	profile_pic: {
@@ -106,32 +112,33 @@ export function setupFriends() {
 
 					<h1 class="header" data-i18n="Friends_Header"></h1>
 					<div class="friends-list">
-					${friendRelations.friends.map((element: friendSchema) => `
+						${friendRelations.friends.map((element: friendSchema) => `
 						<public-user type="friend" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-					`).join('')}
+						`).join('')}
 					</div>
 
 					<h1 class="header" data-i18n="Request_Header"></h1>
 					<div class="friends-list">
-					${friendRelations.receivedRequests.map((element: friendSchema) => `
+						${friendRelations.receivedRequests.map((element: friendSchema) => `
     					<public-user type="friend-request" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-					`).join('')}
-					</div>
-
-					<h1 class="header" data-i18n="Blocked_Header"></h1>
-					<div class="friends-list">
-					${friendRelations.blocked.map((element: friendSchema) => `
-						<public-user type="blocked" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
 						`).join('')}
 					</div>
-
-					<h1 class="header" data-i18n="Pending_Requests_Header"></h1>
-					<div class="friends-list">
-					${friendRelations.sentRequests.map((element: friendSchema) => `
+						<h1 class="header" data-i18n="Pending_Requests_Header"></h1>
+						<div class="friends-list">
+						${friendRelations.sentRequests.map((element: friendSchema) => `
     					<public-user type="pendingRequests" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-					`).join('')}
+						`).join('')}
 					</div>
-
+						
+					<!-- BLOCKED USERS AREA - to implemented make blockedRelations or something
+						<h1 class="header" data-i18n="Blocked_Header"></h1>
+						<div class="friends-list">
+						${friendRelations.blocked.map((element: friendSchema) => `
+							<public-user type="blocked" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+							`).join('')}
+						</div>
+					-->
+						
 
 				</div>
 				<!-- ^^^ -->
@@ -237,9 +244,6 @@ function setupUserActionListeners() {
 			case 'btn_Decline':
 				declineFriendRequest(friendid);
 				break;
-			case 'btn_Block':
-				blockUser(friendid);
-				break;
 			case 'History':
 				viewUserHistory(friendid);
 				break;
@@ -249,14 +253,18 @@ function setupUserActionListeners() {
 			case 'btn_Add_Friend':
 				addFriend(alias);
 				break;
-			case 'btn_Unblock_User':
-				unblockUser(friendid);
-				break;
 			case 'btn_Cancel':
 				cancelRequest(friendid);
 				break;
+			// case 'btn_Block':
+			// 	blockUser(friendid);
+			// 	break;
+			// case 'btn_Unblock_User':
+			// 	unblockUser(friendid);
+			// 	break;
 		}
 	});
+
 
 	// Action handler functions
 	function acceptFriendRequest(friendid: number) {
@@ -286,19 +294,6 @@ function setupUserActionListeners() {
 		console.log("declineFriendRequest button, friend: ", friendid)
 	}
 
-	function blockUser(friendid: number) {
-		console.log("blockUser button, friend: ", friendid)
-		console.log("acceptFriendRequest button, friend: ", friendid)
-		connectFunc(`/friends/${friendid}/block`, requestBody("PUT"))
-			.then(response => {
-				if (response.ok) {
-					console.log(`Accepted friend request from user`);
-					setupFriends(); // Refresh the friends list
-				} else {
-					console.error(`Failed to accept friend request: ${response.status}`);
-				}
-			});
-	}
 
 	function viewUserHistory(friendid: number) {
 		// Navigate to history page with user filter
@@ -336,19 +331,6 @@ function setupUserActionListeners() {
 	}
 
 
-	function unblockUser(friendid: number) {
-		// connectFunc(`/friends/${uuid}/unblock`, requestBody("PUT",
-		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
-		// 	.then(response => {
-		// 		if (response.ok) {
-		// 			console.log(`Unblocked user ${alias}`);
-		// 			setupFriends();
-		// 		} else {
-		// 			console.error(`Failed to unblock user: ${response.status}`);
-		// 		}
-		// 	});
-		console.log("unblockUser button, friend: ", friendid)
-	}
 
 	function cancelRequest(friendid: number) {
 		// connectFunc(`/friends/${uuid}/cancel`, requestBody("DELETE",
@@ -363,4 +345,9 @@ function setupUserActionListeners() {
 		// 	});
 		console.log("cancelRequest button, friend: ", friendid)
 	}
+	// function unblockUser(friendid: number) {
+	// 	console.log("unblockUser button, friend: ", friendid)
+	// }
+	// function blockUser(friendid: number) {
+	// }
 }

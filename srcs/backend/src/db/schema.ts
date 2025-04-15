@@ -67,3 +67,10 @@ export const friendsTable = sqliteTable("friends", {
 	recUUid: text("recipient", { length: 264 }).references(() => usersTable.uuid).notNull(),
 	status: int("status").$type<friendStatus>().default(friendStatus.PENDING).notNull()
 });
+
+// optional blocked users table 
+/**
+if a new relation gets blocked -> relation gets removed from friends table
+if a blocked user sends a friendRequest, the friendRequest exists but is filtered out for the blockStarter/blockker
+
+ */
