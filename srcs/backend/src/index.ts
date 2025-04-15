@@ -6,6 +6,7 @@ import swaggerUi from '@fastify/swagger-ui';
 import multipart from '@fastify/multipart';
 import friendsRoutes from './routes/friends.ts';
 import fastifyCors from '@fastify/cors'
+import matchesRoutes from './routes/matches.ts';
 
 console.log("reading from index.ts backend");
 
@@ -71,6 +72,7 @@ await fastify.register(swaggerUi, {
 
 fastify.register(userRoutes);
 fastify.register(friendsRoutes);
+fastify.register(matchesRoutes);
 
 // defining a function in TS
 const start = async () => {
