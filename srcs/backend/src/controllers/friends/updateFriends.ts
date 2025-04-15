@@ -6,6 +6,9 @@ import Database from 'better-sqlite3';
 //files
 import { friendsTable, friendStatus } from '../../db/schema.ts'
 
+// @todo:
+// TO ALL OF THESE add verification that the accepter is in fact the one who sent the original request
+// 
 
 
 export const AcceptFriendReq = async (request: FastifyRequest<{ Params: { friendId: string } }>, reply: FastifyReply) => {

@@ -16,15 +16,15 @@ class PublicUser extends HTMLElement {
 		buttons.forEach(button => {
 			button.addEventListener('click', () => {
 				const buttonAction = button.getAttribute('data-i18n');
-				const alias = this.getAttribute('alias');
 
 				// Dispatch a custom event with the button type and user alias
 				this.dispatchEvent(new CustomEvent('user-action', {
 					bubbles: true,
 					detail: {
 						action: buttonAction,
-						alias: alias,
-						type: this.getAttribute("type")
+						alias: this.getAttribute('alias'), //unused
+						friendid: this.getAttribute('friendid'),
+						type: this.getAttribute("type") //unused
 					}
 				}));
 			});

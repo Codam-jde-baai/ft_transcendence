@@ -4,7 +4,7 @@ import { setupUserHome } from './home';
 import { setupSetting } from './setting';
 import { setupMatchHistory } from './history';
 import { getLanguage } from '../script/language';
-import { connectFunc, requestBody, ContentType } from "../script/connections"
+import { connectFunc, requestBody } from "../script/connections"
 
 export type PubUserSchema = {
 	alias: string;
@@ -16,10 +16,31 @@ export type PubUserSchema = {
 	loss: number;
 };
 
+export type friendSchema = {
+	friendid: number;
+	friend: {
+		alias: string;
+		profile_pic: {
+			data: string;
+			mimeType: string;
+		};
+		win: number;
+		loss: number;
+	}
+}
+
+type FriendRelations = {
+	friends: friendSchema[];
+	receivedRequests: friendSchema[];
+	sentRequests: friendSchema[];
+	deniedRequests: friendSchema[];
+	blocked: friendSchema[];
+};
+
 export function setupFriends() {
 	const root = document.getElementById('app');
 	let publicUsers: PubUserSchema[] = [];
-	let friendRelations: any = {
+	let friendRelations: FriendRelations = {
 		friends: [],
 		receivedRequests: [],
 		sentRequests: [],
@@ -85,29 +106,29 @@ export function setupFriends() {
 
 					<h1 class="header" data-i18n="Friends_Header"></h1>
 					<div class="friends-list">
-					${friendRelations.friends.map((element: any) => `
-						<public-user type="friend" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+					${friendRelations.friends.map((element: friendSchema) => `
+						<public-user type="friend" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
 					`).join('')}
 					</div>
 
 					<h1 class="header" data-i18n="Request_Header"></h1>
 					<div class="friends-list">
-					${friendRelations.receivedRequests.map((element: any) => `
-    					<public-user type="friend-request" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+					${friendRelations.receivedRequests.map((element: friendSchema) => `
+    					<public-user type="friend-request" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
 					`).join('')}
 					</div>
 
 					<h1 class="header" data-i18n="Blocked_Header"></h1>
 					<div class="friends-list">
-					${friendRelations.blocked.map((element: any) => `
-						<public-user type="blocked" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+					${friendRelations.blocked.map((element: friendSchema) => `
+						<public-user type="blocked" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
 						`).join('')}
 					</div>
 
 					<h1 class="header" data-i18n="Pending_Requests_Header"></h1>
 					<div class="friends-list">
-					${friendRelations.sentRequests.map((element: any) => `
-    					<public-user type="pendingRequests" alias=${element.friend.alias} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+					${friendRelations.sentRequests.map((element: friendSchema) => `
+    					<public-user type="pendingRequests" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
 					`).join('')}
 					</div>
 
@@ -198,67 +219,60 @@ function setupSearchFunctionality(publicUsers: PubUserSchema[]) {
 }
 
 function setupUserActionListeners() {
-	const uuid = "fedc3ec8-8392-4c63-ae8c-6c94ab836b60";
-
 	// Handle all user actions with a single event listener
 	document.addEventListener('user-action', (e: Event) => {
 		const customEvent = e as CustomEvent<{
 			action: string;
 			alias: string;
-			type: string;
+			friendid: number;
 		}>;
 
-		const { action, alias, type } = customEvent.detail;
+		const { action, alias, friendid } = customEvent.detail;
 
 		// Handle different actions based on the button's data-i18n attribute and user type
 		switch (action) {
 			case 'btn_Accept':
-				if (type === 'friend-request') {
-					acceptFriendRequest(alias);
-				}
+				acceptFriendRequest(friendid);
 				break;
 			case 'btn_Decline':
-				if (type === 'friend-request') {
-					declineFriendRequest(alias);
-				}
+				declineFriendRequest(friendid);
 				break;
 			case 'btn_Block':
-				blockUser(alias);
+				blockUser(friendid);
 				break;
 			case 'History':
-				viewUserHistory(alias);
+				viewUserHistory(friendid);
 				break;
 			case 'btn_Remove_Friend':
-				removeFriend(alias);
+				removeFriend(friendid);
 				break;
 			case 'btn_Add_Friend':
 				addFriend(alias);
 				break;
 			case 'btn_Unblock_User':
-				unblockUser(alias);
+				unblockUser(friendid);
 				break;
 			case 'btn_Cancel':
-				cancelRequest(alias);
+				cancelRequest(friendid);
 				break;
 		}
 	});
 
 	// Action handler functions
-	function acceptFriendRequest(alias: string) {
-		// connectFunc(`/friends/${uuid}/accept`, requestBody("PUT",
-		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
-		// 	.then(response => {
-		// 		if (response.ok) {
-		// 			console.log(`Accepted friend request from ${alias}`);
-		// 			setupFriends(); // Refresh the friends list
-		// 		} else {
-		// 			console.error(`Failed to accept friend request: ${response.status}`);
-		// 		}
-		// 	});
-		console.log("acceptFriendRequest button, alias: ", alias)
+	function acceptFriendRequest(friendid: number) {
+		console.log("acceptFriendRequest button, friend: ", friendid)
+		connectFunc(`/friends/${friendid}/accept`, requestBody("PUT"))
+			.then(response => {
+				if (response.ok) {
+					console.log(`Accepted friend request from user`);
+					setupFriends(); // Refresh the friends list
+				} else {
+					console.error(`Failed to accept friend request: ${response.status}`);
+				}
+			});
 	}
 
-	function declineFriendRequest(alias: string) {
+	function declineFriendRequest(friendid: number) {
 		// connectFunc(`/friends/${uuid}/decline`, requestBody("PUT",
 		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
 		// 	.then(response => {
@@ -269,31 +283,31 @@ function setupUserActionListeners() {
 		// 			console.error(`Failed to decline friend request: ${response.status}`);
 		// 		}
 		// 	});
-		console.log("declineFriendRequest button, alias: ", alias)
+		console.log("declineFriendRequest button, friend: ", friendid)
 	}
 
-	function blockUser(alias: string) {
-		// connectFunc(`/friends/${uuid}/block`, requestBody("PUT",
-		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
-		// 	.then(response => {
-		// 		if (response.ok) {
-		// 			console.log(`Blocked user ${alias}`);
-		// 			setupFriends();
-		// 		} else {
-		// 			console.error(`Failed to block user: ${response.status}`);
-		// 		}
-		// 	});
-		console.log("blockUser button, alias: ", alias)
+	function blockUser(friendid: number) {
+		console.log("blockUser button, friend: ", friendid)
+		console.log("acceptFriendRequest button, friend: ", friendid)
+		connectFunc(`/friends/${friendid}/block`, requestBody("PUT"))
+			.then(response => {
+				if (response.ok) {
+					console.log(`Accepted friend request from user`);
+					setupFriends(); // Refresh the friends list
+				} else {
+					console.error(`Failed to accept friend request: ${response.status}`);
+				}
+			});
 	}
 
-	function viewUserHistory(alias: string) {
+	function viewUserHistory(friendid: number) {
 		// Navigate to history page with user filter
 		// window.history.pushState({ userData: alias }, '', `/history?user=${alias}`);
 		// setupMatchHistory();
-		console.log("viewUserHistory button, alias: ", alias)
+		console.log("viewUserHistory button, friend: ", friendid)
 	}
 
-	function removeFriend(alias: string) {
+	function removeFriend(friendid: number) {
 		// connectFunc(`/friends/${uuid}/remove`, requestBody("DELETE",
 		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
 		// 	.then(response => {
@@ -304,7 +318,7 @@ function setupUserActionListeners() {
 		// 			console.error(`Failed to remove friend: ${response.status}`);
 		// 		}
 		// 	});
-		console.log("removeFriend button, alias: ", alias)
+		console.log("removeFriend button, friend: ", friendid)
 	}
 
 	function addFriend(alias: string) {
@@ -318,11 +332,11 @@ function setupUserActionListeners() {
 		// 			console.error(`Failed to send friend request: ${response.status}`);
 		// 		}
 		// 	});
-		console.log("addFriend button, alias: ", alias)
+		console.log("addFriend button, to become friend: ", alias)
 	}
 
 
-	function unblockUser(alias: string) {
+	function unblockUser(friendid: number) {
 		// connectFunc(`/friends/${uuid}/unblock`, requestBody("PUT",
 		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
 		// 	.then(response => {
@@ -333,10 +347,10 @@ function setupUserActionListeners() {
 		// 			console.error(`Failed to unblock user: ${response.status}`);
 		// 		}
 		// 	});
-		console.log("unblockUser button, alias: ", alias)
+		console.log("unblockUser button, friend: ", friendid)
 	}
 
-	function cancelRequest(alias: string) {
+	function cancelRequest(friendid: number) {
 		// connectFunc(`/friends/${uuid}/cancel`, requestBody("DELETE",
 		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
 		// 	.then(response => {
@@ -347,6 +361,6 @@ function setupUserActionListeners() {
 		// 			console.error(`Failed to cancel friend request: ${response.status}`);
 		// 		}
 		// 	});
-		console.log("cancelRequest button, alias: ", alias)
+		console.log("cancelRequest button, friend: ", friendid)
 	}
 }
