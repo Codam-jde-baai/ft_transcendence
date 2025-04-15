@@ -41,11 +41,11 @@ export enum eWinner {
 // table with all matches
 export const matchesTable = sqliteTable("matches", {
 	id: int("id").primaryKey({ autoIncrement: true }),
-	uuid: text("uuid", { length: 264 }).notNull().unique(),
-	p1Alias: text("p1Alias", { length: 264 }).notNull(),
-	p2Alias: text("p2Alias", { length: 264 }).notNull(),
-	p1_id: text("p1_id", { length: 264 }).references(() => usersTable.uuid),
-	p2_id: text("p2_id", { length: 264 }).references(() => usersTable.uuid),
+	p1_alias: text("p1_alias", { length: 264 }).notNull(),
+	p2_alias: text("p2_alias", { length: 264 }).notNull(),
+	winner_alias: text("winner_alias", { length: 264 }),
+	p1_uuid: text("p1_uuid", { length: 264 }).references(() => usersTable.uuid),
+	p2_uuid: text("p2_uuid", { length: 264 }).references(() => usersTable.uuid),
 	status: int("status").$type<matchStatus>().notNull(),
 	winner_id: int("winner").$type<eWinner>().default(eWinner.NOWINNER),
 	start_time: text("start_time", { length: 264 }).default(sql`(current_timestamp)`),
