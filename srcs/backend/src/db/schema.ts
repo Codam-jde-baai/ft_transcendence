@@ -55,9 +55,7 @@ export const matchesTable = sqliteTable("matches", {
 
 export enum friendStatus {
 	PENDING = 0,
-	ACCEPTED = 1,
-	DENIED = 2,
-	BLOCKED = 3
+	ACCEPTED = 1
 }
 
 // friends-relations table

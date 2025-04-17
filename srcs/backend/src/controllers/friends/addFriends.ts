@@ -7,35 +7,41 @@ import Database from 'better-sqlite3';
 import { friendsTable, usersTable } from '../../db/schema.ts'
 import { createRelation, toPublicRelation } from '../../models/friends.ts'
 
+/**
+ * @todo after cookie session implementation, make only the alias a param, get the requester from session cookie.
+ */
 
 export const addFriend = async (request: FastifyRequest<{
 	Body: {
-		reqUUid: string;
-		recUUid: string;
+		alias: string
 	}
 }>, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const { reqUUid, recUUid } = request.body
-		if (!reqUUid || !recUUid)
-			reply.code(400).send("requester and recepient must have values");
+		const { alias } = request.body
+		if (!alias)
+			reply.code(400).send({ error: "recepient alias should have a value" });
 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite)
-		// pull from users database
-		// const reqUserArray = await db.select().from(usersTable).where(eq(usersTable.uuid, reqUUid))
-		// const recUserArray = await db.select().from(usersTable).where(eq(usersTable.uuid, recUUid))
-		// if (reqUserArray.length == 0 || recUserArray.length == 0)
-		// 	return reply.code(404).send("requester or recepient do not exist in db");
+		const reqUUid: string = "fedc3ec8-8392-4c63-ae8c-6c94ab836b60" //@todo GET FROM COOKIE
+
+		const receiverArray = await db.select().from(usersTable).where(eq(usersTable.alias, alias));
+
+		if (receiverArray.length == 0) {
+			reply.code(404).send({ error: "alias odes not exist in database" })
+		}
+		const receiver = receiverArray[0];
+
 		// check if they already have a relation in friends database
 		const existingRelationArray = await db.select().from(friendsTable).where(
 			or(
 				and(
 					eq(friendsTable.reqUUid, reqUUid),
-					eq(friendsTable.recUUid, recUUid)
+					eq(friendsTable.recUUid, receiver.uuid)
 				),
 				and(
-					eq(friendsTable.reqUUid, recUUid),
+					eq(friendsTable.reqUUid, receiver.uuid),
 					eq(friendsTable.recUUid, reqUUid)
 				)
 			)
@@ -44,7 +50,7 @@ export const addFriend = async (request: FastifyRequest<{
 			return (reply.code(409).send({ error: "users already have relation", relation: toPublicRelation(existingRelationArray[0]) }))
 		}
 
-		const relation = createRelation(reqUUid, recUUid)
+		const relation = createRelation(reqUUid, receiver.uuid)
 		const result = await db.insert(friendsTable).values(relation).returning()
 		return reply.code(201).send({ msg: "created relation", relation: toPublicRelation(result[0]) })
 	}
@@ -59,6 +65,3 @@ export const addFriend = async (request: FastifyRequest<{
 	}
 }
 
-/**
- * write function to accept friend request;
- */

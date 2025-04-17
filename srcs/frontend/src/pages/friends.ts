@@ -39,8 +39,6 @@ type FriendRelations = {
 	friends: friendSchema[];
 	receivedRequests: friendSchema[];
 	sentRequests: friendSchema[];
-	deniedRequests: friendSchema[];
-	blocked: friendSchema[];
 };
 
 export function setupFriends() {
@@ -50,16 +48,13 @@ export function setupFriends() {
 		friends: [],
 		receivedRequests: [],
 		sentRequests: [],
-		deniedRequests: [],
-		blocked: []
 	};
-	// const uuid = ""
-	const uuid = "fedc3ec8-8392-4c63-ae8c-6c94ab836b60" // get uuID from session-cookie
+	// @todo: get cookie from uuid, call friends/me instead of friends/uuid
 	// using promise instead of multiple .thens()
 	// promse.all() method can take multiple promises as input ( connectfunc returns a promse) and promise.all() continues once all promises conclude
 	Promise.all([
 		// request friend relations -> friendslists
-		connectFunc(`/friends/${uuid}`, requestBody("GET"))
+		connectFunc(`/friends/me`, requestBody("GET"))
 			.then(response => {
 				if (response.ok) {
 					return response.json();
@@ -133,9 +128,7 @@ export function setupFriends() {
 					<!-- BLOCKED USERS AREA - to implemented make blockedRelations or something
 						<h1 class="header" data-i18n="Blocked_Header"></h1>
 						<div class="friends-list">
-						${friendRelations.blocked.map((element: friendSchema) => `
-							<public-user type="blocked" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-							`).join('')}
+						loop through the map here
 						</div>
 					-->
 						
@@ -236,7 +229,6 @@ function setupUserActionListeners() {
 
 		const { action, alias, friendid } = customEvent.detail;
 
-		// Handle different actions based on the button's data-i18n attribute and user type
 		switch (action) {
 			case 'btn_Accept':
 				acceptFriendRequest(friendid);
@@ -245,7 +237,7 @@ function setupUserActionListeners() {
 				declineFriendRequest(friendid);
 				break;
 			case 'History':
-				viewUserHistory(friendid);
+				viewUserHistory(alias);
 				break;
 			case 'btn_Remove_Friend':
 				removeFriend(friendid);
@@ -256,12 +248,6 @@ function setupUserActionListeners() {
 			case 'btn_Cancel':
 				cancelRequest(friendid);
 				break;
-			// case 'btn_Block':
-			// 	blockUser(friendid);
-			// 	break;
-			// case 'btn_Unblock_User':
-			// 	unblockUser(friendid);
-			// 	break;
 		}
 	});
 
@@ -281,73 +267,62 @@ function setupUserActionListeners() {
 	}
 
 	function declineFriendRequest(friendid: number) {
-		// connectFunc(`/friends/${uuid}/decline`, requestBody("PUT",
-		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
-		// 	.then(response => {
-		// 		if (response.ok) {
-		// 			console.log(`Declined friend request from ${alias}`);
-		// 			setupFriends();
-		// 		} else {
-		// 			console.error(`Failed to decline friend request: ${response.status}`);
-		// 		}
-		// 	});
 		console.log("declineFriendRequest button, friend: ", friendid)
+		connectFunc(`/friends/${friendid}/delete`, requestBody("DELETE"))
+			.then(response => {
+				if (response.ok) {
+					console.log(`friend relation has been deleted`);
+					setupFriends(); // Refresh the friends list
+				} else {
+					console.error(`Failed to delete friend relation: ${response.status}`);
+				}
+			});
 	}
 
 
-	function viewUserHistory(friendid: number) {
-		// Navigate to history page with user filter
-		// window.history.pushState({ userData: alias }, '', `/history?user=${alias}`);
-		// setupMatchHistory();
-		console.log("viewUserHistory button, friend: ", friendid)
+	function viewUserHistory(alias: string) {
+		//window.history.pushState({ userData: alias }, '', `/history?user=${alias}`);
+		//setupMatchHistory();
+		console.log("viewUserHistory button, alias: ", alias)
 	}
 
 	function removeFriend(friendid: number) {
-		// connectFunc(`/friends/${uuid}/remove`, requestBody("DELETE",
-		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
-		// 	.then(response => {
-		// 		if (response.ok) {
-		// 			console.log(`Removed friend ${alias}`);
-		// 			setupFriends();
-		// 		} else {
-		// 			console.error(`Failed to remove friend: ${response.status}`);
-		// 		}
-		// 	});
 		console.log("removeFriend button, friend: ", friendid)
+		connectFunc(`/friends/${friendid}/delete`, requestBody("DELETE"))
+			.then(response => {
+				if (response.ok) {
+					console.log(`friend relation has been deleted`);
+					setupFriends();
+				} else {
+					console.error(`Failed to delete friend relation: ${response.status}`);
+				}
+			});
 	}
 
 	function addFriend(alias: string) {
-		// connectFunc(`/friends/${uuid}/add`, requestBody("POST",
-		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
-		// 	.then(response => {
-		// 		if (response.ok) {
-		// 			console.log(`Friend request sent to ${alias}`);
-		// 			setupFriends();
-		// 		} else {
-		// 			console.error(`Failed to send friend request: ${response.status}`);
-		// 		}
-		// 	});
 		console.log("addFriend button, to become friend: ", alias)
+		connectFunc(`/friends/new`, requestBody("POST", JSON.stringify({ alias: alias })))
+			.then(response => {
+				if (response.ok) {
+					console.log(`friend relation has been deleted`);
+					setupFriends()
+				} else {
+					console.error(`Failed to delete friend relation: ${response.status}`);
+				}
+			});
+
 	}
-
-
 
 	function cancelRequest(friendid: number) {
-		// connectFunc(`/friends/${uuid}/cancel`, requestBody("DELETE",
-		// 	JSON.stringify({ friend: alias }), ContentType.JSON))
-		// 	.then(response => {
-		// 		if (response.ok) {
-		// 			console.log(`Cancelled friend request to ${alias}`);
-		// 			setupFriends();
-		// 		} else {
-		// 			console.error(`Failed to cancel friend request: ${response.status}`);
-		// 		}
-		// 	});
 		console.log("cancelRequest button, friend: ", friendid)
+		connectFunc(`/friends/${friendid}/delete`, requestBody("DELETE"))
+			.then(response => {
+				if (response.ok) {
+					console.log(`friend relation has been deleted`);
+					setupFriends();
+				} else {
+					console.error(`Failed to delete friend relation: ${response.status}`);
+				}
+			});
 	}
-	// function unblockUser(friendid: number) {
-	// 	console.log("unblockUser button, friend: ", friendid)
-	// }
-	// function blockUser(friendid: number) {
-	// }
 }

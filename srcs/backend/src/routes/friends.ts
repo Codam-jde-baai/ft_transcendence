@@ -2,8 +2,8 @@ import { FastifyInstance, } from 'fastify';
 import { authenticatePrivateToken } from './authentication.ts';
 import { securitySchemes, errorResponseSchema, publicUserProperties } from './userdocs.ts';
 import { addFriend } from '../controllers/friends/addFriends.ts';
-import { getFriends } from '../controllers/friends/getFriends.ts';
-import { AcceptFriendReq, BlockFriend } from '../controllers/friends/updateFriends.ts';
+import { getFriends, getMyFriends } from '../controllers/friends/getFriends.ts';
+import { AcceptFriendReq, RemoveFriendRelation } from '../controllers/friends/updateFriends.ts';
 
 const relationProperties = {
 	type: 'object',
@@ -31,8 +31,6 @@ const friendProperties = {
 	friends: [...]
 	sentRequests: [...]
 	receivedRequests: [...]
-	deniedRequests: [...]
-	blocked: [...]
 
  */
 const friendListProperties = {
@@ -47,14 +45,6 @@ const friendListProperties = {
 			items: friendProperties
 		},
 		receivedRequests: {
-			type: 'array',
-			items: friendProperties
-		},
-		deniedRequests: {
-			type: 'array',
-			items: friendProperties
-		},
-		blocked: {
 			type: 'array',
 			items: friendProperties
 		}
@@ -81,6 +71,19 @@ const FriendListOptions = {
 	}
 }
 
+const MyFriendListOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'gets all relations of the user',
+		tags: ['friends'],
+		response: {
+			200: friendListProperties,
+			404: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+}
+
 const createFriendOptions = {
 	schema: {
 		security: [{ apiKey: [] }],
@@ -89,10 +92,9 @@ const createFriendOptions = {
 		consumes: ['application/json'],
 		body: {
 			type: 'object',
-			required: ['reqUUid', 'recUUid'],
+			required: ['alias'],
 			properties: {
-				reqUUid: { type: 'string' },
-				recUUid: { type: 'string' }
+				alias: { type: 'string' },
 			}
 		},
 		response: {
@@ -133,6 +135,29 @@ const updateFriendStatusOptions = {
 		response: {
 			200: {},
 			400: errorResponseSchema,
+			403: errorResponseSchema,
+			404: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+}
+
+const RemoveFriendOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'deletes a friend relation',
+		tags: ['friends'],
+		params: {
+			type: 'object',
+			required: ['friendId'],
+			properties: {
+				friendId: { type: 'string' }
+			}
+		},
+		response: {
+			200: {},
+			400: errorResponseSchema,
+			403: errorResponseSchema,
 			500: errorResponseSchema
 		}
 	}
@@ -145,23 +170,23 @@ function friendsRoutes(fastify: FastifyInstance, options: any, done: () => void)
 	});
 
 	// addRelation
-	fastify.post<{
-		Body: {
-			reqUUid: string;
-			recUUid: string;
-		}
-	}>('/friends/new', { preHandler: [authenticatePrivateToken], ...createFriendOptions }, addFriend);
+	fastify.post<{ Body: { alias: string } }>
+		('/friends/new', { preHandler: [authenticatePrivateToken], ...createFriendOptions }, addFriend);
 
 	// get all Relations
 	fastify.get<{ Params: { uuid: string } }>
 		('/friends/:uuid', { preHandler: [authenticatePrivateToken], ...FriendListOptions },
 			getFriends)
 
+	fastify.get('/friends/me', { preHandler: [authenticatePrivateToken], ...MyFriendListOptions },
+		getMyFriends)
+
+
 	fastify.put<{ Params: { friendId: string } }>
 		('/friends/:friendId/accept', { preHandler: [authenticatePrivateToken], ...updateFriendStatusOptions }, AcceptFriendReq)
 
-	fastify.put<{ Params: { friendId: string } }>
-		('/friends/:friendId/block', { preHandler: [authenticatePrivateToken], ...updateFriendStatusOptions }, BlockFriend)
+	fastify.delete<{ Params: { friendId: string } }>
+		('/friends/:friendId/delete', { preHandler: [authenticatePrivateToken], ...RemoveFriendOptions }, RemoveFriendRelation)
 
 
 	done();
