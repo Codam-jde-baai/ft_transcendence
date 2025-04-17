@@ -153,7 +153,7 @@ function setupNavigation() {
 	});
 }
 
-function setupSearchFunctionality(publicUsers: PubUserSchema[]) {
+function setupSearchFunctionality() {
 	function performSearch() {
 		const searchElement = document.getElementById('friendSearch') as HTMLInputElement;
 		const query = DOMPurify.sanitize(searchElement.value);
@@ -199,6 +199,26 @@ function setupSearchFunctionality(publicUsers: PubUserSchema[]) {
 		performSearch();
 		getLanguage();
 	});
+}
+
+function refreshNonFriends() {
+	connectFunc("/friends/nonfriends", requestBody("GET"))
+		.then(response => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				console.log({ msg: "error with /public/users call", status: response.status, message: response.body });
+				return [];
+			}
+		})
+		.then(data => {
+			publicUsers = data;
+			const searchBar = document.getElementById("friendSearch") as HTMLInputElement;
+			if (searchBar?.value) {
+				searchBar.dispatchEvent(new Event("input")); // trigger search
+			}
+		}
+		)
 }
 
 // Function to refresh a specific container with fresh data from the server
@@ -332,6 +352,7 @@ function setupUserActionListeners() {
 				if (response.ok) {
 					console.log(`Friend request sent`);
 					refreshContainer('pending-container');
+					refreshNonFriends();
 				} else {
 					console.error(`Failed to add friend: ${response.status}`);
 				}
@@ -345,6 +366,7 @@ function setupUserActionListeners() {
 				if (response.ok) {
 					console.log(`Request canceled`);
 					refreshContainer('pending-container');
+					refreshNonFriends();
 				} else {
 					console.error(`Failed to delete friend relation: ${response.status}`);
 				}
