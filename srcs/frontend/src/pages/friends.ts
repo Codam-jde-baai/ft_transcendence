@@ -212,7 +212,8 @@ function refreshNonFriends() {
 			}
 		})
 		.then(data => {
-			publicUsers = data;
+			if (data)
+				publicUsers = data;
 			const searchBar = document.getElementById("friendSearch") as HTMLInputElement;
 			if (searchBar?.value) {
 				searchBar.dispatchEvent(new Event("input")); // trigger search
