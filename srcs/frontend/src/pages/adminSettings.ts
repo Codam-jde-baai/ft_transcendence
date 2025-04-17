@@ -5,9 +5,9 @@ import { setupAdmin } from './admin';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { adminPasswordFields } from '../script/errorFunctions';
 import { fillTopbar } from '../script/fillTopbar';
-import { fillSetting } from '../script/settings';
+import { fillSetting } from '../script/doSettings';
 import { setupError404 } from './error404';
-import { updateUserSettings } from '../script/settings';
+import { updateUserSettings } from '../script/doSettings';
 
 export function setupAdminSetting() {
 	const root = document.getElementById('app');

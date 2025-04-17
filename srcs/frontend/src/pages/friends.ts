@@ -19,7 +19,7 @@ export function setupFriends() {
 	};
 	// const uuid = ""
 	const uuid = "fedc3ec8-8392-4c63-ae8c-6c94ab836b60"
-	connectFunc(`/friends/${uuid}`, requestBody("GET", null))
+	connectFunc(`/friends/${uuid}`, requestBody("GET", null, "application/json"))
 		.then((response) => {
 			if (response.ok) {
 				return response.json()
@@ -37,7 +37,7 @@ export function setupFriends() {
 		})
 		.then((array) => {
 			friendRelations = array;
-			return connectFunc("/public/users", requestBody("GET", null))
+			return connectFunc("/public/users", requestBody("GET", null, "application/json"))
 		})
 		.then((response) => {
 			if (response.ok) {

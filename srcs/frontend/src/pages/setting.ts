@@ -7,9 +7,9 @@ import { dropDownBar } from '../script/dropDownBar';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { passwordFields } from '../script/errorFunctions';
 import { setupError404 } from './error404';
-import { updateUserSettings } from '../script/settings';
+import { updateUserSettings } from '../script/doSettings';
 import { fillTopbar } from '../script/fillTopbar';
-import { fillSetting } from '../script/settings';
+import { fillSetting } from '../script/doSettings';
 
 export function setupSetting () {
 	const root = document.getElementById('app');
@@ -66,13 +66,13 @@ export function setupSetting () {
 		fillTopbar();
 		fillSetting();
 		
-		document.getElementById('Save')?.addEventListener('click', () => {
+		document.getElementById('Save')?.addEventListener('click', async () => {
 			const isValid = passwordFields(["alias", "password", "password_confirm"]);
 			if (!isValid)
 				return; // Stop execution if validation fails
 
 			// Can't change alias or password, because of request PUT
-			if (updateUserSettings(["alias", "password", "avatar"])) {
+			if (await updateUserSettings(["alias", "password", "avatar"])) {
 					window.history.pushState({}, '', '/home');
 					setupUserHome();
 			}
