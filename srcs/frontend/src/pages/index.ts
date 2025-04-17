@@ -5,6 +5,7 @@ import { setupSetting } from './setting';
 import { setupFriends } from './friends';
 import { setupMatchHistory } from './history';
 import { setupStartGame } from './startGame';
+import { setupSnek } from './snek';
 import { setupAdmin } from './admin';
 import { setupAdminUserSetting } from './adminUserSetting';
 import { setupAdminSetting } from './adminSettings';
@@ -29,6 +30,7 @@ export function renderPage() {
 		'/setting': setupSetting,
 		'/history': setupMatchHistory,
 		'/friends': setupFriends,
+		'/snek': setupSnek,
 		'/error404': setupError404,
 		'/admin': setupAdmin,
 		'/adminSetting': setupAdminSetting,
@@ -38,7 +40,7 @@ export function renderPage() {
 		const funct = routes[window.location.pathname]
 		if (funct) {
 			funct();
-		}	else {
+		} else {
 			root.innerHTML = "";
 			root.insertAdjacentHTML("beforeend", `
 			<link rel="stylesheet" href="src/styles/index.css"> <!-- Link to the CSS file -->
