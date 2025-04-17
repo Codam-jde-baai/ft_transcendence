@@ -41,6 +41,7 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	//public data
 	fastify.get('/public/users', { preHandler: [authenticatePublicToken], ...getPublicUsersOptions }, getAllUsers);
 
+
 	// Create user with JSON data
 	fastify.post<{
 		Body: {

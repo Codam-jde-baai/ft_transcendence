@@ -4,6 +4,7 @@ import { securitySchemes, errorResponseSchema, publicUserProperties } from './us
 import { addFriend } from '../controllers/friends/addFriends.ts';
 import { getFriends, getMyFriends } from '../controllers/friends/getFriends.ts';
 import { AcceptFriendReq, RemoveFriendRelation } from '../controllers/friends/updateFriends.ts';
+import { getNonFriends } from '../controllers/friends/publicUsers.ts'
 
 const relationProperties = {
 	type: 'object',
@@ -163,11 +164,35 @@ const RemoveFriendOptions = {
 	}
 }
 
+export const PublicNonFriendOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Gets all friends that have no relation to the user requesting it',
+		tags: ['friends'],
+		response: {
+			200: {
+				type: 'array',
+				items: {
+					type: 'object',
+					properties: publicUserProperties
+				}
+			},
+			500: errorResponseSchema
+		}
+	}
+};
+
 function friendsRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	fastify.addSchema({
 		$id: 'security',
 		security: securitySchemes
 	});
+
+	fastify.get('/friends/me', { preHandler: [authenticatePrivateToken], ...MyFriendListOptions },
+		getMyFriends)
+
+	// filtered to remove friends of user
+	fastify.get('/friends/nonfriends', { preHandler: [authenticatePrivateToken], ...PublicNonFriendOptions }, getNonFriends);
 
 	// addRelation
 	fastify.post<{ Body: { alias: string } }>
@@ -178,8 +203,6 @@ function friendsRoutes(fastify: FastifyInstance, options: any, done: () => void)
 		('/friends/:uuid', { preHandler: [authenticatePrivateToken], ...FriendListOptions },
 			getFriends)
 
-	fastify.get('/friends/me', { preHandler: [authenticatePrivateToken], ...MyFriendListOptions },
-		getMyFriends)
 
 
 	fastify.put<{ Params: { friendId: string } }>

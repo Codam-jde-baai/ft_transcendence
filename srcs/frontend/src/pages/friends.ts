@@ -6,12 +6,6 @@ import { setupMatchHistory } from './history';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody } from "../script/connections"
 
-
-/*
- blocked is not used at the moment, could be implemented for livechat
- for implementing: would need to call blocked users list in promose.all()
-*/
-
 export type PubUserSchema = {
 	alias: string;
 	profile_pic: {
@@ -41,17 +35,16 @@ type FriendRelations = {
 	sentRequests: friendSchema[];
 };
 
+let publicUsers: PubUserSchema[] = [];
+
 export function setupFriends() {
 	const root = document.getElementById('app');
-	let publicUsers: PubUserSchema[] = [];
 	let friendRelations: FriendRelations = {
 		friends: [],
 		receivedRequests: [],
 		sentRequests: [],
 	};
-	// @todo: get cookie from uuid, call friends/me instead of friends/uuid
-	// using promise instead of multiple .thens()
-	// promse.all() method can take multiple promises as input ( connectfunc returns a promse) and promise.all() continues once all promises conclude
+
 	Promise.all([
 		// request friend relations -> friendslists
 		connectFunc(`/friends/me`, requestBody("GET"))
@@ -70,7 +63,7 @@ export function setupFriends() {
 				}
 			}),
 		// request public users -> for search bar
-		connectFunc("/public/users", requestBody("GET"))
+		connectFunc("/friends/nonfriends", requestBody("GET"))
 			.then(response => {
 				if (response.ok) {
 					return response.json();
@@ -106,35 +99,25 @@ export function setupFriends() {
 				</div>
 
 					<h1 class="header" data-i18n="Friends_Header"></h1>
-					<div class="friends-list">
+					<div class="friends-list" id="friends-container">
 						${friendRelations.friends.map((element: friendSchema) => `
 						<public-user type="friend" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
 						`).join('')}
 					</div>
 
 					<h1 class="header" data-i18n="Request_Header"></h1>
-					<div class="friends-list">
+					<div class="friends-list" id="requests-container">
 						${friendRelations.receivedRequests.map((element: friendSchema) => `
     					<public-user type="friend-request" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
 						`).join('')}
 					</div>
 						<h1 class="header" data-i18n="Pending_Requests_Header"></h1>
-						<div class="friends-list">
+						<div class="friends-list" id="pending-container">
 						${friendRelations.sentRequests.map((element: friendSchema) => `
     					<public-user type="pendingRequests" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
 						`).join('')}
 					</div>
-						
-					<!-- BLOCKED USERS AREA - to implemented make blockedRelations or something
-						<h1 class="header" data-i18n="Blocked_Header"></h1>
-						<div class="friends-list">
-						loop through the map here
-						</div>
-					-->
-						
-
 				</div>
-				<!-- ^^^ -->
 			</div>
 			`);
 				getLanguage();
@@ -145,8 +128,7 @@ export function setupFriends() {
 		})
 		.catch((error) => {
 			console.log("ERROR (SetupFriends): ", error)
-		}
-		)
+		})
 }
 
 function setupNavigation() {
@@ -215,7 +197,52 @@ function setupSearchFunctionality(publicUsers: PubUserSchema[]) {
 
 	document.getElementById('searchButton')?.addEventListener('click', () => {
 		performSearch();
+		getLanguage();
 	});
+}
+
+// Function to refresh a specific container with fresh data from the server
+function refreshContainer(containerId: string) {
+	connectFunc(`/friends/me`, requestBody("GET"))
+		.then(response => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				console.log(`Error fetching friend data: ${response.status}`);
+				return { friends: [], receivedRequests: [], sentRequests: [] };
+			}
+		})
+		.then(data => {
+			const container = document.getElementById(containerId);
+			if (!container) return;
+
+			let containerItems: friendSchema[] = [];
+			let itemType = "";
+
+			if (containerId === 'friends-container') {
+				containerItems = data.friends;
+				itemType = "friend";
+			} else if (containerId === 'requests-container') {
+				containerItems = data.receivedRequests;
+				itemType = "friend-request";
+			} else if (containerId === 'pending-container') {
+				containerItems = data.sentRequests;
+				itemType = "pendingRequests";
+			}
+
+			// Update container content
+			container.innerHTML = containerItems.map((element: friendSchema) => `
+                <public-user 
+                    type="${itemType}" 
+                    alias=${element.friend.alias} 
+                    friendid=${element.friendid} 
+                    profilePicData=${element.friend.profile_pic.data} 
+                    profilePicMimeType=${element.friend.profile_pic.mimeType}>
+                </public-user>
+            `).join('');
+
+			getLanguage();
+		});
 }
 
 function setupUserActionListeners() {
@@ -251,15 +278,15 @@ function setupUserActionListeners() {
 		}
 	});
 
-
 	// Action handler functions
 	function acceptFriendRequest(friendid: number) {
-		console.log("acceptFriendRequest button, friend: ", friendid)
+		console.log("acceptFriendRequest button, friend: ", friendid);
 		connectFunc(`/friends/${friendid}/accept`, requestBody("PUT"))
 			.then(response => {
 				if (response.ok) {
 					console.log(`Accepted friend request from user`);
-					setupFriends(); // Refresh the friends list
+					refreshContainer('requests-container');
+					refreshContainer('friends-container');
 				} else {
 					console.error(`Failed to accept friend request: ${response.status}`);
 				}
@@ -267,32 +294,31 @@ function setupUserActionListeners() {
 	}
 
 	function declineFriendRequest(friendid: number) {
-		console.log("declineFriendRequest button, friend: ", friendid)
+		console.log("declineFriendRequest button, friend: ", friendid);
 		connectFunc(`/friends/${friendid}/delete`, requestBody("DELETE"))
 			.then(response => {
 				if (response.ok) {
-					console.log(`friend relation has been deleted`);
-					setupFriends(); // Refresh the friends list
+					console.log(`Declined friend request`);
+					refreshContainer('requests-container');
 				} else {
 					console.error(`Failed to delete friend relation: ${response.status}`);
 				}
 			});
 	}
 
-
 	function viewUserHistory(alias: string) {
-		//window.history.pushState({ userData: alias }, '', `/history?user=${alias}`);
-		//setupMatchHistory();
-		console.log("viewUserHistory button, alias: ", alias)
+		window.history.pushState({ userData: alias }, '', `/history?user=${alias}`);
+		setupMatchHistory();
+		console.log("viewUserHistory button, alias: ", alias);
 	}
 
 	function removeFriend(friendid: number) {
-		console.log("removeFriend button, friend: ", friendid)
+		console.log("removeFriend button, friend: ", friendid);
 		connectFunc(`/friends/${friendid}/delete`, requestBody("DELETE"))
 			.then(response => {
 				if (response.ok) {
-					console.log(`friend relation has been deleted`);
-					setupFriends();
+					console.log(`Friend removed`);
+					refreshContainer('friends-container');
 				} else {
 					console.error(`Failed to delete friend relation: ${response.status}`);
 				}
@@ -300,26 +326,25 @@ function setupUserActionListeners() {
 	}
 
 	function addFriend(alias: string) {
-		console.log("addFriend button, to become friend: ", alias)
-		connectFunc(`/friends/new`, requestBody("POST", JSON.stringify({ alias: alias })))
+		console.log("addFriend button, to become friend: ", alias);
+		connectFunc(`/friends/new`, requestBody("POST", JSON.stringify({ alias: alias }), "application/json"))
 			.then(response => {
 				if (response.ok) {
-					console.log(`friend relation has been deleted`);
-					setupFriends()
+					console.log(`Friend request sent`);
+					refreshContainer('pending-container');
 				} else {
-					console.error(`Failed to delete friend relation: ${response.status}`);
+					console.error(`Failed to add friend: ${response.status}`);
 				}
 			});
-
 	}
 
 	function cancelRequest(friendid: number) {
-		console.log("cancelRequest button, friend: ", friendid)
+		console.log("cancelRequest button, friend: ", friendid);
 		connectFunc(`/friends/${friendid}/delete`, requestBody("DELETE"))
 			.then(response => {
 				if (response.ok) {
-					console.log(`friend relation has been deleted`);
-					setupFriends();
+					console.log(`Request canceled`);
+					refreshContainer('pending-container');
 				} else {
 					console.error(`Failed to delete friend relation: ${response.status}`);
 				}

@@ -9,15 +9,13 @@ class PublicUser extends HTMLElement {
 	}
 
 	setupEventListeners() {
-		// Get all buttons in the component
 		const buttons = this.querySelectorAll('button.btn');
 
-		// Add click listener to each button
 		buttons.forEach(button => {
 			button.addEventListener('click', () => {
 				const buttonAction = button.getAttribute('data-i18n');
 
-				// Dispatch a custom event with the button type and user alias
+				// Dispatch a custom event
 				this.dispatchEvent(new CustomEvent('user-action', {
 					bubbles: true,
 					detail: {
@@ -54,17 +52,18 @@ class PublicUser extends HTMLElement {
 
 			<button class="btn accept" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Accept"> </button>
 			<button class="btn decline" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Decline"> </button>
-
 			<!-- for blocked implementation
 			<button class="btn blok" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Block"> </button>
 			-->
+			
+			<button class="btn" ${type === "unfriend" ? '' : 'hidden'} data-i18n="btn_Add_Friend">Add Friend</button>
+			<button class="btn" ${type === "unfriend" ? '' : 'hidden'} data-i18n="History">History</button>
 
-			<button class="btn" ${type === "unfriend" ? '' : 'hidden'} data-i18n="btn_Add_Friend"> </button>
-			<button class="btn" ${type === "unfriend" ? '' : 'hidden'} data-i18n="History"> </button>
+			<button class="btn accept" ${type === "pendingRequests" ? '' : 'hidden'} data-i18n="btn_Cancel"> </button>
+			
 			<!-- for blocked implementation
 			<button class="btn" ${type === "blocked" ? '' : 'hidden'} data-i18n="btn_Unblock_User"> </button>
 			-->
-			<button class="btn accept" ${type === "pendingRequests" ? '' : 'hidden'} data-i18n="btn_Cancel"> </button>
 		</div>`)
 	}
 }
