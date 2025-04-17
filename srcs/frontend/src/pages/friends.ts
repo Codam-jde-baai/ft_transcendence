@@ -122,7 +122,7 @@ export function setupFriends() {
 			`);
 				getLanguage();
 				setupNavigation();
-				setupSearchFunctionality(publicUsers);
+				setupSearchFunctionality();
 				setupUserActionListeners();
 			}
 		})
