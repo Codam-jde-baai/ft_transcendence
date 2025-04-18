@@ -8,6 +8,7 @@ import userRoutes from './routes/users.ts';
 import friendsRoutes from './routes/friends.ts';
 import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
+import rateLimit from '@fastify/rate-limit';
 
 console.log("reading from index.ts backend");
 
@@ -50,7 +51,12 @@ fastify.register(secureSession, {
 
 })
 
-await fastify.register(swagger, {
+fastify.register(rateLimit, {
+	max: 42,
+	timeWindow: '1 minute'
+  })
+
+fastify.register(swagger, {
 	openapi: {  // Change from 'swagger' to 'openapi'
 		info: {
 			title: 'Your API',
@@ -85,7 +91,7 @@ fastify.register(multipart, {
 });
 
 
-await fastify.register(swaggerUi, {
+fastify.register(swaggerUi, {
 	routePrefix: '/docs'
 });
 
@@ -96,6 +102,7 @@ fastify.register(friendsRoutes);
 // defining a function in TS
 const start = async () => {
 	try {
+		await fastify.ready();
 		const address = await fastify.listen({ port: envConfig.port, host: '0.0.0.0' });
 		fastify.log.info(`server listening on ${address}`);
 	} catch (error) {
