@@ -36,15 +36,14 @@ fastify.register(fastifyCors, {
 
 // https://github.com/fastify/fastify-secure-session
 fastify.register(secureSession, {
-	// sessionName: 'session',
 	key: sessionKey,
-	expiry: 24 * 60 * 60, // Default 1 day
+	expiry: 24 * 60 * 60,
 	cookie: {
-		httpOnly: true, // hides it from user
-		path: '/',                  // Restrict cookie to specific path
-		maxAge: 7200,               // Session timeout in seconds (e.g., 2 hours)
+		httpOnly: true,				// hides it from client
+		path: '/',					// Restrict cookie to specific path
+		maxAge: 60 * 60,			// Session timeout in seconds (e.g., 1 hour)
 		secure: true,				// only sends over https
-		sameSite: 'none',         // Restrict cross-site requests
+		sameSite: 'strict',			// Restrict cross-site requests
 		// domain: 'yourdomain.com'    // Restrict cookie to your domain
 		// cookie options: https://github.com/fastify/fastify-cookie
 	}
