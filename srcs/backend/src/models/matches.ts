@@ -6,11 +6,11 @@ export type match = InferSelectModel<typeof matchesTable>;
 
 // InferInsert for writing operations
 export type createMatch = InferInsertModel<typeof matchesTable> & {
-	uuid: string;
-	p1Alias: string;
-	p2Alias: string;
-	p1_id: string | null;
-	p2_id: string | null;
+	p1_alias: string;
+	p2_alias: string;
+	winner_alias: string;
+	p1_uuid: string | null;
+	p2_uuid: string | null;
 	status: number;
 	winner_id: number;
 	start_time?: string;
