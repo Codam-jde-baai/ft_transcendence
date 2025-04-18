@@ -3,69 +3,9 @@ import { setupSetting } from './setting';
 import { setupFriends } from './friends';
 import { setupMatchHistory } from './history';
 import { setupStartGame } from './startGame';
-import { switchLanguage } from '../script/language';
 import { getLanguage } from '../script/language';
-
-// DropDown Function
-document.addEventListener('DOMContentLoaded', () => {
-	// Handle click events for toggling settings dropdown
-	document.addEventListener('click', (event) => {
-		const dropdown = document.querySelector('.dropdown-content');
-		const dropdownBtn = document.querySelector('.dropdown-btn');
-		
-		if (dropdown && dropdownBtn) {
-			if (dropdownBtn.contains(event.target as Node)) {
-				// Toggle dropdown visibility when clicking the button
-				dropdown.classList.toggle('show');
-			} else if (!dropdown.contains(event.target as Node)) {
-				// Hide dropdown if clicking outside of it
-				dropdown.classList.remove('show');
-			}
-		}
-	});
-
-	// Close both dropdowns when clicking outside
-	document.addEventListener("click", (event) => {
-		const languageDropdown = document.querySelector('.language-content');
-		const languageBtn = document.querySelector('.language-btn');
-
-		if (languageDropdown && languageBtn) {
-			if (languageBtn.contains(event.target as Node)) {
-				// Toggle dropdown visibility when clicking the button
-				languageDropdown.classList.toggle('showLang');
-			} else if (!languageDropdown.contains(event.target as Node)) {
-				// Hide dropdown if clicking outside of it
-				languageDropdown.classList.remove('showLang');
-			}
-		}
-	});
-
-// document.getElementById('gb')?.addEventListener('click', () => {
-// 	document.querySelectorAll(".language-option").forEach(item => {
-	document.addEventListener('click', (event) => {
-		const gb = document.getElementById('gb');
-		const de = document.getElementById('de');
-		const nl = document.getElementById('nl');
-		
-		if (gb) {
-			if (gb.contains(event.target as Node)) {
-				switchLanguage("en");
-			}
-		}
-		if (de) {
-			if (de.contains(event.target as Node)) {
-				switchLanguage("de");
-			}
-		}
-		if (nl) {
-			if (nl.contains(event.target as Node)) {
-				switchLanguage("nl");
-			}
-		}
-	});
-
-});
-
+import { dropDownBar } from '../script/dropDownBar';
+import { fillHome } from '../script/fillHome';
 
 export function setupUserHome () {
 	const root = document.getElementById('app');
@@ -83,33 +23,33 @@ export function setupUserHome () {
 
 				<div class="user-stats">
 					<div class="stat-box">
-						<div class="total-score">
-							<img src="src/component/Pictures/totalScore.png">
+						<div class="best-score">
+							<img src="src/Pictures/bestScore.png">
 						</div>
 						<div class="text-container">
-							<div class="total-score-text" data-i18n="Total_Score"></div>
-							<div class="score-number"> >-1200-< </div>
+							<div class="best-score-text" data-i18n="Score"></div>
+							<div id="best-score" class="score-number"> >-1200-< </div>
 						</div>
 					</div>
 
 					<div class="smoll-stat-container">
 						<div class="smoll-stat-box">
 							<div class="win-losse">
-								<img src="src/component/Pictures/wins.png">
+								<img src="src/Pictures/wins.png">
 							</div>
 							<div class="text-container">
 								<div class="score-text" data-i18n="Wins"></div>
-								<div class="score-number"> >-1200-< </div>
+								<div id="win" class="score-number"></div>
 							</div>
 						</div>
 
 						<div class="smoll-stat-box">
 							<div class="win-losse">
-								<img src="src/component/Pictures/losses.png">
+								<img src="src/Pictures/losses.png">
 							</div>
 							<div class="text-container">
 								<div class="score-text" data-i18n="Losses"></div>
-								<div class="score-number"> >-900-< </div>
+								<div id="loss" class="score-number"> </div>
 							</div>
 						</div>
 					</div>
@@ -123,35 +63,47 @@ export function setupUserHome () {
 					<h2 data-i18n="LeaderBoard"></h2>
 					<div class="leaderboard-entry">
 						<div class="img-container">
-							<img src="src/component/Pictures/1.jpg">
+							<img src="src/Pictures/1.jpg">
 							</div>
 							<div class="text-container">
 								<div class="position" data-i18n="1"></div>
-								<div class="text"> $user123</div>
-								<div class="number" data-i18n="wins_"></div>
-								<div class="number" data-i18n="losses_"></div>
+								<div id="aliasName1" class="text"></div>
+								<div class="number">
+									<span data-i18n="wins_"></span> <span id="win1" class="number"></span>
+								</div>
+								<div class="number">
+									<span data-i18n="losses_"></span> <span id="loss1" class="number"></span>
+								</div>
 							</div>
 						</div>
 					<div class="leaderboard-entry">
 						<div class="img-container">
-							<img src="src/component/Pictures/2.jpg">
+							<img src="src/Pictures/2.jpg">
 						</div>
 						<div class="test-container">
 							<div class="position" data-i18n="2"></div>
-							<div class="text">$welp</div>
-							<div class="number" data-i18n="wins_"></div>
-							<div class="number" data-i18n="losses_"></div>
+							<div id="aliasName2" class="text"></div>
+							<div class="number">
+								<span data-i18n="wins_"></span> <span id="win2" class="number"></span>
+							</div>
+							<div class="number">
+								<span data-i18n="losses_"></span> <span id="loss2" class="number"></span>
+							</div>v>
 						</div>
 					</div>
 					<div class="leaderboard-entry">
 						<div class="img-container">
-							<img src="src/component/Pictures/3.jpg">
+							<img src="src/Pictures/3.jpg">
 						</div>
 						<div class="test-container">
 							<div class="position" data-i18n="3"></div>
-							<div class="text">$coolalias</div>
-							<div class="number" data-i18n="wins_"></div>
-							<div class="number" data-i18n="losses_"></div>
+							<div id="aliasName3" class="text"></div>
+							<div class="number">
+								<span data-i18n="wins_"></span> <span id="win3" class="number"></span>
+							</div>
+							<div class="number">
+								<span data-i18n="losses_"></span> <span id="loss3" class="number"></span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -162,6 +114,9 @@ export function setupUserHome () {
 		`);
 
 		getLanguage();
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+		fillHome(); // Retrieve user uuid
+
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
 			renderPage();

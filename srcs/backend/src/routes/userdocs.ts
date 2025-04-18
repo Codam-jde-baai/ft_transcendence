@@ -251,7 +251,7 @@ export const updatePasswordProperties = {
 		consumes: ['application/json'],
 		body: {
 			type: 'object',
-			required: ['username', 'password', 'newPassword'],
+			required: ['uuid', 'password', 'newPassword'],
 			properties: {
 				...loginProperties,
 				newPassword: { type: 'string', minLength: 6 }
@@ -266,13 +266,80 @@ export const updatePasswordProperties = {
 	}
 };
 
+export const updateUserStatusOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Updates the user status',
+		tags: ['users'],
+		params: {
+			type: 'object',
+			properties: {
+				uuid: {
+					type: 'string',
+					description: 'user uuid'
+				}
+			}
+		},
+		response: {
+			200: {},
+			404: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+export const updateUserProperties = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Updates only the user data that is sent',
+		tags: ['users'],
+		consumes: ['application/json'],
+		body: {
+			type: 'object',
+			required: ['uuid'],
+			properties: {
+				uuid: { type: 'string' },
+				username: { type: 'string', minLength: 3 },
+				alias: { type: 'string', minLength: 3 },
+				language: { type: 'string' }
+			}
+		},
+		response: {
+			200: userProperties,
+			400: errorResponseSchema,
+			404: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
 export const deleteUserOptions = {
 	schema: {
 		security: [{ apiKey: [] }],
 		summary: 'deletes a user',
 		tags: ['users'],
 		response: {
-			204: {},
+			204: {
+				type: 'null',
+				description: 'User successfully deleted'
+			},
+			404: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+export const deleteProfilePicOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'set profilePic to NULL in database',
+		tags: ['users'],
+		response: {
+			204: {
+				type: 'null',
+				description: 'Profile picture successfully deleted'
+			},
+			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
 	}

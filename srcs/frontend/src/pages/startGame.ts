@@ -4,6 +4,7 @@ import { setupSetting } from './setting';
 import { setupFriends } from './friends';
 import { setupMatchHistory } from './history';
 import { getLanguage } from '../script/language';
+import { dropDownBar } from '../script/dropDownBar';
 
 export function setupStartGame () {
 	const root = document.getElementById('app');
@@ -37,6 +38,8 @@ export function setupStartGame () {
 		`);
 
 		getLanguage();
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
 			renderPage();

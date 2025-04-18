@@ -73,7 +73,7 @@ export function setupFriends() {
 					<div class="search-container">
 						<input type="text" class="userSearch" data-i18n-placeholder="Friends_placeholder1">
 						<button class="search-btn">
-							<img class="searchIcon" src="src/component/Pictures/searchIcon.png"/>
+							<img class="searchIcon" src="src/Pictures/searchIcon.png"/>
 						</button>
 						<div class="dropdown">
 							<div id="search-results" class="dropdown-content">

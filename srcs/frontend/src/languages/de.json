@@ -30,6 +30,8 @@
     "Request_Header": "Freundschaftsanfragen",
     
     "Index_P": "Spiele klassisches Pong mit deinen Freunden!",
+    "LogIn_P": "Du hast kein Konto?",
+    "SignUp_P": "Du  hast bereits ein Konto?",
     "History_P": "Von",
     "Admin_P": "Von",
 
@@ -59,9 +61,8 @@
     "Date": "Datum",
     "1v1_Game": "1v1 Spiel",
     "Winner": "Gewinner",
+    
     "Score": "Punktestand",
-
-    "Total_Score": "Gesamtpunktzahl",
     "Wins": "Siege",
     "Losses": "Niederlagen",
     "LeaderBoard": "Bestenliste",
@@ -70,6 +71,18 @@
     "3": "3. Platz",
     "wins_": "Siege: ",
     "losses_": "Niederlagen: ",
+
+    "SignUp_error_admin": "Admin-Name nicht erlaubt",
+    "SignUp_error_password": "Passwörter stimmen nicht überein",
+    "SignUp_error_user": "Benutzername muss zwischen 3 und 17 Zeichen lang sein",
+    "SignUp_error_alias": "Alias-Name muss zwischen 3 und 17 Zeichen lang sein",
+    "SignUp_error_userPass": "Passwort muss zwischen 6 und 117 Zeichen lang sein",
+    "SignUp_error_user_exist": "Benutzername vergeben. Versuche einen anderen!",
+    "SignUp_error_alias_exist": "Alias vergeben. Versuche einen anderen!",
+    
+    "LogIn_error_user": "Benutzer nicht gefunden",
+    "LogIn_error_password": "Falsches Passwort",
+    "LogIn_error": "Falsches Passwort",
 
     "EndOfFile": ""
 }

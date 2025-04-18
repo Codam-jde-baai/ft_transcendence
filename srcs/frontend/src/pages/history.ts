@@ -3,6 +3,7 @@ import { setupUserHome } from './home';
 import { setupSetting } from './setting';
 import { setupFriends } from './friends';
 import { getLanguage } from '../script/language';
+import { dropDownBar } from '../script/dropDownBar';
 
 export function  setupMatchHistory () {
 	const root = document.getElementById('app');
@@ -61,6 +62,8 @@ export function  setupMatchHistory () {
 		`);
 
 		getLanguage();
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
 			renderPage();

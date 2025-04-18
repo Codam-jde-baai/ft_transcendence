@@ -2,7 +2,8 @@
 DOCKER_COMPOSE_DEV = docker-compose -f srcs/docker-compose.dev.yml
 DOCKER_COMPOSE = docker-compose -f srcs/docker-compose.yml
 
-VOLUME_DIR := ${HOME}/ft_transcendence/data
+VOLUME_DIR := ${HOME}/ft_transcendence/data ${HOME}/ft_transcendence/cookie-key
+VOLUME_DATA := ${HOME}/ft_transcendence/data/* ${HOME}/ft_transcendence/cookie-key/*
 
 # Default target
 .DEFAULT_GOAL := help
@@ -77,10 +78,10 @@ prod-down:
 	$(DOCKER_COMPOSE) down
 
 volume:
-	mkdir -p ${HOME}/ft_transcendence/data
+	mkdir -p $(VOLUME_DIR)
 
 clean-volume:
-	rm -rf ${HOME}/ft_transcendence/data/*
+	rm -rf $(VOLUME_DATA)
 
 # since we cant send the env file to the git repository. store the env on your local machine in file ~/.transcendence.env - will share on slack
 copy-env:
