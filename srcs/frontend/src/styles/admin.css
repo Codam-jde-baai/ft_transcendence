@@ -1,5 +1,21 @@
 /* adminPage.css */
 
+
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .overlay {
+    @apply fixed top-0 left-0 w-full h-screen bg-black/50 -z-10;
+  }
+
+  .middle {
+    @apply fixed flex items-center justify-center p-[10px] top-[200px] left-[200px] m-[20px] rounded-[15px] w-[80%] h-[70%] bg-black/80;
+  }
+
+} */
+
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -269,10 +285,9 @@
 .userTable {
 	width: 100%;
 	border-collapse: collapse;
-	margin-top: 10px;
 	background-color: #ffffff;
 }
-.userTable th, .userTable td {
+.userTable td {
 	padding: 12px;
 	text-align: left;
 	color: rgb(0, 0, 0);
@@ -315,18 +330,18 @@
 }
 
 
-
+/* scroll */
 .table-wrapper {
-	max-height: 400px; /* Adjust to taste */
+	margin-top: 10px;
+	max-height: 60vh; 
 	overflow-y: auto;
-	border: 1px solid #ccc;
 }
 .userTable {
 	width: 100%;
 	border-collapse: collapse;
 }
 .userTable th, .userTable td {
-	padding: 8px;
+	padding: 10px;
 	text-align: left;
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid #c5c5c5;
 }

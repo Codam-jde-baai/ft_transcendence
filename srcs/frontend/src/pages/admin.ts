@@ -2,11 +2,10 @@ import { renderPage } from './index';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupError404 } from './error404';
-import { setupAdminUserSetting } from './adminUserSetting';
 import { setupAdminSetting } from './adminSettings';
 import { connectFunc, requestBody } from '../script/connections';
 import { fillTopbar } from '../script/fillTopbar';
-import { fillAdmin } from '../script/fillAdmin';
+// import { fillUserTable } from '../script/fillUsertabe_admin';
 
 export function setupAdmin() {
 	const root = document.getElementById('app');
@@ -35,7 +34,7 @@ export function setupAdmin() {
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		fillTopbar();
-		fillAdmin();
+		// fillUserTable();
 		
 		document.getElementById('Home')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/admin');
@@ -48,10 +47,6 @@ export function setupAdmin() {
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
 			renderPage();
-		});
-		document.getElementById('AdminSet')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/adminUserSetting');
-			setupAdminUserSetting();
 		});
 
 		// Retrieve user uuid
