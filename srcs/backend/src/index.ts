@@ -1,11 +1,13 @@
-import envConfig from './config/env.ts';
 import Fastify from 'fastify';
-import userRoutes from './routes/users.ts';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import multipart from '@fastify/multipart';
-import friendsRoutes from './routes/friends.ts';
 import fastifyCors from '@fastify/cors'
+import secureSession from '@fastify/secure-session';
+import userRoutes from './routes/users.ts';
+import friendsRoutes from './routes/friends.ts';
+import envConfig from './config/env.ts';
+import sessionKey from './config/session-key.ts';
 
 console.log("reading from index.ts backend");
 
@@ -21,14 +23,30 @@ const fastify = Fastify({
 	}
 })
 
-
 // Setting Up The CORS Plugin First
 fastify.register(fastifyCors, {
-	origin: '*',
+	// origin: '*',
+	origin: 'http://localhost:5173',
 	methods: ['GET', 'POST', 'DELETE', 'PUT'],
+	credentials: true,
 	allowedHeaders: ['Content-Type', 'x-api-key'],
 });
-// 'Origin', 'X-Requested-With', 'Accept'
+
+// https://github.com/fastify/fastify-secure-session
+fastify.register(secureSession, {
+	key: sessionKey,
+	expiry: 24 * 60 * 60,
+	cookie: {
+		httpOnly: true,				// hides it from client
+		path: '/',					// Restrict cookie to specific path
+		maxAge: 60 * 60,			// Session timeout in seconds (e.g., 1 hour)
+		secure: true,				// only sends over https
+		sameSite: 'strict',			// Restrict cross-site requests
+		// domain: 'yourdomain.com'    // Restrict cookie to your domain
+		// cookie options: https://github.com/fastify/fastify-cookie
+	}
+
+})
 
 await fastify.register(swagger, {
 	openapi: {  // Change from 'swagger' to 'openapi'

@@ -38,8 +38,9 @@ class PublicUser extends HTMLElement {
 		if (profilePicData != "null" && profilePicMimeType != "null") {
 			image = `data:${profilePicMimeType};base64,${profilePicData}`;
 		}
-		else {
-			image = "src/component/Pictures/defaultPP.avif"
+		else
+		{
+			image = "src/Pictures/defaultPP.avif"
 		}
 		this.innerHTML = "";
 		this.insertAdjacentHTML("beforeend", `

@@ -24,7 +24,12 @@ export const authenticatePublicToken = async (request: FastifyRequest, reply: Fa
  */
 export const authenticatePrivateToken = async (request: FastifyRequest, reply: FastifyReply) => {
   const apiKey = request.headers['x-api-key'] as string;
-
+	const data = request.session.get('data');
+	if (!data){
+    return reply.code(401).send({ error: 'Please Sign Up Or Login' });
+	}
+	request.session.touch()
+  
   if (!apiKey) {
     reply.code(401).send({ error: 'Authentication required' });
     return;

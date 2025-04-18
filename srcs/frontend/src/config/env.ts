@@ -7,6 +7,8 @@
  */
 const envConfig = {
     privateKey: import.meta.env.VITE_PRIVATE_KEY,
+    publicKey: import.meta.env.VITE_PUBLIC_KEY,
+    frontendPort: import.meta.env.VITE_FRONTEND_PORT
 };
 
 export default envConfig;
