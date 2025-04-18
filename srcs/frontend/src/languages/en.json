@@ -9,6 +9,7 @@
     "btn_Solo": "Play Solo",
     "btn_Friend": "Play with a Friend",
     "btn_Add_Friend": "Add Friend",
+    "btn_Remove_Friend": "Remove Friend",
     "btn_Accept": "Accept",
     "btn_Decline": "Decline",
     "btn_Block": "Block",
@@ -30,6 +31,8 @@
     "Request_Header": "Friend Requests",
     
     "Index_P": "Play classic Pong with your friends!",
+    "LogIn_P": "Don't have an account?",
+    "SignUp_P": "Already have an account?",
     "History_P": "Of",
     "Admin_P": "Of",
     
@@ -59,9 +62,8 @@
     "Date": "Date",
     "1v1_Game": "1v1 Game",
     "Winner": "Winner",
+    
     "Score": "Score",
-
-    "Total_Score": "Total Score",
     "Wins": "Wins",
     "Losses": "Losses",
     "LeaderBoard": "Leaderboard",
@@ -70,6 +72,19 @@
     "3": "3rd Place",
     "wins_": "wins: ",
     "losses_": "losses:",
+
+    "SignUp_error_admin": "Admin name not allowed",
+    "SignUp_error_password": "Passwords Don't Match",
+    "SignUp_error_user": "Username must be between 3 and 17 characters",
+    "SignUp_error_alias": "Alias name must be between 3 and 17 characters",
+    "SignUp_error_userPass": "Password must be between 6 and 117 characters",
+    "SignUp_error_user_exist": "Username taken. Try another!",
+    "SignUp_error_alias_exist": "Alias taken. Try another!",
+    
+    "LogIn_error_user": "User not found",
+    "LogIn_error_password": "Wrong Password",
+    "LogIn_error": "Wrong Password",
+
 
     "EndOfFile": ""
 }

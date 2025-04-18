@@ -96,6 +96,7 @@ await fastify.register(swaggerUi, {
 	routePrefix: '/docs'
 });
 
+
 fastify.register(userRoutes);
 fastify.register(friendsRoutes);
 

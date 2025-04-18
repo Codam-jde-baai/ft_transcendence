@@ -24,12 +24,20 @@ RUN pnpm install --force
 RUN pnpm rebuild better-sqlite3
 RUN pnpm rebuild sodium-native
 
+<<<<<<< HEAD
 RUN ls 
 
 RUN cat docker-entrypoint/generateDb.sh
 
 RUN chmod +x docker-entrypoint/generateDb.sh
 # Database setup
+=======
+# RUN pnpm db:generate
+
+# RUN pnpm db:migrate
+
+# RUN pnpm db:push
+>>>>>>> origin/main
 
 # Expose backend port
 EXPOSE 3000

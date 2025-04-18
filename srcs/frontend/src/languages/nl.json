@@ -9,6 +9,7 @@
     "btn_Solo": "Speel solo",
     "btn_Friend": "Speel met een vriend",
     "btn_Add_Friend": "Vriend toevoegen",
+    "btn_Remove_Friend": "Vriend verwijderen",
     "btn_Accept": "Accepteren",
     "btn_Decline": "Weigeren",
     "btn_Block": "Blokkeren",
@@ -29,6 +30,8 @@
     "Request_Header": "Vriendschapsverzoeken",
     
     "Index_P": "Speel klassieke Pong met je vrienden!",
+    "LogIn_P": "Heb je geen account?",
+    "SignUp_P": "Heb je al een account?",
     "History_P": "Van",
     "Admin_P": "Van",
 
@@ -58,9 +61,8 @@
     "Date": "Datum",
     "1v1_Game": "1v1 Spel",
     "Winner": "Winnaar",
+    
     "Score": "Score",
-
-    "Total_Score": "Totale score",
     "Wins": "Overwinningen",
     "Losses": "Verliezen",
     "LeaderBoard": "Ranglijst",
@@ -69,6 +71,18 @@
     "3": "3e plaats",
     "wins_": "overwinningen: ",
     "losses_": "verliezen: ",
+
+    "SignUp_error_admin": "Admin-naam niet toegestaan",
+    "SignUp_error_password": "Wachtwoorden komen niet overeen",
+    "SignUp_error_user": "Gebruikersnaam moet tussen 3 en 17 tekens lang zijn",
+    "SignUp_error_alias": "Aliasnaam moet tussen 3 en 17 tekens lang zijn",
+    "SignUp_error_userPass": "Wachtwoord moet tussen 6 en 117 tekens lang zijn",
+    "SignUp_error_user_exist": "Gebruikersnaam bezet. Probeer een andere!",
+    "SignUp_error_alias_exist": "Alias bezet. Probeer een andere!",
+    
+    "LogIn_error_user": "Gebruiker niet gevonden",
+    "LogIn_error_password": "Fout wachtwoord",
+    "LogIn_error": "Verkeerd wachtwoord",
     
     "EndOfFile": ""
 }

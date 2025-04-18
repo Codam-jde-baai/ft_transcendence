@@ -6,20 +6,22 @@ import { setupFriends } from './friends';
 import { setupMatchHistory } from './history';
 import { setupStartGame } from './startGame';
 import { setupAdmin } from './admin';
-import { setupAdminSetting } from './adminSetting';
+import { setupAdminUserSetting } from './adminUserSetting';
+import { setupAdminSetting } from './adminSettings';
 import { setupError404 } from './error404';
 import { getLanguage } from '../script/language';
+import { dropDownBar } from '../script/dropDownBar';
 import '../component/topbar'
 import '../component/languageMenu'
+import '../component/publicUser'
 
 document.addEventListener('DOMContentLoaded', () => {
-	renderPage();	
+	renderPage();
 });
 
 export function renderPage() {
 	const root = document.getElementById('app');
 	const routes: { [key: string]: () => void } = {
-		'/': setupUserHome,
 		'/home': setupUserHome,
 		'/logIn': setupLogIn,
 		'/signUp': setupSignUp,
@@ -29,7 +31,8 @@ export function renderPage() {
 		'/friends': setupFriends,
 		'/error404': setupError404,
 		'/admin': setupAdmin,
-		'/adminSetting': setupAdminSetting
+		'/adminSetting': setupAdminSetting,
+		'/adminUserSetting': setupAdminUserSetting
 	};
 	if (root) {
 		const funct = routes[window.location.pathname]
@@ -50,9 +53,10 @@ export function renderPage() {
 					<!-- <button class="btn" id="Connect" data-i18n="Connect"> ConneCt </button> -->
 				</div>
 			</div>
-			`);
+				`);
 
 			getLanguage();
+			dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 			document.getElementById('LogIn')?.addEventListener('click', () => {
 				window.history.pushState({}, '', '/logIn');
 				renderPage();

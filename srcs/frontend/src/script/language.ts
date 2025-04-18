@@ -1,3 +1,4 @@
+/* ---> These Functions handle different language options <--- */
 // Import language files
 import en from '../languages/en.json';
 import de from '../languages/de.json';
@@ -6,6 +7,13 @@ import nl from '../languages/nl.json';
 // Define LangData interface to type-check language data
 interface LangData {
 	[key: string]: string;
+}
+
+export function getTranslation(key: string): string {
+
+	const lang = localStorage.getItem('selectedLang') || 'en';
+	const langData: LangData = lang === 'de' ? de : lang === 'nl' ? nl : en;
+	return langData[key] || key;
 }
 
 // Function to switch language
@@ -20,7 +28,7 @@ export function switchLanguage(lang: string) {
 		case 'de':
 			langData = de;
 			break;
-		case 'nl':  // Change to match 'nl.json' for Dutch
+		case 'nl':
 			langData = nl;
 			break;
 		default:
@@ -30,7 +38,7 @@ export function switchLanguage(lang: string) {
 
 	updateContent(langData);
 	if (document.getElementById("selected-flag"))
-		document.getElementById("selected-flag")!.src = `src/component/Pictures/flagIcon-${lang}.png`;
+		document.getElementById("selected-flag")!.src = `src/Pictures/flagIcon-${lang}.png`;
 	localStorage.setItem('selectedLang', lang);
 }
 
@@ -59,7 +67,7 @@ export function getLanguage()
 	// code for setting the language button to the correct language
 	updateContent(langData);
 	if (document.getElementById("selected-flag"))
-		document.getElementById("selected-flag")!.src = `src/component/Pictures/flagIcon-${lang}.png`;
+		document.getElementById("selected-flag")!.src = `src/Pictures/flagIcon-${lang}.png`;
 }
 
 // Function to update content based on selected language
@@ -80,7 +88,6 @@ function updateContent(langData: LangData): void {
 		}
 	});
 }
-
 
 
 // Load saved language or default to English

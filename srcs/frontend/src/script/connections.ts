@@ -1,14 +1,12 @@
 import envConfig from '../config/env';
 
+/* ---> These Functions handle the connection between frontend and backend <--- */
+// POST and GET request
+
 export function inputToContent(input: string[]) {
 	let str: string = "";
 	input.forEach(element => {
 		const elem = document.getElementById(element) as HTMLInputElement
-
-		// Might not be set from the user (This is then the default value)
-		if (elem.id === "profilePic")
-			elem.value = "src/component/Pictures/flagIcon-en.png";
-
 		str += `"${elem.id}": "${elem.value}",`
 	});
 	str = str.slice(0, -1);
@@ -45,11 +43,6 @@ export function requestBody(method: string, content: string | null) {
 async function httpGet(url: string, request: any | null): Promise<Response> {
 	return fetch(url, request)
 		.then((response) => {
-			//const contentType = response.headers.get("Content-Type");
-			// if (contentType && contentType.includes("application/json"))
-			// 	return response.json();
-			// else
-			// 	return response.text();
 			return (response)
 		})
 		.catch((error) => {
@@ -61,6 +54,6 @@ async function httpGet(url: string, request: any | null): Promise<Response> {
 export async function connectFunc(url: string, request: any | null): Promise<Response> {
 	console.log("Connect To " + url + " Using:")
 	console.log(request)
-	const response = await httpGet(url, request);
+	const response = await httpGet("http://localhost:3000" + url, request);
 	return response
 }
