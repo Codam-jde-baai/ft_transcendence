@@ -27,8 +27,14 @@ export const authenticatePublicToken = async (request: FastifyRequest, reply: Fa
 export const authenticatePrivateToken = async (request: FastifyRequest, reply: FastifyReply) => {
 	const authHeader = request.headers.authorization;
 
+	const data = request.session.get('data');
+	if (!data){
+		return reply.code(401).send({ error: 'Please Sign Up Or Login' });
+	}
+	request.session.touch()
+
 	if (!authHeader || !authHeader.startsWith('Bearer ')) {
-		reply.code(401).send({ error: 'Authentication required' });
+		reply.code(411).send({ error: 'Authentication required' });
 		return;
 	}
 

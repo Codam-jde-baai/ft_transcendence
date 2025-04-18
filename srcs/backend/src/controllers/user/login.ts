@@ -8,6 +8,11 @@ import { eq } from 'drizzle-orm'
 import { usersTable, userStatus } from '../../db/schema.ts';
 import { toPublicUser, verifyPassword } from '../../models/users.ts';
 
+declare module '@fastify/secure-session' {
+	interface SessionData {
+	  data: string;
+	}
+}
 
 export const loginUser = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
@@ -45,6 +50,7 @@ export const loginUser = async (request: FastifyRequest, reply: FastifyReply) =>
 
 		const updatedUser = await db.select().from(usersTable).where(eq(usersTable.username, username));
 		const pubUser = toPublicUser(updatedUser[0]);
+		request.session.set('data', updatedUser[0].uuid);
 		return reply.code(200).send(pubUser);
 	} catch (error) {
 		request.log.error('getAllUsers failed:', error);

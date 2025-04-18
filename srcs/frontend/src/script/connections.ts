@@ -19,7 +19,7 @@ export function requestBody(method: string, content: string | null) {
 		const headers = {
 			"Authorization": `Bearer ${envConfig.privateKey}`,
 		}
-		return { "method": method, "headers": headers }
+		return { "method": method, "headers": headers, "credentials": 'include'}
 	}
 	if (method.toUpperCase() === 'POST') {
 		const headers = {
@@ -27,7 +27,7 @@ export function requestBody(method: string, content: string | null) {
 			"Content-Type": "application/json",
 		}
 		const body = '{' + content + '}'
-		return { "method": method, "headers": headers, "body": body };
+		return { "method": method, "headers": headers, "body": body, "credentials": 'include' };
 	}
 	if (method.toUpperCase() === 'DELETE') {
 		const headers = {
@@ -35,7 +35,7 @@ export function requestBody(method: string, content: string | null) {
 			"Content-Type": "application/json",
 		}
 		const body = '{' + content + '}'
-		return { "method": method, "headers": headers, "body": body };
+		return { "method": method, "headers": headers, "body": body, "credentials": 'include' };
 	}
 	return `ERROR (requestBody): Method ${method} Not Recognized`
 }

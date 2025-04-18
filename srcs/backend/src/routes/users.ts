@@ -50,14 +50,15 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 			language?: eLanguage;
 			status?: userStatus;
 		}
-	}>('/users/new', { preHandler: [authenticatePrivateToken], ...createUserOptions }, addUser);
+	}>('/users/new', createUserOptions, addUser);
 
 	// Update profile picture with multipart/form-data
 	fastify.post<{ Params: { uuid: string } }>
 		('/users/:uuid/profile-pic', { preHandler: [authenticatePrivateToken], ...updateProfilePicOptions }, updateUserProfilePic);
 
 	// Log in
-	fastify.post('/user/login', { preHandler: [authenticatePrivateToken], ...loginUserOptions }, loginUser);
+	// fastify.post('/user/login', { preHandler: [authenticatePrivateToken], ...loginUserOptions }, loginUser);
+	fastify.post('/user/login', loginUserOptions, loginUser);
 
 	// update password
 	fastify.put<{

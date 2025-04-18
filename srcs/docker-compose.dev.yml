@@ -37,10 +37,12 @@ services:
       - ./backend:/app # mounting the /backend so live edits update the docker container
       - /app/node_modules
       - sqlite_data:/app/data
+      - cookie_data:/app/cookie-key
     environment:
       - NODE_ENV=development
     env_file:
       - ./.env
+    entrypoint: [ "/app/docker-entrypoint/generateDb.sh" ]
     command: [ "pnpm", "run", "dev" ]
 
 networks:
@@ -55,4 +57,10 @@ volumes:
     driver_opts:
       type: none
       device: ${HOME}/ft_transcendence/data
+      o: bind
+  cookie_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/ft_transcendence/cookie-key
       o: bind
