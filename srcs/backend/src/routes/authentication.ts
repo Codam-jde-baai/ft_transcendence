@@ -31,6 +31,7 @@ export const authenticatePrivateToken = async (request: FastifyRequest, reply: F
 	if (!data){
 		return reply.code(401).send({ error: 'Please Sign Up Or Login' });
 	}
+	request.session.touch()
 
 	if (!authHeader || !authHeader.startsWith('Bearer ')) {
 		reply.code(411).send({ error: 'Authentication required' });
