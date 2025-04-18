@@ -16,6 +16,7 @@
 		"@fastify/cors": "^11.0.0",
 		"@punkish/fastify-better-sqlite3": "^2.0.0",
 		"@fastify/secure-session": "^8.1.1",
+		"@fastify/rate-limit":"^10.2.2",
 		"better-sqlite3": "^11.9.1",
 		"sodium-native": "^4.0.1",
 		"drizzle-orm": "^0.x.x",
