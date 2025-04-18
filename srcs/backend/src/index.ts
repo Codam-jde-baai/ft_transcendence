@@ -23,12 +23,6 @@ const fastify = Fastify({
 	}
 })
 
-// declare module '@fastify/secure-session' {
-// 	interface SessionData {
-// 	  data: string;
-// 	}
-// }
-
 // Setting Up The CORS Plugin First
 fastify.register(fastifyCors, {
 	// origin: '*',
