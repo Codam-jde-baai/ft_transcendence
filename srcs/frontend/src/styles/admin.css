@@ -313,3 +313,20 @@
 .btn:last-child:hover {
 	background-color: #b86a8a;
 }
+
+
+
+.table-wrapper {
+	max-height: 400px; /* Adjust to taste */
+	overflow-y: auto;
+	border: 1px solid #ccc;
+}
+.userTable {
+	width: 100%;
+	border-collapse: collapse;
+}
+.userTable th, .userTable td {
+	padding: 8px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+}

@@ -32,6 +32,43 @@ class UserTable extends HTMLElement {
 					</tr>
 				</tbody>
 			</table>`)
+
+
+
+
+		// interface User {
+		// 	username: string;
+		// 	alias: string;
+		// }
+
+		// const usersAttr = this.getAttribute("users");
+		// const users: User[] = usersAttr ? JSON.parse(usersAttr) : [];
+
+		// this.innerHTML = `
+		// 	<div class="table-wrapper">
+		// 		<table class="userTable">
+		// 			<thead>
+		// 				<tr>
+		// 					<th data-i18n="LogIn_Name"></th>
+		// 					<th data-i18n="SignUp_Alias"></th>
+		// 					<th data-i18n="Action"></th>
+		// 				</tr>
+		// 			</thead>
+		// 			<tbody>
+		// 				${users.map(user => `
+		// 					<tr>
+		// 						<td>${user.username}</td>
+		// 						<td>${user.alias}</td>
+		// 						<td>
+		// 							<button class="btn" data-i18n="btn_Remove"></button>
+		// 							<button class="btn" id="AdminSet" data-i18n="Change_Password"></button>
+		// 						</td>
+		// 					</tr>
+		// 				`).join('')}
+		// 			</tbody>
+		// 		</table>
+		// 	</div>
+		// `;
 	}
 }
 

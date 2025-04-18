@@ -1,5 +1,4 @@
 import { connectFunc, requestBody } from './connections';
-// import { errorDisplay } from './errorFunctions';
 import { setupError404 } from '../pages/error404';
 
 export function fillHome() {

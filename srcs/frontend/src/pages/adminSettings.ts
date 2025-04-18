@@ -61,21 +61,21 @@ export function setupAdminSetting() {
 				fillTopbar();
 				fillSetting();
 				
-				document.getElementById('Save')?.addEventListener('click', () => {
+				document.getElementById('Save')?.addEventListener('click', async () => {
 					const isValid = adminPasswordFields(["password", "password_confirm"]);
 					if (!isValid)
 						return; // Stop execution if validation fails
 
-					// Can't change alias or password, because of request PUT
-					if (updateUserSettings(["password", "avatar"])) {
-							window.history.pushState({}, '', '/admin');
-							setupAdmin();
+					if (await updateUserSettings(["password", "avatar"])) {
+						window.history.pushState({}, '', '/admin');
+						setupAdmin();
 					}
 					else {
 						// Network or server error
 						window.history.pushState({}, '', '/error404');
 						setupError404();
 					}
+
 				});
 				
 				document.getElementById('Home')?.addEventListener('click', () => {

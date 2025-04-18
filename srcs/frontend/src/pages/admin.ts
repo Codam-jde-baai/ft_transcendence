@@ -6,6 +6,7 @@ import { setupAdminUserSetting } from './adminUserSetting';
 import { setupAdminSetting } from './adminSettings';
 import { connectFunc, requestBody } from '../script/connections';
 import { fillTopbar } from '../script/fillTopbar';
+import { fillAdmin } from '../script/fillAdmin';
 
 export function setupAdmin() {
 	const root = document.getElementById('app');
@@ -13,7 +14,6 @@ export function setupAdmin() {
 		root.innerHTML = "";
 		root.insertAdjacentHTML("beforeend", `
 		<link rel="stylesheet" href="src/styles/admin.css"> <!-- Link to the CSS file -->
-		<link rel="stylesheet" href="src/styles/adminSet.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		
 		<admin-topbar></admin-topbar>
@@ -35,6 +35,7 @@ export function setupAdmin() {
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		fillTopbar();
+		fillAdmin();
 		
 		document.getElementById('Home')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/admin');

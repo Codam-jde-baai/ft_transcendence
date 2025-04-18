@@ -71,7 +71,6 @@ export function setupSetting () {
 			if (!isValid)
 				return; // Stop execution if validation fails
 
-			// Can't change alias or password, because of request PUT
 			if (await updateUserSettings(["alias", "password", "avatar"])) {
 					window.history.pushState({}, '', '/home');
 					setupUserHome();
