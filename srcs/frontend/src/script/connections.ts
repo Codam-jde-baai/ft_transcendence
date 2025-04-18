@@ -33,7 +33,7 @@ export enum ContentType {
 // contentType needs to be a param because contentType for uploading a profile-pic should be multipart/formdata and for jsons should be json as we have it
 export function requestBody(method: string, content?: string | FormData | null, contentType?: string | null | undefined): RequestInit {
 	const baseHeaders: Record<string, string> = {
-		"Authorization": `Bearer ${envConfig.privateKey}`,
+		"x-api-key": `${envConfig.privateKey}`
 	};
 
 	const uCaseMethod: string = method.toUpperCase();
@@ -44,7 +44,8 @@ export function requestBody(method: string, content?: string | FormData | null, 
 
 	const baseRequestOptions: RequestInit = {
 		method: method,
-		headers: baseHeaders
+		headers: baseHeaders,
+		credentials: "include"
 	}
 	if (content) {
 		baseRequestOptions.body = content;

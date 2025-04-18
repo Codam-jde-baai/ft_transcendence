@@ -26,7 +26,7 @@ const fastify = Fastify({
 fastify.register(fastifyCors, {
 	origin: '*',
 	methods: ['GET', 'POST', 'DELETE', 'PUT'],
-	allowedHeaders: ['Content-Type', 'Authorization'],
+	allowedHeaders: ['Content-Type', 'x-api-key'],
 });
 // 'Origin', 'X-Requested-With', 'Accept'
 
@@ -40,9 +40,10 @@ await fastify.register(swagger, {
 		components: {  // Change from securityDefinitions to components
 			securitySchemes: {
 				apiKey: {
-					type: 'http',
-					scheme: 'bearer',
-					description: 'just input the token, Bearer is auto prefixed now'
+					type: 'apiKey',
+					name: 'x-api-key',
+					in: 'header',
+					description: 'API key for authentication(replacement of bearer)'
 				}
 			}
 		},
