@@ -23,11 +23,18 @@ const fastify = Fastify({
 	}
 })
 
+// declare module '@fastify/secure-session' {
+// 	interface SessionData {
+// 	  data: string;
+// 	}
+// }
 
 // Setting Up The CORS Plugin First
 fastify.register(fastifyCors, {
-	origin: '*',
+	// origin: '*',
+	origin: 'http://localhost:5173',
 	methods: ['GET', 'POST', 'DELETE'],
+	credentials: true,
 	allowedHeaders: ['Content-Type', 'Authorization'],
 });
 // 'Origin', 'X-Requested-With', 'Accept'
@@ -35,14 +42,16 @@ fastify.register(fastifyCors, {
 
 // https://github.com/fastify/fastify-secure-session
 fastify.register(secureSession, {
-	key: [sessionKey],
+	// sessionName: 'session',
+	key: sessionKey,
+	expiry: 24 * 60 * 60, // Default 1 day
 	cookie: {
 		httpOnly: true, // hides it from user
-		secure: true, // only sends over https
 		path: '/',                  // Restrict cookie to specific path
 		maxAge: 7200,               // Session timeout in seconds (e.g., 2 hours)
-		sameSite: 'strict',         // Restrict cross-site requests
-		domain: 'yourdomain.com'    // Restrict cookie to your domain
+		secure: true,				// only sends over https
+		sameSite: 'none',         // Restrict cross-site requests
+		// domain: 'yourdomain.com'    // Restrict cookie to your domain
 		// cookie options: https://github.com/fastify/fastify-cookie
 	}
 
