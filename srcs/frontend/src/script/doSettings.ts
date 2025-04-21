@@ -1,6 +1,7 @@
 import { connectFunc, requestBody, inputToContent } from './connections';
 import { EditPicture } from './sendPic';
 import { setupError404 } from '../pages/error404';
+import DOMPurify from 'dompurify';
 
 // Save button (settings.ts)
 export async function updateUserSettings(input: string[]): Promise<boolean> {
@@ -15,7 +16,10 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 				if (!EditPicture(userID))
 					return false;
 			} else if (inputElement.id === "alias") {
-				const body = requestBody("PUT", JSON.stringify({ uuid: userID, [inputElement.id]: inputElement.value }), "application/json");
+				const rawInput = inputElement.value;
+				const sanitizedInput = DOMPurify.sanitize(rawInput); // Removes unsafe HTML
+				const alphanumericInput = sanitizedInput.replace(/[^a-zA-Z0-9]/g, ''); // Keeps only alphanumeric
+				const body = requestBody("PUT", JSON.stringify({ uuid: userID, [inputElement.id]: alphanumericInput }), "application/json");
 				try {
 					const response = await connectFunc("/user/data", body);
 					if (!response.ok)
@@ -39,6 +43,7 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 	}
 	return true;
 }
+
 
 // fill variables in settings
 export function fillSetting() {

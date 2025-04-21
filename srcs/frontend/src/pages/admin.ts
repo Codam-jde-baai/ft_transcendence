@@ -5,7 +5,7 @@ import { setupError404 } from './error404';
 import { setupAdminSetting } from './adminSettings';
 import { connectFunc, requestBody } from '../script/connections';
 import { fillTopbar } from '../script/fillTopbar';
-// import { fillUserTable } from '../script/fillUsertabe_admin';
+import { fillUserTable } from '../script/fillUsertabe_admin';
 
 export function setupAdmin() {
 	const root = document.getElementById('app');
@@ -34,7 +34,7 @@ export function setupAdmin() {
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		fillTopbar();
-		// fillUserTable();
+		fillUserTable();
 		
 		document.getElementById('Home')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/admin');

@@ -1,4 +1,5 @@
 import envConfig from '../config/env';
+import DOMPurify from 'dompurify';
 
 /* ---> These Functions handle the connection between frontend and backend <--- */
 // POST, GET, PUT and DELETE request
@@ -9,19 +10,17 @@ export function inputToContent(input: string[]): string {
 	input.forEach(id => {
 		const elem = document.getElementById(id) as HTMLInputElement | null;
 		if (elem)
-			obj[elem.id] = elem.value;
+		{
+			const rawInput = elem.value;
+			const sanitizedInput = DOMPurify.sanitize(rawInput); // Removes unsafe HTML
+			const alphanumericInput = sanitizedInput.replace(/[^a-zA-Z0-9]/g, ''); // Keeps only alphanumeric
+			obj[elem.id] = alphanumericInput;
+		}
 	});
 
 	const jsonStr = JSON.stringify(obj);
 	return jsonStr;
 }
-
-export function inputToFormData(filename: string, file: File | Blob): FormData {
-	const form = new FormData();
-	form.append(filename, file);
-	return (form)
-}
-
 
 export enum ContentType {
 	JSON = "application/json",

@@ -345,3 +345,29 @@
 	text-align: left;
 	border-bottom: 1px solid #c5c5c5;
 }
+
+/* Eye icon for password */
+.field-icon {
+    cursor: pointer;
+    position: absolute;
+    margin-left: -35px; 
+    margin-top: 10px; 
+}
+.field-icon img {
+    width: 25px;
+    height: 20px;
+}
+
+/* Error Messages */
+.input-error {
+	border: 3px solid rgb(255, 0, 0);
+}
+.error-text {
+	color: rgb(228, 73, 73);
+	font-size: 1rem;
+	margin-bottom: 2px;
+	margin-top: 20px;
+	box-sizing: border-box;
+	font-family: Arial, sans-serif;
+	text-align: left;
+}

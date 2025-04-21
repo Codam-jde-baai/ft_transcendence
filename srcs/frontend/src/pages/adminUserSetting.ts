@@ -4,6 +4,9 @@ import { dropDownBar } from '../script/dropDownBar';
 import { setupAdmin } from './admin';
 import { setupAdminSetting } from './adminSettings';
 import { fillTopbar } from '../script/fillTopbar';
+import { adminPasswordFields } from '../script/errorFunctions';
+import { setupError404 } from './error404';
+import { eyeIcon_Button } from '../script/buttonHandling';
 
 export function setupAdminUserSetting() {
 	const root = document.getElementById('app');
@@ -23,7 +26,7 @@ export function setupAdminUserSetting() {
 				<p class="p2" data-i18n="Admin_P"></p>
 				<p class="p2">$USERNAME</p>
 					
-				<button class="user-picture">
+				<button class="upicture">
 					<img src="src/Pictures/defaultPP.png">
 				</button>
 	
@@ -33,14 +36,20 @@ export function setupAdminUserSetting() {
 				<p class="p1" data-i18n="SignUp_Alias"></p>
 				<div class="input-field display-only">Display USER Alias Name</div>
 	
-				<p class="p1" data-i18n="Change_Password"></p>
-				<input type="Password" class="input-field">
+				<p class="p1" id="adminPass" data-i18n="Change_Password"></p>
+				<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
+				<span id="show-password" class="field-icon">
+					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
+				</span>
 	
-				<p class="p1" data-i18n="ConfirmPassword"></p>
-				<input type="Confirm_Password" class="input-field">		
+				<p class="p1" id="admin_password-match" data-i18n="ConfirmPassword"></p>
+				<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field">
+				<span id="show-password_confirm" class="field-icon">
+					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
+				</span>		
 
 				<div class="ubuttons">
-					<button class="ubtn" data-i18n="btn_Admin"></button>
+					<button id="Save" class="ubtn" data-i18n="btn_Admin"></button>
 				</div>
 				
 				<!-- ^^^ -->
@@ -50,6 +59,7 @@ export function setupAdminUserSetting() {
 
 			getLanguage();
 			dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+			eyeIcon_Button(["show-password", "show-password_confirm"]);
 			fillTopbar();
 			
 			document.getElementById('Home')?.addEventListener('click', () => {
@@ -68,6 +78,22 @@ export function setupAdminUserSetting() {
 				window.history.pushState({}, '', '/adminUserSetting');
 				setupAdminUserSetting();
 			});
-		
+
+			document.getElementById('Save')?.addEventListener('click', async () => {
+				const isValid = adminPasswordFields(["password", "password_confirm"]);
+				if (!isValid)
+					return; // Stop execution if validation fails
+
+				// if () {
+				// 	window.history.pushState({}, '', '/admin');
+				// 	setupAdmin();
+				// }
+				// else {
+					// Network or server error
+					window.history.pushState({}, '', '/error404');
+					setupError404();
+				// }
+
+			});
 	}
 }
