@@ -70,7 +70,7 @@ export function setupSignUp() {
 				return; // Stop execution if validation fails
 
 			const content: string = inputToContent(["username", "alias", "password", "profilePic"])
-			const body = requestBody("POST", content) // Used for requests where the frontend has to send info to the backend (like making a new user). Will return null in case of GET
+			const body = requestBody("POST", content, "application/json") // Used for requests where the frontend has to send info to the backend (like making a new user). Will return null in case of GET
 			connectFunc("/users/new", body)
 				.then((response) => {
 				if (response.ok) {
