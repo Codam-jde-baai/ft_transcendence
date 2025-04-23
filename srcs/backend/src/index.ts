@@ -29,8 +29,12 @@ fastify.register(fastifyCors, {
 	origin: 'http://localhost:5173',
 	methods: ['GET', 'POST', 'DELETE', 'PUT'],
 	credentials: true,
-	allowedHeaders: ['Content-Type', 'x-api-key'],
+	allowedHeaders: ['Content-Type', 'x-api-key']
 });
+
+// fastify.options('*', (request, reply) => {
+// 	reply.send();
+//   });
 
 // https://github.com/fastify/fastify-secure-session
 fastify.register(secureSession, {
@@ -95,7 +99,14 @@ fastify.register(friendsRoutes);
 // defining a function in TS
 const start = async () => {
 	try {
-		const address = await fastify.listen({ port: envConfig.port, host: '0.0.0.0' });
+		const address = await fastify.listen({ port: 3000, host: '0.0.0.0' }, function (err, address) {
+			if (err) {
+				fastify.log.error(err)
+				process.exit(1)
+			}
+			fastify.log.info(`server listening on ${address}`)
+		})
+		
 		fastify.log.info(`server listening on ${address}`);
 	} catch (error) {
 		fastify.log.error(error);
@@ -109,15 +120,4 @@ start()
 //default route
 fastify.get('/', function (request, reply) {
 	reply.send("hello this is transendence world") //automatically generates text
-})
-
-
-
-// Run the server!
-fastify.listen({ port: 3000, host: '0.0.0.0' }, function (err, address) {
-	if (err) {
-		fastify.log.error(err)
-		process.exit(1)
-	}
-	fastify.log.info(`server listening on ${address}`)
 })

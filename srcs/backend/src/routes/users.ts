@@ -5,7 +5,7 @@ import { loginUser } from '../controllers/user/login.ts'
 import { deleteUser, deleteProfilePic } from '../controllers/user/deleteUser.ts'
 import { updatePassword, updateUser, setOffline, setOnline } from '../controllers/user/updateUser.ts'
 import { userStatus, eLanguage } from '../db/schema.ts';
-import { authenticatePrivateToken, authenticatePublicToken } from './authentication.ts';
+import { authenticatePrivateToken, authAPI } from './authentication.ts';
 import {
 	securitySchemes,
 	imageOptions,
@@ -34,12 +34,12 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	fastify.get<{ Params: { uuid: string } }>
 		('/user/:uuid/profile-pic', { preHandler: [authenticatePrivateToken], ...imageOptions }, getUserImage);
 
-	fastify.get('/users', { preHandler: [authenticatePrivateToken], ...getUsersOptions }, getAllUsers);
+	fastify.get('/users', { preHandler: [authAPI], ...getUsersOptions }, getAllUsers);
 	fastify.get<{ Params: { uuid: string } }>('/user/:uuid', { preHandler: [authenticatePrivateToken], ...getUserOptions }, getUser);
 	fastify.get<{ Params: { alias: string } }>('/useralias/:alias/', { preHandler: [authenticatePrivateToken], ...getUserAliasOptions }, getUserAlias);
 
 	//public data
-	fastify.get('/public/users', { preHandler: [authenticatePublicToken], ...getPublicUsersOptions }, getAllUsers);
+	fastify.get('/public/users', { preHandler: [authAPI], ...getPublicUsersOptions }, getAllUsers);
 
 
 	// Create user with JSON data
@@ -58,8 +58,7 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 		('/users/:uuid/profile-pic', { preHandler: [authenticatePrivateToken], ...updateProfilePicOptions }, updateUserProfilePic);
 
 	// Log in
-	// fastify.post('/user/login', { preHandler: [authenticatePrivateToken], ...loginUserOptions }, loginUser);
-	fastify.post('/user/login', loginUserOptions, loginUser);
+	fastify.post('/user/login', { preHandler: [authenticatePrivateToken], ...loginUserOptions }, loginUser);
 
 	// update password
 	fastify.put<{
@@ -81,7 +80,6 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	//update status
 	fastify.put<{ Params: { uuid: string } }>('/user/:uuid/setOnline', { preHandler: [authenticatePrivateToken], ...updateUserStatusOptions }, setOnline);
 	fastify.put<{ Params: { uuid: string } }>('/user/:uuid/setOffline', { preHandler: [authenticatePrivateToken], ...updateUserStatusOptions }, setOffline);
-
 
 	fastify.delete<{ Params: { uuid: string } }>('/user/:uuid/profile-pic', { preHandler: [authenticatePrivateToken], ...deleteProfilePicOptions }, deleteProfilePic);
 	done();
