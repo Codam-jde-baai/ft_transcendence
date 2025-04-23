@@ -89,7 +89,7 @@ export function setupFriends() {
 				<div class="search-container">
 					<form id="searchForm">
 						<button type="button" id="searchButton" class="search-btn">
-							<img class="searchIcon" src="src/component/Pictures/searchIcon.png"/>
+							<img class="searchIcon" src="src/Pictures/searchIcon.png"/>
 						</button>
 						<input type="search" id="friendSearch" class="userSearch" data-i18n-placeholder="Friends_placeholder1">
 					</form>
