@@ -1,4 +1,4 @@
-import { FastifyInstance, } from 'fastify';
+import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { getAllUsers, getUser, getUserAlias, getUserImage } from '../controllers/user/getUsers.ts';
 import { addUser, updateUserProfilePic } from '../controllers/user/setUsers.ts';
 import { loginUser } from '../controllers/user/login.ts'
@@ -23,12 +23,19 @@ import {
 	deleteUserOptions
 } from './userdocs.ts';
 
+const addCorsHeaders = (request: FastifyRequest, reply: FastifyReply, done: () => void) => {
+	reply.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+	reply.header('Access-Control-Allow-Credentials', 'true');
+	done();
+  };
+
 function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	fastify.addSchema({
 		$id: 'security',
 		security: securitySchemes
 	});
 
+	fastify.addHook('preHandler', addCorsHeaders);
 	// User routes
 	// for testing:
 	fastify.get<{ Params: { uuid: string } }>
@@ -51,14 +58,14 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 			language?: eLanguage;
 			status?: userStatus;
 		}
-	}>('/users/new', createUserOptions, addUser);
+	}>('/users/new', { preHandler: [authAPI], ...createUserOptions}, addUser);
 
 	// Update profile picture with multipart/form-data
 	fastify.post<{ Params: { uuid: string } }>
 		('/users/:uuid/profile-pic', { preHandler: [authenticatePrivateToken], ...updateProfilePicOptions }, updateUserProfilePic);
 
 	// Log in
-	fastify.post('/user/login', { preHandler: [authenticatePrivateToken], ...loginUserOptions }, loginUser);
+	fastify.post('/user/login', { preHandler: [authAPI], ...loginUserOptions }, loginUser);
 
 	// update password
 	fastify.put<{

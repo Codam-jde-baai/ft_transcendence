@@ -55,7 +55,7 @@ export function setupLogIn() {
 		
 			const content: string = inputToContent(["username", "password"])
 			console.log("Content: ", content);
-			const body = requestBody("POST", content)
+			const body = requestBody("POST", content, "application/json");
 			const response = connectFunc("/user/login", body);
 
 			response.then((response) => {
