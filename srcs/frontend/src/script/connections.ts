@@ -13,6 +13,7 @@ export function inputToContent(input: string[]): string {
 		str += `"${elem.id}": "${elem.value}",`
 	});
 	str = str.slice(0, -1);
+	str = '{' + str + '}'
 	console.log("string = " + str);
 	return str;
 }

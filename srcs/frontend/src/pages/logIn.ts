@@ -54,6 +54,7 @@ export function setupLogIn() {
 				return; // Stop execution if validation fails
 		
 			const content: string = inputToContent(["username", "password"])
+			console.log("Content: ", content);
 			const body = requestBody("POST", content)
 			const response = connectFunc("/user/login", body);
 
