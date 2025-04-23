@@ -100,11 +100,13 @@ export const getFriends = async (request: FastifyRequest<{ Params: { uuid: strin
 	}
 }
 
-// @todo UUID from COOKIE
 export const getMyFriends = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const uuid: string = "fedc3ec8-8392-4c63-ae8c-6c94ab836b60" // from cookie
+		const uuid = request.session.get('data');
+		if (!uuid) {
+			return reply.status(401).send({ error: 'user is not logged in' })
+		}
 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);

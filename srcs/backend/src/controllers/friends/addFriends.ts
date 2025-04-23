@@ -7,10 +7,6 @@ import Database from 'better-sqlite3';
 import { friendsTable, usersTable } from '../../db/schema.ts'
 import { createRelation, toPublicRelation } from '../../models/friends.ts'
 
-/**
- * @todo after cookie session implementation, make only the alias a param, get the requester from session cookie.
- */
-
 export const addFriend = async (request: FastifyRequest<{
 	Body: {
 		alias: string
@@ -21,11 +17,13 @@ export const addFriend = async (request: FastifyRequest<{
 		const { alias } = request.body
 		if (!alias)
 			reply.code(400).send({ error: "recepient alias should have a value" });
+		const reqUUid = request.session.get('data');
+		if (!reqUUid) {
+			return reply.status(401).send({ error: 'user is not logged in' })
+		}
 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite)
-		const reqUUid: string = "fedc3ec8-8392-4c63-ae8c-6c94ab836b60" //@todo GET FROM COOKIE
-
 		const receiverArray = await db.select().from(usersTable).where(eq(usersTable.alias, alias));
 
 		if (receiverArray.length == 0) {

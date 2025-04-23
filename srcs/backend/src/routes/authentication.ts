@@ -24,19 +24,17 @@ export const authenticatePublicToken = async (request: FastifyRequest, reply: Fa
  */
 export const authenticatePrivateToken = async (request: FastifyRequest, reply: FastifyReply) => {
   const apiKey = request.headers['x-api-key'] as string;
+  if (!apiKey) {
+    reply.code(401).send({ error: 'Authentication required' });
+    return;
+  }
+  if (apiKey !== envConfig.private_key) {
+    reply.code(403).send({ error: 'Invalid API key' });
+    return;
+  }
 	const data = request.session.get('data');
 	if (!data){
     return reply.code(401).send({ error: 'Please Sign Up Or Login' });
 	}
 	request.session.touch()
-  
-  if (!apiKey) {
-    reply.code(401).send({ error: 'Authentication required' });
-    return;
-  }
-
-  if (apiKey !== envConfig.private_key) {
-    reply.code(403).send({ error: 'Invalid API key' });
-    return;
-  }
 };

@@ -6,11 +6,6 @@ import Database from 'better-sqlite3';
 //files
 import { friendsTable, friendStatus } from '../../db/schema.ts'
 
-// @todo:
-// TO ALL OF THESE add verification that the accepter is in fact the one who sent the original request
-// 
-
-
 export const AcceptFriendReq = async (request: FastifyRequest<{ Params: { friendId: string } }>, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
@@ -19,7 +14,10 @@ export const AcceptFriendReq = async (request: FastifyRequest<{ Params: { friend
 		if (isNaN(id)) {
 			return reply.status(400).send({ error: "id is not a number" })
 		}
-		const uuid: string = "fedc3ec8-8392-4c63-ae8c-6c94ab836b60" // from cookie
+		const uuid = request.session.get('data');
+		if (!uuid) {
+			return reply.status(401).send({ error: 'user is not logged in' })
+		}
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite)
 
@@ -51,17 +49,18 @@ export const AcceptFriendReq = async (request: FastifyRequest<{ Params: { friend
 	}
 }
 
-// @todo COOKIE
 export const RemoveFriendRelation = async (request: FastifyRequest<{ Params: { friendId: string } }>, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		// ensure that uuid from cookie == receiver or requester uuid
 		const { friendId } = request.params
 		const id = Number(friendId)
 		if (isNaN(id)) {
 			return reply.status(400).send({ error: 'id is not a number' })
 		}
-		const uuid: string = "fedc3ec8-8392-4c63-ae8c-6c94ab836b60" // from cookie 
+		const uuid = request.session.get('data');
+		if (!uuid) {
+			return reply.status(401).send({ error: 'user is not logged in' })
+		}
 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite)
