@@ -6,6 +6,7 @@ import { setupStartGame } from './startGame';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
+import { fillTopbar } from '../script/fillTopbar';
 
 export function setupUserHome () {
 	const root = document.getElementById('app');
@@ -116,6 +117,7 @@ export function setupUserHome () {
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		fillHome(); // Retrieve user uuid
+		fillTopbar();
 
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');

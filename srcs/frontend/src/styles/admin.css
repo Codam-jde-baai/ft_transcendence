@@ -1,5 +1,21 @@
 /* adminPage.css */
 
+/* Example -> need this for later. For tailwindcss */
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .overlay {
+    @apply fixed top-0 left-0 w-full h-screen bg-black/50 -z-10;
+  }
+
+  .middle {
+    @apply fixed flex items-center justify-center p-[10px] top-[200px] left-[200px] m-[20px] rounded-[15px] w-[80%] h-[70%] bg-black/80;
+  }
+
+} */
+
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -129,6 +145,23 @@
 .dropdown-item:hover {
 	background: #b86a8a;
 }
+.dropdown-item.adminCurrentPage {
+    font-weight: bold;
+	background: #ab2d78;
+    position: relative;
+}
+.dropdown-item.adminCurrentPage:hover {
+	background: #b86a8a;
+}
+.dropdown-item.adminCurrentPage::after {
+    content: '▶';
+    font-size: 14px;
+    color: #ffffff;
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
 .hidden {
 	display: none;
 }
@@ -252,10 +285,9 @@
 .userTable {
 	width: 100%;
 	border-collapse: collapse;
-	margin-top: 10px;
 	background-color: #ffffff;
 }
-.userTable th, .userTable td {
+.userTable td {
 	padding: 12px;
 	text-align: left;
 	color: rgb(0, 0, 0);
@@ -295,4 +327,47 @@
 }
 .btn:last-child:hover {
 	background-color: #b86a8a;
+}
+
+
+/* scroll */
+.table-wrapper {
+	margin-top: 10px;
+	max-height: 60vh; 
+	overflow-y: auto;
+}
+.userTable {
+	width: 100%;
+	border-collapse: collapse;
+}
+.userTable th, .userTable td {
+	padding: 10px;
+	text-align: left;
+	border-bottom: 1px solid #c5c5c5;
+}
+
+/* Eye icon for password */
+.field-icon {
+    cursor: pointer;
+    position: absolute;
+    margin-left: -35px; 
+    margin-top: 10px; 
+}
+.field-icon img {
+    width: 25px;
+    height: 20px;
+}
+
+/* Error Messages */
+.input-error {
+	border: 3px solid rgb(255, 0, 0);
+}
+.error-text {
+	color: rgb(228, 73, 73);
+	font-size: 1rem;
+	margin-bottom: 2px;
+	margin-top: 20px;
+	box-sizing: border-box;
+	font-family: Arial, sans-serif;
+	text-align: left;
 }

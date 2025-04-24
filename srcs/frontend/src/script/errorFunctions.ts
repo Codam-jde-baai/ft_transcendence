@@ -73,18 +73,9 @@ export function checkFields(input: string[]): boolean {
 			else
 				errorRMDisplay(elem, errorMsg, "Password");
 		}
-		if (elem.id === "profilePic")
-		{
-			// Might not be set from the user (This is then the default value)
-			if (elem.src == null)
-				elem.value = "src/Pictures/flagIcon-en.png";
-			else
-				elem.value = elem.src; // Get the src of the profile picture image
-		}
 	});
 	return isValid;
 }
-
 
 // Check for empty fiels for LogIn.ts
 export function emptyFields(input: string[]): boolean {
@@ -147,6 +138,34 @@ export function passwordFields(input: string[]): boolean {
 		if (elem.id === "password" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;
+			if (elem.value.length < 6 || elem.value.length > 117)
+			{
+				errorDisplay(elem, errorMsg, "SignUp_error_userPass");
+				isValid = false;
+			}
+			else if (elem.value != (document.getElementById("password_confirm") as HTMLInputElement).value)
+			{
+				errorDisplay(elem, errorMsg, "SignUp_error_password"); // PASSWORD does NOT Match
+				isValid = false;
+			}
+			else
+				errorRMDisplay(elem, errorMsg, "Change_Password");
+		}
+	});
+	return isValid;
+}
+
+
+// Check for the password fiels in Admin setting
+export function adminPasswordFields(input: string[]): boolean {
+	let isValid = true;
+	
+	input.forEach(element => {
+		const elem = document.getElementById(element) as HTMLInputElement
+
+		if (elem.id === "password" && elem.value !== "")
+		{
+			const errorMsg = document.getElementById("adminPass") as HTMLParagraphElement;
 			if (elem.value.length < 6 || elem.value.length > 117)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_userPass");

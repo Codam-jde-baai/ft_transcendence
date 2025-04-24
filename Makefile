@@ -1,6 +1,9 @@
+# Determine docker compose command
+DOCKER_COMPOSE_CMD := $(shell if docker compose version >/dev/null 2>&1; then echo "docker compose"; else echo "docker-compose"; fi)
+
 # Variables
-DOCKER_COMPOSE_DEV = docker-compose -f srcs/docker-compose.dev.yml
-DOCKER_COMPOSE = docker-compose -f srcs/docker-compose.yml
+DOCKER_COMPOSE_DEV = $(DOCKER_COMPOSE_CMD) -f srcs/docker-compose.dev.yml
+DOCKER_COMPOSE = $(DOCKER_COMPOSE_CMD) -f srcs/docker-compose.yml
 
 VOLUME_DIR := ${HOME}/ft_transcendence/data ${HOME}/ft_transcendence/cookie-key
 VOLUME_DATA := ${HOME}/ft_transcendence/data/* ${HOME}/ft_transcendence/cookie-key/*

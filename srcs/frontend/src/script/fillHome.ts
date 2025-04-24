@@ -1,26 +1,14 @@
 import { connectFunc, requestBody } from './connections';
-// import { errorDisplay } from './errorFunctions';
 import { setupError404 } from '../pages/error404';
 
 export function fillHome() {
 	// Retrieve user uuid
 	const userID = localStorage.getItem('userID');
 	if (userID) {
-		const userInfoResponse = connectFunc(`/user/${userID}`, requestBody("GET", null));
-		userInfoResponse.then((userInfoResponse) => {
+		connectFunc(`/user/${userID}`, requestBody("GET", null))
+		.then((userInfoResponse) => {
 			if (userInfoResponse.ok) {
 				userInfoResponse.json().then((data) => {
-
-					// Alias Name
-					const aliasElem = document.getElementById("aliasName");
-					if (aliasElem)
-						aliasElem.textContent = data.alias;
-
-					// Profile-pic
-					// const pictureElem = document.getElementById("profile-picture");
-					// if (pictureElem)
-					// 	pictureElem.src = data.profile_pic;
-					// // ^^^^^ NOT WORKING YET (NO data.profile_pic) ^^^^^^^^^^^^^^^^
 
 					// // Best Score
 					// const bestScoreElem = document.getElementById("best-score");

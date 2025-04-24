@@ -6,6 +6,9 @@ import { connectFunc, requestBody, inputToContent } from '../script/connections'
 import { checkFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
+// import envConfig from '../config/env';
+import { sendPicture } from '../script/sendPic';
+
 
 
 export function setupSignUp() {
@@ -21,7 +24,7 @@ export function setupSignUp() {
 				
 			<p class="p1" data-i18n="SignUp_Avatar"></p>
 			<button class="edit-picture" onclick="document.getElementById('avatar').click()">
-				<img id="profilePic" src="src/Pictures/defaultPP.avif">
+				<img id="profilePic" src="src/Pictures/defaultPP.png">
 			</button>
 			<input type="file" id="avatar" accept="image/*" style="display: none;">
 
@@ -65,18 +68,22 @@ export function setupSignUp() {
 		});	
 
 		document.getElementById('Home')?.addEventListener('click', () => {
-			const isValid = checkFields(["username", "alias", "password", "password_confirm", "profilePic"]);
+			const isValid = checkFields(["username", "alias", "password", "password_confirm"]);
 			if (!isValid)
 				return; // Stop execution if validation fails
 
-			const content: string = inputToContent(["username", "alias", "password", "profilePic"])
-			const body = requestBody("POST", content) // Used for requests where the frontend has to send info to the backend (like making a new user). Will return null in case of GET
+			const body = requestBody("POST", inputToContent(["username", "alias", "password"]), "application/json")
 			connectFunc("/users/new", body)
 				.then((response) => {
 				if (response.ok) {
 					response.json().then((data) => {
+						
 						// Get user ID  -> user uuid
 						const userID = data.uuid;
+
+						// Add Profile Pic
+						sendPicture(userID);
+						
 						if (!userID) {
 							// Network or server error
 							window.history.pushState({}, '', '/error404');
@@ -104,6 +111,11 @@ export function setupSignUp() {
 							const elem = document.getElementById("alias") as HTMLInputElement
 							const errorMsg = document.getElementById("alias-name") as HTMLParagraphElement;
 							errorDisplay(elem, errorMsg, "SignUp_error_alias_exist");
+						}
+						else {
+							// Network or server error
+							window.history.pushState({}, '', '/error404');
+							setupError404();
 						}
 					}).catch(() => {
 						// Network or server error
