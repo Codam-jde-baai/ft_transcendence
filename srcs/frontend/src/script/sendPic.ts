@@ -1,5 +1,5 @@
 import { setupError404 } from '../pages/error404';
-import { connectFunc } from './connections';
+import { connectFunc, requestBody } from './connections';
 import envConfig from '../config/env';
 
 // Add Profile Pic
@@ -19,16 +19,10 @@ export async function sendPicture(userID: any) {
 
 	const form = new FormData();
 	form.append("avatar", file);
-	const baseRequestOptions: RequestInit = {
-		method: 'POST',
-		headers: {
-			"Authorization": `Bearer ${envConfig.privateKey}`
-			// Note: DO NOT set Content-Type for FormData manually
-		},
-		body: form
-	};
 
-	connectFunc(`/users/${userID}/profile-pic`, baseRequestOptions)
+	const body = requestBody("POST", form);
+
+	connectFunc(`/users/${userID}/profile-pic`, body)
 		.then(response => {
 			if (!response.ok) {
 				window.history.pushState({}, '', '/error404');
@@ -55,17 +49,8 @@ export function EditPicture(userID: any): boolean {
 		file = avatarInput.files[0]
 		const form = new FormData();
 		form.append("avatar", file);
-
-		const baseRequestOptions: RequestInit = {
-			method: 'POST',
-			headers: {
-				"Authorization": `Bearer ${envConfig.privateKey}`
-				// Note: DO NOT set Content-Type for FormData manually
-			},
-			body: form
-		};
-
-		connectFunc(`/users/${userID}/profile-pic`, baseRequestOptions)
+		const body = requestBody("POST", form);
+		connectFunc(`/users/${userID}/profile-pic`, body)
 		.then(response => {
 			if (!response.ok) {
 				isValid = false;
