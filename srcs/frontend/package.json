@@ -21,6 +21,7 @@
 		"@tailwindcss/vite": "^4.0.6",
 		"esbuild": ">=0.25.0",
     	"i18next": "^24.2.3",
-		"dompurify": "^2.0.12"
+		"dompurify": "^2.0.12",
+		"pixi.js": "^8.9.1"
 	}
 }
