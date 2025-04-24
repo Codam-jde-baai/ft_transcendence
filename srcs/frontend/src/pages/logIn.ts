@@ -54,9 +54,8 @@ export function setupLogIn() {
 				return; // Stop execution if validation fails
 		
 			const content: string = inputToContent(["username", "password"])
-			const body = requestBody("POST", content);
+			const body = requestBody("POST", content, "application/json");
 			const response = connectFunc("/user/login", body);
-
 			response.then((response) => {
 				if (response.ok) {
 					response.json().then((data) => {
