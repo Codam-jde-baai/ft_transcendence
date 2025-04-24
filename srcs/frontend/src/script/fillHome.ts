@@ -5,7 +5,7 @@ export function fillHome() {
 	// Retrieve user uuid
 	const userID = localStorage.getItem('userID');
 	if (userID) {
-		connectFunc(`/user/${userID}`, requestBody("GET", null, "application/json"))
+		connectFunc(`/user/${userID}`, requestBody("GET", null))
 		.then((userInfoResponse) => {
 			if (userInfoResponse.ok) {
 				userInfoResponse.json().then((data) => {
@@ -43,7 +43,7 @@ export function fillHome() {
 	}
 
 	// LeaderBoard
-	const leaderboardResponse = connectFunc(`/public/users`, requestBody("GET", null, "application/json"));	
+	const leaderboardResponse = connectFunc(`/public/users`, requestBody("GET", null));	
 	leaderboardResponse.then((leaderboardResponse) => {
 		if (leaderboardResponse.ok) {
 			leaderboardResponse.json().then((data) => {

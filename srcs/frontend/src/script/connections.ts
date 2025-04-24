@@ -29,10 +29,9 @@ export enum ContentType {
 
 // simplified to only set everything once. baseRequest options always contain baseHeaders(currently Bearer token) + method, content and ContentType have if statements
 // contentType needs to be a param because contentType for uploading a profile-pic should be multipart/formdata and for jsons should be json as we have it
-// NOTE : Need to send the "application/json" with function for POST, PUT and DELETE
 export function requestBody(method: string, content?: string | FormData | null, contentType?: string | null | undefined): RequestInit {
 	const baseHeaders: Record<string, string> = {
-		"Authorization": `Bearer ${envConfig.privateKey}`,
+		"x-api-key": `${envConfig.privateKey}`
 	};
 
 	const uCaseMethod: string = method.toUpperCase();
@@ -43,7 +42,8 @@ export function requestBody(method: string, content?: string | FormData | null, 
 
 	const baseRequestOptions: RequestInit = {
 		method: method,
-		headers: baseHeaders
+		headers: baseHeaders,
+		credentials: "include"
 	}
 	if (content) {
 		baseRequestOptions.body = content;
@@ -54,7 +54,6 @@ export function requestBody(method: string, content?: string | FormData | null, 
 			"Content-Type": contentType,
 		};
 	}
-
 	return (baseRequestOptions);
 }
 

@@ -17,3 +17,6 @@
 # database
 **/drizzle/*
 **/data/*
+
+# local scripts
+installnode.sh
