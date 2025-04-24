@@ -2,6 +2,7 @@ import { setupError404 } from "./error404";
 import * as PIXI from "pixi.js";
 
 export function setupSnek() {
+	console.log("Setting up Snek");
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
