@@ -1,12 +1,10 @@
 import DOMPurify from 'dompurify';
-import { renderPage } from './index';
-import { setupUserHome } from './home';
-import { setupSetting } from './setting';
 import { setupMatchHistory } from './history';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody } from "../script/connections"
 import { fillTopbar } from '../script/fillTopbar';
 import { dropDownBar } from '../script/dropDownBar';
+import { setupNavigation } from '../script/menuNavigation';
 
 export type PubUserSchema = {
 	alias: string;
@@ -133,28 +131,6 @@ export function setupFriends() {
 		.catch((error) => {
 			console.log("ERROR (SetupFriends): ", error)
 		})
-}
-
-function setupNavigation() {
-	document.getElementById('LogOut')?.addEventListener('click', () => {
-		window.history.pushState({}, '', '/index');
-		renderPage();
-	});
-
-	document.getElementById('Home')?.addEventListener('click', () => {
-		window.history.pushState({}, '', '/home');
-		setupUserHome();
-	});
-
-	document.getElementById('Settings')?.addEventListener('click', () => {
-		window.history.pushState({}, '', '/setting');
-		setupSetting();
-	});
-
-	document.getElementById('Friends')?.addEventListener('click', () => {
-		window.history.pushState({}, '', '/friends');
-		setupFriends();
-	});
 }
 
 function setupSearchFunctionality() {

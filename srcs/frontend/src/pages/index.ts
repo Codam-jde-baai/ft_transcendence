@@ -19,9 +19,7 @@ import '../component/adminTopbar'
 import '../component/admin_userTable'
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (!document.getElementById('app')?.hasChildNodes()) {
         renderPage();
-    }
 });
 
 export function renderPage() {
