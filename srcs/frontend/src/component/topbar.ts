@@ -10,11 +10,12 @@ class DropdownMenu extends HTMLElement {
 	render() {
 		const currentPage = window.location.pathname
 		this.innerHTML = "";
-		this.insertAdjacentHTML("beforeend", `
+		this.insertAdjacentHTML("beforeend", /*html*/`
+		<link rel="stylesheet" href="src/styles/userMain.css"> <!-- Link to the CSS file -->
 		<div class="topBar">
 			<div class="dropdown">
 				<button class="dropdown-btn" id="dropdown-btn">
-					<img class="settingIcon" src="src/Pictures/setting-btn.png"/></img>
+					<img class="settingIcon" src="src/Pictures/setting-btn.png">
 				</button>
 				<div class="dropdown-content">
 					<button class="language-btn" id="language-btn">

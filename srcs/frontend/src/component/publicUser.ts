@@ -43,7 +43,7 @@ class PublicUser extends HTMLElement {
 			image = "src/Pictures/defaultPP.png"
 		}
 		this.innerHTML = "";
-		this.insertAdjacentHTML("beforeend", `
+		this.insertAdjacentHTML("beforeend", /*html*/`
 		<div class="publicUser">
 			<img src=${image} alt="Profile Picture">
 			<p> ${alias} </p>

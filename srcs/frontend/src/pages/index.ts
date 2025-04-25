@@ -10,7 +10,7 @@ import { setupAdmin } from './admin';
 import { setupTestGame } from './testGame';
 import { setupAdminUserSetting } from './adminUserSetting';
 import { setupAdminSetting } from './adminSettings';
-import { setupError404 } from './error404';
+import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import '../component/topbar'
@@ -37,7 +37,7 @@ export function renderPage() {
 		'/history': setupMatchHistory,
 		'/friends': setupFriends,
 		'/snek': setupSnek,
-		'/error404': setupError404,
+		'/errorPages': () => setupErrorPages(404, 'Page Not Found'),
 		'/admin': setupAdmin,
 		'/adminSettings': setupAdminSetting,
 		'/adminUserSetting': setupAdminUserSetting,
@@ -49,7 +49,7 @@ export function renderPage() {
 			funct();
 		} else {
 			root.innerHTML = "";
-			root.insertAdjacentHTML("beforeend", `
+			root.insertAdjacentHTML("beforeend", /*html*/`
 			<link rel="stylesheet" href="src/styles/index.css"> <!-- Link to the CSS file -->
 			<div class="overlay"></div>
 			<language-menu></language-menu>
@@ -59,7 +59,6 @@ export function renderPage() {
 				<div class="buttons">
 					<button class="btn" id="LogIn" data-i18n="btn_LogIn"></button>
 					<button class="btn" id="SignUp" data-i18n="btn_SignUp"></button>
-					<!-- <button class="btn" id="Connect" data-i18n="Connect"> ConneCt </button> -->
 				</div>
 			</div>
 				`);
@@ -78,8 +77,8 @@ export function renderPage() {
 		}
 	} else {
 		// If invalid route -> 404 page
-		window.history.pushState({}, '', '/error404');
-		setupError404();
+		window.history.pushState({}, '', '/errorPages');
+		setupErrorPages(404, "Page Not Found");
 	}
 }
 

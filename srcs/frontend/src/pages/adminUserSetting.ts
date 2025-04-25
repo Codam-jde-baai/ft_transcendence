@@ -5,14 +5,14 @@ import { setupAdmin } from './admin';
 import { setupAdminSetting } from './adminSettings';
 import { fillTopbar } from '../script/fillTopbar';
 import { adminPasswordFields } from '../script/errorFunctions';
-import { setupError404 } from './error404';
+import { setupErrorPages } from './errorPages';
 import { eyeIcon_Button } from '../script/buttonHandling';
 
 export function setupAdminUserSetting() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
-		root.insertAdjacentHTML("beforeend", `
+		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/admin.css"> <!-- Link to the CSS file -->
 		<link rel="stylesheet" href="src/styles/adminSet.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
@@ -90,8 +90,8 @@ export function setupAdminUserSetting() {
 				// }
 				// else {
 					// Network or server error
-					window.history.pushState({}, '', '/error404');
-					setupError404();
+					window.history.pushState({}, '', '/errorPages');
+					setupErrorPages(404, "Page Not Found");
 				// }
 
 			});

@@ -10,11 +10,11 @@ class AdminTopbar extends HTMLElement {
 	render() {
 		const adminCurrentPage = window.location.pathname
 		this.innerHTML = "";
-		this.insertAdjacentHTML("beforeend", `
+		this.insertAdjacentHTML("beforeend", /*html*/`
 		<div class="topBar">
 			<div class="dropdown">
 				<button class="dropdown-btn" id="dropdown-btn">
-					<img class="settingIcon" src="src/Pictures/setting-btn.png"/></img>
+					<img class="settingIcon" src="src/Pictures/setting-btn.png"/>
 				</button>
 				<div class="dropdown-content">
 					

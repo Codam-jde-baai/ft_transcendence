@@ -12,8 +12,7 @@ export function setupUserHome () {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
-		root.insertAdjacentHTML("beforeend", `
-		<link rel="stylesheet" href="src/styles/userMain.css"> <!-- Link to the CSS file -->
+		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/home.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>

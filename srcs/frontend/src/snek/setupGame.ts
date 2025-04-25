@@ -1,4 +1,4 @@
-import { setupError404 } from "../pages/error404";
+import { setupErrorPages } from "../pages/errorPages";
 import { Application } from 'pixi.js';
 
 export async function setupGame(containerId: string) {
@@ -9,6 +9,6 @@ export async function setupGame(containerId: string) {
 		container.appendChild(app.canvas);
 	}
 	else {
-		setupError404();
+		setupErrorPages(response.status,  response.statusText);
 	}
 }

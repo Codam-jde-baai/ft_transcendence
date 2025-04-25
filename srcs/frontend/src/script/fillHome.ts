@@ -1,5 +1,5 @@
 import { connectFunc, requestBody } from './connections';
-import { setupError404 } from '../pages/error404';
+import { setupErrorPages } from '../pages/errorPages';
 
 export function fillHome() {
 	// Retrieve user uuid
@@ -28,18 +28,18 @@ export function fillHome() {
 
 				});
 			} else {
-				window.history.pushState({}, '', '/error404');
-				setupError404();
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(404, "Page Not Found");
 			}
 		}).catch(() => {
 			// Network or server error
-			window.history.pushState({}, '', '/error404');
-			setupError404();
+			window.history.pushState({}, '', '/errorPages');
+			setupErrorPages(500, "Internal Server Error");
 		});
 	} else {
 		// Network or server error
-		window.history.pushState({}, '', '/error404');
-		setupError404();
+		window.history.pushState({}, '', '/errorPages');
+		setupErrorPages(404, "Page Not Found");
 	}
 
 	// LeaderBoard
@@ -53,13 +53,13 @@ export function fillHome() {
 
 			});
 		} else {
-			window.history.pushState({}, '', '/error404');
-			setupError404();
+			window.history.pushState({}, '', '/errorPages');
+			setupErrorPages(404, "Page Not Found");
 		}
 	}).catch(() => {
 		// Network or server error
-		window.history.pushState({}, '', '/error404');
-		setupError404();
+		window.history.pushState({}, '', '/errorPages');
+		setupErrorPages(500, "Internal Server Error");
 	});
 }
 

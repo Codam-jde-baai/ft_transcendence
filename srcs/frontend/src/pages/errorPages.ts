@@ -1,14 +1,13 @@
-export function setupError404() {
+export function setupErrorPages(errorCode: number, errorMessage: string) {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
-		root.insertAdjacentHTML("beforeend", `
+		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/errorPage.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		<div class="container">
-			<div class="error-code">404</div>
-			<h1>Not Found</h1>
-			<p>The requested resource could not be found on the server!</p>
+			<div class="error-code">${errorCode}</div>
+			<h1>${errorMessage}</h1>
 		</div>
 		`);
 	}

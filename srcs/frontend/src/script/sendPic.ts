@@ -1,6 +1,5 @@
-import { setupError404 } from '../pages/error404';
+import { setupErrorPages } from '../pages/errorPages';
 import { connectFunc, requestBody } from './connections';
-import envConfig from '../config/env';
 
 // Add Profile Pic
 export async function sendPicture(userID: any) {
@@ -25,15 +24,15 @@ export async function sendPicture(userID: any) {
 	connectFunc(`/users/${userID}/profile-pic`, body)
 		.then(response => {
 			if (!response.ok) {
-				window.history.pushState({}, '', '/error404');
-				setupError404();
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(response.status,  response.statusText);
 				return ;
 			}
 		})
 		.catch(() => {
 			// Network or server error
-			window.history.pushState({}, '', '/error404');
-			setupError404();
+			window.history.pushState({}, '', '/errorPages');
+			setupErrorPages(500, "Internal Server Error");
 		});
 }
 

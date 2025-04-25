@@ -78,7 +78,7 @@ export function setupFriends() {
 			publicUsers = publicData;
 			if (root) {
 				root.innerHTML = "";
-				root.insertAdjacentHTML("beforeend", `
+				root.insertAdjacentHTML("beforeend", /*html*/`
 			<link rel="stylesheet" href="src/styles/userMain.css">
 			<link rel="stylesheet" href="src/styles/friends.css">
 			<div class="overlay"></div>

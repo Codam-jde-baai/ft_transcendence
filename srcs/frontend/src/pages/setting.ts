@@ -6,7 +6,7 @@ import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { passwordFields } from '../script/errorFunctions';
-import { setupError404 } from './error404';
+import { setupErrorPages } from './errorPages';
 import { updateUserSettings } from '../script/doSettings';
 import { fillTopbar } from '../script/fillTopbar';
 import { fillSetting } from '../script/doSettings';
@@ -15,8 +15,7 @@ export function setupSetting () {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
-		root.insertAdjacentHTML("beforeend", `
-		<link rel="stylesheet" href="src/styles/userMain.css"> <!-- Link to the CSS file -->
+		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/setting.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
@@ -77,8 +76,8 @@ export function setupSetting () {
 			}
 			else {
 				// Network or server error
-				window.history.pushState({}, '', '/error404');
-				setupError404();
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(500, "Internal Server Error");
 			}
 		});
 
