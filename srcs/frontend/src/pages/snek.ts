@@ -2,7 +2,7 @@ import { fillTopbar } from '../script/fillTopbar';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupError404 } from "./error404";
 import { setupNavigation } from '../script/menuNavigation';
-import * as PIXI from "pixi.js";
+import { setupGame } from '../snek/setupGame';
 
 export function setupSnek() {
 	console.log("Setting up Snek");
@@ -23,20 +23,8 @@ export function setupSnek() {
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		fillTopbar();
 		setupNavigation();
-		buildGame();
+		setupGame('snekContainer');
 
-	}
-	else {
-		setupError404();
-	}
-}
-
-async function buildGame() {
-	const app = new PIXI.Application();
-	await app.init({ width: 640, height: 640 });
-	const container = document.getElementById('snekContainer');
-	if (container) {
-		container.appendChild(app.view);
 	}
 	else {
 		setupError404();

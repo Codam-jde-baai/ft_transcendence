@@ -7,6 +7,7 @@ import { setupMatchHistory } from './history';
 import { setupStartGame } from './startGame';
 import { setupSnek } from './snek';
 import { setupAdmin } from './admin';
+import { setupTestGame } from './testGame';
 import { setupAdminUserSetting } from './adminUserSetting';
 import { setupAdminSetting } from './adminSettings';
 import { setupError404 } from './error404';
@@ -37,7 +38,8 @@ export function renderPage() {
 		'/error404': setupError404,
 		'/admin': setupAdmin,
 		'/adminSettings': setupAdminSetting,
-		'/adminUserSetting': setupAdminUserSetting
+		'/adminUserSetting': setupAdminUserSetting,
+		'/testgame': setupTestGame
 	};
 	if (root) {
 		const funct = routes[window.location.pathname]
