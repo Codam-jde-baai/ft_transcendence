@@ -87,6 +87,8 @@
     "LogIn_error_user": "Gebruiker niet gevonden",
     "LogIn_error_password": "Fout wachtwoord",
     "LogIn_error": "Verkeerd wachtwoord",
+
+    "Snek": "Snek",
     
     "EndOfFile": ""
 }

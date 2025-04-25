@@ -3,6 +3,7 @@ import { dropDownBar } from '../script/dropDownBar';
 import { setupError404 } from "./error404";
 import { setupNavigation } from '../script/menuNavigation';
 import { setupGame } from '../snek/setupGame';
+import { getLanguage } from '../script/language';
 
 export function setupSnek() {
 	console.log("Setting up Snek");
@@ -19,8 +20,8 @@ export function setupSnek() {
 		</div>
 			<div>
 				`);
-		//getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+		getLanguage();
 		fillTopbar();
 		setupNavigation();
 		setupGame('snekContainer');
