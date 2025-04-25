@@ -7,6 +7,7 @@ import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
 import { fillTopbar } from '../script/fillTopbar';
+import { setupNavigation } from '../script/menuNavigation';
 
 export function setupUserHome () {
 	const root = document.getElementById('app');
@@ -19,8 +20,9 @@ export function setupUserHome () {
 		
 		<div class="middle">
 			<!-- BODY CHANGE -->
+			<div class="line"></div>
+			<h1 data-i18n="Header_Pong"></h1>
 			<div class="container">
-
 				<div class="user-stats">
 					<div class="stat-box">
 						<div class="best-score">
@@ -55,7 +57,7 @@ export function setupUserHome () {
 					</div>
 
 					<div class="buttons">
-						<button class="btn" id="StartGame" data-i18n="btn_PlayGame"></button>
+						<button class="btn" id="StartGame" data-i18n="btn_PlayPong"></button>
 					</div>
 				</div>
 				
@@ -117,31 +119,32 @@ export function setupUserHome () {
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		fillHome(); // Retrieve user uuid
 		fillTopbar();
+		setupNavigation();
 
-		document.getElementById('LogOut')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/index');
-			renderPage();
-		});
+		// document.getElementById('LogOut')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/index');
+		// 	renderPage();
+		// });
 
-		document.getElementById('Home')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/home');
-			setupUserHome();
-		});
+		// document.getElementById('Home')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/home');
+		// 	setupUserHome();
+		// });
 
-		document.getElementById('Settings')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/setting');
-			setupSetting();
-		});
+		// document.getElementById('Settings')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/setting');
+		// 	setupSetting();
+		// });
 
-		document.getElementById('Friends')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/friends');
-			setupFriends();
-		});
+		// document.getElementById('Friends')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/friends');
+		// 	setupFriends();
+		// });
 
-		document.getElementById('History')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/history');
-			setupMatchHistory();
-		});
+		// document.getElementById('History')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/history');
+		// 	setupMatchHistory();
+		// });
 
 		document.getElementById('StartGame')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/startGame');

@@ -65,6 +65,7 @@ export function renderPage() {
 
 			getLanguage();
 			dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+
 			document.getElementById('LogIn')?.addEventListener('click', () => {
 				window.history.pushState({}, '', '/logIn');
 				renderPage();

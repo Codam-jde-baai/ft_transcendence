@@ -8,8 +8,6 @@ import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
 import { sendPicture } from '../script/sendPic';
 
-
-
 export function setupSignUp() {
 	const root = document.getElementById('app');
 	if (root) {
@@ -51,7 +49,7 @@ export function setupSignUp() {
 
 			<p>
 				<span data-i18n="SignUp_P"></span>
-				<a id="LogIn" style="color: rgb(209, 7, 128); margin-left: 5px; text-decoration: underline;" data-i18n="btn_LogIn"></a>
+				<a id="LogIn" style="color: rgb(209, 7, 128); margin-left: 0.5%; text-decoration: underline;" data-i18n="btn_LogIn"></a>
 			</p>
 
 		</div>

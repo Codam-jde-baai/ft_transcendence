@@ -5,6 +5,7 @@ import { setupFriends } from './friends';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
+import { setupNavigation } from '../script/menuNavigation';
 
 export function  setupMatchHistory () {
 	const root = document.getElementById('app');
@@ -64,31 +65,32 @@ export function  setupMatchHistory () {
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		fillTopbar();
+		setupNavigation();
 
-		document.getElementById('LogOut')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/index');
-			renderPage();
-		});
+		// document.getElementById('LogOut')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/index');
+		// 	renderPage();
+		// });
 
-		document.getElementById('Home')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/home');
-			setupUserHome();
-		});
+		// document.getElementById('Home')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/home');
+		// 	setupUserHome();
+		// });
 
-		document.getElementById('Settings')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/setting');
-			setupSetting();
-		});
+		// document.getElementById('Settings')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/setting');
+		// 	setupSetting();
+		// });
 
-		document.getElementById('Friends')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/friends');
-			setupFriends();
-		});
+		// document.getElementById('Friends')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/friends');
+		// 	setupFriends();
+		// });
 
-		document.getElementById('History')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/history');
-			setupMatchHistory();
-		});
+		// document.getElementById('History')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/history');
+		// 	setupMatchHistory();
+		// });
 
 	}
 }

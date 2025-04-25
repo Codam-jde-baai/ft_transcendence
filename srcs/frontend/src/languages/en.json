@@ -1,7 +1,7 @@
 {
     "btn_LogIn": "Log In",
     "btn_SignUp": "Sign Up",
-    "btn_PlayGame": "Play Game",
+    "btn_PlayPong": "Play Pong",
     "btn_Save": "Save",
     "btn_Remove": "Remove",
     "btn_Admin": "Apply Changes",
@@ -24,6 +24,7 @@
     "Admin": "Admin",
     
     "Index_Header": "Welcome to Transcendence",
+    "Header_Pong": "Your Pong",
     "LogIn_Header": "Login",
     "SignUp_Header": "Create Account",
     "Setting_Header": "Settings",

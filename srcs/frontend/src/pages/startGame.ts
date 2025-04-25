@@ -6,12 +6,13 @@ import { setupMatchHistory } from './history';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
+import { setupNavigation } from '../script/menuNavigation';
 
 export function setupStartGame () {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
-		root.insertAdjacentHTML("beforeend", /*html*/`
+		root.insertAdjacentHTML("beforeend", `
 		<link rel="stylesheet" href="src/styles/startGame.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
@@ -40,30 +41,31 @@ export function setupStartGame () {
 		getLanguage();
 		fillTopbar();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+		setupNavigation();
 
-		document.getElementById('LogOut')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/index');
-			renderPage();
-		});
+		// document.getElementById('LogOut')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/index');
+		// 	renderPage();
+		// });
 
-		document.getElementById('Home')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/home');
-			setupUserHome();
-		});
+		// document.getElementById('Home')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/home');
+		// 	setupUserHome();
+		// });
 
-		document.getElementById('Settings')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/setting');
-			setupSetting();
-		});
+		// document.getElementById('Settings')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/setting');
+		// 	setupSetting();
+		// });
 
-		document.getElementById('Friends')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/friends');
-			setupFriends();
-		});
+		// document.getElementById('Friends')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/friends');
+		// 	setupFriends();
+		// });
 
-		document.getElementById('History')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/history');
-			setupMatchHistory();
-		});
+		// document.getElementById('History')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/history');
+		// 	setupMatchHistory();
+		// });
 	}
 }

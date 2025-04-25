@@ -10,6 +10,7 @@ import { setupErrorPages } from './errorPages';
 import { updateUserSettings } from '../script/doSettings';
 import { fillTopbar } from '../script/fillTopbar';
 import { fillSetting } from '../script/doSettings';
+import { setupNavigation } from '../script/menuNavigation';
 
 export function setupSetting () {
 	const root = document.getElementById('app');
@@ -64,6 +65,7 @@ export function setupSetting () {
 		eyeIcon_Button(["show-password", "show-password_confirm", "avatar"]);
 		fillTopbar();
 		fillSetting();
+		setupNavigation();
 		
 		document.getElementById('Save')?.addEventListener('click', async () => {
 			const isValid = passwordFields(["alias", "password", "password_confirm"]);
@@ -81,30 +83,30 @@ export function setupSetting () {
 			}
 		});
 
-		document.getElementById('Friends')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/friends');
-			setupFriends();
-		});
+		// document.getElementById('Friends')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/friends');
+		// 	setupFriends();
+		// });
 
-		document.getElementById('Settings')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/setting');
-			setupSetting();
-		});
+		// document.getElementById('Settings')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/setting');
+		// 	setupSetting();
+		// });
 
-		document.getElementById('LogOut')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/index');
-			renderPage();
-		});
+		// document.getElementById('LogOut')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/index');
+		// 	renderPage();
+		// });
 
-		document.getElementById('History')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/history');
-			setupMatchHistory();
-		});
+		// document.getElementById('History')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/history');
+		// 	setupMatchHistory();
+		// });
 
-		document.getElementById('Home')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/home');
-			setupUserHome();
-		});
+		// document.getElementById('Home')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/home');
+		// 	setupUserHome();
+		// });
 	}
 }
 

@@ -33,7 +33,7 @@ export function setupLogIn() {
 			</div>
 			<p>
 				<span data-i18n="LogIn_P"></span>
-				<a id="SignUp" style="color: rgb(209, 7, 128); margin-left: 5px; text-decoration: underline;" data-i18n="btn_SignUp"></a>
+				<a id="SignUp" style="color: rgb(209, 7, 128); margin-left: 0.5%; text-decoration: underline;" data-i18n="btn_SignUp"></a>
 			</p>
 
 		</div>
