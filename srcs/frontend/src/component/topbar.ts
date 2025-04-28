@@ -36,7 +36,19 @@ class DropdownMenu extends HTMLElement {
 					<div class="dropdown-item ${currentPage === '/setting' ? 'currentPage' : ''}" id="Settings" data-i18n="Settings"></div>
 					<div class="dropdown-item ${currentPage === '/friends' ? 'currentPage' : ''}" id="Friends" data-i18n="Friends"></div>
 					<div class="dropdown-item ${currentPage === '/history' ? 'currentPage' : ''}" id="History" data-i18n="History"></div>
-					<div class="dropdown-item ${currentPage === '/snek' ? 'currentPage' : ''}" id="Snek" data-i18n="Snek"></div>
+					<!-- <div class="dropdown-item ${currentPage === '/snek' ? 'currentPage' : ''}" id="Snek" data-i18n="Snek"></div> -->
+					<button class="game-btn" id="game-btn">
+						<span data-i18n="SwitchGame"></span> <img id="selected-game" src="src/Pictures/game-pong.png">
+					</button>
+					<div class="game-content" id="game-content">
+						<div class="game-option" id="pong">
+							<img src="src/Pictures/game-pong.png"> <span data-i18n="Pong"></span>
+						</div>
+						<div class="game-option" id="snek">
+							<img src="src/Pictures/game-snek.png"> <span data-i18n="Snek"></span>
+						</div>
+					</div>
+
 					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
 				</div>
 			</div>

@@ -11,8 +11,21 @@
 	max-width: 600px; 
 	border: 3px solid #902063; 
 	display: flex; 
+	margin-top: 20%;
 	flex-direction: column; 
-	align-items: center; 
+}
+
+/* All for the Middle */
+.middle {
+	background: rgba(0, 0, 0, 0.8);
+	position: fixed;
+	top: 200px;
+	left: 200px;
+	border-radius: 15px;
+	width: 75%;
+	height: 70%; 
+	justify-items: center;
+	z-index: 1;
 }
 
 /* Title styling */

@@ -34,6 +34,7 @@ const userProperties = {
 	},
 	status: { type: 'number' },
 	language: { type: 'string' },
+	// score: { type: 'number' },
 	win: { type: 'number' },
 	loss: { type: 'number' }
 };
@@ -44,6 +45,7 @@ export const publicUserProperties = {
 		type: 'object',
 		properties: profilePicProperties
 	},
+	// score: { type: 'number' },
 	win: { type: 'number' },
 	loss: { type: 'number' }
 };

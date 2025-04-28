@@ -1,4 +1,4 @@
-import { setupErrorPages } from "../pages/errorPages";
+import { setupErrorPages } from "../../pages/errorPages";
 import { Application } from 'pixi.js';
 
 export async function setupGame(containerId: string) {

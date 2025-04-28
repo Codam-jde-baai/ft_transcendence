@@ -13,7 +13,7 @@ export function fillHome() {
 					// // Best Score
 					// const bestScoreElem = document.getElementById("best-score");
 					// if (bestScoreElem)
-					// 	bestScoreElem.textContent = data.Score;
+					// 	bestScoreElem.textContent = data.score;
 					// // ^^^^^ NOT WORKING YET (NO data.Score) ^^^^^^^^^^^^^^^^
 
 					// Win

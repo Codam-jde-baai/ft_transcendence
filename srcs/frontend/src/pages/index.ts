@@ -7,7 +7,6 @@ import { setupMatchHistory } from './history';
 import { setupStartGame } from './startGame';
 import { setupSnek } from './snek';
 import { setupAdmin } from './admin';
-import { setupTestGame } from './testGame';
 import { setupAdminUserSetting } from './adminUserSetting';
 import { setupAdminSetting } from './adminSettings';
 import { setupErrorPages } from './errorPages';
@@ -18,6 +17,7 @@ import '../component/languageMenu'
 import '../component/publicUser'
 import '../component/adminTopbar'
 import '../component/admin_userTable'
+import '../component/history_table'
 
 document.addEventListener('DOMContentLoaded', () => {
     if (!document.getElementById('app')?.hasChildNodes()) {
@@ -41,7 +41,6 @@ export function renderPage() {
 		'/admin': setupAdmin,
 		'/adminSettings': setupAdminSetting,
 		'/adminUserSetting': setupAdminUserSetting,
-		'/testgame': setupTestGame
 	};
 	if (root) {
 		const funct = routes[window.location.pathname]

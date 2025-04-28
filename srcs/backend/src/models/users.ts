@@ -60,6 +60,7 @@ export function toPublicUser(user: User | null | undefined): PublicUser {
 		},
 		status: user.status,
 		language: user.language,
+		// score: user.score,
 		win: user.win,
 		loss: user.loss
 	};

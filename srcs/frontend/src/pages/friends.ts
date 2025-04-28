@@ -79,7 +79,6 @@ export function setupFriends() {
 			if (root) {
 				root.innerHTML = "";
 				root.insertAdjacentHTML("beforeend", /*html*/`
-			<link rel="stylesheet" href="src/styles/userMain.css">
 			<link rel="stylesheet" href="src/styles/friends.css">
 			<div class="overlay"></div>
 			<dropdown-menu></dropdown-menu>
@@ -98,30 +97,43 @@ export function setupFriends() {
 				<div class="search-results" id="searchResults">
 				</div>
 
-					<h1 class="header" data-i18n="Friends_Header"></h1>
-					<div class="friends-list" id="friends-container">
-						${friendRelations.friends.map((element: friendSchema) => `
-						<public-user type="friend" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-						`).join('')}
+				<h1 class="header" style="margin-top: 80px;" data-i18n="Friends_Header"></h1>
+					<div class="friends-list-wrapper">
+						<div class="friends-list" id="friends-container">
+							${friendRelations.friends.map((element: friendSchema) => `
+							<public-user type="friend" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+							`).join('')}
+						</div>
 					</div>
 
+					${friendRelations.receivedRequests.length > 0 ? `
 					<h1 class="header" data-i18n="Request_Header"></h1>
-					<div class="friends-list" id="requests-container">
-						${friendRelations.receivedRequests.map((element: friendSchema) => `
-    					<public-user type="friend-request" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-						`).join('')}
+					<div class="friends-list-wrapper">
+						<div class="friends-list" id="requests-container">
+							${friendRelations.receivedRequests.map((element: friendSchema) => `
+							<public-user type="friend-request" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+							`).join('')}
+						</div>
 					</div>
-						<h1 class="header" data-i18n="Pending_Requests_Header"></h1>
+					` : ''}
+
+					${friendRelations.sentRequests.length > 0 ? `
+					<h1 class="header" data-i18n="Pending_Requests_Header"></h1>
+					<div class="friends-list-wrapper">
 						<div class="friends-list" id="pending-container">
-						${friendRelations.sentRequests.map((element: friendSchema) => `
-    					<public-user type="pendingRequests" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-						`).join('')}
+							${friendRelations.sentRequests.map((element: friendSchema) => `
+							<public-user type="pendingRequests" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+							`).join('')}
+						</div>
 					</div>
+					` : ''}
+
+
 				</div>
 			</div>
 			`);
 				getLanguage();
-				dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+				dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
 				fillTopbar();
 				setupNavigation();
 				setupSearchFunctionality();

@@ -2,7 +2,7 @@ import { fillTopbar } from '../script/fillTopbar';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupErrorPages } from "./errorPages";
 import { setupNavigation } from '../script/menuNavigation';
-import { setupGame } from '../snek/setupGame';
+// import { setupGame } from '../game/snek/setupGame';
 import { getLanguage } from '../script/language';
 
 export function setupSnek() {
@@ -20,11 +20,10 @@ export function setupSnek() {
 		</div>
 			<div>
 				`);
-		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
 		getLanguage();
 		fillTopbar();
 		setupNavigation();
-		setupGame('snekContainer');
 
 	}
 	else {

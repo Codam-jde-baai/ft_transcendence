@@ -24,10 +24,11 @@
     "Admin": "Admin",
     
     "Index_Header": "Willkommen bei Transcendence",
+    "Header_Pong": "Willkommen bei Pong",
     "LogIn_Header": "Anmelden",
     "SignUp_Header": "Konto erstellen",
     "Admin_Header": "Benutzereinstellungen",
-    "Game_Header": "Wähle dein Spiel",
+    "Game_Header": "Wähle dein Pong Spiel",
     "Friends_Header": "Deine Freunde",
     "Request_Header": "Freundschaftsanfragen",
     "Blocked_Header": "Deaktivierter Benutzer",
@@ -90,6 +91,8 @@
     "LogIn_noUser": "Benutzer nicht gefunden",
 
     "Snek": "Snek",
+    "SwitchGame": "Spiel wechseln",
+    "Pong": "Pong",
 
     "EndOfFile": ""
 }

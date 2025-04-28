@@ -127,7 +127,6 @@
 	left: 0px;
 	width: 220px; 
 	height: 100%;
-	/* background: #902063; */
 	background: #902063;
 	border-radius: 5px;
 }
@@ -336,7 +335,7 @@
 	max-height: 60vh; 
 	overflow-y: auto;
 }
-.userTable {
+/* .userTable {
 	width: 100%;
 	border-collapse: collapse;
 }
@@ -344,7 +343,7 @@
 	padding: 10px;
 	text-align: left;
 	border-bottom: 1px solid #c5c5c5;
-}
+} */
 
 /* Eye icon for password */
 .field-icon {

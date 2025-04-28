@@ -1,7 +1,3 @@
-import { renderPage } from './index';
-import { setupSetting } from './setting';
-import { setupFriends } from './friends';
-import { setupMatchHistory } from './history';
 import { setupStartGame } from './startGame';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
@@ -116,35 +112,10 @@ export function setupUserHome () {
 		`);
 
 		getLanguage();
-		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
 		fillHome(); // Retrieve user uuid
 		fillTopbar();
 		setupNavigation();
-
-		// document.getElementById('LogOut')?.addEventListener('click', () => {
-		// 	window.history.pushState({}, '', '/index');
-		// 	renderPage();
-		// });
-
-		// document.getElementById('Home')?.addEventListener('click', () => {
-		// 	window.history.pushState({}, '', '/home');
-		// 	setupUserHome();
-		// });
-
-		// document.getElementById('Settings')?.addEventListener('click', () => {
-		// 	window.history.pushState({}, '', '/setting');
-		// 	setupSetting();
-		// });
-
-		// document.getElementById('Friends')?.addEventListener('click', () => {
-		// 	window.history.pushState({}, '', '/friends');
-		// 	setupFriends();
-		// });
-
-		// document.getElementById('History')?.addEventListener('click', () => {
-		// 	window.history.pushState({}, '', '/history');
-		// 	setupMatchHistory();
-		// });
 
 		document.getElementById('StartGame')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/startGame');
