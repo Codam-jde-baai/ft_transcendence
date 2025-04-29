@@ -11,8 +11,6 @@ import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
 import rateLimit from '@fastify/rate-limit';
 
-console.log("reading from index.ts backend");
-
 const fastify = Fastify({
 	logger: true,
 	ajv: {
@@ -25,7 +23,6 @@ const fastify = Fastify({
 	}
 })
 
-// Setting Up The CORS Plugin First
 fastify.register(fastifyCors, {
 	origin: 'http://localhost:5173',
 	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -35,26 +32,15 @@ fastify.register(fastifyCors, {
 	optionsSuccessStatus: 204
   });
 
-// fastify.options('*', (request, reply) => {
-// 	reply.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-// 	reply.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-// 	reply.header('Access-Control-Allow-Headers', 'Content-Type, x-api-key');
-// 	reply.header('Access-Control-Allow-Credentials', 'true');
-// 	reply.send();
-//   });
-
-// https://github.com/fastify/fastify-secure-session
 fastify.register(secureSession, {
 	key: sessionKey,
 	expiry: 24 * 60 * 60,
 	cookie: {
-		httpOnly: true,				// hides it from client
-		path: '/',					// Restrict cookie to specific path
-		maxAge: 60 * 60,			// Session timeout in seconds (e.g., 1 hour)
-		secure: false,				// only sends over https
-		sameSite: 'lax',			// Restrict cross-site requests
-		// domain: 'yourdomain.com'    // Restrict cookie to your domain
-		// cookie options: https://github.com/fastify/fastify-cookie
+		httpOnly: true,
+		path: '/',
+		maxAge: 60 * 60,
+		secure: "auto",
+		sameSite: 'strict',
 	}
 
 })
@@ -65,13 +51,13 @@ fastify.register(rateLimit, {
   })
 
 fastify.register(swagger, {
-	openapi: {  // Change from 'swagger' to 'openapi'
+	openapi: {
 		info: {
 			title: 'Your API',
 			description: 'API documentation',
 			version: '1.0.0'
 		},
-		components: {  // Change from securityDefinitions to components
+		components: {
 			securitySchemes: {
 				apiKey: {
 					type: 'apiKey',
@@ -89,11 +75,10 @@ fastify.register(swagger, {
 	}
 });
 
-// Update multipart configuration with more specific options
 fastify.register(multipart, {
 	limits: {
-		fileSize: 5 * 1024 * 1024, // 5MB limit
-		files: 1 // Allow only 1 file upload at a time
+		fileSize: 5 * 1024 * 1024,
+		files: 1
 	},
 	attachFieldsToBody: false,
 	throwFileSizeLimit: true
@@ -109,7 +94,6 @@ fastify.register(userRoutes);
 fastify.register(friendsRoutes);
 fastify.register(matchesRoutes);
 
-// defining a function in TS
 const start = async () => {
 	try {
 		const address = fastify.listen({ port: envConfig.port, host: '0.0.0.0' }, function (err, address) {
@@ -127,9 +111,3 @@ const start = async () => {
 }
 
 start()
-
-
-//default route
-fastify.get('/', function (request, reply) {
-	reply.send("hello this is transendence world") //automatically generates text
-})

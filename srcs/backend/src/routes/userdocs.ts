@@ -53,11 +53,35 @@ export const imageOptions = {
 		security: [{ apiKey: [] }],
 		summary: 'Get user profile picture by UUID',
 		tags: ['users'],
+		response: {
+			200: {
+				type: 'object',
+				properties: profilePicProperties
+			},
+			404: {
+				type: 'object',
+				properties: {
+					error: {
+						type: 'string',
+						description: 'Error message if image not found'
+					}
+				}
+			},
+			500: errorResponseSchema
+		}
+	}
+};
+
+export const imageOptionsByAlias = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Get user profile picture by alias',
+		tags: ['users'],
 		params: {
 			type: 'object',
-			required: ['uuid'],
+			required: ['alias'],
 			properties: {
-				uuid: { type: 'string' }
+				alias: { type: 'string' }
 			}
 		},
 		response: {
@@ -85,13 +109,6 @@ export const getUserOptions = {
 		security: [{ apiKey: [] }],
 		summary: 'Get user by UUID',
 		tags: ['users'],
-		params: {
-			type: 'object',
-			required: ['uuid'],
-			properties: {
-				uuid: { type: 'string' }
-			}
-		},
 		response: {
 			200: {
 				type: 'object',
@@ -106,7 +123,7 @@ export const getUserOptions = {
 export const getUserAliasOptions = {
 	schema: {
 		security: [{ apiKey: [] }],
-		summary: 'Get user by UUID',
+		summary: 'Get user by alias',
 		tags: ['users'],
 		params: {
 			type: 'object',
@@ -200,14 +217,7 @@ export const updateProfilePicOptions = {
 		security: [{ apiKey: [] }],
 		tags: ['users'],
 		summary: 'Upload user profile picture',
-		consumes: ['multipart/form-data'],
-		params: {
-			type: 'object',
-			required: ['uuid'],
-			properties: {
-				uuid: { type: 'string' }
-			}
-		}
+		consumes: ['multipart/form-data']
 	},
 	response: {
 		200: {

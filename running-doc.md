@@ -175,7 +175,7 @@ formData.append('password', password);
 formData.append('alias', alias);
 formData.append('profile_pic', fileInput.files[0]);
 
-await fetch('/users/new', {
+await fetch('/user/new', {
     method: 'POST',
     body: formData,
     headers: {

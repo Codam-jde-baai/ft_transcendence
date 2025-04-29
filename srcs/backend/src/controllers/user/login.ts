@@ -10,7 +10,7 @@ import { toPublicUser, verifyPassword } from '../../models/users.ts';
 
 declare module '@fastify/secure-session' {
 	interface SessionData {
-	  data: string;
+	  uuid: string;
 	}
 }
 
@@ -50,10 +50,10 @@ export const loginUser = async (request: FastifyRequest, reply: FastifyReply) =>
 
 		const updatedUser = await db.select().from(usersTable).where(eq(usersTable.username, username));
 		const pubUser = toPublicUser(updatedUser[0]);
-		request.session.set('data', updatedUser[0].uuid);
+		request.session.set('uuid', updatedUser[0].uuid);
 		return reply.code(200).send(pubUser);
 	} catch (error) {
-		request.log.error('getAllUsers failed:', error);
+		request.log.error('loginUser failed:', error);
 		return reply.code(500).send({ error: 'Failed to retrieve users' });
 	} finally {
 		if (sqlite) sqlite.close();

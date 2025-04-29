@@ -14,20 +14,17 @@ export const addFriend = async (request: FastifyRequest<{
 }>, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const { alias } = request.body
+		const alias = request.body.alias
 		if (!alias)
 			reply.code(400).send({ error: "recepient alias should have a value" });
-		const reqUUid = request.session.get('data');
-		if (!reqUUid) {
-			return reply.status(401).send({ error: 'user is not logged in' })
-		}
+		const reqUUid = request.session.get('uuid') as string;
 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite)
 		const receiverArray = await db.select().from(usersTable).where(eq(usersTable.alias, alias));
 
-		if (receiverArray.length == 0) {
-			reply.code(404).send({ error: "alias odes not exist in database" })
+		if (receiverArray.length === 0) {
+			reply.code(404).send({ error: "alias does not exist in database" })
 		}
 		const receiver = receiverArray[0];
 
@@ -53,7 +50,7 @@ export const addFriend = async (request: FastifyRequest<{
 		return reply.code(201).send({ msg: "created relation", relation: toPublicRelation(result[0]) })
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'addFriend errorr';
+		const errorMessage = error instanceof Error ? error.message : 'addFriend Error';
 		if (errorMessage.includes("FOREIGN KEY constraint failed"))
 			return reply.code(404).send({ error: "requester or recepient do not exist in db" });
 		return reply.status(500).send({ error: errorMessage })

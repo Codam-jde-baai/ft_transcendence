@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { getAllUsers, getUser, getUserAlias, getUserImage } from '../controllers/user/getUsers.ts';
+import { getAllUsers, getUser, getUserAlias, getUserImage, getUserImageByAlias } from '../controllers/user/getUsers.ts';
 import { addUser, updateUserProfilePic } from '../controllers/user/setUsers.ts';
 import { loginUser } from '../controllers/user/login.ts'
 import { deleteUser, deleteProfilePic } from '../controllers/user/deleteUser.ts'
@@ -20,14 +20,9 @@ import {
 	updateUserStatusOptions,
 	updateUserProperties,
 	deleteProfilePicOptions,
-	deleteUserOptions
+	deleteUserOptions,
+	imageOptionsByAlias
 } from './userdocs.ts';
-
-const addCorsHeaders = (request: FastifyRequest, reply: FastifyReply, done: () => void) => {
-	reply.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-	reply.header('Access-Control-Allow-Credentials', 'true');
-	done();
-  };
 
 function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	fastify.addSchema({
@@ -35,20 +30,15 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 		security: securitySchemes
 	});
 
-	fastify.addHook('preHandler', addCorsHeaders);
-	// User routes
-	// for testing:
-	fastify.get<{ Params: { uuid: string } }>
-		('/user/:uuid/profile-pic', { preHandler: [authenticatePrivateToken], ...imageOptions }, getUserImage);
-
+	// User Routes
+	fastify.get('/user/profile-pic', { preHandler: [authenticatePrivateToken], ...imageOptions }, getUserImage);
+	fastify.get<{ Params: { alias: string } }>
+		('/user/:alias/profile-pic', { preHandler: [authenticatePrivateToken], ...imageOptionsByAlias }, getUserImageByAlias);
 	fastify.get('/users', { preHandler: [authAPI], ...getUsersOptions }, getAllUsers);
-	fastify.get<{ Params: { uuid: string } }>('/user/:uuid', { preHandler: [authenticatePrivateToken], ...getUserOptions }, getUser);
+	fastify.get('/user/', { preHandler: [authenticatePrivateToken], ...getUserOptions }, getUser);
 	fastify.get<{ Params: { alias: string } }>('/useralias/:alias/', { preHandler: [authenticatePrivateToken], ...getUserAliasOptions }, getUserAlias);
-
-	//public data
+	// Public Data
 	fastify.get('/public/users', { preHandler: [authAPI], ...getPublicUsersOptions }, getAllUsers);
-
-
 	// Create user with JSON data
 	fastify.post<{
 		Body: {
@@ -58,11 +48,10 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 			language?: eLanguage;
 			status?: userStatus;
 		}
-	}>('/users/new', { preHandler: [authAPI], ...createUserOptions}, addUser);
+	}>('/user/new', { preHandler: [authAPI], ...createUserOptions}, addUser);
 
 	// Update profile picture with multipart/form-data
-	fastify.post<{ Params: { uuid: string } }>
-		('/users/:uuid/profile-pic', { preHandler: [authenticatePrivateToken], ...updateProfilePicOptions }, updateUserProfilePic);
+	fastify.post('/user/profile-pic', { preHandler: [authenticatePrivateToken], ...updateProfilePicOptions }, updateUserProfilePic);
 
 	// Log in
 	fastify.post('/user/login', { preHandler: [authAPI], ...loginUserOptions }, loginUser);
@@ -88,9 +77,8 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	fastify.put<{ Params: { uuid: string } }>('/user/:uuid/setOnline', { preHandler: [authenticatePrivateToken], ...updateUserStatusOptions }, setOnline);
 	fastify.put<{ Params: { uuid: string } }>('/user/:uuid/setOffline', { preHandler: [authenticatePrivateToken], ...updateUserStatusOptions }, setOffline);
 
-	fastify.delete<{ Params: { uuid: string } }>('/user/:uuid/profile-pic', { preHandler: [authenticatePrivateToken], ...deleteProfilePicOptions }, deleteProfilePic);
-	done();
-	fastify.delete<{ Params: { uuid: string } }>('/user/:uuid/delete', { preHandler: [authenticatePrivateToken], ...deleteUserOptions }, deleteUser);
+	fastify.delete('/user/profile-pic', { preHandler: [authenticatePrivateToken], ...deleteProfilePicOptions }, deleteProfilePic);
+	fastify.delete('/user/delete', { preHandler: [authenticatePrivateToken], ...deleteUserOptions }, deleteUser);
 	done();
 }
 

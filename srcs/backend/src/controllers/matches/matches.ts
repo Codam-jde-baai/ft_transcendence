@@ -17,10 +17,9 @@ export const getAllMatches = async (request: FastifyRequest, reply: FastifyReply
 			return reply.code(404).send({ error: "No Matches In The Database" })
 		}
 		return reply.send(Matches);
-
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'GetAllMatches Error';
+		const errorMessage = error instanceof Error ? error.message : 'getAllMatches Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {
@@ -28,10 +27,10 @@ export const getAllMatches = async (request: FastifyRequest, reply: FastifyReply
 	}
 }
 
-export const getMatchesByUser = async (request: FastifyRequest<{ Params: { uuid: string } }>, reply: FastifyReply) => {
+export const getMatchesByUser = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const uuid = request.params.uuid
+		const uuid = request.session.get('uuid') as string;
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
 		const Matches = await db.select().from(matchesTable).where(or(eq(matchesTable.p1_uuid, uuid), eq(matchesTable.p2_uuid, uuid)))
@@ -39,7 +38,6 @@ export const getMatchesByUser = async (request: FastifyRequest<{ Params: { uuid:
 			return reply.code(404).send({ error: "No Matches In The Database For This User" })
 		}
 		return reply.send(Matches);
-
 	}
 	catch (error) {
 		const errorMessage = error instanceof Error ? error.message : 'GetMatchesByUser Error';
@@ -50,20 +48,40 @@ export const getMatchesByUser = async (request: FastifyRequest<{ Params: { uuid:
 	}
 }
 
-export const getMatchesByPair = async (request: FastifyRequest<{ Params: { p1_uuid: string, p2_uuid: string } }>, reply: FastifyReply) => {
+export const getMatchesByAlias = async (request: FastifyRequest<{ Params: { alias: string } }>, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const { p1_uuid, p2_uuid } = request.params;
+		const alias = request.params.alias
+		sqlite = new Database('./data/data.db', { verbose: console.log })
+		const db = drizzle(sqlite);
+		const Matches = await db.select().from(matchesTable).where(or(eq(matchesTable.p1_alias, alias), eq(matchesTable.p2_alias, alias)))
+		if (Matches.length === 0){
+			return reply.code(404).send({ error: "No Matches In The Database For This User" })
+		}
+		return reply.send(Matches);
+	}
+	catch (error) {
+		const errorMessage = error instanceof Error ? error.message : 'GetMatchesByAlias Error';
+		return reply.status(500).send({ error: errorMessage })
+	}
+	finally {
+		if (sqlite) sqlite.close();
+	}
+}
+
+export const getMatchesByPair = async (request: FastifyRequest<{ Params: { p1_alias: string, p2_alias: string } }>, reply: FastifyReply) => {
+	let sqlite = null;
+	try {
+		const { p1_alias, p2_alias } = request.params;
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
 		const Matches = await db.select().from(matchesTable).where(or(
-			and(eq(matchesTable.p1_uuid, p1_uuid), eq(matchesTable.p2_uuid, p2_uuid)),
-			and(eq(matchesTable.p1_uuid, p2_uuid), eq(matchesTable.p2_uuid, p1_uuid))))
+			and(eq(matchesTable.p1_alias, p1_alias), eq(matchesTable.p2_alias, p2_alias)),
+			and(eq(matchesTable.p1_alias, p2_alias), eq(matchesTable.p2_alias, p1_alias))))
 		if (Matches.length === 0){
 			return reply.code(404).send({ error: "No Matches In The Database For This Pair" })
 		}
 		return reply.send(Matches);
-
 	}
 	catch (error) {
 		const errorMessage = error instanceof Error ? error.message : 'GetMatchesByPair Error';
@@ -91,20 +109,14 @@ export const addMatch = async (request: FastifyRequest<{ Body: createMatch }>,
 				end_time: body.end_time,
 				duration: body.duration
 		};
-		// Validation?
-		
 		// Add to database
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);
 		const createdMatch = await db.insert(matchesTable).values(matchData).returning();
-		
 		return reply.code(201).send(createdMatch[0]);
-			reply.code(299).send("Thang")
 	}
 	catch (error) {
 		const errorMessage = error instanceof Error ? error.message : 'addMatch error';
-		// if (error instanceof Error && error.message.startsWith("Validation failed:"))
-		// 	reply.status(400).send({ error: errorMessage })
 		return reply.status(500).send({ error: errorMessage });
 	}
 	finally {

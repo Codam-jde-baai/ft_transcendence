@@ -43,7 +43,7 @@ export const addUser = async (request: FastifyRequest<{
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);
 		const createdUser = await db.insert(usersTable).values(userData).returning();
-		request.session.set('data', createdUser[0].uuid);
+		request.session.set('uuid', createdUser[0].uuid);
 
 		// Use the helper function to create the public user object
 		return reply.code(201).send(toPublicUser(createdUser[0]));
@@ -60,13 +60,11 @@ export const addUser = async (request: FastifyRequest<{
 };
 
 // Update profile picture for an existing user
-export const updateUserProfilePic = async (
-	request: FastifyRequest<{ Params: { uuid: string } }>,
-	reply: FastifyReply) => {
+export const updateUserProfilePic = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		//get file and uu id
-		const { uuid } = request.params;
+		//get file and uuid
+		const uuid = request.session.get('uuid') as string;
 		const file = await request.file();
 		if (!file) {
 			reply.code(400).send({ error: 'No file uploaded' });
@@ -100,8 +98,8 @@ export const updateUserProfilePic = async (
 		return reply.code(200).send(toPublicUser(updatedUser[0]));
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'Update profile picture error';
-		request.log.error('Profile picture update failed:', error);
+		const errorMessage = error instanceof Error ? error.message : 'updateUserProfilePic error';
+		request.log.error('updateUserProfilePic failed:', error);
 		return reply.status(500).send({ error: errorMessage });
 	}
 	finally {

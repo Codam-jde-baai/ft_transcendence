@@ -25,15 +25,3 @@ export function toPublicRelation(databaseRelation: friend): publicRelation {
 		status: (friendStatus[databaseRelation.status].toLowerCase())
 	}
 }
-
-// type FriendUser = PublicUser & {
-// 	friendId: number
-// }
-
-// export function toFriendUser(user: User | null | undefined, friendId: number): FriendUser {
-// 	const publicUser = toPublicUser(user);
-// 	return {
-// 		...publicUser,
-// 		friendId
-// 	};
-// }
