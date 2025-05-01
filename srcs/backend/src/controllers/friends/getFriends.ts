@@ -6,26 +6,27 @@ import Database from 'better-sqlite3';
 import { friendsTable, usersTable, friendStatus } from '../../db/schema.ts'
 import { User, toPublicUser } from '../../models/users.ts'
 
-export const getFriends = async (request: FastifyRequest<{ Params: { uuid: string } }>, reply: FastifyReply) => {
+export const getFriends = async (request: FastifyRequest<{ Params: { alias: string } }>, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const { uuid } = request.params;
+		const alias = request.params.alias;
 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
 
-		const userExist = await db.select().from(usersTable).where(eq(usersTable.uuid, uuid)).limit(1);
+		const userExist = await db.select().from(usersTable).where(eq(usersTable.alias, alias)).limit(1);
 		if (userExist.length === 0) {
 			return reply.code(400).send({ error: 'user does not exist' });
 		}
 
+		const uuid = userExist[0].uuid
 		const RelationArray = await db.select().from(friendsTable).where(
 			or(
 				eq(friendsTable.reqUUid, uuid),
 				eq(friendsTable.recUUid, uuid)
 			)
 		);
-		if (RelationArray.length == 0) {
+		if (RelationArray.length === 0) {
 			return reply.code(404).send("nothing to see here")
 		}
 		const reqRelation = RelationArray.filter(relation => relation.reqUUid === uuid);
@@ -37,22 +38,19 @@ export const getFriends = async (request: FastifyRequest<{ Params: { uuid: strin
 
 		// where the user is the requester
 		for (const relation of reqRelation) {
-			if (relation.status == friendStatus.ACCEPTED) {
+			if (relation.status === friendStatus.ACCEPTED) {
 				friends.push({ id: relation.id, uuid: relation.recUUid });
 			}
-			if (relation.status == friendStatus.PENDING) {
+			if (relation.status === friendStatus.PENDING) {
 				sentRequests.push({ id: relation.id, uuid: relation.recUUid });
 			}
-			// if (relation.status == friendStatus.BLOCKED) {
-			// 	blockedUsers.push({ id: relation.id, uuid: relation.recUUid });
-			// }
 		}
 		// where the user is the receiver
 		for (const relation of recRelation) {
-			if (relation.status == friendStatus.ACCEPTED) {
+			if (relation.status === friendStatus.ACCEPTED) {
 				friends.push({ id: relation.id, uuid: relation.reqUUid });
 			}
-			if (relation.status == friendStatus.PENDING) {
+			if (relation.status === friendStatus.PENDING) {
 				receivedRequests.push({ id: relation.id, uuid: relation.reqUUid });
 			}
 		}
@@ -92,7 +90,7 @@ export const getFriends = async (request: FastifyRequest<{ Params: { uuid: strin
 
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'getFriends errorr';
+		const errorMessage = error instanceof Error ? error.message : 'getFriends Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {
@@ -103,10 +101,7 @@ export const getFriends = async (request: FastifyRequest<{ Params: { uuid: strin
 export const getMyFriends = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const uuid = request.session.get('data');
-		if (!uuid) {
-			return reply.status(401).send({ error: 'user is not logged in' })
-		}
+		const uuid = request.session.get('uuid') as string;
 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
@@ -122,7 +117,7 @@ export const getMyFriends = async (request: FastifyRequest, reply: FastifyReply)
 				eq(friendsTable.recUUid, uuid)
 			)
 		);
-		if (RelationArray.length == 0) {
+		if (RelationArray.length === 0) {
 			return reply.code(404).send("nothing to see here")
 		}
 		const reqRelation = RelationArray.filter(relation => relation.reqUUid === uuid);
@@ -134,22 +129,19 @@ export const getMyFriends = async (request: FastifyRequest, reply: FastifyReply)
 
 		// where the user is the requester
 		for (const relation of reqRelation) {
-			if (relation.status == friendStatus.ACCEPTED) {
+			if (relation.status === friendStatus.ACCEPTED) {
 				friends.push({ id: relation.id, uuid: relation.recUUid });
 			}
-			if (relation.status == friendStatus.PENDING) {
+			if (relation.status === friendStatus.PENDING) {
 				sentRequests.push({ id: relation.id, uuid: relation.recUUid });
 			}
-			// if (relation.status == friendStatus.BLOCKED) {
-			// 	blockedUsers.push({ id: relation.id, uuid: relation.recUUid });
-			// }
 		}
 		// where the user is the receiver
 		for (const relation of recRelation) {
-			if (relation.status == friendStatus.ACCEPTED) {
+			if (relation.status === friendStatus.ACCEPTED) {
 				friends.push({ id: relation.id, uuid: relation.reqUUid });
 			}
-			if (relation.status == friendStatus.PENDING) {
+			if (relation.status === friendStatus.PENDING) {
 				receivedRequests.push({ id: relation.id, uuid: relation.reqUUid });
 			}
 		}
@@ -189,7 +181,7 @@ export const getMyFriends = async (request: FastifyRequest, reply: FastifyReply)
 
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'getFriends errorr';
+		const errorMessage = error instanceof Error ? error.message : 'getMyFriends Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {

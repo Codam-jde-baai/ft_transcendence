@@ -5,11 +5,10 @@ import { eq } from 'drizzle-orm'
 import { usersTable } from '../../db/schema.ts';
 
 export const deleteUser = async (
-	request: FastifyRequest<{ Params: { uuid: string } }>,
-	reply: FastifyReply) => {
+	request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const { uuid } = request.params;
+		const uuid = request.session.get('uuid') as string;
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);
 		const result = await db.delete(usersTable).where(eq(usersTable.uuid, uuid));
@@ -20,8 +19,8 @@ export const deleteUser = async (
 		return reply.code(204).send();
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'delete user error';
-		request.log.error('User deletion failed: ', errorMessage)
+		const errorMessage = error instanceof Error ? error.message : 'deleteUser error';
+		request.log.error('deleteUser failed: ', errorMessage)
 		return reply.code(500).send({ error: errorMessage })
 	}
 	finally {
@@ -31,11 +30,10 @@ export const deleteUser = async (
 };
 
 export const deleteProfilePic = async (
-	request: FastifyRequest<{ Params: { uuid: string } }>,
-	reply: FastifyReply) => {
+	request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const { uuid } = request.params;
+		const uuid = request.session.get('uuid') as string;
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);
 		const result = await db.update(usersTable)
@@ -48,8 +46,8 @@ export const deleteProfilePic = async (
 		return reply.code(204).send();
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'delete user error';
-		request.log.error('Profile pic deletion failed: ', errorMessage)
+		const errorMessage = error instanceof Error ? error.message : 'deleteProfilePic error';
+		request.log.error('deleteProfilePic failed: ', errorMessage)
 		return reply.code(500).send({ error: errorMessage })
 	}
 	finally {

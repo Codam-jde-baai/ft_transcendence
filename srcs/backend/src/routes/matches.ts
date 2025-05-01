@@ -4,9 +4,11 @@ import {
 	addMatch,
 	getAllMatches,
 	getMatchesByUser,
+	getMatchesByAlias,
 	getMatchesByPair,
 } from '../controllers/matches/matches.ts';
 import { createMatch } from '../models/matches.ts';
+import { errorResponseSchema } from './userdocs.ts';
 
 
 // Schema for match properties
@@ -41,7 +43,9 @@ const getMatchesOptions = {
 					type: 'object',
 					properties: enhancedMatchProperties
 				}
-			}
+			},
+			404: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };
@@ -72,12 +76,8 @@ const addMatchOptions = {
 				type: 'object',
 				properties: enhancedMatchProperties
 			},
-			404: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			}
+			404: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };
@@ -86,11 +86,29 @@ const getUserMatchesOptions = {
 	schema: {
 		security: [{ apiKey: [] }],
 		tags: ['matches'],
+		response: {
+			200: {
+				type: 'array',
+				items: {
+					type: 'object',
+					properties: enhancedMatchProperties
+				}
+			},
+			404: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+const getAliasMatchesOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		tags: ['matches'],
 		params: {
 			type: 'object',
-			required: ['uuid'],
+			required: ['alias'],
 			properties: {
-				uuid: { type: 'string' }
+				alias: { type: 'string' }
 			}
 		},
 		response: {
@@ -101,12 +119,8 @@ const getUserMatchesOptions = {
 					properties: enhancedMatchProperties
 				}
 			},
-			404: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			}
+			404: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };
@@ -117,10 +131,10 @@ const getPairMatchesOptions = {
 		tags: ['matches'],
 		params: {
 			type: 'object',
-			required: ['p1_uuid', 'p2_uuid'],
+			required: ['p1_alias', 'p2_alias'],
 			properties: {
-				p1_uuid: { type: 'string' },
-				p2_uuid: { type: 'string' }
+				p1_alias: { type: 'string' },
+				p2_alias: { type: 'string' }
 			}
 		},
 		response: {
@@ -131,80 +145,24 @@ const getPairMatchesOptions = {
 					properties: enhancedMatchProperties
 				}
 			},
-			404: {
-				type: 'object',
-				properties: {
-					error: { type: 'string' }
-				}
-			}
+			404: errorResponseSchema,
+			500: errorResponseSchema
 		}
 	}
 };
 
 function matchesRoutes(fastify: FastifyInstance, options: any, done: () => void) {
-	// Match routes
 	fastify.get('/matches', { preHandler: [authenticatePrivateToken], ...getMatchesOptions}, getAllMatches);
-	fastify.get<{ Params: { uuid: string } }>
-		('/matches/:uuid', { preHandler: [authenticatePrivateToken], ...getUserMatchesOptions}, getMatchesByUser);
-	fastify.get<{ Params: { p1_uuid: string, p2_uuid: string } }>
-		('/matches/:p1_uuid/:p2_uuid', { preHandler: [authenticatePrivateToken], ...getPairMatchesOptions}, getMatchesByPair);
+	fastify.get('/matches/user', { preHandler: [authenticatePrivateToken], ...getUserMatchesOptions}, getMatchesByUser);
+	fastify.get<{ Params: { alias: string } }>
+		('/matches/:alias', { preHandler: [authenticatePrivateToken], ...getAliasMatchesOptions}, getMatchesByAlias);
+	fastify.get<{ Params: { p1_alias: string, p2_alias: string } }>
+		('/matches/:p1_alias/:p2_alias', { preHandler: [authenticatePrivateToken], ...getPairMatchesOptions}, getMatchesByPair);
 
 	fastify.post <{ Body: createMatch}>
 	('/matches/new', { preHandler: [authenticatePrivateToken], ...addMatchOptions}, addMatch);
-
 
 	done();
 }
 
 export default matchesRoutes;
-
-
-	// fastify.get<{ Params: { friendid: string } }>
-	// 	('/matches/:friendid', { preHandler: [authenticatePrivateToken], ...getMatchOptions }, getMatchByFriendId);
-
-
-// // Schema for user matches response
-// const getUserMatchesOptions = {
-// 	schema: {
-// 		security: [{ apiKey: [] }],
-// 		tags: ['matches'],
-// 		response: {
-// 			200: {
-// 				type: 'array',
-// 				items: {
-// 					type: 'object',
-// 					properties: {
-// 						...enhancedMatchProperties,
-// 						isWinner: { type: 'boolean' }
-// 					}
-// 				}
-// 			},
-// 			404: {
-// 				type: 'object',
-// 				properties: {
-// 					error: { type: 'string' }
-// 				}
-// 			}
-// 		}
-// 	}
-// };
-
-// // Schema for single match response
-// const getMatchOptions = {
-// 	schema: {
-// 		security: [{ apiKey: [] }],
-// 		tags: ['matches'],
-// 		response: {
-// 			200: {
-// 				type: 'object',
-// 				properties: enhancedMatchProperties
-// 			},
-// 			404: {
-// 				type: 'object',
-// 				properties: {
-// 					error: { type: 'string' }
-// 				}
-// 			}
-// 		}
-// 	}
-// };

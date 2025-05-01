@@ -39,7 +39,6 @@ export enum eWinner {
 	PLAYER2 = 2
 }
 
-// table with all matches
 export const matchesTable = sqliteTable("matches", {
 	id: int("id").primaryKey({ autoIncrement: true }),
 	p1_alias: text("p1_alias", { length: 264 }).notNull(),
@@ -59,17 +58,9 @@ export enum friendStatus {
 	ACCEPTED = 1
 }
 
-// friends-relations table
 export const friendsTable = sqliteTable("friends", {
 	id: int("id").primaryKey({ autoIncrement: true }),
 	reqUUid: text("requester", { length: 264 }).references(() => usersTable.uuid).notNull(),
 	recUUid: text("recipient", { length: 264 }).references(() => usersTable.uuid).notNull(),
 	status: int("status").$type<friendStatus>().default(friendStatus.PENDING).notNull()
 });
-
-// optional blocked users table 
-/**
-if a new relation gets blocked -> relation gets removed from friends table
-if a blocked user sends a friendRequest, the friendRequest exists but is filtered out for the blockStarter/blockker
-
- */

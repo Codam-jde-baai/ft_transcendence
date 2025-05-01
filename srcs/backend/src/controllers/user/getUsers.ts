@@ -26,7 +26,7 @@ export const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) 
 		const publicUsers = userArray.map(toPublicUser);
 		return reply.send(publicUsers);
 	} catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'getUsers errorr';
+		const errorMessage = error instanceof Error ? error.message : 'getAllUsers Error';
 		return reply.status(500).send({ error: errorMessage })
 	} finally {
 		if (sqlite) sqlite.close();
@@ -34,13 +34,10 @@ export const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) 
 };
 
 
-export const getUser = async (
-	request: FastifyRequest<{ Params: { uuid: string } }>,
-	reply: FastifyReply) => {
+export const getUser = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const uuid = request.params.uuid;
-
+		const uuid = request.session.get('uuid') as string;
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);
 
@@ -55,7 +52,7 @@ export const getUser = async (
 		const publicUser = toPublicUser(user);
 		reply.code(200).send(publicUser);
 	} catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'getUser errorr';
+		const errorMessage = error instanceof Error ? error.message : 'getUser Error';
 		return reply.status(500).send({ error: errorMessage })
 	} finally {
 		if (sqlite) sqlite.close();
@@ -83,7 +80,7 @@ export const getUserAlias = async (
 		const publicUser = toPublicUser(user);
 		reply.code(200).send(publicUser);
 	} catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'getUserAlias errorr';
+		const errorMessage = error instanceof Error ? error.message : 'getUserAlias Error';
 		return reply.status(500).send({ error: errorMessage })
 	} finally {
 		if (sqlite) sqlite.close();
@@ -93,13 +90,10 @@ export const getUserAlias = async (
 // test
 
 // Function to get user image
-export const getUserImage = async (
-	request: FastifyRequest<{ Params: { uuid: string } }>,
-	reply: FastifyReply) => {
+export const getUserImage = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const uuid = request.params.uuid;
-
+		const uuid = request.session.get('uuid') as string;
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);
 
@@ -119,7 +113,40 @@ export const getUserImage = async (
 			reply.code(404).send({ error: 'Profile picture not found' });
 		}
 	} catch (error) {
-		request.log.error('getAllUsers failed:', error);
+		request.log.error('getUserImage failed:', error);
+		reply.code(500).send({ error: 'Failed to retrieve users' });
+	} finally {
+		if (sqlite) sqlite.close();
+	}
+}
+
+export const getUserImageByAlias = async (
+	request: FastifyRequest<{ Params: { alias: string } }>,
+	reply: FastifyReply) => {
+	let sqlite = null;
+	try {
+		const alias = request.params.alias;
+
+		sqlite = new Database('./data/data.db', { verbose: console.log });
+		const db = drizzle(sqlite);
+
+		const userArray = await db.select().from(usersTable).where(eq(usersTable.alias, alias));
+
+		if (userArray.length === 0) {
+			reply.code(404).send({ error: 'User not found' });
+			return;
+		}
+
+		const user = userArray[0];
+
+		const pic = user.profile_pic as Buffer | undefined;
+		if (pic) {
+			reply.type(getMimeType(pic)).send(pic);
+		} else {
+			reply.code(404).send({ error: 'Profile picture not found' });
+		}
+	} catch (error) {
+		request.log.error('getUserImageByAlias failed:', error);
 		reply.code(500).send({ error: 'Failed to retrieve users' });
 	} finally {
 		if (sqlite) sqlite.close();
