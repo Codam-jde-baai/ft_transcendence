@@ -1,3 +1,4 @@
+import { fillHistoryTable } from '../script/fillTable';
 import { getLanguage } from '../script/language';
 
 class HistoryTable extends HTMLElement {
@@ -11,48 +12,22 @@ class HistoryTable extends HTMLElement {
 	}
 
 	render() {
-		// fillHistoryTable().then((userData: any[] | null) => {
+		fillHistoryTable().then((entryData: { date: string; player1: string; player2: string; winner: string; score: string }[] | null) => {
 
-		// 	if (userData) {
+			if (entryData) {
 				
-		// 		let rowsHtml = "";
-		// 		userData.forEach((user: any) => {
+				let rowsHtml = "";
+				entryData.forEach((entry: any) => {
 
-		// 			rowsHtml += `
-		// 				<tr>
-		// 					<td>${user.username}</td>
-		// 					<td>${user.alias}</td>
-		// 					<td>
-		// 						<button class="btn" id="Delete" data-i18n="btn_Remove"></button>
-		// 						<button class="btn" id="AdminSet" data-i18n="Change_Password"></button>
-		// 					</td>
-		// 				</tr>
-		// 			`;
-
-		// 		});
-
-		// 		this.innerHTML = "";
-		// 		this.insertAdjacentHTML("beforeend", /*html*/`
-		// 			<div class="table-wrapper">
-		// 				<table class="userTable">
-		// 					<thead>
-		// 						<tr>
-		// 							<th data-i18n="LogIn_Name"></th>
-		// 							<th data-i18n="SignUp_Alias"></th>
-		// 							<th data-i18n="Action"></th>
-		// 						</tr>
-		// 					</thead>
-		// 					<tbody>
-		// 						${rowsHtml}
-		// 					</tbody>
-		// 				</table>
-		// 			</div>
-		// 		`);
-
-
-		// 		getLanguage();
-		// 	}
-		// });
+					rowsHtml += `
+						<tr>
+							<td>${entry.date}</td>
+							<td>${entry.player1} vs ${entry.player2}</td>
+							<td>${entry.winner}</td>
+							<td>${entry.score}</td>
+						</tr>
+					`;
+				});
 
 				this.innerHTML = "";
 				this.insertAdjacentHTML("beforeend", /*html*/`
@@ -67,26 +42,7 @@ class HistoryTable extends HTMLElement {
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>01-03-2025</td>
-								<td>coolalias vs NOTcoolalias</td>
-								<td>coolalias</td>
-								<td>11-7</td>
-							</tr>
-							<!-- REMOVE - only for testing -->
-							<tr>
-								<td>2025-03-01</td>
-								<td>Player 1 vs Player 2</td>
-								<td>Player 1</td>
-								<td>11-7</td>
-							</tr>
-							<tr>
-								<td>2025-03-01</td>
-								<td>Player 1 vs Player 2</td>
-								<td>Player 1</td>
-								<td>11-7</td>
-							</tr>
-							<!--- ^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+							${rowsHtml}
 						</tbody>
 				</table>
 					</div>
@@ -94,7 +50,10 @@ class HistoryTable extends HTMLElement {
 
 
 				getLanguage();
+			}
+		});
 	}
 }
 
+// Define the custom element
 customElements.define('history-table', HistoryTable);

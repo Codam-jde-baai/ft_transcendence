@@ -5,7 +5,7 @@ import { setupErrorPages } from './errorPages';
 import { setupAdminSetting } from './adminSettings';
 import { connectFunc, requestBody } from '../script/connections';
 import { fillTopbar } from '../script/fillTopbar';
-import { fillUserTable } from '../script/fillUsertabe_admin';
+import { fillUserTable } from '../script/fillTable';
 
 export function setupAdmin() {
 	const root = document.getElementById('app');

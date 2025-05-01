@@ -5,7 +5,7 @@ import { setupNavigation } from '../script/menuNavigation';
 import { connectFunc, requestBody } from '../script/connections';
 import { setupErrorPages } from './errorPages';
 
-export function  setupMatchHistory () {
+export function  setupSnekMatchHistory () {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
@@ -17,12 +17,13 @@ export function  setupMatchHistory () {
 			<!-- BODY CHANGE -->
 			<div class="middle">
 				<div class="container">
-					<h1 class="Pongheader" data-i18n="Pong"></h1>
+					<h1 class="Pongheader" data-i18n="Snek"></h1>
 					<h1 class="header" data-i18n="History"></h1>
 					<p class="p1" data-i18n="History_P"></p>
 					<p class="p1" id="historyAliasName"></p>
 				
-					<history-table></history-table>
+					<!-- ______ Table does not exist YET _______ -->
+					<!-- <snek-history-table></snek-history-table> -->
 					
 				</div>
 			<!-- ^^^ -->

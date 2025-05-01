@@ -5,6 +5,7 @@ import { setupSetting } from './setting';
 import { setupFriends } from './friends';
 import { setupMatchHistory } from './history';
 import { setupStartGame } from './startGame';
+import { setupSnekMatchHistory } from './snekHistory';
 import { setupSnek } from './snek';
 import { setupAdmin } from './admin';
 import { setupAdminUserSetting } from './adminUserSetting';
@@ -37,6 +38,7 @@ export function renderPage() {
 		'/history': setupMatchHistory,
 		'/friends': setupFriends,
 		'/snek': setupSnek,
+		'/snekHistory': setupSnekMatchHistory,
 		'/errorPages': () => setupErrorPages(404, 'Page Not Found'),
 		'/admin': setupAdmin,
 		'/adminSettings': setupAdminSetting,

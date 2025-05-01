@@ -1,4 +1,4 @@
-import { fillUserTable } from '../script/fillUsertabe_admin';
+import { fillUserTable } from '../script/fillTable';
 import { getLanguage } from '../script/language';
 import { setupAdminUserSetting } from '../pages/adminUserSetting';
 
