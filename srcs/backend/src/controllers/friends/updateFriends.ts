@@ -14,14 +14,10 @@ export const AcceptFriendReq = async (request: FastifyRequest<{ Params: { friend
 		if (isNaN(id)) {
 			return reply.status(400).send({ error: "id is not a number" })
 		}
-		const uuid = request.session.get('data');
-		if (!uuid) {
-			return reply.status(401).send({ error: 'user is not logged in' })
-		}
+		const uuid = request.session.get('uuid') as string;
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite)
 
-		// check if accepter is in fact the receiver of this friendReq
 		const friendRelationArray = await db.select({ recUUid: friendsTable.recUUid }).from(friendsTable).where(eq(friendsTable.id, id))
 
 		if (friendRelationArray.length === 0) {
@@ -41,7 +37,7 @@ export const AcceptFriendReq = async (request: FastifyRequest<{ Params: { friend
 		return reply.status(200).send()
 
 	} catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'getFriends errorr';
+		const errorMessage = error instanceof Error ? error.message : 'acceptFriendReq Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {
@@ -57,15 +53,11 @@ export const RemoveFriendRelation = async (request: FastifyRequest<{ Params: { f
 		if (isNaN(id)) {
 			return reply.status(400).send({ error: 'id is not a number' })
 		}
-		const uuid = request.session.get('data');
-		if (!uuid) {
-			return reply.status(401).send({ error: 'user is not logged in' })
-		}
+		const uuid = request.session.get('uuid') as string;
 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite)
 
-		// check if requester is part of the friendrelation
 		const relation = await db.select().from(friendsTable).where(and(
 			eq(friendsTable.id, id),
 			or(eq(friendsTable.reqUUid, uuid), eq(friendsTable.recUUid, uuid))
@@ -80,7 +72,7 @@ export const RemoveFriendRelation = async (request: FastifyRequest<{ Params: { f
 		return reply.status(200).send()
 
 	} catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'getFriends errorr';
+		const errorMessage = error instanceof Error ? error.message : 'removeFriendRelation Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {

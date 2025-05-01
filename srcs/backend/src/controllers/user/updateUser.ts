@@ -52,7 +52,7 @@ export const updatePassword = async (request: FastifyRequest<{
 			.where(eq(usersTable.uuid, uuid));
 		return reply.code(200).send();
 	} catch (error) {
-		request.log.error('getAllUsers failed:', error);
+		request.log.error('updatePassword failed:', error);
 		return reply.code(500).send({ error: 'Failed to retrieve users' });
 	} finally {
 		if (sqlite) sqlite.close();
@@ -75,7 +75,7 @@ export const updateUser = async (request: FastifyRequest<{
 		if (username !== undefined) updateData.username = username;
 		if (alias !== undefined) updateData.alias = alias;
 		if (language !== undefined) updateData.language = language;
-		if (Object.keys(updateData).length == 0) {
+		if (Object.keys(updateData).length === 0) {
 			return reply.code(400).send({ error: "no data provided to update" })
 		}
 
@@ -89,8 +89,8 @@ export const updateUser = async (request: FastifyRequest<{
 		}
 		return reply.code(200).send(toPublicUser(updatedUser[0]));
 	} catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'Update profile picture error';
-		request.log.error('User info update failed:', error);
+		const errorMessage = error instanceof Error ? error.message : 'updateUser error';
+		request.log.error('updateUser failed:', error);
 		return reply.status(500).send({ error: errorMessage });
 	}
 	finally {
@@ -115,8 +115,7 @@ export const setOnline = async (
 		return reply.code(200).send();
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'Update profile picture error';
-		request.log.error('Profile picture update failed:', error);
+		const errorMessage = error instanceof Error ? error.message : 'setOnline error';
 		return reply.status(500).send({ error: errorMessage });
 	}
 	finally {
@@ -141,8 +140,8 @@ export const setOffline = async (
 		return reply.code(200).send();
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'Update profile picture error';
-		request.log.error('Profile picture update failed:', error);
+		const errorMessage = error instanceof Error ? error.message : 'setOffline error';
+		request.log.error('setOffline failed:', error);
 		return reply.status(500).send({ error: errorMessage });
 	}
 	finally {

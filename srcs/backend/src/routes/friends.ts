@@ -27,13 +27,6 @@ const friendProperties = {
 	}
 }
 
-/*
-
-	friends: [...]
-	sentRequests: [...]
-	receivedRequests: [...]
-
- */
 const friendListProperties = {
 	type: 'object',
 	properties: {
@@ -55,13 +48,13 @@ const friendListProperties = {
 const FriendListOptions = {
 	schema: {
 		security: [{ apiKey: [] }],
-		summary: 'gets all relations of the user',
+		summary: 'gets all relations of the user by alias',
 		tags: ['friends'],
 		params: {
 			type: 'object',
-			required: ['uuid'],
+			required: ['alias'],
 			properties: {
-				uuid: { type: 'string' }
+				alias: { type: 'string' }
 			}
 		},
 		response: {
@@ -202,9 +195,9 @@ function friendsRoutes(fastify: FastifyInstance, options: any, done: () => void)
 	fastify.post<{ Body: { alias: string } }>
 		('/friends/new', { preHandler: [authenticatePrivateToken], ...createFriendOptions }, addFriend);
 
-	// get all Relations
-	fastify.get<{ Params: { uuid: string } }>
-		('/friends/:uuid', { preHandler: [authenticatePrivateToken], ...FriendListOptions },
+	// get all Relations By Alias
+	fastify.get<{ Params: { alias: string } }>
+		('/friends/:alias', { preHandler: [authenticatePrivateToken], ...FriendListOptions },
 			getFriends)
 
 

@@ -9,15 +9,11 @@ import { toPublicUser } from '../../models/users.ts'
 export const getNonFriends = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const uuid = request.session.get('data');
-		if (!uuid) {
-			return reply.status(401).send({ error: 'user is not logged in' })
-		}
+		const uuid = request.session.get('uuid') as string;
 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
 
-		//get all friend UUids
 		const friendUUid = await db.select({
 			req: friendsTable.reqUUid,
 			rec: friendsTable.recUUid
@@ -25,14 +21,14 @@ export const getNonFriends = async (request: FastifyRequest, reply: FastifyReply
 			eq(friendsTable.reqUUid, uuid), eq(friendsTable.recUUid, uuid)));
 
 		const combinedUUids = [...friendUUid.map(r => r.req), ...friendUUid.map(r => r.rec)];
-		const uniqueUUids = Array.from(new Set([...combinedUUids, uuid])); // excluding the user self as well
+		const uniqueUUids = Array.from(new Set([...combinedUUids, uuid]));
 
 		const userArray = await db.select().from(usersTable).where(notInArray(usersTable.uuid, uniqueUUids));
 		const publicUsers = userArray.map(toPublicUser);
 		return reply.status(200).send(publicUsers);
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'getFriends errorr';
+		const errorMessage = error instanceof Error ? error.message : 'getNonFriends Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {
