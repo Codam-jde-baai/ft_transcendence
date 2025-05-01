@@ -39,7 +39,7 @@ export function renderPage() {
 		'/friends': setupFriends,
 		'/snek': setupSnek,
 		'/snekHistory': setupSnekMatchHistory,
-		'/errorPages': () => setupErrorPages(404, 'Page Not Found'),
+		'/errorPages': () => setupErrorPages(404, "Page Not Found"),
 		'/admin': setupAdmin,
 		'/adminSettings': setupAdminSetting,
 		'/adminUserSetting': setupAdminUserSetting,

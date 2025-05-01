@@ -5,7 +5,7 @@ import { setupAdmin } from './admin';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { adminPasswordFields } from '../script/errorFunctions';
 import { fillTopbar } from '../script/fillTopbar';
-import { fillSetting } from '../script/doSettings';
+// import { fillSetting } from '../script/doSettings';
 import { setupErrorPages } from './errorPages';
 import { updateUserSettings } from '../script/doSettings';
 
@@ -59,7 +59,7 @@ export function setupAdminSetting() {
 				dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 				eyeIcon_Button(["show-password", "show-password_confirm", "avatar"]);
 				fillTopbar();
-				fillSetting();
+				// fillSetting();
 				
 				document.getElementById('Save')?.addEventListener('click', async () => {
 					const isValid = adminPasswordFields(["password", "password_confirm"]);

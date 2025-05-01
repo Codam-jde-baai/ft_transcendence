@@ -29,6 +29,17 @@ export function eyeIcon_Button(input: string[]) {
 				}
 			});
 		}
+		else if (elem.id === "show-current_password") // Hidde Password (The eye)
+		{ 
+			elem.addEventListener('click', () => {
+				const passwordField = document.getElementById("current_password");
+				const eyeIcon = document.getElementById("eye-icon_current");
+
+				if (passwordField && eyeIcon) {
+					change_eyeIcon(passwordField, eyeIcon);
+				}
+			});
+		}
 		else if (elem.id === "avatar") // Add Avatar
 		{ 
 			elem.addEventListener('change', (event) => {

@@ -15,9 +15,11 @@
     "btn_Block": "Blockieren",
     "btn_Unblock_User": "deblokkeren",
     "btn_Cancel": "stornieren",
+    "btn_Delete": "Löschen",
 
     "Password": "Passwort",
     "ConfirmPassword": "Passwort bestätigen",
+    "CurrentPassword": "Aktuelles Passwort",
     "LogIn_Name": "Anmelde-Name",
     "SignUp_Avatar": "Füge dein Avatar hinzu",
     "SignUp_Alias": "Alias-Name",
@@ -35,6 +37,7 @@
     "Pending_Requests_Header": "Pending RequestsDE",
     
     "Index_P": "Spiele klassisches Pong mit deinen Freunden!",
+    "Delete_Account": " Ihr Konto dauerhaft löschen",
     "LogIn_P": "Du hast kein Konto?",
     "SignUp_P": "Du  hast bereits ein Konto?",
     "History_P": "Von",
@@ -58,7 +61,7 @@
     "Dutch": "Niederländisch",
 
     "Setting_Avatar": "Avatar bearbeiten",
-    "Setting_Name": "Anmeldename (Kann nicht geändert werden)",
+    "Setting_Name": "Anmeldename bearbeiten",
     "Setting_Alias": "Aliasnamen bearbeiten",
     "Change_Password": "Passwort ändern",
 
@@ -89,6 +92,9 @@
     "LogIn_error_password": "Falsches Passwort",
     "LogIn_error": "Falsches Passwort",
     "LogIn_noUser": "Benutzer nicht gefunden",
+    "CurrentPass_error": "Passwort stimmt nicht überein",
+    "CurrentPass_error1": "Aktuelles Passwort fehlt",
+    "CurrentPass_error2": "Neues Passwort fehlt",
 
     "Snek": "Snek",
     "SwitchGame": "Spiel wechseln",

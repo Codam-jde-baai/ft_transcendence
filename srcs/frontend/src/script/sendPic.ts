@@ -21,7 +21,7 @@ export async function sendPicture(userID: any) {
 
 	const body = requestBody("POST", form);
 
-	connectFunc(`/users/${userID}/profile-pic`, body)
+	connectFunc(`/users/profile-pic`, body)
 		.then(response => {
 			if (!response.ok) {
 				window.history.pushState({}, '', '/errorPages');
@@ -49,7 +49,7 @@ export function EditPicture(userID: any): boolean {
 		const form = new FormData();
 		form.append("avatar", file);
 		const body = requestBody("POST", form);
-		connectFunc(`/users/${userID}/profile-pic`, body)
+		connectFunc(`/users/profile-pic`, body)
 		.then(response => {
 			if (!response.ok) {
 				isValid = false;

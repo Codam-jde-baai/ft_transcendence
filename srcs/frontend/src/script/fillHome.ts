@@ -5,7 +5,7 @@ export function fillHome() {
 	// Retrieve user uuid
 	const userID = localStorage.getItem('userID');
 	if (userID) {
-		connectFunc(`/user/${userID}`, requestBody("GET", null))
+		connectFunc(`/user/`, requestBody("GET", null))
 		.then((userInfoResponse) => {
 			if (userInfoResponse.ok) {
 				userInfoResponse.json().then((data) => {

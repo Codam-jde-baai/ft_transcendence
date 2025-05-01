@@ -15,9 +15,11 @@
     "btn_Block": "Blokkeren",
     "btn_Unblock_User": "Deblokkeer",
     "btn_Cancel": "Annuleren",
+    "btn_Delete": "Verwijderen",
 
     "Password": "Wachtwoord",
     "ConfirmPassword": "Bevestig wachtwoord",
+    "CurrentPassword": "Huidig wachtwoord",
     "LogIn_Name": "Inlognaam",
     "SignUp_Avatar": "Voeg je avatar toe",
     "SignUp_Alias": "Aliasnaam",
@@ -35,6 +37,7 @@
     "Pending_Requests_Header": "Wachten op Antwoord",
     
     "Index_P": "Speel klassieke Pong met je vrienden!",
+    "Delete_Account": "Uw account permanent verwijderen",
     "LogIn_P": "Heb je geen account?",
     "SignUp_P": "Heb je al een account?",
     "History_P": "Van",
@@ -58,7 +61,7 @@
     "Dutch": "Nederlands",
 
     "Setting_Avatar": "Avatar bewerken",
-    "Setting_Name": "Inlognaam (Kan niet worden gewijzigd)",
+    "Setting_Name": "Inlognaam bewerken",
     "Setting_Alias": "Aliasnaam bewerken",
     "Change_Password": "Wachtwoord wijzigen",
     
@@ -89,6 +92,9 @@
     "LogIn_error_password": "Fout wachtwoord",
     "LogIn_error": "Verkeerd wachtwoord",
     "LogIn_noUser": "Gebruiker niet gevonden",
+    "CurrentPass_error": "Wachtwoord komt niet overeen",
+    "CurrentPass_error1": "Huidig wachtwoord ontbreekt",
+    "CurrentPass_error2": "Nieuw wachtwoord ontbreekt",
 
     "Snek": "Snek",
     "SwitchGame": "Wissel van spel",

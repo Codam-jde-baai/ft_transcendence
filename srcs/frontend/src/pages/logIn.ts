@@ -62,6 +62,8 @@ export function setupLogIn() {
 						
 						// Get user ID  -> user uuid
 						const userID = data.uuid;
+						console.log(data)
+						console.log(data.uuid)
 						if (!userID) {
 							// Network or server error
 							window.history.pushState({}, '', '/errorPages');

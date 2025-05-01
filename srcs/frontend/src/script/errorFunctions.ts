@@ -137,12 +137,17 @@ export function passwordFields(input: string[]): boolean {
 		}
 		if (elem.id === "password" && elem.value !== "")
 		{
-			const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;
+			const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;		
 			if (elem.value.length < 6 || elem.value.length > 117)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_userPass");
 				isValid = false;
 			}
+			else if ((document.getElementById("current_password") as HTMLInputElement).value === "")
+			{
+				errorDisplay(elem, errorMsg, "CurrentPass_error1");
+				isValid = false;
+			}	
 			else if (elem.value != (document.getElementById("password_confirm") as HTMLInputElement).value)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_password"); // PASSWORD does NOT Match
@@ -150,6 +155,17 @@ export function passwordFields(input: string[]): boolean {
 			}
 			else
 				errorRMDisplay(elem, errorMsg, "Change_Password");
+		}
+		if (elem.id === "current_password" && elem.value !== "")
+		{
+			const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
+			if ((document.getElementById("password") as HTMLInputElement).value.length == 0)
+			{
+						errorDisplay(elem, errorMsg, "CurrentPass_error2");
+						isValid = false;
+			}
+			else
+				errorRMDisplay(elem, errorMsg, "CurrentPassword");
 		}
 	});
 	return isValid;
