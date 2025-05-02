@@ -39,7 +39,7 @@ export function renderPage() {
 		'/friends': setupFriends,
 		'/snek': setupSnek,
 		'/snekHistory': setupSnekMatchHistory,
-		'/errorPages': () => setupErrorPages(404, "Page Not Found"),
+		'/errorPages': () => setupErrorPages(404, "Not Found"),
 		'/admin': setupAdmin,
 		'/adminSettings': setupAdminSetting,
 		'/adminUserSetting': setupAdminUserSetting,
@@ -77,10 +77,6 @@ export function renderPage() {
 				renderPage();
 			});
 		}
-	} else {
-		// If invalid route -> 404 page
-		window.history.pushState({}, '', '/errorPages');
-		setupErrorPages(404, "Page Not Found");
 	}
 }
 

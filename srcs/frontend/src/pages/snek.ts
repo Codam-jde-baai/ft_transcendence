@@ -27,6 +27,6 @@ export function setupSnek() {
 
 	}
 	else {
-		setupErrorPages(404, "Page Not Found");
+		setupErrorPages(404, "Not Found");
 	}
 }

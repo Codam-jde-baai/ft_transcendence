@@ -79,7 +79,7 @@ export function setupSignUp() {
 						const userID = data.uuid;
 
 						// Add Profile Pic
-						sendPicture(userID);
+						sendPicture();
 						
 						if (!userID) {
 							// Network or server error
@@ -120,11 +120,7 @@ export function setupSignUp() {
 						setupErrorPages(response.status,  response.statusText);
 					});
 				}
-				}).catch(() => {
-				// Server/ Network error
-				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(500, "Internal Server Error");
-			});
+			})
 		});
 	}
 }

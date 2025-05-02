@@ -98,17 +98,9 @@ export function setupLogIn() {
 							const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
 							errorDisplay(elem, errorMsg, "LogIn_noUser");
 						}
-					}).catch(() => {
-						// Network or server error
-						window.history.pushState({}, '', '/errorPages');
-						setupErrorPages(response.status,  response.statusText);
-					});
+					})
 				}
-			}).catch(() => {
-				// Network or server error
-				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(500, "Internal Server Error");
-			});
+			})
 		});
 	}
 }

@@ -2,7 +2,7 @@ import { setupErrorPages } from '../pages/errorPages';
 import { connectFunc, requestBody } from './connections';
 
 // Add Profile Pic
-export async function sendPicture(userID: any) {
+export async function sendPicture() {
 	
 	const avatarInput = document.getElementById('avatar') as HTMLInputElement;
 	let file: File | Blob | null = null;
@@ -29,15 +29,10 @@ export async function sendPicture(userID: any) {
 				return ;
 			}
 		})
-		.catch(() => {
-			// Network or server error
-			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(500, "Internal Server Error");
-		});
 }
 
 // Edit Profile Pic
-export function EditPicture(userID: any): boolean {
+export function EditPicture(): boolean {
 	
 	let isValid = true;
 	const avatarInput = document.getElementById('avatar') as HTMLInputElement;

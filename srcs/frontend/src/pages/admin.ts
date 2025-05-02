@@ -64,11 +64,7 @@ export function setupAdmin() {
 						}
 					});
 				}
-			}).catch(() => {
-				// Network or server error
-				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(500, "Internal Server Error");
-			});
+			})
 		} else {
 			// Network or server error
 			window.history.pushState({}, '', '/errorPages');

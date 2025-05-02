@@ -51,17 +51,13 @@ export function  setupSnekMatchHistory () {
 					});
 				} else {
 					window.history.pushState({}, '', '/errorPages');
-					setupErrorPages(404, "Page Not Found");
+					setupErrorPages(404, "Not Found");
 				}
-			}).catch(() => {
-				// Network or server error
-				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(500, "Internal Server Error");
-			});
+			})
 		} else {
 			// Network or server error
 			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(404, "Page Not Found");
+			setupErrorPages(404, "Not Found");
 		}
 	}
 }

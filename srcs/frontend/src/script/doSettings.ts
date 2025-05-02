@@ -5,7 +5,7 @@ import DOMPurify from 'dompurify';
 
 // Save button (settings.ts)
 export async function updateUserSettings(input: string[]): Promise<boolean> {
-	const userID = localStorage.getItem('userID');
+	// const userID = localStorage.getItem('userID');
 
 	for (const element of input) {
 		const inputElement = document.getElementById(element) as HTMLInputElement;
@@ -13,7 +13,7 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 		if (inputElement.value !== "" && inputElement.value !== null) {
 
 			if (inputElement.id === "avatar") {
-				if (!EditPicture(userID))
+				if (!EditPicture())
 					return false;
 			} else if (inputElement.id === "alias") {
 				const rawInput = inputElement.value;
@@ -28,10 +28,20 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 					return false;
 				}
 			} else if (inputElement.id === "password") {
-				const username = document.getElementById("user-name") as HTMLInputElement;
+				if (!userID) return false;
+
+				let username: string | undefined;
+				try {
+					const result = await getname(userID);
+					username = result !== null ? result : undefined;
+					if (!username) return false;
+				} catch (error) {
+					return false;
+				}
 				const password = document.getElementById("password") as HTMLInputElement;
 				const newPassword = document.getElementById("current_password") as HTMLInputElement;
-				const body = requestBody("PUT", JSON.stringify({username: username.value, password: password.value, newPassword: newPassword.value}), "application/json");
+				const body = requestBody("PUT", JSON.stringify({username: username, password: password.value, newPassword: newPassword.value}), "application/json");
+				console.log("BOIDY", body);
 				try {
 					const response = await connectFunc("/user/updatepw", body);
 					if (!response.ok)
@@ -77,7 +87,7 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 // 				});
 // 			} else {
 // 				window.history.pushState({}, '', '/errorPages');
-// 				setupErrorPages(404, "Page Not Found");
+// 				setupErrorPages(404, "Not Found");
 // 			}
 // 		}).catch(() => {
 // 			// Network or server error
@@ -87,8 +97,27 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 // 	} else {
 // 		// Network or server error
 // 		window.history.pushState({}, '', '/errorPages');
-// 		setupErrorPages(404, "Page Not Found");
+// 		setupErrorPages(404, "Not Found");
 // 	}
 
 	
 // }
+
+// fill variables in settings
+export async function getname(userID: string): Promise<string | null> {
+
+	// Retrieve user uuid
+	if (userID) {
+		const userInfoResponse = await connectFunc(`/user/`, requestBody("GET", null, "application/json"));
+		if (userInfoResponse.ok) {
+			const data = await userInfoResponse.json();
+			return data.username || null;
+		} else
+			return null;
+	} else {
+		// Invalid userID
+		window.history.pushState({}, '', '/errorPages');
+		setupErrorPages(404, "Not Found");
+		return null;
+	}	
+}

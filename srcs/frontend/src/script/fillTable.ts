@@ -14,15 +14,10 @@ export function fillUserTable(): Promise<any[]> {
 				});
 			} else {
 				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(404, "Page Not Found");
+				setupErrorPages(404, "Not Found");
 				return null;
 			}
-		}).catch(() => {
-			// Network or server error
-			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(500, "Internal Server Error");
-			return null;
-		});
+		})
 }
 
 // Fill in for the Match History
@@ -44,13 +39,8 @@ export function fillHistoryTable(): Promise<{ date: string; player1: string; pla
 				});
 			} else {
 				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(404, "Page Not Found");
+				setupErrorPages(404, "Not Found");
 				return null;
 			}
-		}).catch(() => {
-			// Network or server error
-			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(500, "Internal Server Error");
-			return null;
-		});
+		})
 }
