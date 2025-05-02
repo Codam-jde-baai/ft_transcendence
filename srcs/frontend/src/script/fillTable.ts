@@ -9,12 +9,16 @@ export function fillUserTable(): Promise<any[]> {
 			if (Response.ok) {
 				return Response.json().then((data) => {
 					
+					// --------------------
+					// MAKE BETTER
+
 					// Return all users/info
 					return data;
+					// ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 				});
 			} else {
 				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(404, "Not Found");
+				setupErrorPages(Response.status, Response.statusText);
 				return null;
 			}
 		})
@@ -39,7 +43,7 @@ export function fillHistoryTable(): Promise<{ date: string; player1: string; pla
 				});
 			} else {
 				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(404, "Not Found");
+				setupErrorPages(Response.status, Response.statusText);
 				return null;
 			}
 		})

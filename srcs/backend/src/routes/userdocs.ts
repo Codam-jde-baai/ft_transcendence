@@ -308,9 +308,7 @@ export const updateUserProperties = {
 		consumes: ['application/json'],
 		body: {
 			type: 'object',
-			required: ['uuid'],
 			properties: {
-				uuid: { type: 'string' },
 				username: { type: 'string', minLength: 3 },
 				alias: { type: 'string', minLength: 3 },
 				language: { type: 'string' }

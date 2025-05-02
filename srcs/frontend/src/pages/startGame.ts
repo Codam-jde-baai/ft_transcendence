@@ -13,8 +13,6 @@ export function setupStartGame () {
 		<dropdown-menu></dropdown-menu>
 		
 		<div class="middle">
-			<!-- BODY CHANGE -->
-
 			<div class="container">
 				<h1 class="header" data-i18n="Game_Header"></h1>
 					
@@ -28,8 +26,6 @@ export function setupStartGame () {
 					<button class="btn" data-i18n="btn_Solo"></button>
 				</div>
 			</div>
-	
-			<!-- ^^^ -->
 		</div>
 		`);
 
@@ -37,6 +33,5 @@ export function setupStartGame () {
 		fillTopbar();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
 		setupNavigation();
-
 	}
 }

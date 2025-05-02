@@ -20,8 +20,7 @@ export async function sendPicture() {
 	form.append("avatar", file);
 
 	const body = requestBody("POST", form);
-
-	connectFunc(`/users/profile-pic`, body)
+	connectFunc(`/user/profile-pic`, body)
 		.then(response => {
 			if (!response.ok) {
 				window.history.pushState({}, '', '/errorPages');
@@ -44,15 +43,12 @@ export function EditPicture(): boolean {
 		const form = new FormData();
 		form.append("avatar", file);
 		const body = requestBody("POST", form);
-		connectFunc(`/users/profile-pic`, body)
+		connectFunc(`/user/profile-pic`, body)
 		.then(response => {
 			if (!response.ok) {
 				isValid = false;
 			}
 		})
-		.catch(() => {
-			isValid = false;
-		});
 	}
 	return isValid
 }

@@ -8,16 +8,16 @@ class AdminTopbar extends HTMLElement {
     }
 	
 	render() {
-		const adminCurrentPage = window.location.pathname
 		this.innerHTML = "";
 		this.insertAdjacentHTML("beforeend", /*html*/`
+		<link rel="stylesheet" href="src/styles/adminTopbar.css"> <!-- Link to the CSS file -->
 		<div class="topBar">
 			<div class="dropdown">
 				<button class="dropdown-btn" id="dropdown-btn">
 					<img class="settingIcon" src="src/Pictures/setting-btn.png"/>
 				</button>
+				
 				<div class="dropdown-content">
-					
 					<button class="language-btn" id="language-btn">
 						<span data-i18n="Language"></span> <img id="selected-flag" src="src/Pictures/flagIcon-en.png">
 					</button>
@@ -32,9 +32,8 @@ class AdminTopbar extends HTMLElement {
 								<img src="src/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
 							</div>
 					</div>
-					<div class="dropdown-item ${adminCurrentPage === '/admin' ? 'adminCurrentPage' : ''}" id="Home" data-i18n="Home"></div>
-					<div class="dropdown-item ${adminCurrentPage === '/adminSettings' ? 'adminCurrentPage' : ''}" id="Setting" data-i18n="Settings"></div>
 					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
+
 				</div>
 			</div>
 			<div class="topBarFrame">

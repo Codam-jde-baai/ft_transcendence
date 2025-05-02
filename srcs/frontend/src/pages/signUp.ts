@@ -6,7 +6,6 @@ import { connectFunc, requestBody, inputToContent } from '../script/connections'
 import { checkFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
-import { sendPicture } from '../script/sendPic';
 
 export function setupSignUp() {
 	const root = document.getElementById('app');
@@ -16,6 +15,7 @@ export function setupSignUp() {
 		<link rel="stylesheet" href="src/styles/signUp.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		<language-menu></language-menu>
+
 		<div class="container">
 			<h1 class="header" data-i18n="SignUp_Header"></h1>
 				
@@ -51,7 +51,6 @@ export function setupSignUp() {
 				<span data-i18n="SignUp_P"></span>
 				<a id="LogIn" style="color: rgb(209, 7, 128); margin-left: 0.5%; text-decoration: underline;" data-i18n="btn_LogIn"></a>
 			</p>
-
 		</div>
 		`);
 
@@ -70,25 +69,10 @@ export function setupSignUp() {
 				return; // Stop execution if validation fails
 
 			const body = requestBody("POST", inputToContent(["username", "alias", "password"]), "application/json")
-			connectFunc("/users/new", body)
+			connectFunc("/user/new", body)
 				.then((response) => {
 				if (response.ok) {
-					response.json().then((data) => {
-						
-						// Get user ID  -> user uuid
-						const userID = data.uuid;
-
-						// Add Profile Pic
-						sendPicture();
-						
-						if (!userID) {
-							// Network or server error
-							window.history.pushState({}, '', '/errorPages');
-							setupErrorPages(response.status,  response.statusText);
-							return ;
-						}
-						localStorage.setItem('userID', userID); // Store userID securely
-						
+					response.json().then(() => {
 						window.history.pushState({}, '', '/home');
 						setupUserHome();
 					});
@@ -114,11 +98,7 @@ export function setupSignUp() {
 							window.history.pushState({}, '', '/errorPages');
 							setupErrorPages(response.status,  response.statusText);
 						}
-					}).catch(() => {
-						// Network or server error
-						window.history.pushState({}, '', '/errorPages');
-						setupErrorPages(response.status,  response.statusText);
-					});
+					})
 				}
 			})
 		});

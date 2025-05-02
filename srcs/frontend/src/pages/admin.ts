@@ -2,7 +2,6 @@ import { renderPage } from './index';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupErrorPages } from './errorPages';
-import { setupAdminSetting } from './adminSettings';
 import { connectFunc, requestBody } from '../script/connections';
 import { fillTopbar } from '../script/fillTopbar';
 import { fillUserTable } from '../script/fillTable';
@@ -36,40 +35,27 @@ export function setupAdmin() {
 		fillTopbar();
 		fillUserTable();
 		
-		document.getElementById('Home')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/admin');
-			setupAdmin();
-		});
-		document.getElementById('Setting')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/adminSettings');
-			setupAdminSetting();
-		});
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
 			renderPage();
 		});
 
-		// Retrieve user uuid
-		const userID = localStorage.getItem('userID');
-		if (userID) {
-			connectFunc(`/user`, requestBody("GET", null))
-			.then((userInfoResponse) => {
-				if (userInfoResponse.ok) {
-					userInfoResponse.json().then((data) => {
+		connectFunc(`/user`, requestBody("GET", null))
+		.then((userInfoResponse) => {
+			if (userInfoResponse.ok) {
+				userInfoResponse.json().then((data) => {
 
-						// Profile-pic
-						const pictureElem = document.getElementById("profile-picture") as HTMLImageElement;
-						if (pictureElem && data.profile_pic && data.profile_pic.data) {
-							pictureElem.src = `data:${data.profile_pic.mimeType};base64,${data.profile_pic.data}`;
-						}
-					});
-				}
-			})
-		} else {
-			// Network or server error
-			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(500, "Internal Server Error");
-		}
-		
+					// Profile-pic
+					const pictureElem = document.getElementById("profile-picture") as HTMLImageElement;
+					if (pictureElem && data.profile_pic && data.profile_pic.data) {
+						pictureElem.src = `data:${data.profile_pic.mimeType};base64,${data.profile_pic.data}`;
+					} else {
+						// Network or server error
+						window.history.pushState({}, '', '/errorPages');
+						setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
+					}
+				});
+			}
+		})
 	}
 }

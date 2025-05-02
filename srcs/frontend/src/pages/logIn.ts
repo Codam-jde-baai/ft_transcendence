@@ -1,7 +1,6 @@
 import { setupUserHome } from './home';
 import { setupSignUp } from './signUp';
 import { setupAdmin } from './admin';
-import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
 import { emptyFields, errorDisplay } from '../script/errorFunctions';
@@ -16,6 +15,7 @@ export function setupLogIn() {
 		<link rel="stylesheet" href="src/styles/logIn.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		<language-menu></language-menu>
+
 		<div class="container">
 			<h1 class="header" data-i18n="LogIn_Header"></h1>
 			
@@ -31,6 +31,7 @@ export function setupLogIn() {
 			<div class="buttons">
 				<button class="btn" id="Home" data-i18n="btn_LogIn"></button>
 			</div>
+
 			<p>
 				<span data-i18n="LogIn_P"></span>
 				<a id="SignUp" style="color: rgb(209, 7, 128); margin-left: 0.5%; text-decoration: underline;" data-i18n="btn_SignUp"></a>
@@ -58,20 +59,8 @@ export function setupLogIn() {
 			const response = connectFunc("/user/login", body);
 			response.then((response) => {
 				if (response.ok) {
-					response.json().then((data) => {
-						
-						// Get user ID  -> user uuid
-						const userID = data.uuid;
-						console.log(data)
-						console.log(data.uuid)
-						if (!userID) {
-							// Network or server error
-							window.history.pushState({}, '', '/errorPages');
-							setupErrorPages(response.status,  response.statusText);
-							return ;
-						}
-						localStorage.setItem('userID', userID); // Store userID securely
-			
+					response.json().then(() => {
+									
 						const elem = document.getElementById("username") as HTMLInputElement;
 						if (elem.value.toUpperCase() === "ADMIN") {
 
@@ -90,10 +79,12 @@ export function setupLogIn() {
 				{
 					response.json().then((data) => {
 						if (data.error === "username and password combination do not match database entry") {	
+							// Wrong password
 							const elem = document.getElementById("password") as HTMLInputElement
 							const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;
 							errorDisplay(elem, errorMsg, "LogIn_error");
 						} else {
+							// User does not exist
 							const elem = document.getElementById("username") as HTMLInputElement
 							const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
 							errorDisplay(elem, errorMsg, "LogIn_noUser");

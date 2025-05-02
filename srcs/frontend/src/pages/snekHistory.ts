@@ -14,7 +14,6 @@ export function  setupSnekMatchHistory () {
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		
-			<!-- BODY CHANGE -->
 			<div class="middle">
 				<div class="container">
 					<h1 class="Pongheader" data-i18n="Snek"></h1>
@@ -26,7 +25,6 @@ export function  setupSnekMatchHistory () {
 					<!-- <snek-history-table></snek-history-table> -->
 					
 				</div>
-			<!-- ^^^ -->
 			</div>
 		`);
 
@@ -35,29 +33,21 @@ export function  setupSnekMatchHistory () {
 		fillTopbar();
 		setupNavigation();
 
-		// Retrieve user uuid
-		const userID = localStorage.getItem('userID');
-		if (userID) {
-			connectFunc(`/user`, requestBody("GET", null))
-			.then((userInfoResponse) => {
-				if (userInfoResponse.ok) {
-					userInfoResponse.json().then((data) => {
-	
-						// Alias Name
-						const aliasElem = document.getElementById("historyAliasName");
-						if (aliasElem)
-							aliasElem.textContent = data.alias;
-	
-					});
-				} else {
-					window.history.pushState({}, '', '/errorPages');
-					setupErrorPages(404, "Not Found");
-				}
-			})
-		} else {
-			// Network or server error
-			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(404, "Not Found");
-		}
+		connectFunc(`/user`, requestBody("GET", null))
+		.then((userInfoResponse) => {
+			if (userInfoResponse.ok) {
+				userInfoResponse.json().then((data) => {
+
+					// Alias Name
+					const aliasElem = document.getElementById("historyAliasName");
+					if (aliasElem)
+						aliasElem.textContent = data.alias;
+
+				});
+			} else {
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
+			}
+		})
 	}
 }
