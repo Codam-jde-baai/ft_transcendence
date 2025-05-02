@@ -8,7 +8,6 @@ class AdminTopbar extends HTMLElement {
     }
 	
 	render() {
-		const adminCurrentPage = window.location.pathname
 		this.innerHTML = "";
 		this.insertAdjacentHTML("beforeend", /*html*/`
 		<div class="topBar">
@@ -32,9 +31,8 @@ class AdminTopbar extends HTMLElement {
 								<img src="src/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
 							</div>
 					</div>
-					<div class="dropdown-item ${adminCurrentPage === '/admin' ? 'adminCurrentPage' : ''}" id="Home" data-i18n="Home"></div>
-					<div class="dropdown-item ${adminCurrentPage === '/adminSettings' ? 'adminCurrentPage' : ''}" id="Setting" data-i18n="Settings"></div>
 					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
+
 				</div>
 			</div>
 			<div class="topBarFrame">

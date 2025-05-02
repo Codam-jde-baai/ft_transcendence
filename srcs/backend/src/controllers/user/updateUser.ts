@@ -61,7 +61,6 @@ export const updatePassword = async (request: FastifyRequest<{
 
 export const updateUser = async (request: FastifyRequest<{
 	Body: {
-		uuid: string
 		username?: string;
 		alias?: string;
 		language?: eLanguage;
@@ -69,7 +68,8 @@ export const updateUser = async (request: FastifyRequest<{
 }>, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const { uuid, username, alias, language } = request.body;
+		const uuid = request.session.get('uuid') as string;
+		const { username, alias, language } = request.body;
 
 		const updateData: { [key: string]: any } = {};
 		if (username !== undefined) updateData.username = username;

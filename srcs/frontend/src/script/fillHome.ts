@@ -2,55 +2,47 @@ import { connectFunc, requestBody } from './connections';
 import { setupErrorPages } from '../pages/errorPages';
 
 export function fillHome() {
-	// Retrieve user uuid
-	const userID = localStorage.getItem('userID');
-	if (userID) {
-		connectFunc(`/user/`, requestBody("GET", null))
-		.then((userInfoResponse) => {
-			if (userInfoResponse.ok) {
-				userInfoResponse.json().then((data) => {
+	
+	connectFunc(`/user/`, requestBody("GET", null))
+	.then((userInfoResponse) => {
+		if (userInfoResponse.ok) {
+			userInfoResponse.json().then((data) => {
 
-					// // Best Score
-					// const bestScoreElem = document.getElementById("best-score");
-					// if (bestScoreElem)
-					// 	bestScoreElem.textContent = data.score;
-					// // ^^^^^ NOT WORKING YET (NO data.Score) ^^^^^^^^^^^^^^^^
+				// // Best Score
+				// const bestScoreElem = document.getElementById("best-score");
+				// if (bestScoreElem)
+				// 	bestScoreElem.textContent = data.score;
+				// // ^^^^^ NOT WORKING YET (NO data.Score) ^^^^^^^^^^^^^^^^
 
-					// Win
-					const winElem = document.getElementById("win");
-					if (winElem)
-						winElem.textContent = data.win;
+				// Win
+				const winElem = document.getElementById("win");
+				if (winElem)
+					winElem.textContent = data.win;
 
-					// losses
-					const lossElem = document.getElementById("loss");
-					if (lossElem)
-						lossElem.textContent = data.loss;
+				// losses
+				const lossElem = document.getElementById("loss");
+				if (lossElem)
+					lossElem.textContent = data.loss;
 
-				});
-			} else {
-				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(userInfoResponse.status, "Not Found");
-			}
-		})
-	} else {
-		// Network or server error
-		window.history.pushState({}, '', '/errorPages');
-		setupErrorPages(404, "Not Found");
-	}
+			});
+		} else {
+			window.history.pushState({}, '', '/errorPages');
+			setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
+		}
+	})
 
 	// LeaderBoard
 	const leaderboardResponse = connectFunc(`/public/users`, requestBody("GET", null));	
 	leaderboardResponse.then((leaderboardResponse) => {
 		if (leaderboardResponse.ok) {
 			leaderboardResponse.json().then((data) => {
-				
+
 				// find the 3 best users scores
 				findBestUsers(data);
-
 			});
 		} else {
 			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(404, "Not Found");
+			setupErrorPages(leaderboardResponse.status, leaderboardResponse.statusText);
 		}
 	})
 }
@@ -79,5 +71,4 @@ function findBestUsers(data: any) {
 		if (lossElem) 
 			lossElem.textContent = user.losses?.toString() || "0";
 	});
-
 }

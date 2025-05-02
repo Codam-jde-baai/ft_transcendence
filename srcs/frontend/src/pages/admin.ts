@@ -2,7 +2,6 @@ import { renderPage } from './index';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupErrorPages } from './errorPages';
-import { setupAdminSetting } from './adminSettings';
 import { connectFunc, requestBody } from '../script/connections';
 import { fillTopbar } from '../script/fillTopbar';
 import { fillUserTable } from '../script/fillTable';
@@ -39,10 +38,6 @@ export function setupAdmin() {
 		document.getElementById('Home')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/admin');
 			setupAdmin();
-		});
-		document.getElementById('Setting')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/adminSettings');
-			setupAdminSetting();
 		});
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');

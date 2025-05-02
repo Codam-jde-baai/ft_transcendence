@@ -9,7 +9,6 @@ import { setupSnekMatchHistory } from './snekHistory';
 import { setupSnek } from './snek';
 import { setupAdmin } from './admin';
 import { setupAdminUserSetting } from './adminUserSetting';
-import { setupAdminSetting } from './adminSettings';
 import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
@@ -41,7 +40,6 @@ export function renderPage() {
 		'/snekHistory': setupSnekMatchHistory,
 		'/errorPages': () => setupErrorPages(404, "Not Found"),
 		'/admin': setupAdmin,
-		'/adminSettings': setupAdminSetting,
 		'/adminUserSetting': setupAdminUserSetting,
 	};
 	if (root) {
@@ -54,9 +52,11 @@ export function renderPage() {
 			<link rel="stylesheet" href="src/styles/index.css"> <!-- Link to the CSS file -->
 			<div class="overlay"></div>
 			<language-menu></language-menu>
+
 			<div class="container">
 				<h1 class="header" data-i18n="Index_Header"></h1>
 				<p data-i18n="Index_P"></p>
+
 				<div class="buttons">
 					<button class="btn" id="LogIn" data-i18n="btn_LogIn"></button>
 					<button class="btn" id="SignUp" data-i18n="btn_SignUp"></button>

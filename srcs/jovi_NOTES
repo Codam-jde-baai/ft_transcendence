@@ -15,17 +15,20 @@ docker exec -it backend pnpm run db:migrate;
 
 
 - Added errorPage() in connectFunc:
-	- For 401 go back to index.ts
-	- everything else print status code + status test
-	- removed all setupErrorPage() in all other function that check if the response was succssesfull.
-	  Because it happends now already in connectFunc() (Checking for error response)
+	- For 401 go back to logIn.ts
 - For friends: I added that 'Friens requst' and 'Pending friends' container/box will only appear 
   if they have a friend request or pending friend.
-- Added Userrname change
-
-
 - Added 'delete account' button for user.
-- Added Password Change with input of current password.
+- Added username Change.
+
+
 - Finished Admin pages:
 	- Admin can Only 'Delete Users' and 'change Password of users'.
 - Added switch between games in dropdown menu.
+- Added Password Change with input of current password.
+
+ANYTHING ELSE I NEED TO ADD?
+
+
+NOT WORKING:
+- Chanching password

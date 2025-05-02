@@ -15,9 +15,9 @@ export function setupUserHome () {
 		<dropdown-menu></dropdown-menu>
 		
 		<div class="middle">
-			<!-- BODY CHANGE -->
 			<div class="line"></div>
 			<h1 data-i18n="Header_Pong"></h1>
+
 			<div class="container">
 				<div class="user-stats">
 					<div class="stat-box">
@@ -29,7 +29,6 @@ export function setupUserHome () {
 							<div id="best-score" class="score-number"> >-1200-< </div>
 						</div>
 					</div>
-
 					<div class="smoll-stat-container">
 						<div class="smoll-stat-box">
 							<div class="win-losse">
@@ -40,7 +39,6 @@ export function setupUserHome () {
 								<div id="win" class="score-number"></div>
 							</div>
 						</div>
-
 						<div class="smoll-stat-box">
 							<div class="win-losse">
 								<img src="src/Pictures/losses.png">
@@ -107,13 +105,12 @@ export function setupUserHome () {
 				</div>
 
 			</div>
-			<!-- ^^^ -->
 		</div>
 		`);
 
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
-		fillHome(); // Retrieve user uuid
+		fillHome();
 		fillTopbar();
 		setupNavigation();
 

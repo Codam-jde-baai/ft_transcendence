@@ -162,3 +162,15 @@ p {
 	font-family: Arial, sans-serif;
 	text-align: left;
 }
+
+.error-message {
+	color: rgb(255, 40, 40);
+	margin-top: 10px;
+	margin-bottom: 20px;
+	font-size: 18px;
+	font-family: Arial, sans-serif;
+	text-align: center;
+}
+.hidden {
+	display: none;
+}

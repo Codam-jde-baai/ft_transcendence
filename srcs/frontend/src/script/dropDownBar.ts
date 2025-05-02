@@ -74,6 +74,7 @@ export function dropDownBar(input: string[]) {
 				}
 			});
 		}
+		// ---- NOT WORKING YET ------
 		if (elem.id === "game-btn") {
 			// Close both dropdowns when clicking outside
 			elem.addEventListener("click", (event) => {
@@ -116,5 +117,6 @@ export function dropDownBar(input: string[]) {
 
 			});
 		}
+		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	});
 }

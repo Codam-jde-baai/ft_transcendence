@@ -2,7 +2,6 @@ import { renderPage } from './index';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupAdmin } from './admin';
-import { setupAdminSetting } from './adminSettings';
 import { fillTopbar } from '../script/fillTopbar';
 import { adminPasswordFields } from '../script/errorFunctions';
 import { setupErrorPages } from './errorPages';
@@ -65,10 +64,6 @@ export function setupAdminUserSetting() {
 			document.getElementById('Home')?.addEventListener('click', () => {
 				window.history.pushState({}, '', '/admin');
 				setupAdmin();
-			});
-			document.getElementById('Setting')?.addEventListener('click', () => {
-				window.history.pushState({}, '', '/adminSettings');
-				setupAdminSetting();
 			});
 			document.getElementById('LogOut')?.addEventListener('click', () => {
 				window.history.pushState({}, '', '/index');

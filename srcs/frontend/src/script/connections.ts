@@ -1,7 +1,6 @@
 import envConfig from '../config/env';
 import DOMPurify from 'dompurify';
-import { renderPage } from '../pages/index';
-import { setupErrorPages } from '../pages/errorPages';
+import { setupLogIn } from '../pages/logIn'
 
 /* ---> These Functions handle the connection between frontend and backend <--- */
 // POST, GET, PUT and DELETE request
@@ -70,12 +69,14 @@ async function httpGet(url: string, request: RequestInit): Promise<Response> {
 }
 
 export async function connectFunc(url: string, request: RequestInit): Promise<Response> {
+	
 	// console.log("Connect To " + url + " Using:")
 	// console.log(request)
+
 	const response = await httpGet("http://localhost:3000" + url, request);
 	if (response.status === 401) {
-		window.history.pushState({}, '', '/index');
-		renderPage(); // Redirect to index
+		window.history.pushState({}, '', '/logIn');
+		setupLogIn(); // Redirect to logIn
 	}
 	return response
 }

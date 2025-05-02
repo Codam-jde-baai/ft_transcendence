@@ -52,10 +52,8 @@ export function eyeIcon_Button(input: string[]) {
 						profilePic.src = e.target.result as string; // Set the profile picture to the selected image
 					}
 				};
-		
-				if (file) {
+				if (file)
 					reader.readAsDataURL(file); // Read the selected file as a data URL
-				}
 			});
 		}
 	});
