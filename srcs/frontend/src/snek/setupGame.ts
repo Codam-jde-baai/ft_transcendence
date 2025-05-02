@@ -53,7 +53,7 @@ export async function setupGame(app: Application, player1Alias: string, player2A
     p1scoreText.y = GAME_HEIGHT / 2 + GAME_HEIGHT/4;
     app.stage.addChild(p1scoreText);
     const p2scoreText = new Text({text: `${player2Alias} score: ${p2score}`, style: scoreStyle});
-    p2scoreText.x = GAME_WIDTH/6 * 4;
+    p2scoreText.x = GAME_WIDTH/6 * 3;
     p2scoreText.y = GAME_HEIGHT / 2 + GAME_HEIGHT/4;
     app.stage.addChild(p2scoreText);
 
