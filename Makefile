@@ -92,6 +92,10 @@ copy-env:
 
 studio:
 	docker exec -it backend pnpm run db:studio
+	
+push:
+	docker exec -it backend pnpm run db:generate
+	docker exec -it backend pnpm run db:push
 
 # All Docker resources are removed, stopped and deleted
 deepclean: clean
