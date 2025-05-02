@@ -9,12 +9,11 @@ export function fillUserTable(): Promise<any[]> {
 			if (Response.ok) {
 				return Response.json().then((data) => {
 					
-					// --------------------
-					// MAKE BETTER
-
-					// Return all users/info
-					return data;
-					// ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+					const formattedData = data.map((entry: any) => ({
+						username: entry.username,
+						alias: entry.alias,
+					}));
+					return formattedData;
 				});
 			} else {
 				window.history.pushState({}, '', '/errorPages');
@@ -48,3 +47,33 @@ export function fillHistoryTable(): Promise<{ date: string; player1: string; pla
 			}
 		})
 }
+
+// // Fill in for the Match History
+// export function fillHistoryTable(): Promise<{ date: string; player1: string; player2: string; winner: string; score: string }[] | null> {
+
+// 	return connectFunc(`/matches/user`, requestBody("GET", null, "application/json"))
+// 		.then((Response) => {
+// 			if (Response.ok) {
+// 				return Response.json().then((data) => {
+					
+// 					console.log("dara", data);
+// 					// if (data.error === "No Matches In The Database For This User") {
+// 					// 	document.body.innerHTML = "Empty";
+// 					// } else {
+// 						const formattedData = data.map((entry: any) => ({
+// 							date: entry.date,
+// 							player1: entry.p1_alias,
+// 							player2: entry.player2,
+// 							winner: entry.winner,
+// 							score: entry.score
+// 						}));
+// 						return formattedData;
+// 					// }
+// 				});
+// 			} else {
+// 				window.history.pushState({}, '', '/errorPages');
+// 				setupErrorPages(Response.status, Response.statusText);
+// 				return null;
+// 			}
+// 		})
+// }

@@ -1,6 +1,9 @@
 import { fillUserTable } from '../script/fillTable';
 import { getLanguage } from '../script/language';
 import { setupAdminUserSetting } from '../pages/adminUserSetting';
+import { connectFunc, requestBody } from "../script/connections";
+import { setupErrorPages } from '../pages/errorPages';
+import { setupAdmin } from '../pages/admin';
 
 class UserTable extends HTMLElement {
     constructor() {
@@ -8,12 +11,11 @@ class UserTable extends HTMLElement {
     }
 
     connectedCallback() {
-		console.log("UserTable connected");
         this.render();
     }
 
 	render() {
-		fillUserTable().then((userData: any[] | null) => {
+		fillUserTable().then((userData: { username: string; alias: string; }[] | null) => {
 
 			if (userData) {
 				
@@ -25,8 +27,8 @@ class UserTable extends HTMLElement {
 							<td>${user.username}</td>
 							<td>${user.alias}</td>
 							<td>
-								<button class="btn" id="Delete" data-i18n="btn_Remove"></button>
-								<button class="btn" id="AdminSet" data-i18n="Change_Password"></button>
+								<button class="btn remove-btn" data-username="${user.username}" data-i18n="btn_Remove"></button>
+								<button class="btn admin-btn" data-alias="${user.alias}" data-i18n="Change_Password"></button>
 							</td>
 						</tr>
 					`;
@@ -53,13 +55,54 @@ class UserTable extends HTMLElement {
 
 
 				getLanguage();
-				document.getElementById('AdminSet')?.addEventListener('click', () => {
-					window.history.pushState({}, '', '/adminUserSetting');
-					setupAdminUserSetting();
-				});
-				document.getElementById('Delete')?.addEventListener('click', () => {
-					// remove user from database;
-					console.log("remove user");
+				
+				this.querySelector("table")?.addEventListener("click", (event) => {
+					const target = event.target as HTMLElement;
+
+					if (target.classList.contains("admin-btn")) {
+						const alias = target.getAttribute('data-alias');
+
+
+						connectFunc(`/useralias/${alias}/`, requestBody("GET", null))
+							.then((userData) => {
+								if (userData.ok) {
+									userData.json().then((data) => {
+
+										// Change users Password
+										window.history.pushState({}, '', '/adminUserSetting');
+										setupAdminUserSetting(data);
+									});
+								} else {
+									window.history.pushState({}, '', '/errorPages');
+									setupErrorPages(userData.status, userData.statusText);
+								}
+							})
+					}
+
+					if (target.classList.contains("remove-btn")) {
+						const username = target.getAttribute('data-username');
+						if (username) {
+							console.log(`Remove user: ${username}`);
+
+							// Remove user
+
+							// const confirmed = window.confirm("Are you sure you want to delete this account? This action cannot be undone.");
+
+							// if (confirmed) {
+							// 	const formData = new FormData();
+							// 	formData.append("username", username);
+							// 	connectFunc("/admin/delete", requestBody("DELETE", formData))
+							// 		.then((response) => {
+							// 			if (response.ok) {
+							// 				window.history.pushState({}, '', '/admin');
+							// 				setupAdmin();
+							// 			} else {
+							// 				alert("Failed to delete the account. Please try again.");
+							// 			}
+							// 		});
+							// }
+						}
+					}
 				});
 			}
 		});

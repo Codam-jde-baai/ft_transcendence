@@ -89,17 +89,14 @@
     background-color: #8a3f6c;
     color: white;
 }
-
 .btn.accept {
     background-color: #4CAF50;
     color: white;
 }
-
 .btn.decline {
     background-color: #f44336;
     color: white;
 }
-
 .btn:hover {
     background: #b86a8a;
 }

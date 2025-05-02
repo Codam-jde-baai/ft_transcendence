@@ -30,3 +30,10 @@ docker exec -it backend pnpm run db:migrate;
 
 
 ANYTHING ELSE I NEED TO ADD?
+
+
+Things that are broken:
+- History page (NOT GETTING THE CORRECT ROUTE);
+- Friends.ts add and match btn does not work; 
+- Add score
+- Add delete user (admin)

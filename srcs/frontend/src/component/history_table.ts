@@ -7,7 +7,6 @@ class HistoryTable extends HTMLElement {
 	}
 
 	connectedCallback() {
-		console.log("HistoryTable connected");
 		this.render();
 	}
 

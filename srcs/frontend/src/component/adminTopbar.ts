@@ -39,7 +39,7 @@ class AdminTopbar extends HTMLElement {
 			<div class="topBarFrame">
 				<div class="adminName" data-i18n="Admin"></div>
 				<div class="profile-picture">
-					<img id="profile-picture" src="src/Pictures/defaultPP.png" alt="Profile Picture">
+					<img src="src/Pictures/admin.jpg" alt="Profile Picture">
 				</div>
 			</div>
 		</div>`)

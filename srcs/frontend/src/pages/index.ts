@@ -40,7 +40,7 @@ export function renderPage() {
 		'/snekHistory': setupSnekMatchHistory,
 		'/errorPages': () => setupErrorPages(404, "Not Found"),
 		'/admin': setupAdmin,
-		'/adminUserSetting': setupAdminUserSetting,
+		'/adminUserSetting': () => setupAdminUserSetting({}),
 	};
 	if (root) {
 		const funct = routes[window.location.pathname]
