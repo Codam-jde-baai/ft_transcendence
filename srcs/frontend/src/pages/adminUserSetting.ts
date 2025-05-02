@@ -12,7 +12,7 @@ export function setupAdminUserSetting() {
 	if (root) {
 		root.innerHTML = "";
 		root.insertAdjacentHTML("beforeend", /*html*/`
-		<link rel="stylesheet" href="src/styles/admin.css"> <!-- Link to the CSS file -->
+		<!-- <link rel="stylesheet" href="src/styles/admin.css"> Link to the CSS file -->
 		<link rel="stylesheet" href="src/styles/adminSet.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 

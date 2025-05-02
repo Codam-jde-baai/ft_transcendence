@@ -1,7 +1,6 @@
 import { setupUserHome } from './home';
 import { setupSignUp } from './signUp';
 import { setupAdmin } from './admin';
-import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
 import { emptyFields, errorDisplay } from '../script/errorFunctions';
@@ -60,22 +59,8 @@ export function setupLogIn() {
 			const response = connectFunc("/user/login", body);
 			response.then((response) => {
 				if (response.ok) {
-					response.json().then((data) => {
-						
-						// --------------- RM --------------------
-						// Get user ID  -> user uuid
-						const userID = data.uuid;
-						console.log(data)
-						console.log(data.uuid)
-						if (!userID) {
-							// Network or server error
-							window.history.pushState({}, '', '/errorPages');
-							setupErrorPages(response.status,  response.statusText);
-							return ;
-						}
-						localStorage.setItem('userID', userID); // Store userID securely
-						// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-			
+					response.json().then(() => {
+									
 						const elem = document.getElementById("username") as HTMLInputElement;
 						if (elem.value.toUpperCase() === "ADMIN") {
 

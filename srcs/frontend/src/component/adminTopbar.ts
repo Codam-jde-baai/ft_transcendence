@@ -10,13 +10,14 @@ class AdminTopbar extends HTMLElement {
 	render() {
 		this.innerHTML = "";
 		this.insertAdjacentHTML("beforeend", /*html*/`
+		<link rel="stylesheet" href="src/styles/adminTopbar.css"> <!-- Link to the CSS file -->
 		<div class="topBar">
 			<div class="dropdown">
 				<button class="dropdown-btn" id="dropdown-btn">
 					<img class="settingIcon" src="src/Pictures/setting-btn.png"/>
 				</button>
+				
 				<div class="dropdown-content">
-					
 					<button class="language-btn" id="language-btn">
 						<span data-i18n="Language"></span> <img id="selected-flag" src="src/Pictures/flagIcon-en.png">
 					</button>

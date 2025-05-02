@@ -6,7 +6,6 @@ import { connectFunc, requestBody, inputToContent } from '../script/connections'
 import { checkFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
-import { sendPicture } from '../script/sendPic';
 
 export function setupSignUp() {
 	const root = document.getElementById('app');
@@ -73,24 +72,7 @@ export function setupSignUp() {
 			connectFunc("/user/new", body)
 				.then((response) => {
 				if (response.ok) {
-					response.json().then((data) => {
-						
-						// ---------------- RM -------------------
-						// Get user ID  -> user uuid
-						const userID = data.uuid;
-
-						// Add Profile Pic
-						sendPicture();
-						
-						if (!userID) {
-							// Network or server error
-							window.history.pushState({}, '', '/errorPages');
-							setupErrorPages(response.status,  response.statusText);
-							return ;
-						}
-						localStorage.setItem('userID', userID); // Store userID securely
-						// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-						
+					response.json().then(() => {
 						window.history.pushState({}, '', '/home');
 						setupUserHome();
 					});
