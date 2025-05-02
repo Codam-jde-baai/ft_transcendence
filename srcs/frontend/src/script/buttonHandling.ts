@@ -10,9 +10,6 @@ export function eyeIcon_Button(input: string[]) {
 			elem.addEventListener('click', () => {
 				const passwordField = document.getElementById("password");
 				const eyeIcon = document.getElementById("eye-icon");
-				console.log(passwordField);
-				console.log(eyeIcon);
-
 				if (passwordField && eyeIcon) {
 					change_eyeIcon(passwordField, eyeIcon);
 				}

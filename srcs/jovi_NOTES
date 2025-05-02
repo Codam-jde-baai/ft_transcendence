@@ -21,12 +21,14 @@ docker exec -it backend pnpm run db:migrate;
 - Added 'delete account' button for user.
 - Added username Change.
 - Added Password Change with input of current password (NOT WORKING YET, waiting for cookie).
-
-
 - Finished Admin pages:
-	- Admin can Only 'Delete Users' and 'change Password of users'.
+	- Admin can Only 'Delete Users' and 'change Password of users' (BTN NOT WORKING YET, waiting for backend routes).
+
+
 - Added switch between games in dropdown menu.
-- ADD score
+- ADD score.
+- Fixed history.ts ( had the wrong route).
+- Fixed match_btn in friends.ts (did not redirect to the user match).
 
 
 ANYTHING ELSE I NEED TO ADD?
@@ -35,5 +37,6 @@ ANYTHING ELSE I NEED TO ADD?
 Things that are broken:
 - History page (NOT GETTING THE CORRECT ROUTE);
 - Friends.ts add and match btn does not work; 
-- Add score
-- Add delete user (admin)
+- Friend.ts does not redicect to the correct user;
+- Add score;
+- Add delete user (admin);

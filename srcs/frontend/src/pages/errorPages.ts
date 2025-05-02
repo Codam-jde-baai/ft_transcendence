@@ -1,3 +1,5 @@
+import { setupLogIn } from '../pages/logIn'
+
 export function setupErrorPages(errorCode: number, errorMessage: string) {
 	const root = document.getElementById('app');
 	if (root) {
@@ -11,4 +13,10 @@ export function setupErrorPages(errorCode: number, errorMessage: string) {
 		</div>
 		`);
 	}
+
+	if (errorCode === 401) {
+			window.history.pushState({}, '', '/logIn');
+			setupLogIn(); // Redirect to logIn
+		}
+
 }
