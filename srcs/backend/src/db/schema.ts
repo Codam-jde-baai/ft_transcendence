@@ -50,7 +50,7 @@ export const matchesTable = sqliteTable("matches", {
 	winner_id: int("winner").$type<eWinner>().default(eWinner.NOWINNER),
 	start_time: text("start_time", { length: 264 }).default(sql`(current_timestamp)`),
 	end_time: text("end_time", { length: 264 }).default(sql`(current_timestamp)`),
-	duration: int("duration").default(0)
+	match_duration: int("match_duration").default(0)
 });
 
 export enum friendStatus {
