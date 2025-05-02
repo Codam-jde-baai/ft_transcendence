@@ -13,7 +13,7 @@ export const deleteUser = async (
 		const db = drizzle(sqlite);
 		const result = await db.delete(usersTable).where(eq(usersTable.uuid, uuid));
 		if (result.changes === 0) {
-			reply.code(404).send({ error: "uuid did match database, no changes made" })
+			reply.code(404).send({ error: "uuid did not match database, no changes made" })
 			return
 		}
 		return reply.code(204).send();
