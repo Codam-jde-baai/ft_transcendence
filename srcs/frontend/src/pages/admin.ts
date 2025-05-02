@@ -52,7 +52,7 @@ export function setupAdmin() {
 		// Retrieve user uuid
 		const userID = localStorage.getItem('userID');
 		if (userID) {
-			connectFunc(`/user/`, requestBody("GET", null))
+			connectFunc(`/user`, requestBody("GET", null))
 			.then((userInfoResponse) => {
 				if (userInfoResponse.ok) {
 					userInfoResponse.json().then((data) => {

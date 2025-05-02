@@ -74,7 +74,7 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 // 	// Retrieve user uuid
 // 	const userID = localStorage.getItem('userID');
 // 	if (userID) {
-// 		connectFunc(`/user/`, requestBody("GET", null, "application/json"))
+// 		connectFunc(`/user`, requestBody("GET", null, "application/json"))
 // 		.then((userInfoResponse) => {
 // 			if (userInfoResponse.ok) {
 // 				userInfoResponse.json().then((data) => {
@@ -108,7 +108,7 @@ export async function getname(userID: string): Promise<string | null> {
 
 	// Retrieve user uuid
 	if (userID) {
-		const userInfoResponse = await connectFunc(`/user/`, requestBody("GET", null, "application/json"));
+		const userInfoResponse = await connectFunc(`/user`, requestBody("GET", null, "application/json"));
 		if (userInfoResponse.ok) {
 			const data = await userInfoResponse.json();
 			return data.username || null;
