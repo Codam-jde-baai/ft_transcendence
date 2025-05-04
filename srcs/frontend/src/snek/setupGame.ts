@@ -9,7 +9,7 @@ export async function setupGame(app: Application, player1Alias: string, player2A
   const snake1 = new Snake(SNAKE2_COLOR, 100, 300, 'WASD', 'right');
   
   let gameData : gameEndData = {
-    winner: null,
+    winner: 0,
     p1score: 0,
     p2score: 0
   };
@@ -21,7 +21,7 @@ export async function setupGame(app: Application, player1Alias: string, player2A
     return mouse;
   }
   
-  function finishGame(tie: boolean, winner: string){
+  function finishGame(tie: boolean, winner: number){
     gameOver = true;
     
     const p1score=snake1.getScore();
@@ -40,8 +40,9 @@ export async function setupGame(app: Application, player1Alias: string, player2A
     scoreStyle.fontSize = 24;
     scoreStyle.letterSpacing = 2;
 
+    const winnerAlias = winner === 1 ? player1Alias : winner === 2 ? player2Alias : 'No one';
     const message = new Text({
-      text: tie ? 'Both Snakes Lose' : `${winner} wins!`,
+      text: tie ? 'Both Snakes Lose' : `${winnerAlias} wins!`,
       style: style
     });
     message.x = GAME_WIDTH / 2 - message.width / 2;
@@ -57,7 +58,7 @@ export async function setupGame(app: Application, player1Alias: string, player2A
     p2scoreText.y = GAME_HEIGHT / 2 + GAME_HEIGHT/4;
     app.stage.addChild(p2scoreText);
 
-    gameData.winner = tie ? null : winner;
+    gameData.winner = winner;
     gameData.p1score = p1score;
     gameData.p2score = p2score;
     app.ticker.stop();
@@ -87,11 +88,11 @@ export async function setupGame(app: Application, player1Alias: string, player2A
     }
     if (snake1Collision || snake2Collision) {
       if (snake1Collision && snake2Collision) {
-        finishGame(true, 'none');
+        finishGame(true, 0);
       } else if (snake1Collision) {
-        finishGame(false, player2Alias);
+        finishGame(false, 2);
       } else {
-        finishGame(false, player1Alias);
+        finishGame(false, 1);
       }
       return;
     }

@@ -2,7 +2,7 @@ import { Application, Text} from 'pixi.js';
 import { setupGame } from './setupGame.ts';
 
 export type gameEndData = {
-  winner: string | null,
+  winner: number,
   p1score: number;
   p2score: number;
 }
