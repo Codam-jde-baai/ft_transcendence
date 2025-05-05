@@ -16,9 +16,10 @@ export const getTopStats = async (req: FastifyRequest, reply: FastifyReply) => {
 			p2_alias: snekTable.p2_alias,
 			winner_id: snekTable.winner_id,
 			p1_score: snekTable.p1_score,
-			p2_score: snekTable.p2_score})
-		.from(snekTable) as MatchData[];
-		if (snek.length === 0){
+			p2_score: snekTable.p2_score
+		})
+			.from(snekTable) as MatchData[];
+		if (snek.length === 0) {
 			return reply.code(404).send({ error: "nothing to see here" })
 		}
 		const topPlayers: PlayerStats[] = calculatePlayerStats(snek);
@@ -35,7 +36,63 @@ export const getTopStats = async (req: FastifyRequest, reply: FastifyReply) => {
 }
 
 export const getMyStats = async (req: FastifyRequest, reply: FastifyReply) => {
+	let sqlite = null;
+	try {
+		const uuid = req.session.get('uuid') as string;
+		sqlite = new Database('./data/data.db', { verbose: console.log })
+		const db = drizzle(sqlite);
+		const snek = await db.select({
+			p1_alias: snekTable.p1_alias,
+			p2_alias: snekTable.p2_alias,
+			winner_id: snekTable.winner_id,
+			p1_score: snekTable.p1_score,
+			p2_score: snekTable.p2_score
+		})
+			.from(snekTable).where(or(
+				eq(snekTable.p1_uuid, uuid),
+				eq(snekTable.p2_uuid, uuid))) as MatchData[];
+		if (snek.length === 0) {
+			return reply.code(404).send({ error: "nothing to see here" })
+		}
+		const myStats: PlayerStats[] = calculatePlayerStats(snek);
+		return reply.send(myStats[0]);
+	}
+	catch (error) {
+		const errorMessage = error instanceof Error ? error.message : 'getMyStats Error';
+		return reply.status(500).send({ error: errorMessage })
+	}
+	finally {
+		if (sqlite) sqlite.close();
+	}
 }
 
-export const getStatsByAlias = async (req: FastifyRequest<{ Params: { alias: string } }>, reply: FastifyReply) => { 
+export const getStatsByAlias = async (req: FastifyRequest<{ Params: { alias: string } }>, reply: FastifyReply) => {
+	let sqlite = null;
+	try {
+		const alias = req.params.alias;
+		sqlite = new Database('./data/data.db', { verbose: console.log })
+		const db = drizzle(sqlite);
+		const snek = await db.select({
+			p1_alias: snekTable.p1_alias,
+			p2_alias: snekTable.p2_alias,
+			winner_id: snekTable.winner_id,
+			p1_score: snekTable.p1_score,
+			p2_score: snekTable.p2_score
+		})
+			.from(snekTable).where(or(
+				eq(snekTable.p1_alias, alias),
+				eq(snekTable.p2_alias, alias))) as MatchData[];
+		if (snek.length === 0) {
+			return reply.code(404).send({ error: "nothing to see here" })
+		}
+		const playerStats: PlayerStats[] = calculatePlayerStats(snek);
+		return reply.send(playerStats[0]);
+	}
+	catch (error) {
+		const errorMessage = error instanceof Error ? error.message : 'getStatsByAlias Error';
+		return reply.status(500).send({ error: errorMessage })
+	}
+	finally {
+		if (sqlite) sqlite.close();
+	}
 }
