@@ -38,14 +38,14 @@ const addSnekMatchOpts = {
         body: {
             type: 'object',
             properties: {
-                required: ['p2_alias', 'p2_uuid', 'winner_id', 'p1_score', 'p2_score', 'p2_isGuest'],
                 p2_alias: { type: 'string', minLength: 3 },
                 p2_uuid: { type: 'string' },
                 winner_id: { type: 'number' },
                 p1_score: { type: 'number' },
                 p2_score: { type: 'number' },
                 p2_isGuest: { type: 'boolean' }
-            }
+            },
+            required: ['p2_alias', 'p2_uuid', 'winner_id', 'p1_score', 'p2_score', 'p2_isGuest']
         },
         response: {
             200: {
@@ -185,7 +185,7 @@ const getSnekStatsAliasOpts = {
 
 
 
-function matchesRoutes(fastify: FastifyInstance, options: any, done: () => void) {
+function snekRoutes(fastify: FastifyInstance, options: any, done: () => void) {
     // get match history
     fastify.get('/snek/history/all', { preHandler: [authAPI], ...getHistoryOpts }, getAllHistory);
     fastify.get('/snek/history/me', { preHandler: [authAPI], ...getHistoryOpts }, getMyHistory);
@@ -206,4 +206,4 @@ function matchesRoutes(fastify: FastifyInstance, options: any, done: () => void)
     done();
 }
 
-export default matchesRoutes;
+export default snekRoutes;

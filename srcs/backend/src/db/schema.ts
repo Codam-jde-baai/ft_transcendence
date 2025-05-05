@@ -64,7 +64,7 @@ export const friendsTable = sqliteTable("friends", {
 	status: int("status").$type<friendStatus>().default(friendStatus.PENDING).notNull()
 });
 
-export const snekTable = sqliteTable("matches", {
+export const snekTable = sqliteTable("snek", {
 	id: int("id").primaryKey({ autoIncrement: true }),
 	p1_alias: text("p1_alias", { length: 264 }).notNull(),
 	p2_alias: text("p2_alias", { length: 264 }).notNull(),
