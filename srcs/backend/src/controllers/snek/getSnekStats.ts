@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import { eq, or, and } from 'drizzle-orm';
+import { eq, or, ne } from 'drizzle-orm';
 
 import { snekTable } from '../../db/schema.ts';
 import { PlayerStats, MatchData, calculatePlayerStats } from '../../models/snek.ts';
@@ -17,8 +17,8 @@ export const getTopStats = async (req: FastifyRequest, reply: FastifyReply) => {
 			winner_id: snekTable.winner_id,
 			p1_score: snekTable.p1_score,
 			p2_score: snekTable.p2_score
-		})
-			.from(snekTable) as MatchData[];
+		}).from(snekTable).where(ne(snekTable.p2_uuid, 'NULL')) as MatchData[];
+
 		if (snek.length === 0) {
 			return reply.code(404).send({ error: "nothing to see here" })
 		}
