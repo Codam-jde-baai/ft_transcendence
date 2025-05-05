@@ -1,7 +1,8 @@
 import { FastifyInstance } from 'fastify';
 import { authenticatePrivateToken } from './authentication.ts';
 import { createSnek } from '../models/snek.ts';
-import { alias } from 'drizzle-orm/gel-core';
+import { addSnekMatch } from '../controllers/snek/addSnek.ts';
+import { errorResponseSchema } from './userdocs.ts';
 
 const snekHistoryProperties = {
     id: { type: 'number' },
@@ -22,6 +23,34 @@ const snekStatsProperties = {
     avg_score: { type: 'number' },
     highest_score: { type: 'number' }
 }
+
+const addSnekMatchOpts = {
+    schema: {
+        security: [{ apiKey: [] }],
+        tags: ['matches'],
+        body: {
+            type: 'object',
+            properties: {
+                required: ['p2_alias', 'p2_uuid', 'winner_id', 'p1_score', 'p2_score', 'p2_isGuest'],
+                p2_alias: { type: 'string', minLength: 3 },
+                p2_uuid: { type: 'string' },
+                winner_id: { type: 'number' },
+                p1_score: { type: 'number' },
+                p2_score: { type: 'number' },
+                p2_isGuest: { type: 'boolean' }
+            }
+        },
+        response: {
+            200: {
+                type: 'object',
+                properties: snekHistoryProperties
+            },
+            400: errorResponseSchema,
+            404: errorResponseSchema,
+            500: errorResponseSchema
+        }
+    }
+};
 
 function matchesRoutes(fastify: FastifyInstance, options: any, done: () => void) {
     // get match history

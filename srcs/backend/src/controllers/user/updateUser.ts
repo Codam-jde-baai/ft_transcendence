@@ -82,11 +82,11 @@ export const updateUser = async (request: FastifyRequest<{
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
 		const updatedUser = await db.update(usersTable).set(updateData).where(eq(usersTable.uuid, uuid)).returning();
-
 		if (updatedUser.length === 0) {
 			reply.code(404).send({ error: 'User not found' });
 			return;
 		}
+		request.session.set('alias', updatedUser[0].alias);
 		return reply.code(200).send(toPublicUser(updatedUser[0]));
 	} catch (error) {
 		const errorMessage = error instanceof Error ? error.message : 'updateUser error';

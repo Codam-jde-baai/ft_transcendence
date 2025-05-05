@@ -45,6 +45,13 @@ fastify.register(secureSession, {
 
 })
 
+declare module '@fastify/secure-session' {
+  interface SessionData {
+    uuid: string;
+    alias: string;
+  }
+}
+
 fastify.register(rateLimit, {
 	max: 42,
 	timeWindow: '1 minute'

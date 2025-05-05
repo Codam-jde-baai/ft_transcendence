@@ -44,7 +44,7 @@ export const addUser = async (request: FastifyRequest<{
 		const db = drizzle(sqlite);
 		const createdUser = await db.insert(usersTable).values(userData).returning();
 		request.session.set('uuid', createdUser[0].uuid);
-
+		request.session.set('alias', createdUser[0].alias);
 		// Use the helper function to create the public user object
 		return reply.code(201).send(toPublicUser(createdUser[0]));
 	}
