@@ -1,11 +1,11 @@
 class AdminTopbar extends HTMLElement {
-    constructor() {
-        super();
-    }
+	constructor() {
+		super();
+	}
 
-    connectedCallback() {
-        this.render();
-    }
+	connectedCallback() {
+		this.render();
+	}
 	
 	render() {
 		this.innerHTML = "";
@@ -17,11 +17,11 @@ class AdminTopbar extends HTMLElement {
 					<img class="settingIcon" src="src/Pictures/setting-btn.png"/>
 				</button>
 				
-				<div class="dropdown-content">
+					<div class="dropdown-content">
 					<button class="language-btn" id="language-btn">
 						<span data-i18n="Language"></span> <img id="selected-flag" src="src/Pictures/flagIcon-en.png">
 					</button>
-					<div class="language-content" id="language-content">
+			<div class="language-content" id="language-content">
 							<div class="language-option" id="gb">
 								<img src="src/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
 							</div>
@@ -34,7 +34,7 @@ class AdminTopbar extends HTMLElement {
 					</div>
 					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
 
-				</div>
+				</div> 
 			</div>
 			<div class="topBarFrame">
 				<div class="adminName" data-i18n="Admin"></div>

@@ -10,7 +10,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,12 +19,12 @@
 
 .close-popup {
 	position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 6px;
+    right: 7px;
 	border-radius: 5px;
-	border: solid, 1.5px, #902063;
-    background: none;
-    font-size: 16px;
+	border: solid, 1.5px, #000000;
+    background: black;
+    font-size: 25px;
     cursor: pointer;
 	color: white;
 }

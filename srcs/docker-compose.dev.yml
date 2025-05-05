@@ -18,9 +18,8 @@ services:
       - ./.env
     environment:
       # Add the .env variabes to the container enviroment as VITE_-variables
-      - VITE_PUBLIC_KEY=${PUBLIC_KEY}
       - VITE_PRIVATE_KEY=${PRIVATE_KEY}
-      - VITE_FRONTEND_PORT=${FRONTEND_PORT}
+      - VITE_ADMIN=${ADMIN}
     command: [ "pnpm", "run", "dev" ] # Hot-reload mode for frontend
   # backend written with Fastify and .ts/js
   backend:

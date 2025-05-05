@@ -2,7 +2,6 @@ import { getLanguage } from '../script/language';
 import { setupAdmin } from './admin';
 import { adminPasswordFields } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
-import { fillTopbar } from '../script/fillTopbar';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
 
 export function setupAdminUserSetting(data: any) {
@@ -17,7 +16,7 @@ export function setupAdminUserSetting(data: any) {
 		<div class="admin-popup-overlay">
 			<div class="middle">
 				<div class="ucontainer">
-					<button id="close-popup" class="close-popup">x</button>
+					<button id="close-popup" class="close-popup">X</button>
 					<h1 class="admin_header" data-i18n="Admin_Header"></h1>
 					<p class="p2" data-i18n="Admin_P"></p>
 					<p class="p2">${data.username}</p>
@@ -55,7 +54,6 @@ export function setupAdminUserSetting(data: any) {
 		`);
 
 		getLanguage();
-		fillTopbar();
 		eyeIcon_Button(["show-password", "show-password_confirm"]);
 
 		// Add event listener for closing
@@ -72,8 +70,8 @@ export function setupAdminUserSetting(data: any) {
 			const inputElement = document.getElementById("password") as HTMLInputElement;
 			if (inputElement.value !== "" && inputElement.value !== null) {
 
-				const body = requestBody("POST", inputToContent(["password"]), "application/json");
-				const response = connectFunc("/admin/updatepw", body);
+				const body = requestBody("PUT", JSON.stringify({["username"]: data.username, ["newPassword"]: inputElement.value}), "application/json");
+				const response = connectFunc("/admin/updateUserPassword", body);
 				response.then((response) => {
 					if (response.ok) {
 						window.history.pushState({}, '', '/admin');

@@ -1,7 +1,6 @@
 import { renderPage } from './index';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
-import { fillTopbar } from '../script/fillTopbar';
 import { fillUserTable } from '../script/fillTable';
 
 export function setupAdmin() {
@@ -34,7 +33,6 @@ export function setupAdmin() {
 
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
-		fillTopbar();
 		fillUserTable();
 		doSearch();
 		

@@ -63,7 +63,7 @@ class UserTable extends HTMLElement {
 						const alias = target.getAttribute('data-alias');
 
 
-						connectFunc(`/useralias/${alias}/`, requestBody("GET", null))
+						connectFunc(`/useralias/${alias}`, requestBody("GET", null))
 							.then((userData) => {
 								if (userData.ok) {
 									userData.json().then((data) => {
@@ -82,25 +82,20 @@ class UserTable extends HTMLElement {
 					if (target.classList.contains("remove-btn")) {
 						const username = target.getAttribute('data-username');
 						if (username) {
-							console.log(`Remove user: ${username}`);
+							const confirmed = window.confirm(`Are you sure you want to delete ${username} account? This action cannot be undone.`);
 
-							// Remove user
-
-							// const confirmed = window.confirm("Are you sure you want to delete this account? This action cannot be undone.");
-
-							// if (confirmed) {
-							// 	const formData = new FormData();
-							// 	formData.append("username", username);
-							// 	connectFunc("/admin/delete", requestBody("DELETE", formData))
-							// 		.then((response) => {
-							// 			if (response.ok) {
-							// 				window.history.pushState({}, '', '/admin');
-							// 				setupAdmin();
-							// 			} else {
-							// 				alert("Failed to delete the account. Please try again.");
-							// 			}
-							// 		});
-							// }
+							if (confirmed) {;
+								const content: string = JSON.stringify({["username"]: username});
+								connectFunc("/admin/deleteUser", requestBody("DELETE", content, "application/json"))
+									.then((response) => {
+										if (response.ok) {
+											window.history.pushState({}, '', '/admin');
+											setupAdmin();
+										} else {
+											alert("Failed to delete the account. Please try again.");
+										}
+									});
+							}
 						}
 					}
 				});

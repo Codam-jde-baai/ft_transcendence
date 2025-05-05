@@ -14,29 +14,11 @@ docker exec -it backend pnpm run db:generate;
 docker exec -it backend pnpm run db:migrate;
 
 
-- Added errorPage() in connectFunc:
-	- For 401 go back to logIn.ts
-- For friends: I added that 'Friens requst' and 'Pending friends' container/box will only appear 
-  if they have a friend request or pending friend.
-- Added 'delete account' button for user.
-- Added username Change.
-- Added Password Change with input of current password (NOT WORKING YET, waiting for cookie).
-- Finished Admin pages:
-	- Admin can Only 'Delete Users' and 'change Password of users' (BTN NOT WORKING YET, waiting for backend routes).
-
-
-- Added switch between games in dropdown menu.
-- ADD score.
-- Fixed history.ts ( had the wrong route).
-- Fixed match_btn in friends.ts (did not redirect to the user match).
-
-
 ANYTHING ELSE I NEED TO ADD?
 
 
 Things that are broken:
 - History page (NOT GETTING THE CORRECT ROUTE);
-- Friends.ts add and match btn does not work; 
 - Friend.ts does not redicect to the correct user;
 - Add score;
-- Add delete user (admin);
+- Added switch between games in dropdown menu.

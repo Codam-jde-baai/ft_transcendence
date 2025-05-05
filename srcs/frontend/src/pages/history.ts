@@ -32,7 +32,7 @@ export function  setupMatchHistory () {
 		fillTopbar();
 		setupNavigation();
 
-		connectFunc(`/user/`, requestBody("GET", null))
+		connectFunc(`/user`, requestBody("GET", null))
 		.then((userInfoResponse) => {
 			if (userInfoResponse.ok) {
 				userInfoResponse.json().then((data) => {
@@ -45,7 +45,7 @@ export function  setupMatchHistory () {
 				});
 			} else {
 				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(404, "Not Found");
+				setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
 			}
 		})
 	}

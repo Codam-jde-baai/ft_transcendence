@@ -19,9 +19,8 @@
 
 /* All for the Middle */
 .middle {
-	background: rgba(0, 0, 0, 0.8);
+    min-height: fit-content;
 	position: fixed;
-	padding: 10px;
 	top: 200px;
 	left: 220px;
 	border-radius: 15px;
@@ -41,6 +40,13 @@
 }
 
 .friends-list-wrapper {
+    max-height: 220px;
+    overflow-y: auto;
+    border-radius: 15px;
+    border: solid, 3px, #902063;
+}
+
+.your-friends-list-wrapper {
     max-height: 355px;
     overflow-y: auto;
     border-radius: 15px;

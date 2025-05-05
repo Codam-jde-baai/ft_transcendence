@@ -23,22 +23,31 @@ export function fillUserTable(): Promise<any[]> {
 		})
 }
 
-// Fill in for the Match History
-export function fillHistoryTable(): Promise<{ date: string; player1: string; player2: string; winner: string; score: string }[] | null> {
 
-	return connectFunc(`/users`, requestBody("GET", null, "application/json"))
+// Fill in for the Match History
+export function fillHistoryTable(aliasName: string): Promise<{ date: string; player1: string; player2: string; winner: string; score: string }[] | null> {
+
+	return connectFunc(`/matches/${aliasName}`, requestBody("GET", null, "application/json"))
 		.then((Response) => {
 			if (Response.ok) {
+
+				console.log("LOG", Response)
+				console.log("DATA", Response.formData)
 				return Response.json().then((data) => {
 					
-					const formattedData = data.map((entry: any) => ({
-						date: entry.date,
-						player1: entry.p1_alias,
-						player2: entry.player2,
-						winner: entry.winner,
-						score: entry.score
-					}));
-					return formattedData;
+					console.log("dara", data);
+					if (data.error === "No Matches In The Database For This User") {
+						document.body.innerHTML = "Empty";
+					} else {
+						const formattedData = data.map((entry: any) => ({
+							date: entry.date,
+							player1: entry.p1_alias,
+							player2: entry.player2,
+							winner: entry.winner,
+							score: entry.score
+						}));
+						return formattedData;
+					}
 				});
 			} else {
 				window.history.pushState({}, '', '/errorPages');
@@ -47,33 +56,3 @@ export function fillHistoryTable(): Promise<{ date: string; player1: string; pla
 			}
 		})
 }
-
-// // Fill in for the Match History
-// export function fillHistoryTable(): Promise<{ date: string; player1: string; player2: string; winner: string; score: string }[] | null> {
-
-// 	return connectFunc(`/matches/user`, requestBody("GET", null, "application/json"))
-// 		.then((Response) => {
-// 			if (Response.ok) {
-// 				return Response.json().then((data) => {
-					
-// 					console.log("dara", data);
-// 					// if (data.error === "No Matches In The Database For This User") {
-// 					// 	document.body.innerHTML = "Empty";
-// 					// } else {
-// 						const formattedData = data.map((entry: any) => ({
-// 							date: entry.date,
-// 							player1: entry.p1_alias,
-// 							player2: entry.player2,
-// 							winner: entry.winner,
-// 							score: entry.score
-// 						}));
-// 						return formattedData;
-// 					// }
-// 				});
-// 			} else {
-// 				window.history.pushState({}, '', '/errorPages');
-// 				setupErrorPages(Response.status, Response.statusText);
-// 				return null;
-// 			}
-// 		})
-// }

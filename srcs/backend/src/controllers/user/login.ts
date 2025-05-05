@@ -39,10 +39,16 @@ export const loginUser = async (request: FastifyRequest, reply: FastifyReply) =>
 		}
 		const samePassword = await verifyPassword(password, storedHash);
 
-		if (!userFound || !samePassword) {
+		if (!userFound) {
+			reply.code(401).send({ error: 'username not found in database' });
+			return;
+		}
+
+		if (!samePassword) {
 			reply.code(401).send({ error: 'username and password combination do not match database entry' });
 			return;
 		}
+
 
 		await db.update(usersTable)
 			.set({ status: userStatus.ONLINE })

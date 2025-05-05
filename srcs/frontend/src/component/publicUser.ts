@@ -51,8 +51,8 @@ class PublicUser extends HTMLElement {
 			<button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="History"> </button>
 			<button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="btn_Remove_Friend"> </button>
 
-			<button class="btn accept" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Accept"> </button>
-			<button class="btn decline" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Decline"> </button>
+			<button class="btn accept" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Accept"> . </button>
+			<button class="btn decline" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Decline"> . </button>
 			<!-- for blocked implementation
 			<button class="btn blok" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Block"> </button>
 			-->

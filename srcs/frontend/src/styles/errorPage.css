@@ -11,12 +11,13 @@
 	left: 0;
 	width: 100%;
 	height: 100vh;
-	background: rgba(255, 255, 255, 0.95); 
+	background: rgba(255, 255, 255, 0.90); 
 	z-index: -1;
 }
 
 /* Container for forms */
 .container {
+	top: 300px;
 	background: rgba(255, 255, 255, 0.0);
 	padding: 20px;
 	border-radius: 15px;
@@ -27,7 +28,6 @@
 	z-index: 1;
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	align-items: center;
 	min-width: fit-content;
 	font-family: Arial, sans-serif;
