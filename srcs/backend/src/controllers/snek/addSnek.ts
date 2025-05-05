@@ -1,9 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
-import { eq } from 'drizzle-orm';
 
-import { snekTable, usersTable } from '../../db/schema.ts';
+import { snekTable } from '../../db/schema.ts';
 import { createSnek, readSnek, toPublicSnek } from '../../models/snek.ts';
 
 export const addSnekMatch = async (req: FastifyRequest<{ Body: createSnek}>, reply: FastifyReply) => {

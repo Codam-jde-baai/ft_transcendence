@@ -1,8 +1,15 @@
 import { FastifyInstance } from 'fastify';
 import { authenticatePrivateToken } from './authentication.ts';
 import { createSnek } from '../models/snek.ts';
-import { addSnekMatch } from '../controllers/snek/addSnek.ts';
 import { errorResponseSchema } from './userdocs.ts';
+import { addSnekMatch } from '../controllers/snek/addSnek.ts';
+import { getAllHistory,
+    getMyHistory,
+    getHistoryByAlias,
+    getHistoryByPair } from '../controllers/snek/getSnekHistory.ts';
+
+
+
 
 const snekHistoryProperties = {
     id: { type: 'number' },
@@ -27,7 +34,7 @@ const snekStatsProperties = {
 const addSnekMatchOpts = {
     schema: {
         security: [{ apiKey: [] }],
-        tags: ['matches'],
+        tags: ['snek'],
         body: {
             type: 'object',
             properties: {
@@ -52,14 +59,83 @@ const addSnekMatchOpts = {
     }
 };
 
+const getHistoryOpts = {
+    schema: {
+        security: [{ apiKey: [] }],
+        tags: ['snek'],
+        response: {
+            200: {
+                type: 'array',
+                items: {
+                    type: 'object',
+                    properties: snekHistoryProperties
+                }
+            },
+            404: errorResponseSchema,
+            500: errorResponseSchema
+        }
+    }
+};
+
+const getHistoryAliasOpts = {
+    schema: {
+        security: [{ apiKey: [] }],
+        tags: ['snek'],
+        params: {
+            type: 'object',
+            properties: {
+                alias: { type: 'string', minLength: 3 }
+            },
+            required: ['alias']
+        },
+        response: {
+            200: {
+                type: 'array',
+                items: {
+                    type: 'object',
+                    properties: snekHistoryProperties
+                }
+            },
+            404: errorResponseSchema,
+            500: errorResponseSchema
+        }
+    }
+};
+
+const getHistoryPairOpts = {
+    schema: {
+        security: [{ apiKey: [] }],
+        tags: ['snek'],
+        params: {
+            type: 'object',
+            properties: {
+                p1_alias: { type: 'string', minLength: 3 },
+                p2_alias: { type: 'string', minLength: 3 }
+            },
+            required: ['p1_alias', 'p2_alias']
+        },
+        response: {
+            200: {
+                type: 'array',
+                items: {
+                    type: 'object',
+                    properties: snekHistoryProperties
+                }
+            },
+            404: errorResponseSchema,
+            500: errorResponseSchema
+        }
+    }
+};
+
 function matchesRoutes(fastify: FastifyInstance, options: any, done: () => void) {
     // get match history
-    fastify.get('/snek/history/all', { preHandler: [authenticatePrivateToken], ...getAllSnekOpts}, getAllSnek);
-    fastify.get('/snek/history/me', { preHandler: [authenticatePrivateToken], ...getUserSnekOpts}, getSnekByUser);
+    fastify.get('/snek/history/all', { preHandler: [authenticatePrivateToken], ...getHistoryOpts}, getAllHistory);
+    fastify.get('/snek/history/me', { preHandler: [authenticatePrivateToken], ...getHistoryOpts}, getMyHistory);
     fastify.get<{ Params: { alias: string } }>
-        ('/snek/history/:alias', { preHandler: [authenticatePrivateToken], ...getSnekAliasOpts}, getSnekByAlias);
+        ('/snek/history/:alias', { preHandler: [authenticatePrivateToken], ...getHistoryOpts}, getHistoryByAlias);
     fastify.get<{ Params: { p1_alias: string, p2_alias: string } }>
-        ('/snek/history/:p1_alias/:p2_alias', { preHandler: [authenticatePrivateToken], ...getSnekPairOpts}, getSnekByPair);
+        ('/snek/history/:p1_alias/:p2_alias', { preHandler: [authenticatePrivateToken], ...getHistoryPairOpts}, getHistoryByPair);
     
     // get stats
     fastify.get('/snek/stats/all', { preHandler: [authenticatePrivateToken], ...getAllSnekStatsOpts}, getAllSnekStats);
