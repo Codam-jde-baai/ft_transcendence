@@ -2,11 +2,10 @@ import { connectFunc, requestBody } from './connections';
 import { setupErrorPages } from '../pages/errorPages';
 
 export function fillTopbar() {
-
-	connectFunc(`/user/`, requestBody("GET", null, "application/json"))
-	.then((userInfoResponse) => {
-		if (userInfoResponse.ok) {
-			userInfoResponse.json().then((data) => {
+		connectFunc(`/user`, requestBody("GET", null, "application/json"))
+		.then((userInfoResponse) => {
+			if (userInfoResponse.ok) {
+				userInfoResponse.json().then((data) => {
 
 				// Alias Name
 				const aliasElem = document.getElementById("aliasName");

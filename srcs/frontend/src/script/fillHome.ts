@@ -2,11 +2,10 @@ import { connectFunc, requestBody } from './connections';
 import { setupErrorPages } from '../pages/errorPages';
 
 export function fillHome() {
-	
-	connectFunc(`/user/`, requestBody("GET", null))
-	.then((userInfoResponse) => {
-		if (userInfoResponse.ok) {
-			userInfoResponse.json().then((data) => {
+		connectFunc(`/user`, requestBody("GET", null))
+		.then((userInfoResponse) => {
+			if (userInfoResponse.ok) {
+				userInfoResponse.json().then((data) => {
 
 				// // Best Score
 				// const bestScoreElem = document.getElementById("best-score");

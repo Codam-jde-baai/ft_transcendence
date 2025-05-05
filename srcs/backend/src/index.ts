@@ -3,10 +3,11 @@ import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import multipart from '@fastify/multipart';
 import fastifyCors from '@fastify/cors'
-import matchesRoutes from './routes/matches.ts';
 import secureSession from '@fastify/secure-session';
 import userRoutes from './routes/users.ts';
 import friendsRoutes from './routes/friends.ts';
+import matchesRoutes from './routes/matches.ts';
+import adminRoutes from './routes/admin.ts';
 import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
 import rateLimit from '@fastify/rate-limit';
@@ -70,7 +71,8 @@ fastify.register(swagger, {
 		tags: [
 			{ name: 'users', description: 'User related endpoints' },
 			{ name: 'matches', description: 'Match related endpoints' },
-			{ name: 'friends', description: 'Friend related endpoints' }
+			{ name: 'friends', description: 'Friend related endpoints' },
+			{ name: 'admin', description: 'Admin related endpoints' }
 		]
 	}
 });
@@ -93,6 +95,7 @@ fastify.register(swaggerUi, {
 fastify.register(userRoutes);
 fastify.register(friendsRoutes);
 fastify.register(matchesRoutes);
+fastify.register(adminRoutes);
 
 const start = async () => {
 	try {

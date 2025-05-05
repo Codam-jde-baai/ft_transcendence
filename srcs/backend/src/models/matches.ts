@@ -15,5 +15,5 @@ export type createMatch = InferInsertModel<typeof matchesTable> & {
 	winner_id: number;
 	start_time?: string;
 	end_time: string;
-	duration?: number;
+	match_duration?: number;
 };

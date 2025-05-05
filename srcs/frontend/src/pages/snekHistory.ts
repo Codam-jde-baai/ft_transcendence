@@ -33,7 +33,7 @@ export function  setupSnekMatchHistory () {
 		fillTopbar();
 		setupNavigation();
 
-		connectFunc(`/user/`, requestBody("GET", null))
+		connectFunc(`/user`, requestBody("GET", null))
 		.then((userInfoResponse) => {
 			if (userInfoResponse.ok) {
 				userInfoResponse.json().then((data) => {

@@ -3,6 +3,7 @@ import { authenticatePrivateToken } from './authentication.ts';
 import {
 	addMatch,
 	getAllMatches,
+	getTotalScore,
 	getMatchesByUser,
 	getMatchesByAlias,
 	getMatchesByPair,
@@ -42,6 +43,23 @@ const getMatchesOptions = {
 				items: {
 					type: 'object',
 					properties: enhancedMatchProperties
+				}
+			},
+			404: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+const getTotalScoreOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		tags: ['matches'],
+		response: {
+			200: {
+				type: 'object',
+				properties: {
+					score: { type: 'number' }
 				}
 			},
 			404: errorResponseSchema,
@@ -153,6 +171,7 @@ const getPairMatchesOptions = {
 
 function matchesRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	fastify.get('/matches', { preHandler: [authenticatePrivateToken], ...getMatchesOptions}, getAllMatches);
+	fastify.get('/matches/score', { preHandler: [authenticatePrivateToken], ...getTotalScoreOptions}, getTotalScore);
 	fastify.get('/matches/user', { preHandler: [authenticatePrivateToken], ...getUserMatchesOptions}, getMatchesByUser);
 	fastify.get<{ Params: { alias: string } }>
 		('/matches/:alias', { preHandler: [authenticatePrivateToken], ...getAliasMatchesOptions}, getMatchesByAlias);

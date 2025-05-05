@@ -9,15 +9,15 @@ import { verifyPassword, hashPassword, toPublicUser } from '../../models/users.t
 
 export const updatePassword = async (request: FastifyRequest<{
 	Body: {
-		uuid: string;
 		password: string;
 		newPassword: string;
 	}
 }>, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const { uuid, password, newPassword } = request.body as { uuid?: string; password?: string, newPassword?: string };
-		if (!uuid || !password || !newPassword) {
+		const { password, newPassword } = request.body as { password?: string, newPassword?: string };
+		const uuid = request.session.get("uuid") as string;
+		if (!password || !newPassword) {
 			reply.code(400).send({ error: 'Username, password and the new password are required' });
 			return;
 		}
@@ -42,7 +42,7 @@ export const updatePassword = async (request: FastifyRequest<{
 		const samePassword = await verifyPassword(password, storedHash);
 
 		if (!userFound || !samePassword) {
-			reply.code(401).send({ error: 'uuid and password combination do not match database entry' });
+			reply.code(401).send({ error: 'user and password combination do not match database entry' });
 			return;
 		}
 
