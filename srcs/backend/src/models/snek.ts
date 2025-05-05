@@ -49,12 +49,8 @@ export const calculatePlayerStats = (matches: MatchData[]): PlayerStats[] => {
         totalScore: number;
     }
 
-    // Create a Map to store player stats by alias (regardless of p1 or p2)
     const playerStats = new Map<string, InternalPlayerStats>();
-
-    // Process each match and update player stats
     for (const match of matches) {
-        // Function to initialize a player if not exists
         const initializePlayer = (alias: string) => {
             if (!playerStats.has(alias)) {
                 playerStats.set(alias, {
@@ -70,16 +66,12 @@ export const calculatePlayerStats = (matches: MatchData[]): PlayerStats[] => {
             }
             return playerStats.get(alias)!;
         };
-
-        // Get or create player stats objects
         const p1 = initializePlayer(match.p1_alias);
         const p2 = initializePlayer(match.p2_alias);
 
-        // Update matches count
         p1.matches++;
         p2.matches++;
 
-        // Update wins/losses based on winner_id
         if (match.winner_id === 1) {
             p1.wins++;
             p2.losses++;
@@ -94,7 +86,6 @@ export const calculatePlayerStats = (matches: MatchData[]): PlayerStats[] => {
         p2.highest_score = Math.max(p2.highest_score, match.p2_score);
     }
 
-    // Calculate final stats (winrate and average score)
     const result = Array.from(playerStats.values()).map(player => {
         const winrate = player.matches > 0 ? (player.wins / player.matches) * 100 : 0;
         const avg_score = player.matches > 0 ? player.totalScore / player.matches : 0;
