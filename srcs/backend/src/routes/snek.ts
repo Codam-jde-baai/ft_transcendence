@@ -7,9 +7,7 @@ import { getAllHistory,
     getMyHistory,
     getHistoryByAlias,
     getHistoryByPair } from '../controllers/snek/getSnekHistory.ts';
-
-
-
+import { getTopStats, getMyStats, getStatsByAlias } from '../controllers/snek/getSnekStats.ts';
 
 const snekHistoryProperties = {
     id: { type: 'number' },
@@ -128,20 +126,77 @@ const getHistoryPairOpts = {
     }
 };
 
+const getTopStatsOpts = {
+    schema: {
+        security: [{ apiKey: [] }],
+        tags: ['snek'],
+        response: {
+            200: {
+                type: 'array',
+                items: {
+                    type: 'object',
+                    properties: snekStatsProperties
+                }
+            },
+            404: errorResponseSchema,
+            500: errorResponseSchema
+        }
+    }
+};
+
+const getUserSnekStatsOpts = {
+    schema: {
+        security: [{ apiKey: [] }],
+        tags: ['snek'],
+        response: {
+            200: {
+                type: 'object',
+                properties: snekStatsProperties
+            },
+            404: errorResponseSchema,
+            500: errorResponseSchema
+        }
+    }
+};
+
+const getSnekStatsAliasOpts = {
+    schema: {
+        security: [{ apiKey: [] }],
+        tags: ['snek'],
+        params: {
+            type: 'object',
+            properties: {
+                alias: { type: 'string', minLength: 3 }
+            },
+            required: ['alias']
+        },
+        response: {
+            200: {
+                type: 'object',
+                properties: snekStatsProperties
+            },
+            404: errorResponseSchema,
+            500: errorResponseSchema
+        }
+    }
+};
+
+
+
 function matchesRoutes(fastify: FastifyInstance, options: any, done: () => void) {
     // get match history
     fastify.get('/snek/history/all', { preHandler: [authenticatePrivateToken], ...getHistoryOpts}, getAllHistory);
     fastify.get('/snek/history/me', { preHandler: [authenticatePrivateToken], ...getHistoryOpts}, getMyHistory);
     fastify.get<{ Params: { alias: string } }>
-        ('/snek/history/:alias', { preHandler: [authenticatePrivateToken], ...getHistoryOpts}, getHistoryByAlias);
+        ('/snek/history/:alias', { preHandler: [authenticatePrivateToken], ...getHistoryAliasOpts}, getHistoryByAlias);
     fastify.get<{ Params: { p1_alias: string, p2_alias: string } }>
         ('/snek/history/:p1_alias/:p2_alias', { preHandler: [authenticatePrivateToken], ...getHistoryPairOpts}, getHistoryByPair);
     
     // get stats
-    fastify.get('/snek/stats/all', { preHandler: [authenticatePrivateToken], ...getAllSnekStatsOpts}, getAllSnekStats);
-    fastify.get('/snek/stats/me', { preHandler: [authenticatePrivateToken], ...getUserSnekStatsOpts}, getSnekStatsByUser);
+    fastify.get('/snek/stats/top', { preHandler: [authenticatePrivateToken], ...getTopStatsOpts}, getTopStats);
+    fastify.get('/snek/stats/me', { preHandler: [authenticatePrivateToken], ...getUserSnekStatsOpts}, getMyStats);
     fastify.get<{ Params: { alias: string } }>
-        ('/snek/stats/:alias', { preHandler: [authenticatePrivateToken], ...getSnekStatsAliasOpts}, getSnekStatsByAlias);
+        ('/snek/stats/:alias', { preHandler: [authenticatePrivateToken], ...getSnekStatsAliasOpts}, getStatsByAlias);
     // create new snek match
     fastify.post <{ Body: createSnek}>
     ('/snek/new', { preHandler: [authenticatePrivateToken], ...addSnekMatchOpts}, addSnekMatch);
