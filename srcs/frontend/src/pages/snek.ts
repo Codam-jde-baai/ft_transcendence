@@ -20,7 +20,7 @@ export function setupSnek() {
 		</div>
 			<div>
 				`);
-		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		getLanguage();
 		fillTopbar();
 		setupNavigation();

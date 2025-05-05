@@ -25,34 +25,31 @@ export function fillUserTable(): Promise<any[]> {
 
 
 // Fill in for the Match History
-export function fillHistoryTable(aliasName: string): Promise<{ date: string; player1: string; player2: string; winner: string; score: string }[] | null> {
+export async function fillHistoryTable(aliasName: string): Promise<{ date: string; player1: string; player2: string; winner: string; score: string }[] | null> {
 
-	return connectFunc(`/matches/${aliasName}`, requestBody("GET", null, "application/json"))
-		.then((Response) => {
-			if (Response.ok) {
+	const table = document.querySelector('#userTable');
 
-				console.log("LOG", Response)
-				console.log("DATA", Response.formData)
-				return Response.json().then((data) => {
-					
-					console.log("dara", data);
-					if (data.error === "No Matches In The Database For This User") {
-						document.body.innerHTML = "Empty";
-					} else {
-						const formattedData = data.map((entry: any) => ({
-							date: entry.date,
-							player1: entry.p1_alias,
-							player2: entry.player2,
-							winner: entry.winner,
-							score: entry.score
-						}));
-						return formattedData;
-					}
-				});
-			} else {
-				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(Response.status, Response.statusText);
-				return null;
-			}
-		})
+	const Response = await connectFunc(`/matches/${aliasName}`, requestBody("GET", null, "application/json"));
+	const data = await Response.json();
+
+	if (data.error === "No Matches In The Database For This User") {
+		if (table) {
+			table.innerHTML = ``;
+		}
+		return null;
+	} else if (Response.ok) {
+		const formattedData = data.map((entry: any) => ({
+			date: entry.date,
+			player1: entry.p1_alias,
+			player2: entry.player2,
+			winner: entry.winner,
+			score: entry.score
+		}));
+		return formattedData;
+	} else {
+		window.history.pushState({}, '', '/errorPages');
+		setupErrorPages(Response.status, Response.statusText);
+		return null;
+	}
 }
+

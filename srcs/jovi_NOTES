@@ -18,7 +18,7 @@ ANYTHING ELSE I NEED TO ADD?
 
 
 Things that are broken:
-- History page (NOT GETTING THE CORRECT ROUTE);
-- Friend.ts does not redicect to the correct user;
+- user can't delete him self
+- Friend.ts does not redicect to the correct user match histoty;
 - Add score;
-- Added switch between games in dropdown menu.
+- Added switch between games in dropdown menu;

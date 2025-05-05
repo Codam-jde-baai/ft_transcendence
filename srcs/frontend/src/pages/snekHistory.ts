@@ -29,7 +29,7 @@ export function  setupSnekMatchHistory () {
 		`);
 
 		getLanguage();
-		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		fillTopbar();
 		setupNavigation();
 

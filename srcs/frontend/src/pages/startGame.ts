@@ -31,7 +31,7 @@ export function setupStartGame () {
 
 		getLanguage();
 		fillTopbar();
-		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		setupNavigation();
 	}
 }

@@ -68,7 +68,7 @@ export function setupSetting () {
 		`);
 
 		getLanguage();
-		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		eyeIcon_Button(["show-password", "show-password_confirm", "show-current_password", "avatar"]);
 		fillTopbar();
 		setupNavigation();

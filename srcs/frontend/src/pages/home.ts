@@ -4,6 +4,7 @@ import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
+import { setupSnek } from '../pages/snek';
 
 export function setupUserHome () {
 	const root = document.getElementById('app');
@@ -53,6 +54,10 @@ export function setupUserHome () {
 					<div class="buttons">
 						<button class="btn" id="StartGame" data-i18n="btn_PlayPong"></button>
 					</div>
+					<!-- Switching between games -->
+					<button class="game-btn" id="snek">
+						<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
+					</button>
 				</div>
 				
 				<div class="leaderboard">
@@ -117,6 +122,11 @@ export function setupUserHome () {
 		document.getElementById('StartGame')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/startGame');
 			setupStartGame();
+		});
+		
+		document.getElementById('snek')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/snek');
+			setupSnek();
 		});
 
 	}
