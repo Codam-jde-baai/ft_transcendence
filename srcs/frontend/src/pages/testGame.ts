@@ -1,4 +1,4 @@
-import { startSnek, preGameScreen, restartSnek, gameEndData, resetGame } from '../snek/main';
+import { startSnek, preGameScreen, restartSnek, gameEndData, resetGame } from '../game/snek/main';
 import { Application } from 'pixi.js'
 import { setupErrorPages } from './errorPages';
 import DOMPurify from 'dompurify';
