@@ -1,6 +1,6 @@
 import { startSnek, preGameScreen, restartSnek, gameEndData, resetGame } from '../snek/main';
 import { Application } from 'pixi.js'
-import { setupError404 } from './error404';
+import { setupErrorPages } from './errorPages';
 import DOMPurify from 'dompurify';
 // topbar etc
 import { fillTopbar } from '../script/fillTopbar';
@@ -80,13 +80,13 @@ export function setupTestGame() {
         </div>
         `);
     }
+    // getLanguage();
+    // dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+    // fillTopbar();
+    // setupNavigation();
     const container = document.getElementById('gameContainer') as HTMLElement;
     if (container) {
         preGameScreen(container).then((app: Application) => {
-            getLanguage();
-            dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
-            fillTopbar();
-            setupNavigation();
 
             setupGuestAliasLocking();
             FormToggleListener();
@@ -96,7 +96,7 @@ export function setupTestGame() {
             newPlayersButton(app);
         }).catch((error) => {
             console.error("Error setting up the game:", error);
-            setupError404(); // change to setupError(500, "Error launching the game")
+            setupErrorPages(500, "Error launching game");
         });
     } else {
         console.error("Game container not found");
