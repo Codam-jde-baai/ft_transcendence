@@ -34,7 +34,7 @@ class UserTable extends HTMLElement {
 				});
 
 				this.innerHTML = "";
-				this.insertAdjacentHTML("beforeend", `
+				this.insertAdjacentHTML("beforeend", /*html*/`
 					<div class="table-wrapper">
 						<table class="userTable">
 							<thead>

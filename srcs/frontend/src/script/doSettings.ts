@@ -1,6 +1,6 @@
 import { connectFunc, requestBody, inputToContent } from './connections';
 import { EditPicture } from './sendPic';
-import { setupError404 } from '../pages/error404';
+import { setupErrorPages } from '../pages/errorPages';
 import DOMPurify from 'dompurify';
 
 // Save button (settings.ts)
@@ -63,18 +63,18 @@ export function fillSetting() {
 
 				});
 			} else {
-				window.history.pushState({}, '', '/error404');
-				setupError404();
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(404, "Page Not Found");
 			}
 		}).catch(() => {
 			// Network or server error
-			window.history.pushState({}, '', '/error404');
-			setupError404();
+			window.history.pushState({}, '', '/errorPages');
+			setupErrorPages(500, "Internal Server Error");
 		});
 	} else {
 		// Network or server error
-		window.history.pushState({}, '', '/error404');
-		setupError404();
+		window.history.pushState({}, '', '/errorPages');
+		setupErrorPages(404, "Page Not Found");
 	}
 
 	

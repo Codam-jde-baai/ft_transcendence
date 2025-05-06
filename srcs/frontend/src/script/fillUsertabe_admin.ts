@@ -1,5 +1,5 @@
 import { connectFunc, requestBody } from './connections';
-import { setupError404 } from '../pages/error404';
+import { setupErrorPages } from '../pages/errorPages';
 
 export function fillUserTable(): Promise<any[]> {
 
@@ -12,14 +12,14 @@ export function fillUserTable(): Promise<any[]> {
 					return data;
 				});
 			} else {
-				window.history.pushState({}, '', '/error404');
-				setupError404();
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(404, "Page Not Found");
 				return null;
 			}
 		}).catch(() => {
 			// Network or server error
-			window.history.pushState({}, '', '/error404');
-			setupError404();
+			window.history.pushState({}, '', '/errorPages');
+			setupErrorPages(500, "Internal Server Error");
 			return null;
 		});
 }

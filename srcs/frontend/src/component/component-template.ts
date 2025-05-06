@@ -12,7 +12,7 @@ class Template extends HTMLElement {
 	render() {
 		// const currentPage = window.location.pathname
 		this.innerHTML = "";
-		this.insertAdjacentHTML("beforeend", `
+		this.insertAdjacentHTML("beforeend", /*html*/`
 		<div class="template">
 			
 		</div>`)

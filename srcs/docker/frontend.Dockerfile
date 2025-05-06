@@ -13,3 +13,4 @@ RUN pnpm install --force
 RUN pnpm install tailwindcss @tailwindcss/vite
 
 RUN pnpm install postcss typescript @types/node --save-dev
+RUN pnpm install --save-dev @types/dompurify

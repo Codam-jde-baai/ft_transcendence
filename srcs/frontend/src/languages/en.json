@@ -88,6 +88,7 @@
     "LogIn_error_user": "User not found",
     "LogIn_error_password": "Wrong Password",
     "LogIn_error": "Wrong Password",
+    "LogIn_noUser": "User Not Found",
 
     "Snek": "Snek",
 

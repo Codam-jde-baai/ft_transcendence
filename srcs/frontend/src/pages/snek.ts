@@ -1,6 +1,6 @@
 import { fillTopbar } from '../script/fillTopbar';
 import { dropDownBar } from '../script/dropDownBar';
-import { setupError404 } from "./error404";
+import { setupErrorPages } from "./errorPages";
 import { setupNavigation } from '../script/menuNavigation';
 import { setupGame } from '../snek/setupGame';
 import { getLanguage } from '../script/language';
@@ -28,6 +28,6 @@ export function setupSnek() {
 
 	}
 	else {
-		setupError404();
+		setupErrorPages(404, "Page Not Found");
 	}
 }

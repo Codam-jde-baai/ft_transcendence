@@ -1,7 +1,7 @@
 import { renderPage } from './index';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
-import { setupError404 } from './error404';
+import { setupErrorPages } from './errorPages';
 import { setupAdminSetting } from './adminSettings';
 import { connectFunc, requestBody } from '../script/connections';
 import { fillTopbar } from '../script/fillTopbar';
@@ -11,7 +11,7 @@ export function setupAdmin() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
-		root.insertAdjacentHTML("beforeend", `
+		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/admin.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		
@@ -66,13 +66,13 @@ export function setupAdmin() {
 				}
 			}).catch(() => {
 				// Network or server error
-				window.history.pushState({}, '', '/error404');
-				setupError404();
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(500, "Internal Server Error");
 			});
 		} else {
 			// Network or server error
-			window.history.pushState({}, '', '/error404');
-			setupError404();
+			window.history.pushState({}, '', '/errorPages');
+			setupErrorPages(500, "Internal Server Error");
 		}
 		
 	}

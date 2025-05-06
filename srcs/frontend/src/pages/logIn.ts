@@ -1,7 +1,7 @@
 import { setupUserHome } from './home';
 import { setupSignUp } from './signUp';
 import { setupAdmin } from './admin';
-import { setupError404 } from './error404';
+import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
 import { emptyFields, errorDisplay } from '../script/errorFunctions';
@@ -12,7 +12,7 @@ export function setupLogIn() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
-		root.insertAdjacentHTML("beforeend", `
+		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/logIn.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		<language-menu></language-menu>
@@ -64,8 +64,8 @@ export function setupLogIn() {
 						const userID = data.uuid;
 						if (!userID) {
 							// Network or server error
-							window.history.pushState({}, '', '/error404');
-							setupError404();
+							window.history.pushState({}, '', '/errorPages');
+							setupErrorPages(response.status,  response.statusText);
 							return ;
 						}
 						localStorage.setItem('userID', userID); // Store userID securely
@@ -91,17 +91,21 @@ export function setupLogIn() {
 							const elem = document.getElementById("password") as HTMLInputElement
 							const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;
 							errorDisplay(elem, errorMsg, "LogIn_error");
+						} else {
+							const elem = document.getElementById("username") as HTMLInputElement
+							const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
+							errorDisplay(elem, errorMsg, "LogIn_noUser");
 						}
 					}).catch(() => {
 						// Network or server error
-						window.history.pushState({}, '', '/error404');
-						setupError404();
+						window.history.pushState({}, '', '/errorPages');
+						setupErrorPages(response.status,  response.statusText);
 					});
 				}
 			}).catch(() => {
 				// Network or server error
-				window.history.pushState({}, '', '/error404');
-				setupError404();
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(500, "Internal Server Error");
 			});
 		});
 	}

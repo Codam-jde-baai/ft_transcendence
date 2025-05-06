@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "i18next": "^24.2.3"
+  },
+  "devDependencies": {
+    "@types/dompurify": "^3.2.0"
   }
 }

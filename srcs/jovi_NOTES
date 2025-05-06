@@ -5,3 +5,10 @@ User
 Admin
 	- admin
 	- iamadmin
+
+
+
+
+
+docker exec -it backend pnpm run db:generate;
+docker exec -it backend pnpm run db:migrate;

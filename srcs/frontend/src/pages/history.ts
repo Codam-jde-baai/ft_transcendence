@@ -10,8 +10,7 @@ export function  setupMatchHistory () {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
-		root.insertAdjacentHTML("beforeend", `
-		<link rel="stylesheet" href="src/styles/userMain.css"> <!-- Link to the CSS file -->
+		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/history.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
@@ -20,7 +19,7 @@ export function  setupMatchHistory () {
 			<!-- BODY CHANGE -->
 
 			<div class="container">
-				<h class="header" data-i18n="History"></h>
+				<h1 class="header" data-i18n="History"></h1>
 				<p class="p1" data-i18n="History_P"></p>
 				<p class="p1"> --$ALIASNAME-- </p>
 				
@@ -29,7 +28,7 @@ export function  setupMatchHistory () {
 						<tr>
 							<th data-i18n="Date"></th>
 							<th data-i18n="1v1_Game"></th>
-							<th data-i18n="Winner"</th>
+							<th data-i18n="Winner"></th>
 							<th data-i18n="Score"></th>
 						</tr>
 					</thead>

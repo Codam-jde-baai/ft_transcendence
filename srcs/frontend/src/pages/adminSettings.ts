@@ -6,14 +6,14 @@ import { eyeIcon_Button } from '../script/buttonHandling';
 import { adminPasswordFields } from '../script/errorFunctions';
 import { fillTopbar } from '../script/fillTopbar';
 import { fillSetting } from '../script/doSettings';
-import { setupError404 } from './error404';
+import { setupErrorPages } from './errorPages';
 import { updateUserSettings } from '../script/doSettings';
 
 export function setupAdminSetting() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
-		root.insertAdjacentHTML("beforeend", `
+		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/admin.css"> <!-- Link to the CSS file -->
 		<link rel="stylesheet" href="src/styles/adminSet.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
@@ -72,8 +72,8 @@ export function setupAdminSetting() {
 					}
 					else {
 						// Network or server error
-						window.history.pushState({}, '', '/error404');
-						setupError404();
+						window.history.pushState({}, '', '/errorPages');
+						setupErrorPages(404, "Not Found");
 					}
 
 				});
