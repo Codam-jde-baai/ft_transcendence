@@ -2,6 +2,11 @@ import { startSnek, preGameScreen, restartSnek, gameEndData, resetGame } from '.
 import { Application } from 'pixi.js'
 import { setupError404 } from './error404';
 import DOMPurify from 'dompurify';
+// topbar etc
+import { fillTopbar } from '../script/fillTopbar';
+import { dropDownBar } from '../script/dropDownBar';
+import { setupNavigation } from '../script/menuNavigation';
+import { getLanguage } from '../script/language';
 
 interface AuthState {
     isAuthenticated: boolean;
@@ -78,6 +83,11 @@ export function setupTestGame() {
     const container = document.getElementById('gameContainer') as HTMLElement;
     if (container) {
         preGameScreen(container).then((app: Application) => {
+            getLanguage();
+            dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+            fillTopbar();
+            setupNavigation();
+
             setupGuestAliasLocking();
             FormToggleListener();
             setupLoginValidation();
@@ -101,7 +111,7 @@ function FormToggleListener() {
         console.error("Auth toggle not found");
         return;
     }
-    
+
     toggle.addEventListener('change', () => {
         if (authState.isGuestLocked || authState.isAuthenticated) {
             toggle.checked = !toggle.checked;
@@ -139,7 +149,7 @@ function updateFormToggle() {
         loginForm.classList.remove('flex');
         guestForm.classList.remove('hidden');
         guestForm.classList.add('flex');
-        
+
         const loginStatus = document.getElementById('loginStatus');
         if (loginStatus) {
             loginStatus.classList.add('hidden');
@@ -153,7 +163,7 @@ function updateFormToggle() {
 function updateStartGameButton() {
     const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
     const player2InfoElements = document.querySelectorAll('.player2-info');
-    
+
     if (!startGameButton) {
         console.error("Start game button not found");
         return;
@@ -162,7 +172,7 @@ function updateStartGameButton() {
         startGameButton.disabled = false;
         startGameButton.classList.remove('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
         startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-        
+
         const displayName = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
         player2InfoElements.forEach(element => {
             element.textContent = displayName;
@@ -187,25 +197,25 @@ function setupGuestAliasLocking() {
         console.error("Guest alias input or buttons not found");
         return;
     }
-    
+
     lockInButton.addEventListener('click', () => {
         const rawInput = guestInputField.value.trim();
         const sanitizedInput = rawInput.replace(/[^a-zA-Z0-9]/g, '');
         const guestInput = DOMPurify.sanitize(sanitizedInput);
-        
+
         if (guestInput.length < 3) {
             alert("Guest alias must be at least 3 characters long.");
             return;
-        }    
+        }
         guestInputField.disabled = true;
         lockInButton.classList.add('hidden');
         changeButton.classList.remove('hidden');
-        
+
         authState.isGuestLocked = true;
         authState.guestAlias = "(guest) " + guestInput;
         updateStartGameButton();
     });
-    
+
     changeButton.addEventListener('click', () => {
         guestInputField.disabled = false;
         changeButton.classList.add('hidden');
@@ -222,12 +232,12 @@ function setupLoginValidation() {
     const usernameInput = document.getElementById('loginUsername') as HTMLInputElement;
     const passwordInput = document.getElementById('loginPassword') as HTMLInputElement;
     const loginStatus = document.getElementById('loginStatus');
-    
+
     if (!loginButton || !logoutButton || !usernameInput || !passwordInput || !loginStatus) {
         console.error("Login elements not found");
         return;
     }
-    
+
     loginButton.addEventListener('click', async () => {
         const usernameIn = usernameInput.value.trim().replace(/[^a-zA-Z0-9]/g, '');
         const passwordIn = passwordInput.value.trim().replace(/[^a-zA-Z0-9]/g, '');
@@ -247,12 +257,12 @@ function setupLoginValidation() {
                 showLoginStatus(loginStatus, "Login successful!", true);
                 authState.isAuthenticated = true;
                 authState.userAlias = username;
-                
+
                 usernameInput.disabled = true;
                 passwordInput.disabled = true;
                 loginButton.classList.add('hidden');
                 logoutButton.classList.remove('hidden');
-                
+
                 updateStartGameButton();
                 updateFormToggle();
             } else {
@@ -269,7 +279,7 @@ function setupLoginValidation() {
             updateFormToggle();
         }
     });
-    
+
     logoutButton.addEventListener('click', () => {
         authState.isAuthenticated = false;
         authState.userAlias = "";
@@ -280,7 +290,7 @@ function setupLoginValidation() {
         loginButton.classList.remove('hidden');
         logoutButton.classList.add('hidden');
         loginStatus.classList.add('hidden');
-        
+
         updateStartGameButton();
         updateFormToggle();
     });
@@ -297,9 +307,9 @@ function showLoginStatus(statusElement: HTMLElement, message: string, isSuccess:
 async function validateLogin(username: string, password: string): Promise<boolean> {
     // This is a placeholder function for login validation
     // In a real application, you would make an API call to validate the credentials
-    
+
     console.log(`Attempting to login with username: ${username}`);
-    
+
     // Simulate API request with a delay
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -317,27 +327,27 @@ async function startGameListeners(app: Application): Promise<void> {
     const restartGameButton = document.getElementById('restartGame');
     const gameContainer = document.getElementById('gameContainer');
     const replayButtons = document.getElementById('replayButtons');
-    
+
     if (!gameContainer || !startGameButton || !restartGameButton || !replayButtons) {
         console.error("One or more elements not found");
         return;
     }
-    
+
     startGameButton.addEventListener('click', async () => {
         // Get the player2 name based on authentication state
         const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
-        
+
         // Start the game with the appropriate player names
         startGameButton.disabled = true;
         startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
         startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
         const gameData: gameEndData = await startSnek(app, "player1", player2Name);
         console.log("gameData", gameData);
-        
+
         replayButtons.classList.remove('hidden');
         replayButtons.classList.add('flex');
     });
-    
+
     restartGameButton.addEventListener('click', async () => {
         // Get the player2 name based on authentication state
         const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
@@ -357,50 +367,50 @@ function newPlayersButton(app: Application) {
         console.error("New game button not found");
         return;
     }
-    
+
     newGameButton.addEventListener('click', () => {
         window.history.pushState({}, '', '/home');
-        
+
         // Reset auth state
         authState.isAuthenticated = false;
         authState.isGuestLocked = false;
         authState.guestAlias = "";
         authState.userAlias = "";
-        
+
         // Reset guest form
         const guestInput = document.getElementById("guestAliasInput") as HTMLInputElement;
         const lockInButton = document.getElementById("lockInGuest") as HTMLButtonElement;
         const changeButton = document.getElementById("changeGuestAlias") as HTMLButtonElement;
-        
+
         if (guestInput && lockInButton && changeButton) {
             guestInput.value = "";
             guestInput.disabled = false;
             lockInButton.classList.remove('hidden');
             changeButton.classList.add('hidden');
         }
-        
+
         // Reset login form
         const usernameInput = document.getElementById("loginUsername") as HTMLInputElement;
         const passwordInput = document.getElementById("loginPassword") as HTMLInputElement;
         const loginStatus = document.getElementById("loginStatus");
-        
+
         if (usernameInput && passwordInput && loginStatus) {
             usernameInput.value = "";
             passwordInput.value = "";
             loginStatus.classList.add('hidden');
         }
-        
+
         // Hide replay buttons
         const replayButtons = document.getElementById('replayButtons');
         if (replayButtons) {
             replayButtons.classList.add('hidden');
             replayButtons.classList.remove('flex');
         }
-        
+
         // Update start game button state
         resetGame(app);
         updateStartGameButton();
-        
+
         console.log("New players button clicked");
     });
 }
