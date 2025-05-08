@@ -3,10 +3,10 @@ import { Application } from 'pixi.js'
 import { setupErrorPages } from './errorPages';
 import DOMPurify from 'dompurify';
 // topbar etc
-import { fillTopbar } from '../script/fillTopbar';
-import { dropDownBar } from '../script/dropDownBar';
-import { setupNavigation } from '../script/menuNavigation';
-import { getLanguage } from '../script/language';
+// import { fillTopbar } from '../script/fillTopbar';
+// import { dropDownBar } from '../script/dropDownBar';
+// import { setupNavigation } from '../script/menuNavigation';
+// import { getLanguage } from '../script/language';
 
 interface AuthState {
     isAuthenticated: boolean;

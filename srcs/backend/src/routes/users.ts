@@ -35,7 +35,7 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	fastify.get<{ Params: { alias: string } }>
 		('/user/:alias/profile-pic', { preHandler: [authenticatePrivateToken], ...imageOptionsByAlias }, getUserImageByAlias);
 	fastify.get('/users', { preHandler: [authAPI], ...getUsersOptions }, getAllUsers);
-	fastify.get('/user/', { preHandler: [authenticatePrivateToken], ...getUserOptions }, getUser);
+	fastify.get('/user', { preHandler: [authenticatePrivateToken], ...getUserOptions }, getUser);
 	fastify.get<{ Params: { alias: string } }>('/useralias/:alias/', { preHandler: [authenticatePrivateToken], ...getUserAliasOptions }, getUserAlias);
 	// Public Data
 	fastify.get('/public/users', { preHandler: [authAPI], ...getPublicUsersOptions }, getAllUsers);
