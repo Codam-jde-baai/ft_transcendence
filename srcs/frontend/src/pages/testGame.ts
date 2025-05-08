@@ -10,6 +10,8 @@ import DOMPurify from 'dompurify';
 // import { getLanguage } from '../script/language';
 import { connectFunc, requestBody } from '../script/connections';
 
+import "../styles/snek.css"
+
 interface AuthState {
     isAuthenticated: boolean;
     isGuestLocked: boolean;
@@ -111,34 +113,34 @@ export function setupTestGame() {
                         </form>
 
                         <!-- Login Form -->
-                        <form id="LoginForm" class="flex-col gap-2 text-black hidden">
-                            <input type="text" id="loginUsername" class="p-2 rounded" placeholder="Username" />
-                            <input type="password" id="loginPassword" class="p-2 rounded" placeholder="Password" />
-                            <div class="flex gap-2">
-                                <button type="button" id="loginButton" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Login</button>
-                                <button type="button" id="logoutButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded hidden">Logout</button>
-                            </div>
-                            <p id="loginStatus" class="text-white text-center mt-2 hidden"></p>
-                            </form>
-                        <p class="text-center player2-info"></p>
-                        <!-- Player2 Stats Container (initially hidden) -->
-                        <div id="player2StatsContainer" class="bg-green-600 p-2 rounded hidden">
-                            <p>Matches: <span id="p2-matches">0</span></p>
-                            <p>Wins: <span id="p2-wins">0</span> | Losses: <span id="p2-losses">0</span></p>
-                            <p>Win Rate: <span id="p2-winrate">0.0</span>%</p>
-                            <p>Avg Score: <span id="p2-avg-score">0.0</span></p>
-                            <p>Highest Score: <span id="p2-highest-score">0</span></p>
-                        </div>
+                <form id="LoginForm" class="form-fields text-black hidden">
+                    <input type="text" id="loginUsername" class="form-input" placeholder="Username" />
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Password" />
+                    <div class="form-row">
+                        <button type="button" id="loginButton" class="button-primary bg-purple-500 hover:bg-purple-700">Login</button>
+                        <button type="button" id="logoutButton" class="button-primary bg-red-500 hover:bg-red-700 hidden">Logout</button>
                     </div>
+                    <p id="loginStatus" class="text-white text-center mt-2 hidden"></p>
+                </form>
+                <p class="text-center player2-info"></p>
+                <!-- Player2 Stats Container (initially hidden) -->
+                <div id="player2StatsContainer" class="bg-green-600 p-2 rounded hidden">
+                    <p>Matches: <span id="p2-matches">0</span></p>
+                    <p>Wins: <span id="p2-wins">0</span> | Losses: <span id="p2-losses">0</span></p>
+                    <p>Win Rate: <span id="p2-winrate">0.0</span>%</p>
+                    <p>Avg Score: <span id="p2-avg-score">0.0</span></p>
+                    <p>Highest Score: <span id="p2-highest-score">0</span></p>
                 </div>
-                <button class="btn bg-gray-500 cursor-not-allowed opacity-50" id="startGame" disabled>Start Game</button>
-                <div id="gameContainer" class="mb-4"></div>
-                <div class="hidden flex-row gap-4" id="replayButtons">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" id="newGame">New Players</button>
-                    <button class="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded" id="restartGame">Rematch!</button>
-                    </div>
             </div>
-            `);
+        </div>
+        <button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startGame" disabled>Start Game</button>
+        <div id="gameContainer" class="mb-4"></div>
+        <div class="hidden flex-row gap-4" id="replayButtons">
+            <button class="button-primary bg-blue-500 hover:bg-blue-700" id="newGame">New Players</button>
+            <button class="button-primary bg-pink-800 hover:bg-pink-600" id="restartGame">Rematch!</button>
+        </div>
+    </div>
+`);
         }
         // getLanguage();
         // dropDownBar(["dropdown-btn", "language-btn", "language-content"]);

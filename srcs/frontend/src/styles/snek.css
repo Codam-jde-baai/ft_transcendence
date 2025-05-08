@@ -3,3 +3,50 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+/* Layout wrapper */
+.content-area {
+  @apply max-w-4xl mx-auto p-4 md:p-8 bg-gray-100 rounded-xl shadow-lg;
+}
+
+/* Form wrapper */
+.form-fields {
+  @apply space-y-4;
+}
+
+/* Column-style layout inside forms */
+.form-columns {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
+}
+
+/* Row-style layout */
+.form-row {
+  @apply flex flex-wrap items-center gap-4;
+}
+
+/* Individual input field wrapper */
+.form-group {
+  @apply flex flex-col;
+}
+
+/* Label styling */
+.form-label {
+  @apply text-sm font-medium text-gray-700 mb-1;
+}
+
+/* Input styling */
+.form-input {
+  @apply border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
+}
+
+/* Button styling */
+.button-primary {
+  @apply bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-200;
+}
+
+.button-main {
+    @apply w-96 py-3 text-lg text-white bg-pink-800 border-none rounded-md cursor-pointer mt-5 transition duration-300 box-border font-sans;
+}
+.button-main:hover {
+    @apply bg-pink-400;
+}
