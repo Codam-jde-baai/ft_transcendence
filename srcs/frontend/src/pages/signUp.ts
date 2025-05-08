@@ -72,7 +72,7 @@ export function setupSignUp() {
 				return; // Stop execution if validation fails
 
 			const body = requestBody("POST", inputToContent(["username", "alias", "password"]), "application/json")
-			connectFunc("/users/new", body)
+			connectFunc("/user/new", body)
 				.then((response) => {
 				if (response.ok) {
 					response.json().then((data) => {
