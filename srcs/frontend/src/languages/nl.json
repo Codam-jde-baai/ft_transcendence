@@ -2,6 +2,7 @@
     "btn_LogIn": "Inloggen",
     "btn_SignUp": "Registreren",
     "btn_PlayPong": "Spel Pong",
+    "btn_PlaySnek": "Snek spelen",
     "btn_Save": "Opslaan",
     "btn_Remove": "Verwijderen",
     "btn_Admin": "Wijzigingen aanbrengen",
@@ -27,6 +28,7 @@
     
     "Index_Header": "Welkom bij Transcendence",
     "Header_Pong": "Welkom bij Pong",
+    "Header_Snek": "Welkom bij Snek",
     "LogIn_Header": "Inloggen",
     "SignUp_Header": "Account aanmaken",
     "Setting_Header": "Instellingen",

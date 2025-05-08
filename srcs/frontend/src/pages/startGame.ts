@@ -3,7 +3,7 @@ import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
 
-export function setupStartGame () {
+export function setupStartGame() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";

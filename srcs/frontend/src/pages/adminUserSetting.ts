@@ -2,7 +2,7 @@ import { getLanguage } from '../script/language';
 import { setupAdmin } from './admin';
 import { adminPasswordFields } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
-import { connectFunc, requestBody, inputToContent } from '../script/connections';
+import { connectFunc, requestBody } from '../script/connections';
 
 export function setupAdminUserSetting(data: any) {
 	const root = document.getElementById('app');

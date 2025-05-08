@@ -6,7 +6,7 @@ import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
 import { setupSnek } from '../pages/snek';
 
-export function setupUserHome () {
+export function setupUserHome() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
@@ -55,7 +55,7 @@ export function setupUserHome () {
 						<button class="btn" id="StartGame" data-i18n="btn_PlayPong"></button>
 					</div>
 					<!-- Switching between games -->
-					<button class="game-btn" id="snek">
+					<button class="game-btn" id="Snek">
 						<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
 					</button>
 				</div>
@@ -124,7 +124,7 @@ export function setupUserHome () {
 			setupStartGame();
 		});
 		
-		document.getElementById('snek')?.addEventListener('click', () => {
+		document.getElementById('Snek')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/snek');
 			setupSnek();
 		});

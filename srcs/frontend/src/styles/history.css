@@ -1,4 +1,4 @@
-/* adminPage.css */
+/* history.css */
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
@@ -21,7 +21,7 @@
 	border-radius: 15px;
 	width: 75%;
 	height: 75%; 
-	z-index: 1;
+	z-index: -1;
 }
 
 /* Title styling */
@@ -91,4 +91,31 @@
 	overflow-y: auto;
 	display: block;
   }
-    
+
+
+/* Game */
+.game-btn {
+	margin-top: -330px;
+	margin-left: -390px;
+	background-color: rgba(144, 32, 99);
+	width: 14vh;
+	padding: 11px;
+	cursor: pointer;
+	color: rgb(255, 255, 255);
+	border: none;
+	text-align: center;
+	font-size: 17px;
+	font-family: Arial, sans-serif;
+	display: flex;
+	justify-content: center;
+	border-radius: 5px;
+	z-index: 5;
+}
+.game-btn:hover {
+	background: #b86a8a;
+}
+
+.game-btn img {
+	width: 25px;
+	height: 25px;
+}

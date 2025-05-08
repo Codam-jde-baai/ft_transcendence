@@ -20,12 +20,11 @@
 	background: rgba(0, 0, 0, 0.8);
 	position: fixed;
 	top: 200px;
-	left: 200px;
+	left: 220px;
 	border-radius: 15px;
 	width: 75%;
 	height: 70%; 
 	justify-items: center;
-	z-index: 1;
 }
 
 /* Title styling */

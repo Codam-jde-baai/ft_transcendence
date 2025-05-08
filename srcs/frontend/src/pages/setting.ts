@@ -10,7 +10,7 @@ import { connectFunc, requestBody } from '../script/connections';
 import { renderPage } from './index';
 
 
-export function setupSetting () {
+export function setupSetting() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";

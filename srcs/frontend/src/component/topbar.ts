@@ -32,10 +32,10 @@ class DropdownMenu extends HTMLElement {
 							<img src="src/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
 						</div>
 					</div>
-					<div class="dropdown-item ${currentPage === '/home' ? 'currentPage' : ''}" id="Home" data-i18n="Home"></div>
+					<div class="dropdown-item ${currentPage === '/home' || currentPage === '/snek' ? 'currentPage' : ''}" id="Home" data-i18n="Home" onclick="window.location.pathname = (window.location.pathname === '/snek' ? '/snek' : '/home')"></div>
 					<div class="dropdown-item ${currentPage === '/setting' ? 'currentPage' : ''}" id="Settings" data-i18n="Settings"></div>
 					<div class="dropdown-item ${currentPage === '/friends' ? 'currentPage' : ''}" id="Friends" data-i18n="Friends"></div>
-					<div class="dropdown-item ${currentPage === '/history' ? 'currentPage' : ''}" id="History" data-i18n="History"></div>
+					<div class="dropdown-item ${currentPage === '/history' || currentPage === '/snekHistory' ? 'currentPage' : ''}" id="History" data-i18n="History" onclick="window.location.pathname = (window.location.pathname === '/snekHistory' ? '/snekHistory' : '/history')"></div>
 					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
 				</div>
 			</div>

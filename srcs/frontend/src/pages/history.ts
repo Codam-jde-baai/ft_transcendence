@@ -4,8 +4,9 @@ import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
 import { connectFunc, requestBody } from '../script/connections';
 import { setupErrorPages } from './errorPages';
+import { setupSnekMatchHistory } from '../pages/snekHistory';
 
-export function  setupMatchHistory () {
+export function  setupMatchHistory() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
@@ -14,6 +15,10 @@ export function  setupMatchHistory () {
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		
+			<!-- Switching between games -->
+			<button class="game-btn" id="SnekHistory">
+				<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
+			</button>
 			<div class="middle">
 				<div class="container">
 					<h1 class="Pongheader" data-i18n="Pong"></h1>
@@ -22,7 +27,7 @@ export function  setupMatchHistory () {
 					<p class="p1" id="historyAliasName"></p>
 				
 					<history-table></history-table>
-					
+
 				</div>
 			</div>
 		`);
@@ -31,6 +36,11 @@ export function  setupMatchHistory () {
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		fillTopbar();
 		setupNavigation();
+
+		document.getElementById('SnekHistory')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/snekHistory');
+			setupSnekMatchHistory();
+		});
 
 		connectFunc(`/user`, requestBody("GET", null))
 		.then((userInfoResponse) => {

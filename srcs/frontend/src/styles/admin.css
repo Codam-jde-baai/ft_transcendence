@@ -22,6 +22,7 @@
 
 /* Container for forms */
 .container {
+	margin-top: -400px;
 	padding: 40px;
 	border-radius: 15px;
 	z-index: 1;

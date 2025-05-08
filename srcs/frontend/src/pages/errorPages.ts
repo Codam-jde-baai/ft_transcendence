@@ -15,8 +15,7 @@ export function setupErrorPages(errorCode: number, errorMessage: string) {
 	}
 
 	if (errorCode === 401) {
-			window.history.pushState({}, '', '/logIn');
-			setupLogIn(); // Redirect to logIn
-		}
-
+		window.history.pushState({}, '', '/logIn');
+		setupLogIn(); // Redirect to logIn
+	}
 }
