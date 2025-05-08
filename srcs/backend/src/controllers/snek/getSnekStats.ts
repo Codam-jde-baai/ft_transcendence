@@ -39,6 +39,7 @@ export const getMyStats = async (req: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
 		const uuid = req.session.get('uuid') as string;
+		const alias = req.session.get('alias') as string;
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
 		const snek = await db.select({
@@ -52,7 +53,16 @@ export const getMyStats = async (req: FastifyRequest, reply: FastifyReply) => {
 				eq(snekTable.p1_uuid, uuid),
 				eq(snekTable.p2_uuid, uuid))) as MatchData[];
 		if (snek.length === 0) {
-			return reply.code(404).send({ error: "nothing to see here" })
+			const emptyStats: PlayerStats = {
+				alias: alias,
+				matches: 0,
+				wins: 0,
+				losses: 0,
+				winrate: 0,
+				avg_score: 0,
+				highest_score: 0
+			}
+			return reply.code(200).send(emptyStats);
 		}
 		const myStats: PlayerStats[] = calculatePlayerStats(snek);
 		return reply.send(myStats[0]);
@@ -79,11 +89,21 @@ export const getStatsByAlias = async (req: FastifyRequest<{ Params: { alias: str
 			p1_score: snekTable.p1_score,
 			p2_score: snekTable.p2_score
 		})
-			.from(snekTable).where(or(
-				eq(snekTable.p1_alias, alias),
-				eq(snekTable.p2_alias, alias))) as MatchData[];
+		.from(snekTable).where(or(
+			eq(snekTable.p1_alias, alias),
+			eq(snekTable.p2_alias, alias))) as MatchData[];
+
 		if (snek.length === 0) {
-			return reply.code(404).send({ error: "nothing to see here" })
+			const emptyStats: PlayerStats = {
+				alias: alias,
+				matches: 0,
+				wins: 0,
+				losses: 0,
+				winrate: 0,
+				avg_score: 0,
+				highest_score: 0
+			}
+			return reply.code(200).send(emptyStats);
 		}
 		const playerStats: PlayerStats[] = calculatePlayerStats(snek);
 		return reply.send(playerStats[0]);
