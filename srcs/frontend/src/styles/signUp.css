@@ -1,224 +1,90 @@
 /* signUp.css */
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
 /* Dark overlay -> for background */
 .overlay {
-	position: fixed; 
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100vh;
-	background: rgba(0, 0, 0, 0.4); 
-	z-index: -1;
+	@apply fixed inset-0 w-full h-screen bg-[rgba(0,0,0,0.4)] z-[-1] flex justify-center items-center;
 }
 
 /* Container for forms */
 .container {
-	background: rgba(0, 0, 0, 0.8);
-	padding: 40px;
-	border-radius: 15px;
-	width: 400px;
-	position: relative;
-	z-index: 1; 
+	@apply bg-[rgba(0,0,0,0.8)] p-[40px] rounded-[15px] top-[250px] w-[400px] h-[760px] relative z-[1] box-border;
 }
 
 /* Title styling */
 .header {
-	font-size: 2.5rem;
-	margin-bottom: 15px;
-	margin: 0;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: center;
+	@apply text-4xl mb-4 font-sans text-white text-center;
 }
 
 /* Paragraph styling */
 p {
-	font-size: 1rem;
-	margin-bottom: 5px;
-	margin-top: 5px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: center;
+	@apply text-[1rem] mb-[px] mt-[5px] text-white font-sans;
 }
 
-/* Paragraph styling */
+/* Paragraph 1 styling */
 .p1 {
-	font-size: 1rem;
-	margin-bottom: 2px;
-	margin-top: 20px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: left;
+	@apply text-[1rem] mb-[2px] mt-[20px] text-white font-sans text-left relative left-[-150px];
 }
 
 /* Input fields */
 .input-field {
-	width: 100%;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border-radius: 5px;
-	border: none;
-	/* border-color: black; */
-	box-sizing: border-box;
-	color: black;
-	background-color: white;
-	font-size: 1rem;
+	@apply w-full py-2 rounded border-none text-black bg-white text-base;
 }
 .input-field:focus {
-	outline: none;
-	border: 2px solid #fde7f4;
+	@apply outline-none border-2 border-pink-200;
 }
 
 /* Button styling */
 .buttons {
-	display: flex;
-	gap: 10px;
-	justify-content: center;
+	@apply flex gap-2 justify-center;
 }
 .btn {
-	width: 400px;
-	padding: 12px;
-	font-size: 1.1rem;
-	color: white;
-	background: #902063;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	margin-top: 10px;
-	transition: 0.3s;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
+	@apply w-[400px] h-[50px] py-[12px] text-[1.1rem] text-white bg-[#902063] rounded-[7px] cursor-pointer mt-[10px] transition-all box-border font-sans;
 }
 .btn:hover {
-	background: #b86a8a;
+	@apply bg-pink-500;
 }
 
 /* Edit Picture */
 .edit-picture {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: none;
-	border: none;
-	padding: 0;
-	cursor: pointer;
-	margin-top: 15px;
-	margin-bottom: 15px;
-	margin-left: 140px;
-
+	@apply flex justify-center items-center mt-4 mb-4 ml-36 cursor-pointer;
 }
 .edit-picture img {
-	width: 100px; 
-	height: 100px;
-	border-radius: 50%;
-	object-fit: cover;
-	border: 3px solid white;
+	@apply w-24 h-24 rounded-full items-center object-cover border-4 border-white;
 }
 .edit-picture img:hover {
-	border: 3px solid #b86a8a;
+	@apply border-pink-500;
 }
 
 /* Button Container */
 .btn-container {
-	position: fixed;
-	display: flex;
-	align-items: center;
-	justify-content: right;
-	top: 20px;
-	right: 20px;
-	z-index: 1; 
+	@apply fixed flex items-center justify-end top-5 right-5 z-[1];
 }
 .language-btn {
-	background-color: #902063;
-	width: 220px;
-	padding: 10px;
-	cursor: pointer;
-	border-radius: 7px;
-	color: rgb(255, 255, 255);
-	border: 1px solid #ccc;
-	text-align: center;
-	font-size: 20px;
-	font-family: Arial, sans-serif;
+	@apply bg-pink-800 w-56 py-2 cursor-pointer rounded text-white border text-lg font-sans text-center;
 }
 .language-btn:hover {
-	background: #b86a8a;
+	@apply bg-pink-500;
 }
 .language-content {
-	gap: 10px;
-	display: none;
-	position: absolute;
-	background-color: #902063;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	min-width: 219px;
-	z-index: 10;
-	top: 43px;
-}
-.language-content.showLang .hidden {
-	display: inline-block;
+	@apply hidden absolute bg-pink-800 border rounded w-56 z-10 mt-2;
 }
 .language-content.showLang {
-	display: block;
+	@apply block;
 }
 .language-content div {
-	padding: 8px;
-	display: flex;
-	align-items: center;
-	font-size: 17px;
-	gap: 5px;
-	color: white;
-	cursor: pointer;
+	@apply px-2 py-1 flex items-center text-white text-base cursor-pointer;
 }
 .language-content div:hover {
-	background-color: #b86a8a;
-}
-.language-content img {
-	width: 20px;
-	height: 15px;
+	@apply bg-pink-500;
 }
 .language-option {
-	padding: 10px;
-	cursor: pointer;
-	color: rgb(255, 255, 255);
-	text-align: center;
-	font-size: 20px;
-	font-family: Arial, sans-serif;
+	@apply py-2 cursor-pointer text-white text-center text-lg font-sans;
 }
-.language-btn img {
-	width: 25px;
-	height: 15px;
-}
-
-/* Eye icon for password */
-.field-icon {
-    cursor: pointer;
-    position: absolute;
-    margin-left: -35px; 
-    margin-top: 10px; 
-}
-.field-icon img {
-    width: 25px;
-    height: 20px;
-}
-
 
 /* Error Messages */
 .input-error {
-	border: 3px solid rgb(255, 0, 0);
+	@apply border-4 border-red-500;
 }
 .error-text {
-	color: rgb(228, 73, 73);
-	font-size: 1rem;
-	margin-bottom: 2px;
-	margin-top: 20px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	text-align: left;
+	@apply text-red-500 text-base mt-5 font-sans text-left;
 }

@@ -37,11 +37,7 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 		('/user/:alias/profile-pic', { preHandler: [authenticatePrivateToken], ...imageOptionsByAlias }, getUserImageByAlias);
 	fastify.get('/users', { preHandler: [authAPI], ...getUsersOptions }, getAllUsers);
 	fastify.get('/user', { preHandler: [authenticatePrivateToken], ...getUserOptions }, getUser);
-<<<<<<< HEAD
 	fastify.get<{ Params: { alias: string } }>('/useralias/:alias', { preHandler: [authenticatePrivateToken], ...getUserAliasOptions }, getUserAlias);
-=======
-	fastify.get<{ Params: { alias: string } }>('/useralias/:alias/', { preHandler: [authenticatePrivateToken], ...getUserAliasOptions }, getUserAlias);
->>>>>>> snek
 	// Public Data
 	fastify.get('/public/users', { preHandler: [authAPI], ...getPublicUsersOptions }, getAllUsers);
 	// Create user with JSON data

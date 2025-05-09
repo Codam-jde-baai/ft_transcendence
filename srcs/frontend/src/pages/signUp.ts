@@ -34,14 +34,14 @@ export function setupSignUp() {
 
 			<p class="p1" id="userPass" data-i18n="Password"></p>
 			<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
-			<span id="show-password" class="field-icon">
-				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
+			<span id="show-password" class="cursor-pointer absolute top-[240px] right-[900px]">
+				<img src="src/Pictures/eyeIcon.png" style="height: 20px; width: 25px;" alt="Show Password" id="eye-icon">
 			</span>
 
 			<p class="p1" id="password-match" data-i18n="ConfirmPassword"></p>
 			<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field">
-			<span id="show-password_confirm" class="field-icon">
-				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
+			<span id="show-password_confirm" class="cursor-pointer top-[200px] right-[60px]">
+				<img src="src/Pictures/eyeIcon.png" style="height: 20px; width: 25px; top: 200px;" alt="Show Password" id="eye-icon_confirm">
 			</span>	
 
 			<div class="buttons">
@@ -50,7 +50,7 @@ export function setupSignUp() {
 
 			<p>
 				<span data-i18n="SignUp_P"></span>
-				<a id="LogIn" style="color: rgb(209, 7, 128); margin-left: 0.5%; text-decoration: underline;" data-i18n="btn_LogIn"></a>
+				<a id="LogIn" style="color: rgb(209, 7, 128); 0.5%; text-decoration: underline;" data-i18n="btn_LogIn"></a>
 			</p>
 		</div>
 		`);

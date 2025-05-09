@@ -1,4 +1,4 @@
-/* setting.css */
+/* startGame.css */
 
 @import "tailwindcss/base";
 @import "tailwindcss/components";
@@ -59,3 +59,6 @@
 .btn:hover {
 	background: #b86a8a;
 }
+
+can you convert this vanilla css into tailwindcss version.
+In its own css file

@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-import { setupErrorPages } from "../../pages/errorPages";
-import { Application } from 'pixi.js';
-
-export async function setupGame(containerId: string) {
-	const app = new Application();
-	await app.init({ width: 640, height: 640 });
-	const container = document.getElementById(containerId);
-	if (container) {
-		container.appendChild(app.canvas);
-	}
-	else {
-		setupErrorPages(response.status,  response.statusText);
-	}
-=======
 import { Application, Text, TextStyle } from 'pixi.js';
 import { Snake } from './snake';
 import { createMouse, randomPosition } from './mouse';
@@ -131,5 +116,4 @@ export async function setupGame(app: Application, player1Alias: string, player2A
       snake2.handleInput(e);
     });
   });
->>>>>>> snek
 }

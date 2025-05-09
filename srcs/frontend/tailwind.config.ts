@@ -6,7 +6,14 @@ export default {
     "./src/**/*.{js,ts,tsx,jsx,html}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        customPink: {
+          DEFAULT: '#902063', // Base color
+          hover: '#b86a8a',   // Hover color
+        },
+      },
+    },
   },
   plugins: [],
 } satisfies Config;

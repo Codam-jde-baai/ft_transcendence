@@ -6,12 +6,9 @@ import fastifyCors from '@fastify/cors'
 import secureSession from '@fastify/secure-session';
 import userRoutes from './routes/users.ts';
 import friendsRoutes from './routes/friends.ts';
-<<<<<<< HEAD
 import matchesRoutes from './routes/matches.ts';
 import adminRoutes from './routes/admin.ts';
-=======
-import snekRoutes from './routes/snek.ts';
->>>>>>> snek
+import snekRoutes from './routes/snek.ts'
 import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
 import rateLimit from '@fastify/rate-limit';
@@ -83,11 +80,8 @@ fastify.register(swagger, {
 			{ name: 'users', description: 'User related endpoints' },
 			{ name: 'matches', description: 'Match related endpoints' },
 			{ name: 'friends', description: 'Friend related endpoints' },
-<<<<<<< HEAD
-			{ name: 'admin', description: 'Admin related endpoints' }
-=======
+			{ name: 'admin', description: 'Admin related endpoints' },
 			{ name: 'snek', description: 'Snek related endpoints' }
->>>>>>> snek
 		]
 	}
 });
@@ -110,11 +104,8 @@ fastify.register(swaggerUi, {
 fastify.register(userRoutes);
 fastify.register(friendsRoutes);
 fastify.register(matchesRoutes);
-<<<<<<< HEAD
 fastify.register(adminRoutes);
-=======
 fastify.register(snekRoutes);
->>>>>>> snek
 
 const start = async () => {
 	try {

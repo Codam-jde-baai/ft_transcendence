@@ -11,8 +11,8 @@ export function dropDownBar(input: string[]) {
 		if (elem.id === "dropdown-btn") {
 			// Handle click events for toggling settings dropdown
 			elem.addEventListener('click', (event) => {
-				const dropdown = document.querySelector('.dropdown-content');
-				const dropdownBtn = document.querySelector('.dropdown-btn');
+				const dropdown = document.getElementById('dropdown-content');
+				const dropdownBtn = document.getElementById('dropdown-btn');
 				
 				if (dropdown && dropdownBtn) {
 					// Toggle dropdown visibility when clicking the button
@@ -22,8 +22,8 @@ export function dropDownBar(input: string[]) {
 			});
 			// Add a global click listener to hide the dropdown when clicking outside
 			document.addEventListener("click", (event) => {
-				const dropdown = document.querySelector('.dropdown-content');
-				const dropdownBtn = document.querySelector('.dropdown-btn');
+				const dropdown = document.getElementById('dropdown-content');
+				const dropdownBtn = document.getElementById('dropdown-btn');
 		
 				if (dropdown && dropdownBtn) {
 					// Hide dropdown if clicking outside of it
@@ -35,8 +35,8 @@ export function dropDownBar(input: string[]) {
 		if (elem.id === "language-btn") {
 			// Close both dropdowns when clicking outside
 			elem.addEventListener("click", (event) => {
-				const languageDropdown = document.querySelector('.language-content');
-				const languageBtn = document.querySelector('.language-btn');
+				const languageDropdown = document.getElementById('language-content');
+				const languageBtn = document.getElementById('language-btn');
 
 				if (languageDropdown && languageBtn) {
 					// Toggle dropdown visibility when clicking the button
@@ -46,8 +46,8 @@ export function dropDownBar(input: string[]) {
 			});
 			// Add a global click listener to hide the dropdown when clicking outside
 			document.addEventListener("click", (event) => {
-				const languageDropdown = document.querySelector('.language-content');
-				const languageBtn = document.querySelector('.language-btn');
+				const languageDropdown = document.getElementById('language-content');
+				const languageBtn = document.getElementById('language-btn');
 		
 				if (languageDropdown && languageBtn) {
 					// Hide dropdown if clicking outside of it

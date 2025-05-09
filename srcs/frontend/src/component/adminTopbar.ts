@@ -17,20 +17,20 @@ class AdminTopbar extends HTMLElement {
 					<img class="settingIcon" src="src/Pictures/setting-btn.png"/>
 				</button>
 				
-					<div class="dropdown-content">
+				<div class="dropdown-content">
 					<button class="language-btn" id="language-btn">
 						<span data-i18n="Language"></span> <img id="selected-flag" src="src/Pictures/flagIcon-en.png">
 					</button>
-			<div class="language-content" id="language-content">
-							<div class="language-option" id="gb">
-								<img src="src/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
-							</div>
-							<div class="language-option" id="de">
-								<img src="src/Pictures/flagIcon-de.png"> <span data-i18n="German"></span>
-							</div>
-							<div class="language-option" id="nl">
-								<img src="src/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
-							</div>
+					<div class="language-content" id="language-content">
+						<div class="language-option" id="gb">
+							<img src="src/Pictures/flagIcon-en.png"> <span data-i18n="English"></span>
+						</div>
+						<div class="language-option" id="de">
+							<img src="src/Pictures/flagIcon-de.png"> <span data-i18n="German"></span>
+						</div>
+						<div class="language-option" id="nl">
+							<img src="src/Pictures/flagIcon-nl.png"> <span data-i18n="Dutch"></span>
+						</div>
 					</div>
 					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
 

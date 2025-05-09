@@ -51,16 +51,17 @@ export function renderPage() {
 			root.innerHTML = "";
 			root.insertAdjacentHTML("beforeend", /*html*/`
 			<link rel="stylesheet" href="src/styles/index.css"> <!-- Link to the CSS file -->
-			<div class="overlay"></div>
-			<language-menu></language-menu>
+			<div class="overlay">
+				<language-menu></language-menu>
 
-			<div class="container">
-				<h1 class="header" data-i18n="Index_Header"></h1>
-				<p data-i18n="Index_P"></p>
+				<div class="container">
+					<h1 class="header" data-i18n="Index_Header"></h1>
+					<p data-i18n="Index_P"></p>
 
-				<div class="buttons">
-					<button class="btn" id="LogIn" data-i18n="btn_LogIn"></button>
-					<button class="btn" id="SignUp" data-i18n="btn_SignUp"></button>
+					<div class="buttons">
+						<button class="btn" id="LogIn" data-i18n="btn_LogIn"></button>
+						<button class="btn" id="SignUp" data-i18n="btn_SignUp"></button>
+					</div>
 				</div>
 			</div>
 				`);

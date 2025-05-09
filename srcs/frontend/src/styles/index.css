@@ -1,164 +1,68 @@
 /* index.css */
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
-/* Dark overlay -> for background */
+/* Overlay for background */
 .overlay {
-	position: fixed; 
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100vh;
-	background: rgba(0, 0, 0, 0.4); 
-	z-index: -1;
+		@apply fixed inset-0 w-full h-screen bg-black bg-opacity-40 z-[-1] flex justify-center items-center;
 }
 
 /* Container for forms */
 .container {
-	background: rgba(0, 0, 0, 0.8);
-	padding: 40px;
-	border-radius: 15px;
-	width: 570px;
-	height: 250px;
-	position: relative;
-	z-index: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	min-width: fit-content;
+		@apply bg-black bg-opacity-80 p-10 rounded-lg w-[570px] h-[250px] relative z-[1] flex flex-col justify-center items-center min-w-fit;
 }
 
 /* Title styling */
 .header {
-	font-size: 2.5rem;
-	margin-bottom: 5px;
-	margin: 0;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: center;
+	@apply text-4xl mb-1 text-white font-sans text-center;
 }
 
 /* Paragraph styling */
 p {
-	font-size: 1.5rem;
-	margin-bottom: 25px;
-	margin-top: 10px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: center;
+	@apply text-2xl mb-6 mt-2 text-white font-sans text-center;
 }
 
-/* Paragraph styling */
+/* Paragraph 1 styling */
 .p1 {
-	font-size: 1.2rem;
-	margin-bottom: 2px;
-	margin-top: 20px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: left;
+	@apply text-xl mb-1 mt-5 text-white font-sans text-left;
 }
 
 /* Button styling */
 .buttons {
-	/* gap: 10px; */
-	justify-content: center;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	@apply flex flex-col justify-center items-center;
 }
 .btn {
-	width: 400px;
-	padding: 12px;
-	font-size: 1.1rem;
-	color: white;
-	background: #902063;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	margin-top: 20px;
-	transition: 0.3s;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
+	@apply w-[400px] py-3 text-lg text-white bg-[#902063] rounded cursor-pointer mt-5 transition-all box-border font-sans;
 }
 .btn:hover {
-	background: #b86a8a;
+	@apply bg-[#b86a8a];
 }
 
 /* Button Container */
 .btn-container {
-	position: fixed;
-	display: flex;
-	align-items: center;
-	justify-content: right;
-	top: 20px;
-	right: 20px;
-	z-index: 1; 
-}
-.language-btn {
-	background-color: #902063;
-	width: 220px;
-	padding: 10px;
-	cursor: pointer;
-	border-radius: 7px;
-	color: rgb(255, 255, 255);
-	border: 1px solid #ccc;
-	text-align: center;
-	font-size: 20px;
-	font-family: Arial, sans-serif;
-}
-.language-btn:hover {
-	background: #b86a8a;
-}
-.language-content {
-	gap: 10px;
-    display: none;
-    position: absolute;
-    background-color: #902063;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    min-width: 219px;
-    z-index: 10;
-	top: 43px;
-}
-.language-content.showLang .hidden {
-	display: inline-block;
-}
-.language-content.showLang {
-	display: block;
-}
-.language-content div {
-    padding: 8px;
-    display: flex;
-    align-items: center;
-	font-size: 17px;
-    gap: 5px;
-	color: white;
-    cursor: pointer;
-}
-.language-content div:hover {
-    background-color: #b86a8a;
-}
-.language-content img {
-    width: 20px;
-    height: 15px;
-}
-.language-option {
-	padding: 10px;
-	cursor: pointer;
-	color: rgb(255, 255, 255);
-	text-align: center;
-	font-size: 20px;
-	font-family: Arial, sans-serif;
-}
-.language-btn img {
-    width: 25px;
-    height: 15px;
+	@apply fixed flex items-center justify-end top-5 right-5 z-10;
 }
 
+/* Language Button and Options */
+.language-btn {
+	@apply bg-[#902063] w-[220px] py-2 cursor-pointer rounded-lg text-white border border-gray-300 text-center text-lg font-sans;
+}
+.language-btn:hover {
+	@apply bg-[#b86a8a];
+}
+.language-content {
+	@apply hidden absolute bg-[#902063] border border-gray-300 rounded-md min-w-[219px] z-10 top-[43px] gap-2 flex-col;
+}
+.language-content.showLang {
+	@apply block;
+}
+.language-content div {
+	@apply p-2 flex items-center text-lg text-white cursor-pointer gap-2;
+}
+.language-content div:hover {
+	@apply bg-[#b86a8a];
+}
+.language-content img, .language-btn img {
+	@apply w-5 h-4;
+}
+.language-option {
+	@apply py-2 cursor-pointer text-white text-center text-lg font-sans;
+}

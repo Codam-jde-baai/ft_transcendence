@@ -7,11 +7,11 @@
 
 @layer components {
   .overlay {
-    @apply fixed top-0 left-0 w-full h-screen bg-black/50 -z-10;
+        @apply fixed top-0 left-0 w-full h-screen bg-black/50 -z-10;
   }
 
   .middle {
-    @apply fixed flex items-center justify-center p-[10px] top-[200px] left-[200px] m-[20px] rounded-[15px] w-[80%] h-[70%] bg-black/80;
+        @apply fixed flex items-center justify-center p-[10px] top-[200px] left-[200px] m-[20px] rounded-[15px] w-[80%] h-[70%] bg-black/80;
   }
 
 } */
