@@ -11,7 +11,7 @@ export function setupSnek() {
 	if (root) {
 		root.innerHTML = "";
 		root.insertAdjacentHTML("beforeend", /*html*/`
-		<link rel="stylesheet" href="src/styles/snek.css"> <!-- Link to the CSS file -->
+		<link rel="stylesheet" href="src/styles/snekHome.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		

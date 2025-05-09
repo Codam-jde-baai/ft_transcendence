@@ -1,3 +1,4 @@
+import '../styles/index.css';
 import { setupLogIn } from './logIn';
 import { setupSignUp } from './signUp';
 import { setupUserHome } from './home';
@@ -20,9 +21,9 @@ import '../component/admin_userTable'
 import '../component/history_table'
 
 document.addEventListener('DOMContentLoaded', () => {
-    if (!document.getElementById('app')?.hasChildNodes()) {
-        renderPage();
-    }
+	if (!document.getElementById('app')?.hasChildNodes()) {
+		renderPage();
+	}
 });
 
 export function renderPage() {

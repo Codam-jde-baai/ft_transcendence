@@ -1,3 +1,5 @@
+import { uuid } from "drizzle-orm/gel-core";
+
 export const errorResponseSchema = {
 	type: 'object',
 	properties: {
@@ -247,6 +249,32 @@ export const loginUserOptions = {
 			200: {
 				type: 'object',
 				properties: userProperties
+			},
+			400: errorResponseSchema,
+			401: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+export const loginGameUserOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Logs a user in',
+		tags: ['users'],
+		consumes: ['application/json'],
+		body: {
+			type: 'object',
+			required: ['username', 'password'],
+			properties: loginProperties
+		},
+		response: {
+			200: {
+				type: 'object',
+				properties: {
+					alias: { type: 'string' },
+					uuid: { type: 'string' }
+				}
 			},
 			400: errorResponseSchema,
 			401: errorResponseSchema,
