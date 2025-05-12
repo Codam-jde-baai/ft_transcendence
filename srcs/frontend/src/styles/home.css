@@ -7,216 +7,93 @@
 
 /* Container for forms */
 .container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 20px;
-	height: 80vh;
-	width: 100%;
-	top: 220px;
-	box-sizing: border-box;
-	gap: 30px;
-	z-index: 2; 
+	@apply flex justify-center items-center p-5 h-[80vh] w-full top-[220px] box-border gap-7 z-20;
 }
 
 /* All for the Middle */
 .middle {
-	background: rgba(0, 0, 0, 0.8);
-	position: fixed;
-	padding: 10px;
-	top: 200px;
-	left: 220px;
-	border-radius: 15px;
-	width: 75%;
-	height: 70%; 
-	z-index: 1;
+	@apply bg-black/80 fixed p-2.5 top-[200px] left-[220px] rounded-xl w-[75%] h-[70%] z-10;
 }
 
+/* Header */
 h1 {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	text-align: center;
-	font-weight: bold;
-	font-size: 70px;
-	font-family: 'Roboto', Arial, sans-serif;
-	color: #dcdbdb;
-	text-shadow: 5px 5px 7px #902063; 
+	@apply absolute top-0 left-0 w-full text-center font-bold text-[70px] font-sans text-[#dcdbdb] drop-shadow-[5px_5px_7px_#902063];
 }
-
 .line {
-	position: absolute;
-	top: 115px;
-	left: 200px;
-	right: 200px;
-    border-bottom: 1px solid #902063;  
-    padding-bottom: 10px; 
+	@apply absolute top-[115px] left-[200px] right-[200px] border-b border-[#902063] pb-2.5;
 }
 
 /* Section for stats (Left) */
 .user-stats {
-	width: 55%;
-	height: 45vh;
-	display: flex;
-	margin-left: 10px;
-	flex-direction: column;
-	gap: 15px;
-	padding: 30px;
-	align-items: center;
-	justify-content: center;
-	border-radius: 10px;
-	margin-bottom: 30px;
+	@apply w-[55%] h-[45vh] flex ml-2.5 flex-col gap-3.5 p-7 items-center justify-center rounded-lg mb-7;
 }
 .stat-box {
-	width: 95%;
-	margin-top: 60px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	text-align: center;
+	@apply w-[95%] mt-10 flex flex-col items-center text-center;
 }
 .smoll-stat-container {
-	display: flex;
-	justify-content: center;
-	width: 100%;
-	margin-top: 10px;
+	@apply flex justify-center w-full mt-2.5;
 }
-.smoll-stat-box{
-	border-radius: 8px;
-	padding: 10px;
-	display: flex;
-	align-items: center;
-	gap: 10px;
+.smoll-stat-box {
+	@apply rounded-md p-2.5 flex items-center gap-2.5;
+}
+.score-text, .best-score-text, .score-number {
+	@apply font-bold text-[#dcdbdb];
 }
 .score-text {
-	font-size: 19px;
-	font-weight: bold;
-	color: #dcdbdb;
+	@apply text-[19px];
 }
 .best-score-text {
-	font-size: 26px;
-	font-weight: bold;
-	color: #dcdbdb;
+	@apply text-[26px];
 }
 .score-number {
-	font-size: 20px;
-	color: #dcdbdb;
+	@apply text-[20px];
 }
 .best-score img {
-	width: 270px;
-	height: 270px;
-	object-fit: cover;
-	border-radius: 50%;
-	margin-top: -50px;
-	margin-bottom: -60px;
+	@apply w-[270px] h-[270px] object-cover rounded-full mt-[-50px] mb-[-60px];
 }
 .win-losse img {
-	width: 35px;
-	height: 35px;
-	object-fit: cover;
-	border-radius: 50%;
+	@apply w-[35px] h-[35px] object-cover rounded-full;
 }
 
 /* Section for leaderboard (Right) */
 .leaderboard {
-	width: 35%;
-	height: 45vh;
-	border-radius: 10px;
-	border: 3px solid #902063;
-	align-items: center;
-	text-align: center;
-	display: flex;
-	flex-direction: column;
-	position: relative;
+	@apply w-[35%] h-[45vh] rounded-lg border-2 border-[#902063] flex flex-col items-center text-center relative;
 }
 h2 {
-	text-align: center;
-	font-weight: bold;
-	font-size: 28px;
-	font-family: Arial, sans-serif;
-	color: #dcdbdb;
-	margin-bottom: 20px;
-	padding-bottom: 10px;
+	@apply text-center font-bold text-[28px] font-sans text-[#dcdbdb] mb-5 pb-2.5;
 }
 .leaderboard-entry {
-	margin-bottom: 15px;
-	padding: 15px;
-	border-radius: 8px;
-	display: flex;
-	align-items: center;
-	gap: 5px;
-	justify-content: center;
+	@apply mb-3.5 p-3.5 rounded-md flex items-center gap-1.5 justify-center;
 }
 .text-container {
-	align-items: right;
+	@apply items-end;
 }
 .position {
-	font-size: 18px;
-	font-weight: bold;
-	color: #fff;
+	@apply text-[18px] font-bold text-white;
+}
+.text, .number {
+	@apply text-[#dcdbdb];
 }
 .text {
-	font-size: 16px;
-	color: #dcdbdb;
+	@apply text-[16px];
 }
 .number {
-	font-size: 14px;
-	color: #dcdbdb;
+	@apply text-[14px];
 }
 .img-container img {
-	width: 80px;
-	height: 80px;
-	object-fit: cover;
-	border-radius: 50%;
-	padding-right: 10px;
+	@apply w-[80px] h-[80px] object-cover rounded-full pr-2.5;
 }
 
 /* Button styling */
 .buttons {
-	display: flex;
-	justify-content: center;
-	width: 100%;
-	margin-top: auto;
+	@apply flex justify-center w-full mt-auto;
 }
-.btn {
-	display: fixed;
-	width: 27vh;
-	padding: 12px;
-	font-size: 1.1rem;
-	color: white;
-	background: #902063;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	transition: 0.3s;
-	font-family: Arial, sans-serif;
+.btn, .game-btn {
+	@apply fixed w-[27vh] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
 }
-.btn:hover {
-	background: #b86a8a;
+.btn:hover, .game-btn:hover {
+	@apply bg-[#b86a8a];
 }
-
-
-/* Game */
-.game-btn {
-	background-color: #902063;
-	width: 27vh;
-	padding: 11px;
-	cursor: pointer;
-	color: rgb(255, 255, 255);
-	border: none;
-	text-align: center;
-	font-size: 17px;
-	font-family: Arial, sans-serif;
-	display: flex;
-	justify-content: center;
-	border-radius: 5px;
-}
-.game-btn:hover {
-	background: #b86a8a;
-}
-
 .game-btn img {
-	width: 25px;
-	height: 25px;
+	@apply w-[25px] h-[25px];
 }

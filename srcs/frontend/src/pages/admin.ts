@@ -3,6 +3,7 @@ import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillUserTable } from '../script/fillTable';
 
+
 export function setupAdmin() {
 	const root = document.getElementById('app');
 	if (root) {

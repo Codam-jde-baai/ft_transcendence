@@ -6,219 +6,91 @@
 
 /* Dark overlay -> for background */
 .overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100vh;
-	background: rgba(0, 0, 0, 0.5);
-	z-index: -1;
+	@apply fixed inset-0 bg-black/50 z-[-1];
 }
 
-/* All for the Top Bar */
+/* Top Bar */
 .topBar {
-	background: #902063;
-	position: fixed;
-	width: 100%;
-	height: 120px;
-	display: flex;
-	top: 0px;
-	left: 0px;
-	align-items: center;
-	padding: 0 30px;
+	@apply fixed w-full h-[120px] flex items-center px-7 bg-[#902063] top-0 left-0;
 }
-
 .topBarFrame {
-	background: #902063;
-	position: absolute;
-	display: flex;
-	height: 90px;
-	right: 90px;
-	top: 50%;
-	transform: translateY(-50%);
-	border-radius: 50px;
-	padding: 10px;
-	align-items: center;
-	gap: 15px;
-	min-width: fit-content;
+	@apply absolute flex items-center h-[90px] right-[90px] top-1/2 transform -translate-y-1/2 rounded-full p-2 gap-4 bg-[#902063] min-w-fit;
 }
-
 .aliasName {
-	color: white;
-	font-size: 20px;
-	font-family: Arial, sans-serif;
-	white-space: nowrap;
+	@apply text-white text-[20px] font-sans whitespace-nowrap;
 }
 
+/* Profile Picture */
 .profile-picture {
-	display: flex;
-	justify-content: center;
+	@apply cursor-pointer rounded-full justify-center ml-[150px];
 }
-
 .profile-picture img {
-	width: 90px;
-	height: 90px;
-	border-radius: 50%;
-	object-fit: cover;
-	border: 3px solid white;
+	@apply w-24 h-24 rounded-full justify-center items-center object-cover border-2 border-white;
 }
 
+/* Setting icon */
 .settingIcon {
-	background: #902063;
-	height: 35px;
-	width: 50px;
-	margin-left: 200px;
-	position: absolute;
-	margin-top: 35px;
-	margin-left: 150px;
-	transform: translateY(-50%);
-	z-index: 1;
+	@apply bg-[#902063] w-[50px] h-[35px] ml-[50px] top-[50%] z-10;
 }
-
 .settingIcon:hover {
-	display: block;
-	background-color: #b86a8a;
+	@apply bg-[#b86a8a];
 }
 
 /* Dropdown */
 .dropdown {
-	position: relative;
-	text-align: center;
+	@apply relative text-center;
 }
-
 .dropdown-btn {
-	background: none;
-	border: none;
-	padding: 0;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 100%;
+	@apply bg-none border-none p-0 cursor-pointer flex items-center justify-center w-full;
 }
-
 .dropdown-content {
-	display: none;
-	position: fixed;
-	top: 120px;
-	left: 0px;
-	width: 220px;
-	height: 100%;
-	background: #902063;
-	border-radius: 5px;
+	@apply hidden fixed top-[120px] left-0 w-[220px] h-full bg-[#902063] rounded-md;
 }
-
 .dropdown-content.show {
-	display: block;
+	@apply block;
 }
-
 .dropdown-item {
-	padding: 10px;
-	cursor: pointer;
-	color: rgb(255, 255, 255);
-	text-align: center;
-	font-size: 20px;
-	font-family: Arial, sans-serif;
+	@apply p-2 cursor-pointer text-white text-center text-[20px] font-sans;
 }
-
 .dropdown-item:hover {
-	background: #b86a8a;
+	@apply bg-[#b86a8a];
 }
-
 .dropdown-item.currentPage {
-    font-weight: bold;
-	background: #ab2d78;
-    position: relative;
+	@apply font-bold bg-[#ab2d78] relative;
 }
 .dropdown-item.currentPage:hover {
-	background: #b86a8a;
+	@apply bg-[#b86a8a];
 }
 .dropdown-item.currentPage::after {
-    content: '▶';
-    font-size: 14px;
-    color: #ffffff;
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.hidden {
-	display: none;
-}
-
-.dropdown-content.show .hidden {
-	display: inline-block;
+	content: '▶';
+	@apply text-white absolute left-4 top-1/2 -translate-y-1/2;
 }
 
 /* Language */
 .language-btn {
-	background-color: #902063;
-	width: 220px;
-	padding: 10px;
-	cursor: pointer;
-	color: rgb(255, 255, 255);
-	border: none;
-	text-align: center;
-	font-size: 20px;
-	font-family: Arial, sans-serif;
+	@apply bg-[#902063] w-[220px] h-[50px] p-2 cursor-pointer text-white text-center text-[20px] font-sans border-none rounded-none;
 }
-
 .language-btn:hover {
-	background: #b86a8a;
+	@apply bg-[#b86a8a];
 }
-
 .language-content {
-	display: none;
-	position: absolute;
-	background-color: white;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	min-width: 100px;
-	z-index: 1;
-	left: 45px;
+	@apply hidden absolute bg-white border border-gray-300 rounded-md min-w-[100px] z-10 left-[45px];
 }
-
-.language-content.showLang .hidden {
-	display: inline-block;
-}
-
 .language-content.showLang {
-	display: block;
+	@apply block;
 }
-
 .language-content div {
-	padding: 8px;
-	display: flex;
-	align-items: center;
-	font-size: 17px;
-	gap: 5px;
-	color: black;
-	cursor: pointer;
-	z-index: 1;
+	@apply p-2 flex items-center text-[17px] gap-2 text-black cursor-pointer;
 }
-
 .language-content div:hover {
-	background-color: #beb0b6;
+	@apply bg-[#beb0b6];
 }
-
 .language-content img {
-	width: 20px;
-	height: 15px;
+	@apply w-[20px] h-[15px];
 }
-
 .language-option {
-	padding: 10px;
-	cursor: pointer;
-	color: rgb(255, 255, 255);
-	text-align: center;
-	font-size: 20px;
-	font-family: Arial, sans-serif;
+	@apply p-2 cursor-pointer text-white text-center text-[20px] font-sans;
 }
 .language-btn img {
-	width: 25px;
-	height: 15px;
+	@apply w-[25px] h-[15px] ml-40 mt-[-20px] ;
 }
-
-can you convert this vanilla css into tailwindcss version.
-In its own css file

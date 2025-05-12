@@ -1,90 +1,109 @@
 /* signUp.css */
 
+
 /* Dark overlay -> for background */
 .overlay {
-	@apply fixed inset-0 w-full h-screen bg-[rgba(0,0,0,0.4)] z-[-1] flex justify-center items-center;
+	@apply fixed inset-0 w-full h-screen bg-[rgba(0,0,0,0.4)] z-[-1];
 }
 
 /* Container for forms */
 .container {
-	@apply bg-[rgba(0,0,0,0.8)] p-[40px] rounded-[15px] top-[250px] w-[400px] h-[760px] relative z-[1] box-border;
+	@apply bg-[rgba(0,0,0,0.8)] p-[40px] rounded-[15px] w-[400px] h-[800px] relative z-[1] box-border items-start;
 }
 
-/* Title styling */
+/* Header */
 .header {
-	@apply text-4xl mb-4 font-sans text-white text-center;
+	@apply w-full text-4xl mb-4 font-sans text-white text-center;
 }
 
 /* Paragraph styling */
 p {
-	@apply text-[1rem] mb-[px] mt-[5px] text-white font-sans;
+	@apply w-full text-[1rem] mb-[px] mt-[5px] text-white font-sans text-center;
 }
 
 /* Paragraph 1 styling */
 .p1 {
-	@apply text-[1rem] mb-[2px] mt-[20px] text-white font-sans text-left relative left-[-150px];
+	@apply text-[1rem] mb-[2px] mt-[20px] text-white font-sans text-left;
 }
 
 /* Input fields */
 .input-field {
-	@apply w-full py-2 rounded border-none text-black bg-white text-base;
+	@apply w-full py-[10px] rounded-[5px] border-none text-black bg-white text-[1rem] box-border;
 }
 .input-field:focus {
-	@apply outline-none border-2 border-pink-200;
+	@apply outline-none ring-[2px] ring-[#fde7f4];
 }
 
 /* Button styling */
 .buttons {
-	@apply flex gap-2 justify-center;
+	@apply flex gap-[10px] justify-center;
 }
 .btn {
 	@apply w-[400px] h-[50px] py-[12px] text-[1.1rem] text-white bg-[#902063] rounded-[7px] cursor-pointer mt-[10px] transition-all box-border font-sans;
 }
 .btn:hover {
-	@apply bg-pink-500;
+	@apply bg-[#b86a8a];
+}
+.btn-container {
+	@apply fixed flex items-center justify-end top-[20px] right-[20px] z-[1];
 }
 
 /* Edit Picture */
 .edit-picture {
-	@apply flex justify-center items-center mt-4 mb-4 ml-36 cursor-pointer;
+	@apply cursor-pointer rounded-full justify-center ml-[150px];
 }
 .edit-picture img {
-	@apply w-24 h-24 rounded-full items-center object-cover border-4 border-white;
+	@apply w-24 h-24 rounded-full justify-center items-center object-cover;
 }
-.edit-picture img:hover {
-	@apply border-pink-500;
+.edit-picture:hover {
+	@apply rounded-full border-[3px] border-[#b86a8a];
 }
 
 /* Button Container */
-.btn-container {
-	@apply fixed flex items-center justify-end top-5 right-5 z-[1];
-}
 .language-btn {
-	@apply bg-pink-800 w-56 py-2 cursor-pointer rounded text-white border text-lg font-sans text-center;
+	@apply bg-[#902063] w-[220px] py-[10px] cursor-pointer rounded-[7px] text-white border border-[#ccc] text-center text-[20px] font-sans;
 }
 .language-btn:hover {
-	@apply bg-pink-500;
+	@apply bg-[#b86a8a];
 }
 .language-content {
-	@apply hidden absolute bg-pink-800 border rounded w-56 z-10 mt-2;
+	@apply hidden absolute bg-[#902063] border border-[#ccc] rounded-[5px] min-w-[219px] z-[10] top-[43px] gap-[10px] flex-col;
 }
 .language-content.showLang {
 	@apply block;
 }
 .language-content div {
-	@apply px-2 py-1 flex items-center text-white text-base cursor-pointer;
+	@apply p-[8px] flex items-center text-[17px] text-white cursor-pointer gap-[5px];
 }
 .language-content div:hover {
-	@apply bg-pink-500;
+	@apply bg-[#b86a8a];
+}
+.language-content img, .language-btn img {
+	@apply w-[25px] h-[15px];
 }
 .language-option {
-	@apply py-2 cursor-pointer text-white text-center text-lg font-sans;
+	@apply py-[10px] cursor-pointer text-white text-center text-[20px] font-sans;
 }
+
+/* Eye Icon for Password */
+.field-icon {
+	@apply cursor-pointer absolute top-[605px] right-[50px];
+}
+.field-icon img {
+	@apply w-[25px] h-[20px];
+}
+.field-iconn {
+	@apply cursor-pointer absolute top-[515px] right-[50px];
+}
+.field-iconn img {
+	@apply w-[25px] h-[20px];
+}
+
 
 /* Error Messages */
 .input-error {
-	@apply border-4 border-red-500;
+	@apply border-[3px] border-red-500;
 }
 .error-text {
-	@apply text-red-500 text-base mt-5 font-sans text-left;
+	@apply text-red-600 text-[1rem] mb-[2px] mt-[20px] text-left font-sans box-border;
 }

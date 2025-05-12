@@ -1,9 +1,5 @@
 /* logIn.css */
 
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities; */
-
 /* Overlay for background */
 .overlay {
 	@apply fixed inset-0 w-full h-screen bg-[rgba(0,0,0,0.4)] z-[-1];
@@ -11,22 +7,22 @@
 
 /* Container for forms */
 .container {
-	@apply bg-[rgba(0,0,0,0.8)] p-[40px] rounded-[15px] w-[400px] h-[400px] relative z-[1] box-border;
+	@apply bg-[rgba(0,0,0,0.8)] p-[40px] rounded-[15px] w-[400px] h-[400px] relative z-[1] box-border items-start;
 }
 
-/* Title styling */
+/* Header */
 .header {
-	@apply text-[2.5rem] mb-[15px] text-white font-sans text-center;
+	@apply w-full text-[2.5rem] mb-[15px] text-white font-sans text-center;
 }
 
 /* Paragraph styling */
 p {
-	@apply text-[1rem] mb-[px] mt-[5px] text-white font-sans;
+	@apply w-full text-[1rem] mb-[px] mt-[5px] text-white font-sans text-center;
 }
 
 /* Paragraph 1 styling */
 .p1 {
-	@apply text-[1rem] mb-[2px] mt-[20px] text-white font-sans text-left relative left-[-150px];
+	@apply w-full text-[1rem] mb-[2px] mt-[20px] text-white font-sans text-left;
 }
 
 /* Input fields */
@@ -47,8 +43,6 @@ p {
 .btn:hover {
 	@apply bg-[#b86a8a];
 }
-
-/* Button Container */
 .btn-container {
 	@apply fixed flex items-center justify-end top-[20px] right-[20px] z-[1];
 }

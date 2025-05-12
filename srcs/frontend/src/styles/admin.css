@@ -1,102 +1,41 @@
 /* adminPage.css */
 
-/* Example -> need this for later. For tailwindcss */
-/* @tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer components {
-  .overlay {
-        @apply fixed top-0 left-0 w-full h-screen bg-black/50 -z-10;
-  }
-
-  .middle {
-        @apply fixed flex items-center justify-center p-[10px] top-[200px] left-[200px] m-[20px] rounded-[15px] w-[80%] h-[70%] bg-black/80;
-  }
-
-} */
-
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
 /* Container for forms */
 .container {
-	margin-top: -400px;
-	padding: 40px;
-	border-radius: 15px;
-	z-index: 1;
+	@apply m-4 p-1 rounded-[15px] z-[1] w-full;
 }
 
 /* All for the Middle */
 .middle {
-	background: rgba(0, 0, 0, 0.8);
-	position: fixed;
-	padding: 10px;
-	top: 200px;
-	left: 220px;
-	border-radius: 15px;
-	width: 75%;
-	height: 75%; 
-	z-index: 1;
+	@apply bg-black bg-opacity-80 fixed p-2 top-[200px] left-[220px] rounded-[15px] w-[75%] h-[75%] z-[1];
 }
 
 /* Table Styling */
 .userTable {
-	width: 100%;
-	border-collapse: collapse;
-	background-color: #ffffff;
+	@apply border-collapse bg-white table-fixed w-full;
 }
 .userTable td {
-	padding: 12px;
-	text-align: center;
-	color: rgb(0, 0, 0);
-	border-bottom: 1px solid #ddd;
-	font-size: 15px;
-	font-family: Arial, sans-serif;
+	@apply text-center text-black border-b border-gray-300 text-[15px] font-sans;
 }
 .userTable th {
-	color: rgb(0, 0, 0);
-	padding: 12px;
-	background-color: #d7d7d7;
-	font-weight: bold;
-	font-size: 17px;
-	font-family: Arial, sans-serif;
-	position: sticky;
-	top: 0;
-	z-index: 2;
-	box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1);
+	@apply border text-black bg-gray-300 p-4 font-bold text-[17px] font-sans sticky top-0 z-[2] shadow-md;
 }
 
 /* Button Styling */
 .btn {
-	padding: 8px 12px;
-	margin-right: 5px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	font-size: 14px;
-	font-size: 15px;
-	font-family: Arial, sans-serif;
+	@apply py-2 border-none rounded cursor-pointer text-[15px] font-sans w-[170px];
 }
 .btn:first-child {
-	background-color: #ff4d4d;
-	color: white;
+	@apply bg-[#db4343] text-white mt-[5px];
 }
 .btn:last-child {
-	background-color: #4CAF50;
-	color: white;
+	@apply bg-[#4ea150] text-white mb-[5px] mt-[5px];
 }
 .btn:hover {
-	background-color: #b86a8a;
+	@apply bg-[#b86a8a];
 }
 
-
-/* scroll */
+/* Scroll */
 .table-wrapper {
-	margin-top: 20px;
-	max-height: 670px;
-	width: 100%;
-	overflow-y: auto;
-	display: block;
-  }
+	@apply  max-h-[670px] w-full overflow-y-auto block;
+}

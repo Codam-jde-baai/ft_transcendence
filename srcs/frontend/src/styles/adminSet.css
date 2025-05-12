@@ -1,223 +1,84 @@
 /* setting.css */
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
+/* Admin Popup Overlay */
 .admin-popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+	@apply fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-[9999];
 }
 
+/* Close Popup Button */
 .close-popup {
-	position: absolute;
-    top: 6px;
-    right: 7px;
-	border-radius: 5px;
-	border: solid, 1.5px, #000000;
-    background: black;
-    font-size: 25px;
-    cursor: pointer;
-	color: white;
+	@apply absolute top-2.5 right-3.5 rounded text-white bg-black text-2xl cursor-pointer;
 }
 
-/* All for the Middle */
+/* Middle */
 .middle {
-	background-color: rgba(0, 0, 0, 1);
-	position: fixed;
-	padding: 10px;
-	top: 200px;
-	left: 200px;
-	border-radius: 15px;
-	width: 75px;
-	height: 70%; 
+	@apply fixed bg-black p-2 top-[200px] left-[200px] rounded-xl w-[60px] h-[80%];
 }
 
 /* Container for forms */
 .ucontainer {
-	padding: 40px;
-	border-radius: 15px;
-	width: 400px;
-	position: fixed;
-	border: solid, 3px, #902063;
-	z-index: 1; 
+	@apply p-10 rounded-xl w-[490px] fixed border-4 border-[#902063] z-10;
 }
 
 /* Title styling */
 .admin_header {
-	font-size: 2.5rem;
-	margin-bottom: 15px;
-	margin: 0;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: center;
+	@apply text-4xl mb-4 font-sans text-white text-center;
 }
 
 /* Paragraph styling */
 .p2 {
-	font-size: 1.1rem;
-	margin-bottom: 5px;
-	margin-top: 5px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: center;
-	font-weight: bold;
+	@apply text-lg mb-1 mt-1 font-sans text-white text-center;
 }
-
-/* Paragraph styling */
 .p1 {
-	font-size: 1rem;
-	margin-bottom: 2px;
-	margin-top: 20px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: left;
+	@apply text-base mb-0.5 mt-5 font-sans text-white text-left;
 }
 
 /* Input fields */
 .input-field {
-	width: 100%;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border-radius: 5px;
-	border: none;
-	box-sizing: border-box;
-	color: black;
-	background-color: white;
-	font-size: 1rem;
+	@apply w-full py-2 rounded bg-white text-black text-base focus:outline-none focus:border-2 focus:border-[#fde7f4];
 }
-.input-field:focus {
-	outline: none;
-	border: 2px solid #fde7f4;
+.input-field.display-only {
+	@apply py-3 rounded bg-gray-400 text-black w-full inline-block;
 }
 
 /* Button styling */
 .ubuttons {
-	display: flex;
-	gap: 10px;
-	justify-content: center;
+	@apply flex gap-2 justify-center;
 }
 .ubtn {
-	width: 400px;
-	padding: 12px;
-	font-size: 1.1rem;
-	color: white;
-	background: #902063;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	margin-top: 10px;
-	transition: 0.3s;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
+	@apply w-full py-3 text-lg text-white bg-[#902063] rounded cursor-pointer mt-2 transition duration-300 font-sans;
 }
 .ubtn:hover {
-	background: #b86a8a;
+	@apply bg-[#b86a8a];
 }
 
-/* Picture */
-.user-picture {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: none;
-	border: none;
-	padding: 0;
-	padding-top: 10px;
-	cursor: pointer;
-	margin-top: 15px;
-	margin-bottom: 15px;
-	margin-left: 140px;
-
+/* User Picture */
+.user-picture, .upicture {
+	@apply flex justify-center items-center bg-none border-none cursor-pointer mt-3 mb-3 ml-[140px];
 }
-.user-picture img {
-	width: 100px; 
-	height: 100px;
-	border-radius: 50%;
-	object-fit: cover;
-	border: 3px solid white;
+.user-picture img, .upicture img {
+	@apply w-[100px] h-[100px] rounded-full object-cover border-2 border-white;
 }
 .user-picture img:hover {
-	border: 3px solid #b86a8a;
+	@apply border-[#b86a8a];
 }
 
-/* Picture */
-.upicture {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background: none;
-	border: none;
-	padding: 0;
-	padding-top: 10px;
-	cursor: pointer;
-	margin-top: 15px;
-	margin-bottom: 15px;
-	margin-left: 140px;
-
-}
-.upicture img {
-	width: 100px; 
-	height: 100px;
-	border-radius: 50%;
-	object-fit: cover;
-	border: 3px solid white;
-}
-
-.input-field.display-only {
-	padding: 12px;
-	border-radius: 5px;
-	background-color: #b8b8b8;
-	color: #000000;
-	width: 100%;
-	display: inline-block;
-}
-
-/* Eye icon for password */
+/* Field Icon for password */
 .field-icon {
-    cursor: pointer;
-    position: absolute;
-    margin-left: -35px; 
-    margin-top: 10px; 
+	@apply cursor-pointer absolute ml-[-35px] mt-2.5;
 }
 .field-icon img {
-    width: 25px;
-    height: 20px;
+	@apply w-[25px] h-[20px];
 }
 
 /* Error Messages */
 .input-error {
-	border: 3px solid rgb(255, 0, 0);
+	@apply border-4 border-red-600;
 }
 .error-text {
-	color: rgb(228, 73, 73);
-	font-size: 1rem;
-	margin-bottom: 2px;
-	margin-top: 20px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	text-align: left;
+	@apply text-red-600 text-base mb-0.5 mt-5 font-sans text-left;
+}
+.error-message {
+	@apply text-[#ff2828] mt-2.5 mb-5 text-lg font-sans text-center;
 }
 
-.error-message {
-	color: rgb(255, 40, 40);
-	margin-top: 10px;
-	margin-bottom: 20px;
-	font-size: 18px;
-	font-family: Arial, sans-serif;
-	text-align: center;
-}
-.hidden {
-	display: none;
-}

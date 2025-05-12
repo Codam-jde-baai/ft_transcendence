@@ -1,5 +1,6 @@
 /* index.css */
 
+
 /* Overlay for background */
 .overlay {
 		@apply fixed inset-0 w-full h-screen bg-black bg-opacity-40 z-[-1] flex justify-center items-center;
@@ -10,7 +11,7 @@
 		@apply bg-black bg-opacity-80 p-10 rounded-lg w-[570px] h-[250px] relative z-[1] flex flex-col justify-center items-center min-w-fit;
 }
 
-/* Title styling */
+/* Header */
 .header {
 	@apply text-4xl mb-1 text-white font-sans text-center;
 }
@@ -30,18 +31,16 @@ p {
 	@apply flex flex-col justify-center items-center;
 }
 .btn {
-	@apply w-[400px] py-3 text-lg text-white bg-[#902063] rounded cursor-pointer mt-5 transition-all box-border font-sans;
+	@apply w-[400px] py-3 text-lg text-white bg-[#902063] rounded-[7px] cursor-pointer mt-5 transition-all box-border font-sans;
 }
 .btn:hover {
 	@apply bg-[#b86a8a];
 }
-
-/* Button Container */
 .btn-container {
 	@apply fixed flex items-center justify-end top-5 right-5 z-10;
 }
 
-/* Language Button and Options */
+/* Language Button */
 .language-btn {
 	@apply bg-[#902063] w-[220px] py-2 cursor-pointer rounded-lg text-white border border-gray-300 text-center text-lg font-sans;
 }
