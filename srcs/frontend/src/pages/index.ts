@@ -5,7 +5,7 @@ import { setupUserHome } from './home';
 import { setupSetting } from './setting';
 import { setupFriends } from './friends';
 import { setupMatchHistory } from './history';
-import { setupStartGame } from './startGame';
+import { setupStartGame } from './startPGame';
 import { setupSnekMatchHistory } from './snekHistory';
 import { setupSnek } from './snek';
 import { setupAdmin } from './admin';

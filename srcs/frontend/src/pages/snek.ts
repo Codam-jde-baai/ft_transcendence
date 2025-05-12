@@ -1,4 +1,4 @@
-import { setupStartGame } from './startGame'; // REPLACE WITH CORRECT PATH FOR SNEK GAME
+import { setupTestGame } from './startSGame'; // REPLACE WITH CORRECT PATH FOR SNEK GAME
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
@@ -11,7 +11,7 @@ export function setupSnek() {
 	if (root) {
 		root.innerHTML = "";
 		root.insertAdjacentHTML("beforeend", /*html*/`
-		<link rel="stylesheet" href="src/styles/snekHome.css"> <!-- Link to the CSS file -->
+		<link rel="stylesheet" href="src/styles/home.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		
@@ -124,8 +124,8 @@ export function setupSnek() {
 		setupNavigation();
 
 		document.getElementById('StartSnek')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/startGame');  // change path !!!!!!!!
-			setupStartGame();
+			window.history.pushState({}, '', '/startSGame');  // change path !!!!!!!!
+			setupTestGame();
 		});
 		
 		document.getElementById('Pong')?.addEventListener('click', () => {

@@ -1,48 +1,21 @@
 /* errorPage.css */
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
 /* Dark overlay -> for background */
 .overlay {
-	position: fixed; 
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100vh;
-	background: rgba(255, 255, 255, 0.90); 
-	z-index: -1;
+	@apply fixed inset-0 w-full h-screen bg-white/90 -z-10;
 }
 
-/* Container for forms */
+/* Container */
 .container {
-	background: rgba(255, 255, 255, 0.0);
-	padding: 20px;
-	border-radius: 15px;
-	width: 570px;
-	height: 250px;
-	position: relative;
-	text-align: center;
-	z-index: 1;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	min-width: fit-content;
-	font-family: Arial, sans-serif;
+	@apply bg-white/0 p-5 rounded-[15px] w-[570px] h-[250px] relative text-center z-10 flex flex-col items-center min-w-fit font-sans;
 }
 
 /* Error title styling*/
 .error-code {
-	font-size: 13em;
-	font-weight: bold;
-	margin-bottom: -0.1em;
-	color: #333;
+	@apply text-[13em] font-bold mb-[-0.1em] text-gray-800;
 }
 
 /* Title styling */
 h1 {
-	font-size: 2.5em;
-	margin-bottom: 0.1em;
-	color: #333;
+	@apply text-[2.5em] mb-[0.1em] text-gray-800;
 }

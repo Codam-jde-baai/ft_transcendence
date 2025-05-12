@@ -1,121 +1,52 @@
 /* history.css */
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
 /* Container for forms */
-.container {
-	padding: 40px;
-	border-radius: 15px;
-	z-index: 1;
+.hcontainer {
+	@apply p-1 rounded-[15px] w-full;
 }
 
 /* All for the Middle */
 .middle {
-	background: rgba(0, 0, 0, 0.8);
-	position: fixed;
-	padding: 10px;
-	top: 200px;
-	left: 220px;
-	border-radius: 15px;
-	width: 75%;
-	height: 75%; 
-	z-index: -1;
+	@apply bg-black bg-opacity-80 fixed p-2 top-[200px] left-[220px] rounded-[15px] w-[75%] h-[75%] z-[1];
 }
 
 /* Title styling */
 .header {
-	font-size: 2.5rem;
-	margin-bottom: 5px;
-	margin-top: 5px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: center;
+	@apply text-4xl my-1 box-border font-sans text-white text-center;
 }
-
 .Pongheader {
-	font-size: 2.5rem;
-	margin-bottom: -4px;
-	margin-top: -8px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color:  #dbb9cd;
-	text-align: center;
-	text-shadow: 5px 5px 7px #902063; 
+	@apply text-4xl mt-[-8px] mb-[-4px] box-border font-sans text-[#dbb9cd] text-center;
+	text-shadow: 5px 5px 7px #902063;
 }
 
 /* Paragraph styling */
 .p1 {
-	font-size: 1.1rem;
-	margin-bottom: 5px;
-	margin-top: 5px;
-	box-sizing: border-box;
-	font-family: Arial, sans-serif;
-	color: white;
-	text-align: center;
+	@apply text-lg my-1 box-border font-sans text-white text-center;
 }
 
 /* Table Styling */
 .userTable {
-	width: 100%;
-	border-collapse: collapse;
-	background-color: #ffffff;
+	@apply w-full border-collapse bg-white table-fixed;
 }
 .userTable td {
-	padding: 12px;
-	text-align: center;
-	color: rgb(0, 0, 0);
-	border-bottom: 1px solid #ddd;
-	font-size: 15px;
-	font-family: Arial, sans-serif;
+	@apply p-3 text-center text-black border-b border-gray-300 text-base font-sans;
 }
 .userTable th {
-	color: rgb(0, 0, 0);
-	padding: 12px;
-	background-color: #d7d7d7;
-	font-weight: bold;
-	font-size: 17px;
-	font-family: Arial, sans-serif;
-	position: sticky;
-	top: 0;
-	z-index: 2;
+	@apply text-black p-3 bg-gray-300 font-bold text-lg font-sans sticky top-0 z-[2];
 }
 
-/* scroll */
+/* Scroll */
 .table-wrapper {
-	margin-top: 20px;
-	max-height: 670px;
-	width: 90%;
-	overflow-y: auto;
-	display: block;
-  }
-
+	@apply pl-2 max-h-[640px] mt-[10px] w-full overflow-y-auto block;
+}
 
 /* Game */
 .game-btn {
-	margin-top: -330px;
-	margin-left: -390px;
-	background-color: rgba(144, 32, 99);
-	width: 14vh;
-	padding: 11px;
-	cursor: pointer;
-	color: rgb(255, 255, 255);
-	border: none;
-	text-align: center;
-	font-size: 17px;
-	font-family: Arial, sans-serif;
-	display: flex;
-	justify-content: center;
-	border-radius: 5px;
-	z-index: 5;
+	@apply mt-[-398px] ml-[-456px] bg-[#902063] w-[15vh] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
 }
 .game-btn:hover {
-	background: #b86a8a;
+	@apply bg-[#b86a8a];
 }
-
 .game-btn img {
-	width: 25px;
-	height: 25px;
+	@apply w-[25px] h-[25px];
 }

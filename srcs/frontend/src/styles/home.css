@@ -1,10 +1,5 @@
 /* home.css */
 
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
-
 /* Container for forms */
 .container {
 	@apply flex justify-center items-center p-5 h-[80vh] w-full top-[220px] box-border gap-7 z-20;

@@ -25,7 +25,6 @@ export function fillUserTable(): Promise<any[]> {
 		})
 }
 
-
 // Fill in for the Match History (PONG)
 export async function fillHistoryTable(aliasName: string): Promise<{ date: string; player1: string; player2: string; winner: string; score: string }[] | null> {
 
@@ -54,7 +53,6 @@ export async function fillHistoryTable(aliasName: string): Promise<{ date: strin
 		return null;
 	}
 }
-
 
 // // Fill in for the Match History (SNEK)
 // export async function fillSnekHistoryTable(aliasName: string): Promise<{ date: string; player1: string; player2: string; winner: string; score: string }[] | null> {

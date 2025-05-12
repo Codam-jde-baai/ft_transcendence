@@ -1,6 +1,5 @@
 /* index.css */
 
-
 /* Overlay for background */
 .overlay {
 		@apply fixed inset-0 w-full h-screen bg-black bg-opacity-40 z-[-1] flex justify-center items-center;

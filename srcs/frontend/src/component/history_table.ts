@@ -55,7 +55,7 @@ class HistoryTable extends HTMLElement {
 								<tbody>
 									${rowsHtml}
 								</tbody>
-						</table>
+								</table>
 							</div>
 						`);
 

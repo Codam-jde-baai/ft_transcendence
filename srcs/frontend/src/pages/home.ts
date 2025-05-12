@@ -1,4 +1,4 @@
-import { setupStartGame } from './startGame';
+import { setupStartGame } from './startPGame';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
@@ -120,7 +120,7 @@ export function setupUserHome() {
 		setupNavigation();
 
 		document.getElementById('StartGame')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/startGame');
+			window.history.pushState({}, '', '/startPGame');
 			setupStartGame();
 		});
 		

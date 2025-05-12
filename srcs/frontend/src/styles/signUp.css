@@ -49,7 +49,7 @@ p {
 }
 
 /* Edit Picture */
-.edit-picture {
+/* .edit-picture {
 	@apply cursor-pointer rounded-full justify-center ml-[150px];
 }
 .edit-picture img {
@@ -57,6 +57,16 @@ p {
 }
 .edit-picture:hover {
 	@apply rounded-full border-[3px] border-[#b86a8a];
+} */
+
+.edit-picture {
+	@apply flex bg-none border-none p-0 cursor-pointer mt-4 mb-4 ml-[170px];
+}
+.edit-picture img {
+	@apply w-[100px] h-[100px] rounded-full object-cover border-[3px] border-white;
+}
+.edit-picture img:hover {
+	@apply border-[#b86a8a];
 }
 
 /* Button Container */
@@ -87,13 +97,13 @@ p {
 
 /* Eye Icon for Password */
 .field-icon {
-	@apply cursor-pointer absolute top-[605px] right-[50px];
+	@apply cursor-pointer absolute top-[625px] right-[50px];
 }
 .field-icon img {
 	@apply w-[25px] h-[20px];
 }
 .field-iconn {
-	@apply cursor-pointer absolute top-[515px] right-[50px];
+	@apply cursor-pointer absolute top-[532px] right-[50px];
 }
 .field-iconn img {
 	@apply w-[25px] h-[20px];

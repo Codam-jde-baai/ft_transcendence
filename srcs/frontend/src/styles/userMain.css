@@ -14,15 +14,15 @@
 	@apply fixed w-full h-[120px] flex items-center px-7 bg-[#902063] top-0 left-0;
 }
 .topBarFrame {
-	@apply absolute flex items-center h-[90px] right-[90px] top-1/2 transform -translate-y-1/2 rounded-full p-2 gap-4 bg-[#902063] min-w-fit;
+	@apply absolute flex items-center h-[90px] right-[90px] top-1/2 transform -translate-y-1/2 bg-[#902063];
 }
 .aliasName {
-	@apply text-white text-[20px] font-sans whitespace-nowrap;
+	@apply text-white text-[20px] font-sans whitespace-nowrap mr-[150px];
 }
 
 /* Profile Picture */
 .profile-picture {
-	@apply cursor-pointer rounded-full justify-center ml-[150px];
+	@apply cursor-pointer rounded-full justify-center ml-[-120px];
 }
 .profile-picture img {
 	@apply w-24 h-24 rounded-full justify-center items-center object-cover border-2 border-white;
@@ -63,7 +63,7 @@
 }
 .dropdown-item.currentPage::after {
 	content: '▶';
-	@apply text-white absolute left-4 top-1/2 -translate-y-1/2;
+	@apply text-white text-[15px] absolute left-4 top-1/2 -translate-y-1/2;
 }
 
 /* Language */

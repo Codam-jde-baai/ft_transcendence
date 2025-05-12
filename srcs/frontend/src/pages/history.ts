@@ -13,23 +13,24 @@ export function  setupMatchHistory() {
 		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/history.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
+		
 		<dropdown-menu></dropdown-menu>
 		
-			<!-- Switching between games -->
-			<button class="game-btn" id="SnekHistory">
-				<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
-			</button>
-			<div class="middle">
-				<div class="container">
-					<h1 class="Pongheader" data-i18n="Pong"></h1>
-					<h1 class="header" data-i18n="History"></h1>
-					<p class="p1" data-i18n="History_P"></p>
-					<p class="p1" id="historyAliasName"></p>
-				
-					<history-table></history-table>
+		<!-- Switching between games -->
+		<button class="game-btn" id="SnekHistory">
+			<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
+		</button>
+		<div class="middle">
+			<div class="hcontainer">
+				<h1 class="Pongheader" data-i18n="Pong"></h1>
+				<h1 class="header" data-i18n="History"></h1>
+				<p class="p1" data-i18n="History_P"></p>
+				<p class="p1" id="historyAliasName"></p>
+			
+				<history-table></history-table>
 
-				</div>
 			</div>
+		</div>
 		`);
 
 		getLanguage();
