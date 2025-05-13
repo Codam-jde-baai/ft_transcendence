@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import { FastifyRequest, FastifyReply } from 'fastify';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import multipart from '@fastify/multipart';
@@ -11,6 +12,7 @@ import snekRoutes from './routes/snek.ts';
 import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
 import rateLimit from '@fastify/rate-limit';
+import websocket from '@fastify/websocket';
 
 const fastify = Fastify({
 	logger: true,
@@ -93,6 +95,21 @@ fastify.register(multipart, {
 	throwFileSizeLimit: true
 });
 
+fastify.register(websocket, {
+	errorHandler: function (error, socket, req: FastifyRequest, reply: FastifyReply) {
+		socket.terminate()
+	},
+	options: {
+		maxPayload: 1048576,
+		verifyClient: function (info: FastifyRequest, next: any) {
+			if (info.headers['x-api-key'] !== envConfig.private_key) {
+				return next(false)
+			}
+			next(true)
+		}
+	}
+}
+);
 
 fastify.register(swaggerUi, {
 	routePrefix: '/docs'

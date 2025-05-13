@@ -120,10 +120,10 @@ export function setupFriends() {
 				</div>
 			</div>
 			`);
-				getLanguage();
-				dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
-				fillTopbar();
-				setupNavigation();
+				//getLanguage();
+				//dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+				//fillTopbar();
+				//setupNavigation();
 				setupSearchFunctionality();
 				setupUserActionListeners();
 			}
