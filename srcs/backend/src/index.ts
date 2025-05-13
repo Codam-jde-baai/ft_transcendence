@@ -8,6 +8,7 @@ import userRoutes from './routes/users.ts';
 import friendsRoutes from './routes/friends.ts';
 import matchesRoutes from './routes/matches.ts';
 import adminRoutes from './routes/admin.ts';
+import snekRoutes from './routes/snek.ts';
 import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
 import rateLimit from '@fastify/rate-limit';
@@ -31,7 +32,7 @@ fastify.register(fastifyCors, {
 	allowedHeaders: ['Content-Type', 'x-api-key', 'Origin'],
 	exposedHeaders: ['Access-Control-Allow-Origin'],
 	optionsSuccessStatus: 204
-  });
+});
 
 fastify.register(secureSession, {
 	key: sessionKey,
@@ -46,10 +47,17 @@ fastify.register(secureSession, {
 
 })
 
+declare module '@fastify/secure-session' {
+	interface SessionData {
+		uuid: string;
+		alias: string;
+	}
+}
+
 fastify.register(rateLimit, {
 	max: 42,
 	timeWindow: '1 minute'
-  })
+})
 
 fastify.register(swagger, {
 	openapi: {
@@ -72,7 +80,8 @@ fastify.register(swagger, {
 			{ name: 'users', description: 'User related endpoints' },
 			{ name: 'matches', description: 'Match related endpoints' },
 			{ name: 'friends', description: 'Friend related endpoints' },
-			{ name: 'admin', description: 'Admin related endpoints' }
+			{ name: 'admin', description: 'Admin related endpoints' },
+			{ name: 'snek', description: 'Snek related endpoints' }
 		]
 	}
 });
@@ -96,6 +105,7 @@ fastify.register(userRoutes);
 fastify.register(friendsRoutes);
 fastify.register(matchesRoutes);
 fastify.register(adminRoutes);
+fastify.register(snekRoutes);
 
 const start = async () => {
 	try {

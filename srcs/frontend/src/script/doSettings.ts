@@ -5,7 +5,7 @@ import DOMPurify from 'dompurify';
 
 // Save button (settings.ts)
 export async function updateUserSettings(input: string[]): Promise<boolean> {
-	// const userID = localStorage.getItem('userID');
+	const userID = localStorage.getItem('userID');
 
 	for (const element of input) {
 		const inputElement = document.getElementById(element) as HTMLInputElement;

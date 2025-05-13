@@ -1,9 +1,10 @@
+import { renderPage } from './index';
+import { setupUserHome } from './home';
+import { setupSetting } from './setting';
+import { setupFriends } from './friends';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
-import { setupNavigation } from '../script/menuNavigation';
-import { connectFunc, requestBody } from '../script/connections';
-import { setupErrorPages } from './errorPages';
 
 export function  setupMatchHistory () {
 	const root = document.getElementById('app');
@@ -14,49 +15,82 @@ export function  setupMatchHistory () {
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		
+		<div class="middle">
 			<!-- BODY CHANGE -->
-			<div class="middle">
-				<div class="container">
-					<h1 class="Pongheader" data-i18n="Pong"></h1>
-					<h1 class="header" data-i18n="History"></h1>
-					<p class="p1" data-i18n="History_P"></p>
-					<p class="p1" id="historyAliasName"></p>
+
+			<div class="container">
+				<h1 class="header" data-i18n="History"></h1>
+				<p class="p1" data-i18n="History_P"></p>
+				<p class="p1"> --$ALIASNAME-- </p>
 				
-					<history-table></history-table>
-					
-				</div>
-			<!-- ^^^ -->
+				<table class="userTable">
+					<thead>
+						<tr>
+							<th data-i18n="Date"></th>
+							<th data-i18n="1v1_Game"></th>
+							<th data-i18n="Winner"></th>
+							<th data-i18n="Score"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>01-03-2025</td>
+							<td>coolalias vs NOTcoolalias</td>
+							<td>coolalias</td>
+							<td>11-7</td>
+						</tr>
+						<!-- REMOVE - only for testing -->
+						<tr>
+							<td>2025-03-01</td>
+							<td>Player 1 vs Player 2</td>
+							<td>Player 1</td>
+							<td>11-7</td>
+						</tr>
+						<tr>
+							<td>2025-03-01</td>
+							<td>Player 1 vs Player 2</td>
+							<td>Player 1</td>
+							<td>11-7</td>
+						</tr>
+						<!--- ^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+					</tbody>
+				</table>
+				
 			</div>
+			<!-- ^^^ -->
+		</div>
 		`);
 
 		getLanguage();
-		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
+		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		fillTopbar();
-		setupNavigation();
 
-		// Retrieve user uuid
-		const userID = localStorage.getItem('userID');
-		if (userID) {
-			connectFunc(`/user/`, requestBody("GET", null))
-			.then((userInfoResponse) => {
-				if (userInfoResponse.ok) {
-					userInfoResponse.json().then((data) => {
-	
-						// Alias Name
-						const aliasElem = document.getElementById("historyAliasName");
-						if (aliasElem)
-							aliasElem.textContent = data.alias;
-	
-					});
-				} else {
-					window.history.pushState({}, '', '/errorPages');
-					setupErrorPages(404, "Not Found");
-				}
-			})
-		} else {
-			// Network or server error
-			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(404, "Not Found");
-		}
+		document.getElementById('LogOut')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/index');
+			renderPage();
+		});
+
+		document.getElementById('Home')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/home');
+			setupUserHome();
+		});
+
+		document.getElementById('Settings')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/setting');
+			setupSetting();
+		});
+
+		document.getElementById('Friends')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/friends');
+			setupFriends();
+		});
+
+		document.getElementById('History')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/history');
+			setupMatchHistory();
+		});
+
 	}
 }
+
+

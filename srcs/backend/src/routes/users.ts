@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { getAllUsers, getUser, getUserAlias, getUserImage, getUserImageByAlias } from '../controllers/user/getUsers.ts';
 import { addUser, updateUserProfilePic } from '../controllers/user/setUsers.ts';
-import { loginUser } from '../controllers/user/login.ts'
+import { loginUser, loginUserGame } from '../controllers/user/login.ts'
 import { deleteUser, deleteProfilePic } from '../controllers/user/deleteUser.ts'
 import { updatePassword, updateUser, setOffline, setOnline } from '../controllers/user/updateUser.ts'
 import { userStatus, eLanguage } from '../db/schema.ts';
@@ -16,6 +16,7 @@ import {
 	createUserOptions,
 	updateProfilePicOptions,
 	loginUserOptions,
+	loginGameUserOptions,
 	updatePasswordProperties,
 	updateUserStatusOptions,
 	updateUserProperties,
@@ -36,7 +37,7 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 		('/user/:alias/profile-pic', { preHandler: [authenticatePrivateToken], ...imageOptionsByAlias }, getUserImageByAlias);
 	fastify.get('/users', { preHandler: [authAPI], ...getUsersOptions }, getAllUsers);
 	fastify.get('/user', { preHandler: [authenticatePrivateToken], ...getUserOptions }, getUser);
-	fastify.get<{ Params: { alias: string } }>('/useralias/:alias', { preHandler: [authenticatePrivateToken], ...getUserAliasOptions }, getUserAlias);
+	fastify.get<{ Params: { alias: string } }>('/useralias/:alias/', { preHandler: [authenticatePrivateToken], ...getUserAliasOptions }, getUserAlias);
 	// Public Data
 	fastify.get('/public/users', { preHandler: [authAPI], ...getPublicUsersOptions }, getAllUsers);
 	// Create user with JSON data
@@ -56,6 +57,7 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	// Log in
 	fastify.post('/user/login', { preHandler: [authAPI], ...loginUserOptions }, loginUser);
 
+	fastify.post('/user/game/login', { preHandler: [authAPI], ...loginGameUserOptions }, loginUserGame);
 	// update password
 	fastify.put<{
 		Body: {

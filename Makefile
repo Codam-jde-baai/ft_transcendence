@@ -18,18 +18,19 @@ RESET		= \033[0m
 # Help
 help:
 	@echo "Available commands:"
-	@echo "  make dev         - Start development environment"
-	@echo "  make dev-rebuild - builds the images again and starts the contianers"
-	@echo "  make down        - Stop all containers"
-	@echo "  make build       - Rebuild all containers"
-	@echo "  make rebuild     - Force rebuild all containers"
-	@echo "  make logs        - View logs from all containers"
-	@echo "  make clean       - Remove all containers and volumes"
-	@echo "  make install     - Install dependencies for both frontend and backend"
-	@echo "  make prod        - Start production environment"
-	@echo "  make volume      - creates the volume dir"
-	@echo "  make copy-env    - copies env stored on local machine from ~/.transcendence.env to the right directory"
-
+	@echo "  make dev          - Start development environment"
+	@echo "  make dev-rebuild  - builds the images again and starts the contianers"
+	@echo "  make down         - Stop all containers"
+	@echo "  make build        - Rebuild all containers"
+	@echo "  make rebuild      - Force rebuild all containers"
+	@echo "  make logs         - View logs from all containers"
+	@echo "  make clean        - Remove all containers and volumes"
+	@echo "  make install      - Install dependencies for both frontend and backend"
+	@echo "  make prod         - Start production environment"
+	@echo "  make volume       - creates the volume dir"
+	@echo "  make copy-env     - copies env stored on local machine from ~/.transcendence.env to the right directory"
+	@echo "  make clean-volume - removes the volume dir"
+	@echo "  make studio	   - starts drizzle studio"
 
 # Development commands
 dev:

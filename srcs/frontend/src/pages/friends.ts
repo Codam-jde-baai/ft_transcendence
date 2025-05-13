@@ -79,6 +79,7 @@ export function setupFriends() {
 			if (root) {
 				root.innerHTML = "";
 				root.insertAdjacentHTML("beforeend", /*html*/`
+			<link rel="stylesheet" href="src/styles/userMain.css">
 			<link rel="stylesheet" href="src/styles/friends.css">
 			<div class="overlay"></div>
 			<dropdown-menu></dropdown-menu>

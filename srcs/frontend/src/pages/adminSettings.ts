@@ -5,7 +5,7 @@ import { setupAdmin } from './admin';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { adminPasswordFields } from '../script/errorFunctions';
 import { fillTopbar } from '../script/fillTopbar';
-// import { fillSetting } from '../script/doSettings';
+import { fillSetting } from '../script/doSettings';
 import { setupErrorPages } from './errorPages';
 import { updateUserSettings } from '../script/doSettings';
 
