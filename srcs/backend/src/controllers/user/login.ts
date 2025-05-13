@@ -11,6 +11,7 @@ import { toPublicUser, verifyPassword } from '../../models/users.ts';
 declare module '@fastify/secure-session' {
 	interface SessionData {
 	  uuid: string;
+	  alias: string;
 	}
 }
 

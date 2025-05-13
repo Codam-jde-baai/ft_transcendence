@@ -5,13 +5,7 @@ import { drizzle } from 'drizzle-orm/better-sqlite3'
 import Database from 'better-sqlite3'
 import { eq } from 'drizzle-orm'
 import { usersTable } from '../../db/schema.ts';
-import {
-	CreateUser,
-	hashPassword,
-	validateUser,
-	validateProfilePic,
-	toPublicUser
-} from '../../models/users.ts';
+import { hashPassword } from '../../models/users.ts';
 
 export const loginAdmin = async (request: FastifyRequest<{
 	Body: {
@@ -25,6 +19,7 @@ export const loginAdmin = async (request: FastifyRequest<{
 			return;
 		}
 		request.session.set('uuid', 'Valid');
+		request.session.set('alias', 'Valid');
 		return reply.code(200).send();
 	} catch (error) {
 		request.log.error('loginAdmin failed:', error);
