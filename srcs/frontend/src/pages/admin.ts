@@ -14,8 +14,8 @@ export function setupAdmin() {
 		
 		<admin-topbar></admin-topbar>
 		
-		<div class="middle">
-			<div class="container">
+		<div class="amiddle">
+			<div class="acontainer">
 				<user-table></user-table>
 			</div>
 		</div>

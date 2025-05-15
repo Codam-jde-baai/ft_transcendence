@@ -11,8 +11,8 @@
 }
 
 /* Middle */
-.middle {
-	@apply fixed bg-black p-2 top-[200px] left-[200px] rounded-xl w-[60px] h-[80%];
+.asmiddle {
+	@apply flex items-center justify-center min-h-screen;
 }
 
 /* Container for forms */

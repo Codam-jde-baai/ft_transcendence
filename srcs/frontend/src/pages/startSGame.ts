@@ -4,6 +4,7 @@ import { Application } from 'pixi.js'
 import { setupErrorPages } from './errorPages';
 import DOMPurify from 'dompurify';
 import { connectFunc, requestBody } from '../script/connections';
+import { setupSnek } from './snek';
 
 import "../styles/snek.css"
 
@@ -46,8 +47,8 @@ const authState: AuthState = {
 };
 
 export function setupTestGame() {
-    window.history.pushState({}, '', '/testgame');
-    console.log("testgame page");
+    // window.history.pushState({}, '', '/startSGame');
+    // console.log("testgame page");
 
     const userDataPromise = connectFunc("/snek/stats/me", requestBody("GET", null, "application/json"))
         .then(response => {
@@ -71,8 +72,11 @@ export function setupTestGame() {
         if (root) {
             root.innerHTML = "";
             root.insertAdjacentHTML("beforeend", /*html*/ `
-            <!-- <link rel="stylesheet" href="src/styles/snek.css"> Link to the CSS file -->
+            
             <div class="flex flex-col gap-4 items-center bg-black bg-opacity-75 py-20 px-8 rounded">
+
+            <button class="fixed top-4 left-4 w-[190px] py-3 text-lg text-white bg-green-600 rounded-[7px] cursor-pointer mt-5 transition-all box-border font-sans hover:bg-green-500" id="SnekHome">Go back to home</button>
+
                 <div class="flex flex-row w-full gap-20 bg-pink-500 text-white py-2 px-4 rounded justify-center">
                 <div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
                         <p>Player1 (WASD)</p>
@@ -109,10 +113,10 @@ export function setupTestGame() {
                         </form>
 
                         <!-- Login Form -->
-                <form id="LoginForm" class="form-fields text-black hidden">
+                <form id="LoginForm" class="form-fields text-black hidden flex flex-col">
                     <input type="text" id="loginUsername" class="form-input" placeholder="Username" />
                     <input type="password" id="loginPassword" class="form-input" placeholder="Password" />
-                    <div class="form-row">
+                    <div class="form-row flex">
                         <button type="button" id="loginButton" class="button-primary bg-purple-500 hover:bg-purple-700">Login</button>
                         <button type="button" id="logoutButton" class="button-primary bg-red-500 hover:bg-red-700 hidden">Logout</button>
                     </div>
@@ -137,11 +141,16 @@ export function setupTestGame() {
         </div>
     </div>
 `);
-        }
+
+        document.getElementById('SnekHome')?.addEventListener('click', () => {
+            window.history.pushState({}, '', '/snek');
+            setupSnek();
+        });
+
         // getLanguage();
-        // dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
-        // fillTopbar();
         // setupNavigation();
+
+        }
         const container = document.getElementById('gameContainer') as HTMLElement;
         if (container) {
             preGameScreen(container).then((app: Application) => {
@@ -162,6 +171,7 @@ export function setupTestGame() {
             return;
         }
     });
+
 }
 
 // Prevents the toggle from being used if user is logged in / guest is locked in

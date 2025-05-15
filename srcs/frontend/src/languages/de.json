@@ -103,5 +103,10 @@
     "SwitchGame": "Spiel wechseln",
     "Pong": "Pong",
 
+    "SPl-against": "Gespielt gegen",
+    "SWinner": "Gewinner",
+    "SMy-score": "Mein Punktestand",
+    "Spl-score": "Gegnerischer Punktestand",
+
     "EndOfFile": ""
 }

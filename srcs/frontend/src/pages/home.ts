@@ -15,7 +15,7 @@ export function setupUserHome() {
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		
-		<div class="middle">
+		<div class="hmiddle">
 			<div class="line"></div>
 			<h1 class="heder" data-i18n="Header_Pong"></h1>
 

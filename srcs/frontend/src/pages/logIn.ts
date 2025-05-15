@@ -17,26 +17,28 @@ export function setupLogIn() {
 		<div class="overlay"></div>
 		<language-menu></language-menu>
 
-		<div class="container">
-			<h1 class="header" data-i18n="LogIn_Header"></h1>
-			
-			<div class="p1" id="login-name" data-i18n="LogIn_Name"></div>
-			<input type="Login_Name" required minlength="3" maxlength= "17" id="username" class="input-field" data-i18n-placeholder="LogIn_placeholder1">
+		<div class="middle">
+			<div class="container">
+				<h1 class="header" data-i18n="LogIn_Header"></h1>
+				
+				<div class="p1" id="login-name" data-i18n="LogIn_Name"></div>
+				<input type="Login_Name" required minlength="3" maxlength= "17" id="username" class="input-field" data-i18n-placeholder="LogIn_placeholder1">
 
-			<div class="p1" id="userPass" style="left: -160px;" data-i18n="Password"></div>
-			<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
-			<span id="show-password" class="field-icon">
-				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
-			</span>
-			
-			<div class="buttons">
-				<button class="btn" id="Home" data-i18n="btn_LogIn"></button>
+				<div class="p1" id="userPass" style="left: -160px;" data-i18n="Password"></div>
+				<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
+				<span id="show-password" class="field-icon">
+					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
+				</span>
+				
+				<div class="buttons">
+					<button class="btn" id="Home" data-i18n="btn_LogIn"></button>
+				</div>
+
+				<p>
+					<span data-i18n="LogIn_P"></span>
+					<a id="SignUp" style="color: rgb(209, 7, 128);: 0.5%; text-decoration: underline;" data-i18n="btn_SignUp"></a>
+				</p>
 			</div>
-
-			<p>
-				<span data-i18n="LogIn_P"></span>
-				<a id="SignUp" style="color: rgb(209, 7, 128);: 0.5%; text-decoration: underline;" data-i18n="btn_SignUp"></a>
-			</p>
 		</div>
 		`);
 

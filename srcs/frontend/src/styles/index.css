@@ -9,6 +9,9 @@
 .container {
 	@apply bg-black bg-opacity-80 p-20 left-[20%] top-[30%] rounded-lg w-[570px] h-[310px] relative z-[1] flex flex-col justify-center items-center min-w-fit absolute;
 }
+.middle {
+	@apply flex items-center justify-center min-h-screen;
+}
 
 /* Header */
 .header {

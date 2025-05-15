@@ -2,17 +2,17 @@
 
 /* Container for forms */
 .hcontainer {
-	@apply flex justify-center items-center p-5 h-[80vh] w-full top-[220px] box-border gap-7 z-20;
+	@apply flex justify-center items-center p-5 h-[70vh] w-full top-[220px] box-border gap-7 z-20;
 }
 
 /* All for the Middle */
-.middle {
-	@apply bg-black/80 fixed p-2.5 top-[200px] left-[220px] rounded-xl w-[75%] h-[80%] z-10;
+.hmiddle {
+	@apply bg-black/80 fixed p-2.5 top-[200px] left-[220px] rounded-xl w-[75%] h-[70%] z-10;
 }
 
 /* Header */
 .heder {
-	@apply absolute top-0 left-0 w-full text-center pt-5 font-bold text-[55px] font-sans text-[#dcdbdb] drop-shadow-[5px_5px_7px_#902063];
+	@apply absolute mb-5 top-0 left-0 w-full text-center pt-5 font-bold text-[55px] font-sans text-[#dcdbdb] drop-shadow-[5px_5px_7px_#902063];
 }
 .line {
 	@apply absolute top-[85px] left-[200px] right-[200px] border-b border-[#902063] pb-2;
@@ -20,7 +20,7 @@
 
 /* Section for stats (Left) */
 .user-stats {
-	@apply w-[55%] h-[45vh] flex ml-2.5 flex-col gap-3.5 p-7 items-center justify-center rounded-lg mb-[140px];
+	@apply w-[55%] h-[45vh] flex ml-2.5 flex-col gap-3.5 p-7 items-center justify-center rounded-lg mb-[140px] mt-[80px];
 }
 .stat-box {
 	@apply w-[95%] mt-10 flex flex-col items-center text-center;
@@ -52,7 +52,7 @@
 
 /* Section for leaderboard (Right) */
 .leaderboard {
-	@apply w-[35%] h-[45vh] rounded-lg border-2 border-[#902063] flex flex-col items-center text-center relative;
+	@apply w-[35%] h-[45vh] mt-[70px] rounded-lg border-2 border-[#902063] flex flex-col items-center text-center relative;
 }
 .lboard {
 	@apply text-center font-bold text-[28px] font-sans text-[#dcdbdb] mb-1 mt-4;
@@ -84,10 +84,10 @@
 	@apply flex justify-center w-full mt-auto;
 }
 .btn {
-	@apply fixed w-[27vh] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
+	@apply fixed w-[27vh] bottom-[300px] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
 }
 .game-btn {
-	@apply fixed w-[27vh] bottom-[206px] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
+	@apply fixed w-[27vh] bottom-[240px] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
 }
 .btn:hover, .game-btn:hover {
 	@apply bg-[#b86a8a];

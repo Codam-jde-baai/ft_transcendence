@@ -83,7 +83,7 @@ export function setupFriends() {
 			<div class="overlay"></div>
 			<dropdown-menu></dropdown-menu>
 			
-			<div class="middle">
+			<div class="fmiddle">
 				<div class="big-wrapper">
 					<div class="container">
 						<div class="search-container">

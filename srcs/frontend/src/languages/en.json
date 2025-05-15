@@ -103,5 +103,10 @@
     "SwitchGame": "Switch Game",
     "Pong": "Pong",
 
+    "SPl-against": "Played against",
+    "SWinner": "Winner",
+    "SMy-score": "My Score",
+    "Spl-score": "Opponent Score",
+
     "EndOfFile": ""
 }

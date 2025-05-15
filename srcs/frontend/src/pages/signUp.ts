@@ -17,41 +17,43 @@ export function setupSignUp() {
 		<div class="overlay"></div>
 		<language-menu></language-menu>
 
-		<div class="container">
-			<h1 class="header" data-i18n="SignUp_Header"></h1>
-				
-			<p class="p1" data-i18n="SignUp_Avatar"></p>
-			<button class="edit-picture" onclick="document.getElementById('avatar').click()">
-				<img id="profilePic" src="src/Pictures/defaultPP.png">
-			</button>
-			<input type="file" id="avatar" accept="image/*" style="display: none;">
+		<div class="middle">
+			<div class="container">
+				<h1 class="header" data-i18n="SignUp_Header"></h1>
+					
+				<p class="p1" data-i18n="SignUp_Avatar"></p>
+				<button class="edit-picture" onclick="document.getElementById('avatar').click()">
+					<img id="profilePic" src="src/Pictures/defaultPP.png">
+				</button>
+				<input type="file" id="avatar" accept="image/*" style="display: none;">
 
-			<p class="p1" id="login-name" data-i18n="LogIn_Name"></p>
-			<input type="Login_Name" required minlength="3" maxlength= "17" id="username" class="input-field" data-i18n-placeholder="SignUp_placeholder1">
+				<p class="p1" id="login-name" data-i18n="LogIn_Name"></p>
+				<input type="Login_Name" required minlength="3" maxlength= "17" id="username" class="input-field" data-i18n-placeholder="SignUp_placeholder1">
 
-			<p class="p1" id="alias-name" data-i18n="SignUp_Alias"></p>
-			<input type="Alias_Name" required minlength="3" maxlength= "17" id="alias" class="input-field" data-i18n-placeholder="SignUp_placeholder2">
+				<p class="p1" id="alias-name" data-i18n="SignUp_Alias"></p>
+				<input type="Alias_Name" required minlength="3" maxlength= "17" id="alias" class="input-field" data-i18n-placeholder="SignUp_placeholder2">
 
-			<p class="p1" id="userPass" data-i18n="Password"></p>
-			<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
-			<span id="show-password" class="field-iconn">
-				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
-			</span>
+				<p class="p1" id="userPass" data-i18n="Password"></p>
+				<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
+				<span id="show-password" class="field-iconn">
+					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
+				</span>
 
-			<p class="p1" id="password-match" data-i18n="ConfirmPassword"></p>
-			<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field">
-			<span id="show-password_confirm" class="field-icon">
-				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
-			</span>	
+				<p class="p1" id="password-match" data-i18n="ConfirmPassword"></p>
+				<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field">
+				<span id="show-password_confirm" class="field-icon">
+					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
+				</span>	
 
-			<div class="buttons">
-				<button class="btn" id="Home" data-i18n="btn_SignUp"></button>
-			</div> 
+				<div class="buttons">
+					<button class="btn" id="Home" data-i18n="btn_SignUp"></button>
+				</div> 
 
-			<p>
-				<span data-i18n="SignUp_P"></span>
-				<a id="LogIn" style="color: rgb(209, 7, 128); 0.5%; text-decoration: underline;" data-i18n="btn_LogIn"></a>
-			</p>
+				<p>
+					<span data-i18n="SignUp_P"></span>
+					<a id="LogIn" style="color: rgb(209, 7, 128); 0.5%; text-decoration: underline;" data-i18n="btn_LogIn"></a>
+				</p>
+			</div>
 		</div>
 		`);
 

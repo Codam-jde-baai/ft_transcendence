@@ -9,6 +9,9 @@
 .container {
 	@apply bg-[rgba(0,0,0,0.8)] p-[40px] rounded-[15px] w-[400px] h-[400px] relative z-[1] box-border items-start;
 }
+.middle {
+	@apply flex items-center justify-center min-h-screen;
+}
 
 /* Header */
 .header {

@@ -47,10 +47,10 @@ class SnekHistoryTable extends HTMLElement {
 								<table class="userTable">
 								<thead>
 									<tr>
-										<th data-i18n="Date"></th>
-										<th data-i18n="1v1_Game"></th>
-										<th data-i18n="Winner"></th>
-										<th data-i18n="Score"></th>
+										<th data-i18n="SPl-against"></th>
+										<th data-i18n="SWinner"></th>
+										<th data-i18n="SMy-score"></th>
+										<th data-i18n="Spl-score"></th>
 									</tr>
 								</thead>
 								<tbody>

@@ -6,7 +6,7 @@
 }
 
 /* All for the Middle */
-.middle {
+.fmiddle {
     @apply min-h-fit fixed top-[200px] left-[220px] rounded-[15px] w-[75%] h-[70%] z-[1];
 }
 

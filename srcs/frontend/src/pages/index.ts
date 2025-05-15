@@ -13,6 +13,7 @@ import { setupAdminUserSetting } from './adminUserSetting';
 import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
+import { setupTestGame } from './startSGame';
 import '../component/topbar'
 import '../component/languageMenu'
 import '../component/publicUser'
@@ -33,7 +34,7 @@ export function renderPage() {
 		'/home': setupUserHome,
 		'/logIn': setupLogIn,
 		'/signUp': setupSignUp,
-		'/startGame': setupStartGame,
+		'/startPGame': setupStartGame,
 		'/setting': setupSetting,
 		'/history': setupMatchHistory,
 		'/friends': setupFriends,
@@ -42,6 +43,7 @@ export function renderPage() {
 		'/errorPages': () => setupErrorPages(404, "Not Found"),
 		'/admin': setupAdmin,
 		'/adminUserSetting': () => setupAdminUserSetting({}),
+		'/testGame': setupTestGame,
 	};
 	if (root) {
 		const funct = routes[window.location.pathname]
@@ -54,13 +56,15 @@ export function renderPage() {
 			<div class="overlay"></div>
 			<language-menu></language-menu>
 
-			<div class="container">
-				<h1 class="header" data-i18n="Index_Header"></h1>
-				<p data-i18n="Index_P"></p>
+			<div class="middle">
+				<div class="container">
+					<h1 class="header" data-i18n="Index_Header"></h1>
+					<p data-i18n="Index_P"></p>
 
-				<div class="buttons">
-					<button class="btn" id="LogIn" data-i18n="btn_LogIn"></button>
-					<button class="btn" id="SignUp" data-i18n="btn_SignUp"></button>
+					<div class="buttons">
+						<button class="btn" id="LogIn" data-i18n="btn_LogIn"></button>
+						<button class="btn" id="SignUp" data-i18n="btn_SignUp"></button>
+					</div>
 				</div>
 			</div>
 				`);

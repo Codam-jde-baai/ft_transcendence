@@ -14,7 +14,7 @@ export function setupAdminUserSetting(data: any) {
 		<admin-topbar></admin-topbar>
 		
 		<div class="admin-popup-overlay">
-			<div class="middle">
+			<div class="asmiddle">
 				<div class="ucontainer">
 					<button id="close-popup" class="close-popup">X</button>
 					<h1 class="admin_header" data-i18n="Admin_Header"></h1>

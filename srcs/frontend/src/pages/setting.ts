@@ -19,7 +19,7 @@ export function setupSetting() {
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		
-		<div class="middle"></div>
+		<div class="smiddle"></div>
 		<div class="scontainer">
 			<h1 class="header" data-i18n="Setting_Header"></h1>
 				

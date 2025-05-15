@@ -19,7 +19,7 @@ export function  setupSnekMatchHistory() {
 			<button class="game-btn" id="PongHistory">
 				<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-pong.png">
 			</button>
-			<div class="middle">
+			<div class="imiddle">
 				<div class="hcontainer">
 					<h1 class="Pongheader" data-i18n="Snek"></h1>
 					<h1 class="header" data-i18n="History"></h1>

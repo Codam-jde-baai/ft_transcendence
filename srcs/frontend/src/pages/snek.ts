@@ -15,11 +15,11 @@ export function setupSnek() {
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		
-		<div class="middle">
+		<div class="hmiddle">
 			<div class="line"></div>
-			<h1 data-i18n="Header_Snek"></h1>
+			<h1 class="heder" data-i18n="Header_Snek"></h1>
 
-			<div class="container">
+			<div class="hcontainer">
 
 		<!-- Change for snek -->
 				<div class="user-stats">
@@ -63,7 +63,7 @@ export function setupSnek() {
 				</div>
 				
 				<div class="leaderboard">
-					<h2 data-i18n="LeaderBoard"></h2>
+					<h2 class="lboard" data-i18n="LeaderBoard"></h2>
 					<div class="leaderboard-entry">
 						<div class="img-container">
 							<img src="src/Pictures/1.jpg">

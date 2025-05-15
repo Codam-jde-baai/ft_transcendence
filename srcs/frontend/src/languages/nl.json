@@ -102,6 +102,11 @@
     "Snek": "Snek",
     "SwitchGame": "Wissel van spel",
     "Pong": "Pong",
+
+    "SPl-against": "Gespeeld tegen",
+    "SWinner": "Winnaar",
+    "SMy-score": "Mijn Score",
+    "Spl-score": "Tegenstander Score",
     
     "EndOfFile": ""
 }
