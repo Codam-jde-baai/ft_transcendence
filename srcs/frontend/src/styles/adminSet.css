@@ -35,7 +35,7 @@
 
 /* Input fields */
 .input-field {
-	@apply w-full py-2 rounded bg-white text-black text-base focus:outline-none focus:border-2 focus:border-[#fde7f4];
+	@apply w-full py-2 pl-1 rounded bg-white text-black text-base focus:outline-none focus:border-2 focus:border-[#fde7f4];
 }
 .input-field.display-only {
 	@apply py-3 rounded bg-gray-400 text-black w-full inline-block;

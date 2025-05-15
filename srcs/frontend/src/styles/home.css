@@ -1,26 +1,26 @@
 /* home.css */
 
 /* Container for forms */
-.container {
+.hcontainer {
 	@apply flex justify-center items-center p-5 h-[80vh] w-full top-[220px] box-border gap-7 z-20;
 }
 
 /* All for the Middle */
 .middle {
-	@apply bg-black/80 fixed p-2.5 top-[200px] left-[220px] rounded-xl w-[75%] h-[70%] z-10;
+	@apply bg-black/80 fixed p-2.5 top-[200px] left-[220px] rounded-xl w-[75%] h-[80%] z-10;
 }
 
 /* Header */
-h1 {
-	@apply absolute top-0 left-0 w-full text-center font-bold text-[70px] font-sans text-[#dcdbdb] drop-shadow-[5px_5px_7px_#902063];
+.heder {
+	@apply absolute top-0 left-0 w-full text-center pt-5 font-bold text-[55px] font-sans text-[#dcdbdb] drop-shadow-[5px_5px_7px_#902063];
 }
 .line {
-	@apply absolute top-[115px] left-[200px] right-[200px] border-b border-[#902063] pb-2.5;
+	@apply absolute top-[85px] left-[200px] right-[200px] border-b border-[#902063] pb-2;
 }
 
 /* Section for stats (Left) */
 .user-stats {
-	@apply w-[55%] h-[45vh] flex ml-2.5 flex-col gap-3.5 p-7 items-center justify-center rounded-lg mb-7;
+	@apply w-[55%] h-[45vh] flex ml-2.5 flex-col gap-3.5 p-7 items-center justify-center rounded-lg mb-[140px];
 }
 .stat-box {
 	@apply w-[95%] mt-10 flex flex-col items-center text-center;
@@ -38,10 +38,10 @@ h1 {
 	@apply text-[19px];
 }
 .best-score-text {
-	@apply text-[26px];
+	@apply text-[26px] font-bold;
 }
 .score-number {
-	@apply text-[20px];
+	@apply text-[18px];
 }
 .best-score img {
 	@apply w-[270px] h-[270px] object-cover rounded-full mt-[-50px] mb-[-60px];
@@ -54,8 +54,8 @@ h1 {
 .leaderboard {
 	@apply w-[35%] h-[45vh] rounded-lg border-2 border-[#902063] flex flex-col items-center text-center relative;
 }
-h2 {
-	@apply text-center font-bold text-[28px] font-sans text-[#dcdbdb] mb-5 pb-2.5;
+.lboard {
+	@apply text-center font-bold text-[28px] font-sans text-[#dcdbdb] mb-1 mt-4;
 }
 .leaderboard-entry {
 	@apply mb-3.5 p-3.5 rounded-md flex items-center gap-1.5 justify-center;
@@ -64,7 +64,7 @@ h2 {
 	@apply items-end;
 }
 .position {
-	@apply text-[18px] font-bold text-white;
+	@apply text-[16px] font-bold text-white;
 }
 .text, .number {
 	@apply text-[#dcdbdb];
@@ -83,12 +83,15 @@ h2 {
 .buttons {
 	@apply flex justify-center w-full mt-auto;
 }
-.btn, .game-btn {
+.btn {
 	@apply fixed w-[27vh] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
+}
+.game-btn {
+	@apply fixed w-[27vh] bottom-[206px] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
 }
 .btn:hover, .game-btn:hover {
 	@apply bg-[#b86a8a];
 }
 .game-btn img {
-	@apply w-[25px] h-[25px];
+	@apply w-[25px] h-[25px] ml-[200px] mt-[-25px];
 }

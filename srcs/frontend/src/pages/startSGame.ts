@@ -3,11 +3,6 @@ import { gameEndData } from '../game/snek/main';
 import { Application } from 'pixi.js'
 import { setupErrorPages } from './errorPages';
 import DOMPurify from 'dompurify';
-// topbar etc
-// import { fillTopbar } from '../script/fillTopbar';
-// import { dropDownBar } from '../script/dropDownBar';
-// import { setupNavigation } from '../script/menuNavigation';
-// import { getLanguage } from '../script/language';
 import { connectFunc, requestBody } from '../script/connections';
 
 import "../styles/snek.css"
@@ -76,6 +71,7 @@ export function setupTestGame() {
         if (root) {
             root.innerHTML = "";
             root.insertAdjacentHTML("beforeend", /*html*/ `
+            <!-- <link rel="stylesheet" href="src/styles/snek.css"> Link to the CSS file -->
             <div class="flex flex-col gap-4 items-center bg-black bg-opacity-75 py-20 px-8 rounded">
                 <div class="flex flex-row w-full gap-20 bg-pink-500 text-white py-2 px-4 rounded justify-center">
                 <div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">

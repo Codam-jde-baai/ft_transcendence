@@ -42,7 +42,7 @@
 
 /* Game */
 .game-btn {
-	@apply mt-[-398px] ml-[-456px] bg-[#902063] w-[15vh] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
+	@apply absolute left-[230px] top-[153px] bg-[#902063] w-[15vh] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
 }
 .game-btn:hover {
 	@apply bg-[#b86a8a];

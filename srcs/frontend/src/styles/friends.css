@@ -2,7 +2,7 @@
 
 /* Container for forms */
 .container {
-    @apply w-full max-w-full h-full max-h-[95%] p-5 rounded-[15px] min-h-fit bg-[rgba(0,0,0,0.8)];
+    @apply w-full h-full max-h-[95%] p-5 top-[0px] left-[0px] rounded-[15px] min-h-fit bg-[rgba(0,0,0,0.8)];
 }
 
 /* All for the Middle */
@@ -12,15 +12,18 @@
 
 /* Headers */
 .header {
-    @apply text-[30px] font-sans text-white text-left my-3;
+    @apply w-full text-[30px] font-sans text-white text-left my-3;
 }
 
 /* Wrapper */
+.big-wrapper {
+    @apply max-h-[115%] overflow-y-auto;
+}
 .friends-list-wrapper {
-    @apply max-h-[220px] overflow-y-auto rounded-[15px] border-[3px] border-[#902063];
+    @apply w-full max-h-[220px] overflow-y-auto rounded-[15px] border-[3px] border-[#902063];
 }
 .your-friends-list-wrapper {
-    @apply max-h-[355px] overflow-y-auto rounded-[15px] border-[3px] border-[#902063];
+    @apply w-full max-h-[355px] overflow-y-auto rounded-[15px] border-[3px] border-[#902063];
 }
 
 /* Friend Sections */
@@ -42,7 +45,7 @@
 
 /* Buttons */
 .btn {
-    @apply px-3 py-2 rounded cursor-pointer text-[14px] ml-1 bg-[#8a3f6c] text-white;
+    @apply w-[200px] px-3 py-2 rounded cursor-pointer text-[14px] ml-1 bg-[#8a3f6c] text-white;
 }
 .btn.accept {
     @apply bg-[#4CAF50];
@@ -59,7 +62,7 @@
     @apply w-[700px] p-2.5 mb-4 rounded text-[15px] font-sans ml-[43px] relative;
 }
 .search-container {
-    @apply relative flex items-center w-fit;
+    @apply w-full items-center w-fit fixed left-[240px] top-[230px];
 }
 .search-btn {
     @apply bg-white border-none cursor-pointer flex items-center justify-center absolute rounded h-[40px] w-[40px];
@@ -71,5 +74,5 @@
     @apply bg-[#902063];
 }
 .search-results {
-    @apply absolute flex flex-col w-[697px] mt-[-10px] ml-[45px];
+    @apply flex flex-col w-[697px] mt-[-10px] ml-[45px] fixed left-[240px] top-[282px];
 }

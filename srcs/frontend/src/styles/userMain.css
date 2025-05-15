@@ -92,5 +92,5 @@
 	@apply p-2 cursor-pointer text-white text-center text-[20px] font-sans;
 }
 .language-btn img {
-	@apply w-[25px] h-[15px] ml-40 mt-[-20px] ;
+	@apply w-[25px] h-[15px] ml-40 mt-[-20px];
 }

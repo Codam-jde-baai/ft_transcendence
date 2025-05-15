@@ -20,7 +20,7 @@ export function setupSetting() {
 		<dropdown-menu></dropdown-menu>
 		
 		<div class="middle"></div>
-		<div class="container">
+		<div class="scontainer">
 			<h1 class="header" data-i18n="Setting_Header"></h1>
 				
 			<p class="p1" data-i18n="Setting_Avatar"></p>
@@ -44,13 +44,13 @@ export function setupSetting() {
 
 				<p class="p1" id="userPass" data-i18n="Change_Password"></p>
 				<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
-				<span id="show-password" class="field-icon">
+				<span id="show-password" class="field-iconn">
 					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
 				</span>
 
 				<p class="p1" id="password-match" data-i18n="ConfirmPassword"></p>
 				<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field">
-				<span id="show-password_confirm" class="field-icon">
+				<span id="show-password_confirm" class="field-iconnn">
 					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
 				</span>	
 			</div>
@@ -74,7 +74,7 @@ export function setupSetting() {
 		setupNavigation();
 		
 		document.getElementById('Save')?.addEventListener('click', async () => {
-			const isValid = passwordFields(["alias", "password", "password_confirm", "current_password"]);
+			const isValid = passwordFields(["username", "alias", "password", "password_confirm", "current_password"]);
 			if (!isValid)
 				return; // Stop execution if validation fails
 

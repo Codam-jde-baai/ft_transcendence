@@ -84,19 +84,20 @@ export function setupFriends() {
 			<dropdown-menu></dropdown-menu>
 			
 			<div class="middle">
-				<div class="container">
-					<div class="search-container">
-						<form id="searchForm">
-							<button type="button" id="searchButton" class="search-btn">
-								<img class="searchIcon" src="src/Pictures/searchIcon.png"/>
-							</button>
-							<input type="search" id="friendSearch" class="userSearch" data-i18n-placeholder="Friends_placeholder1">
-						</form>
-					</div>
+				<div class="big-wrapper">
+					<div class="container">
+						<div class="search-container">
+							<form id="searchForm">
+								<button type="button" id="searchButton" class="search-btn">
+									<img class="searchIcon" src="src/Pictures/searchIcon.png"/>
+								</button>
+								<input type="search" id="friendSearch" class="userSearch" data-i18n-placeholder="Friends_placeholder1">
+							</form>
+						</div>
 
-					<div class="search-results" id="searchResults"></div>
+						<div class="search-results" id="searchResults"></div>
 
-					<h1 class="header" style="margin-top: 80px;" data-i18n="Friends_Header"></h1>
+						<h1 class="header" style="margin-top: 130px;" data-i18n="Friends_Header"></h1>
 						<div class="your-friends-list-wrapper">
 							<div class="friends-list" id="friends-container">
 								${friendRelations.friends.map((element: friendSchema) => `
@@ -122,6 +123,7 @@ export function setupFriends() {
 								`).join('')}
 							</div>
 						</div>
+					</div>
 				</div>
 			</div>
 			`);

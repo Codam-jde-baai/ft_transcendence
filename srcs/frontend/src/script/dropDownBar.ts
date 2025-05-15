@@ -5,6 +5,9 @@ export function dropDownBar(input: string[]) {
 	input.forEach(element => {
 		const elem = document.getElementById(element) as HTMLInputElement
 
+		if (!elem)
+			return;
+
 		if (elem.id === "dropdown-btn") {
 			// Handle click events for toggling settings dropdown
 			elem.addEventListener('click', (event) => {

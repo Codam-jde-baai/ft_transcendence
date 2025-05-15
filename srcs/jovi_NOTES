@@ -1,12 +1,3 @@
-User
-	- JoviTest
-	- 123456
-
-Admin
-	- admin
-	- iamadmin
-
-
 
 
 
@@ -14,10 +5,10 @@ docker exec -it backend pnpm run db:generate;
 docker exec -it backend pnpm run db:migrate;
 
 
-ANYTHING ELSE I NEED TO ADD?
-
 
 Things that are broken:
 - user can't delete him self
 - Friend.ts does not redicect to the correct user match histoty;
 - Add score;
+- Admin can't change or delete user -> {"error":"Please Sign Up Or Login"}
+- settings: if user gives the wrong current password, it goes to 401. 

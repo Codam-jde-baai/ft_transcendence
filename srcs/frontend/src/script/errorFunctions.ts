@@ -118,7 +118,22 @@ export function passwordFields(input: string[]): boolean {
 	input.forEach(element => {
 		const elem = document.getElementById(element) as HTMLInputElement
 		
-		// If a new alias ia created
+		if (elem.id === "username" && elem.value !== "")
+		{
+			const errorMsg = document.getElementById("user-name") as HTMLParagraphElement;
+			if (elem.value.length < 3 || elem.value.length > 17)
+			{
+				errorDisplay(elem, errorMsg, "SignUp_error_user");
+				isValid = false;
+			}
+			else if (elem.value.toUpperCase() === "ADMIN")	// ADMIN username not allowed
+			{
+				errorDisplay(elem, errorMsg, "SignUp_error_admin");
+				isValid = false;
+			}
+			else
+					errorRMDisplay(elem, errorMsg, "Setting_Name");
+		}
 		if (elem.id === "alias" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("alias-name") as HTMLParagraphElement;
