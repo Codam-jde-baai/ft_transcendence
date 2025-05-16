@@ -54,65 +54,28 @@ export function setupLogIn() {
 		document.getElementById('Home')?.addEventListener('click', () => {
 			const isValid = emptyFields(["username", "password"]);
 			if (!isValid)
-				return; // Stop execution if validation fails
-		
-
-			const adminElem = document.getElementById("username") as HTMLInputElement;
-			if (adminElem.value === `${envConfig.admin}`) {
-
-				// For ADMIN
-				const passwordAdmin = document.getElementById("password") as HTMLInputElement;
-				const content: string = JSON.stringify({[adminElem.value]: adminElem.value, [passwordAdmin.id]: passwordAdmin.value })
-				const body = requestBody("POST", content, "application/json");
-				const response = connectFunc("/admin/login", body);
-				response.then((response) => {
-					if (response.ok) {
-						window.history.pushState({}, '', '/admin');
-						setupAdmin();
-					} else {
-						response.json().then((data) => {
-							if (data.error === "admin and password combination is not valid") {	
-								// Wrong password
-								const elem = document.getElementById("password") as HTMLInputElement
-								const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;
-								errorDisplay(elem, errorMsg, "LogIn_error");
-							}
-						});
-					}
-				});
-
-			} else {
-				
-				// For USER
-				const content: string = inputToContent(["username", "password"])
-				const body = requestBody("POST", content, "application/json");
-				const response = connectFunc("/user/login", body);
-				response.then((response) => {
-					if (response.ok) {
-						response.json().then(() => {	
-							window.history.pushState({}, '', '/home');
-							setupUserHome();
-						});
-					} 
-					else 
-					{
-						response.json().then((data) => {
-							if (data.error === "username and password combination do not match database entry") {	
-								// Wrong password
-								const elem = document.getElementById("password") as HTMLInputElement
-								const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;
-								errorDisplay(elem, errorMsg, "LogIn_error");
-							} else {
-								// User does not exist
-								const elem = document.getElementById("username") as HTMLInputElement
-								const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
-								errorDisplay(elem, errorMsg, "LogIn_noUser");
-							}
-						})
-					}
-				})
-			}
-
+				return; // Stop execution if validation fails				
+			const content: string = inputToContent(["username", "password"])
+			const body = requestBody("POST", content, "application/json");
+			const response = connectFunc("/user/login", body);
+			response.then((response) => {
+				if (response.ok) {
+					response.json().then(() => {	
+						window.history.pushState({}, '', '/home');
+						setupUserHome();
+					});
+				} 
+				else 
+				{
+					response.json().then((data) => {
+						if (data.error === "username and password combination do not match database entry") {	
+							const elem = document.getElementById("username") as HTMLInputElement
+							const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
+							errorDisplay(elem, errorMsg, "LogIn_noUser");
+						}
+					})
+				}
+			})
 		});
 	}
 }
