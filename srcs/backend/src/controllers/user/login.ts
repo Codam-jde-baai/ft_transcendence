@@ -8,11 +8,6 @@ import { eq } from 'drizzle-orm'
 import { usersTable, userStatus } from '../../db/schema.ts';
 import { toPublicUser, verifyPassword } from '../../models/users.ts';
 
-declare module '@fastify/secure-session' {
-	interface SessionData {
-	  uuid: string;
-	}
-}
 
 export const loginUser = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;

@@ -1,4 +1,5 @@
 import { switchLanguage } from '../script/language';
+import { switchGame } from '../script/switchGame';
 
 // DropDown Function
 export function dropDownBar(input: string[]) {
@@ -74,6 +75,48 @@ export function dropDownBar(input: string[]) {
 					if (nl.contains(event.target as Node))
 						switchLanguage("nl");
 				}
+			});
+		}
+		if (elem.id === "game-btn") {
+			// Close both dropdowns when clicking outside
+			elem.addEventListener("click", (event) => {
+				const gameDropdown = document.querySelector('.game-content');
+				const gameBtn = document.querySelector('.game-btn');
+
+				if (gameDropdown && gameBtn) {
+					// Toggle dropdown visibility when clicking the button
+					if (gameBtn.contains(event.target as Node)) 
+						gameDropdown.classList.toggle('showGame');
+				}
+			});
+			// Add a global click listener to hide the dropdown when clicking outside
+			document.addEventListener("click", (event) => {
+				const gameDropdown = document.querySelector('.game-content');
+				const gameBtn = document.querySelector('.game-btn');
+		
+				if (gameDropdown && gameBtn) {
+					// Hide dropdown if clicking outside of it
+					if (!gameDropdown.contains(event.target as Node) && !gameBtn.contains(event.target as Node))
+						gameDropdown.classList.remove('showGame');
+				}
+			});
+		}
+		if (elem.id === "game-content") {
+			elem.addEventListener('click', (event) => {
+				const pong = document.getElementById('pong');
+				const snek = document.getElementById('snek');
+				
+				if (pong) {
+					console.log("p");
+					// if (pong.contains(event.target as Node))
+					// 	switchGame("pong");
+				}
+				if (snek) {
+					console.log("s");
+					// if (snek.contains(event.target as Node))
+					// 	switchGame("snek");
+				}
+
 			});
 		}
 	});

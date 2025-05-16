@@ -8,7 +8,7 @@ import userRoutes from './routes/users.ts';
 import friendsRoutes from './routes/friends.ts';
 import matchesRoutes from './routes/matches.ts';
 import adminRoutes from './routes/admin.ts';
-import snekRoutes from './routes/snek.ts'
+import snekRoutes from './routes/snek.ts';
 import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
 import rateLimit from '@fastify/rate-limit';
