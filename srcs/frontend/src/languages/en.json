@@ -20,7 +20,7 @@
 
     "Password": "Password",
     "ConfirmPassword": "Confirm Password",
-    "CurrentPassword": "Current Password",
+    "CurrentPassword": "Current Password *",
     "LogIn_Name": "Login Name",
     "SignUp_Avatar": "Add your Avatar",
     "SignUp_Alias": "Alias Name",
@@ -52,6 +52,7 @@
     "SignUp_placeholder2": "Visible for other users",
     "Admin_placeholder1": "Search users...",
     "Friends_placeholder1": "Search for friends...",
+    "CurrentP_placeholder1": "This field is always required",
     
     "Language": "Language",
     "Home": "Home",
@@ -98,8 +99,8 @@
     "LogIn_error": "Wrong Password",
     "LogIn_noUser": "User and Password don't match",
     "CurrentPass_error": "Password doesn't match",
-    "CurrentPass_error1": "Current Password missing",
-    "CurrentPass_error2": "New Password missing",
+    "CurrentPass_error1": "Current Password missing*",
+    "CurrentPass_error2": "No changes detected. Please update settings!",
 
     "Snek": "Snek",
     "SwitchGame": "Switch Game",

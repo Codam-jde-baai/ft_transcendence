@@ -2,27 +2,32 @@ import { connectFunc, requestBody } from './connections';
 import { setupErrorPages } from '../pages/errorPages';
 
 // Fill in for the Admin User Table
-export function fillUserTable(): Promise<any[]> {
+export async function fillUserTable(): Promise<any[] | null> {
 
-	return connectFunc(`/users`, requestBody("GET", null, "application/json"))
-		.then((Response) => {
-			if (Response.ok) {
-				return Response.json().then((data) => {
-					
-					const formattedData = data.map((entry: { username: string; alias: string }) => ({
-						username: entry.username,
-						alias: entry.alias,
-					}));
-					// Sort the formattedData alphabetically by username
-					formattedData.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
-					return formattedData;
-				});
-			} else {
-				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(Response.status, Response.statusText);
-				return null;
-			}
-		})
+	const table = document.querySelector('#userTable');
+
+	const Response = await connectFunc(`/users`, requestBody("GET", null, "application/json"));
+	const data = await Response.json();
+	
+	if (data.error === "No Matches In The Database For This User") {
+		if (table) {
+			table.innerHTML = ``;
+		}
+		return null;
+	} else if (Response.ok) {
+				
+		const formattedData = data.map((entry: { username: string; alias: string }) => ({
+			username: entry.username,
+			alias: entry.alias,
+		}));
+		// Sort the formattedData alphabetically by username
+		formattedData.sort((a: { username: string }, b: { username: string }) => a.username.localeCompare(b.username));
+		return formattedData;
+	} else {
+		window.history.pushState({}, '', '/errorPages');
+		setupErrorPages(Response.status, Response.statusText);
+		return null;
+	}
 }
 
 // Fill in for the Match History (PONG)

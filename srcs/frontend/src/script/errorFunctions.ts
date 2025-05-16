@@ -146,6 +146,12 @@ export function passwordFields(input: string[]): boolean {
 		if (elem.id === "username" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("user-name") as HTMLParagraphElement;
+			if ((document.getElementById("current_password") as HTMLInputElement).value === "")
+			{
+				const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
+				errorDisplay(elem, errorMsg, "CurrentPass_error1");
+				isValid = false;
+			}
 			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
 			{
 				errorDisplay(elem, errorMsg, "Alphanumeric_error");
@@ -167,6 +173,12 @@ export function passwordFields(input: string[]): boolean {
 		if (elem.id === "alias" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("alias-name") as HTMLParagraphElement;
+			if ((document.getElementById("current_password") as HTMLInputElement).value === "")
+			{
+				const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
+				errorDisplay(elem, errorMsg, "CurrentPass_error1");
+				isValid = false;
+			}
 			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
 			{
 				errorDisplay(elem, errorMsg, "Alphanumeric_error");
@@ -188,6 +200,12 @@ export function passwordFields(input: string[]): boolean {
 		if (elem.id === "password" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;		
+			if ((document.getElementById("current_password") as HTMLInputElement).value === "")
+			{
+				const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
+				errorDisplay(elem, errorMsg, "CurrentPass_error1");
+				isValid = false;
+			}
 			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
 			{
 				errorDisplay(elem, errorMsg, "Alphanumeric_error");
@@ -198,11 +216,6 @@ export function passwordFields(input: string[]): boolean {
 				errorDisplay(elem, errorMsg, "SignUp_error_userPass");
 				isValid = false;
 			}
-			else if ((document.getElementById("current_password") as HTMLInputElement).value === "")
-			{
-				errorDisplay(elem, errorMsg, "CurrentPass_error1");
-				isValid = false;
-			}	
 			else if (elem.value != (document.getElementById("password_confirm") as HTMLInputElement).value)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_password"); // PASSWORD does NOT Match
@@ -214,13 +227,22 @@ export function passwordFields(input: string[]): boolean {
 		if (elem.id === "current_password" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
+			if ((document.getElementById("current_password") as HTMLInputElement).value === "")
+			{
+				const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
+				errorDisplay(elem, errorMsg, "CurrentPass_error1");
+				isValid = false;
+			}
 			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
 			{
 				errorDisplay(elem, errorMsg, "Alphanumeric_error");
 				isValid = false;
 			}
-			else if ((document.getElementById("password") as HTMLInputElement).value.length == 0)
-			{
+			else if (
+				!(document.getElementById("password") as HTMLInputElement).value && 
+				!(document.getElementById("alias") as HTMLInputElement).value && 
+				!(document.getElementById("username") as HTMLInputElement).value
+			) {
 				errorDisplay(elem, errorMsg, "CurrentPass_error2");
 				isValid = false;
 			}

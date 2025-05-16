@@ -20,7 +20,7 @@
 
     "Password": "Passwort",
     "ConfirmPassword": "Passwort bestätigen",
-    "CurrentPassword": "Aktuelles Passwort",
+    "CurrentPassword": "Aktuelles Passwort *",
     "LogIn_Name": "Anmelde-Name",
     "SignUp_Avatar": "Füge dein Avatar hinzu",
     "SignUp_Alias": "Alias-Name",
@@ -52,6 +52,7 @@
     "SignUp_placeholder2": "Sichtbar für andere Benutzer",
     "Admin_placeholder1": "Benutzer suchen...",
     "Friends_placeholder1": "Nach Freunden suchen...",
+    "CurrentP_placeholder1": "Dieses Feld ist immer erforderlich",
     
     "Language": "Sprache",
     "Home": "Startseite",
@@ -98,8 +99,8 @@
     "LogIn_error": "Falsches Passwort",
     "LogIn_noUser": "Benutzername und Passwort stimmen nicht überein",
     "CurrentPass_error": "Passwort stimmt nicht überein",
-    "CurrentPass_error1": "Aktuelles Passwort fehlt",
-    "CurrentPass_error2": "Neues Passwort fehlt",
+    "CurrentPass_error1": "Aktuelles Passwort fehlt*",
+    "CurrentPass_error2": "Keine Änderungen erkannt. Bitte Einstellungen aktualisieren!",
 
     "Snek": "Snek",
     "SwitchGame": "Spiel wechseln",

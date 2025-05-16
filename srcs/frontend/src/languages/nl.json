@@ -20,7 +20,7 @@
 
     "Password": "Wachtwoord",
     "ConfirmPassword": "Bevestig wachtwoord",
-    "CurrentPassword": "Huidig wachtwoord",
+    "CurrentPassword": "Huidig wachtwoord *",
     "LogIn_Name": "Inlognaam",
     "SignUp_Avatar": "Voeg je avatar toe",
     "SignUp_Alias": "Aliasnaam",
@@ -52,6 +52,7 @@
     "SignUp_placeholder2": "Zichtbaar voor andere gebruikers",
     "Admin_placeholder1": "Zoek gebruikers...",
     "Friends_placeholder1": "Zoek naar vrienden...",
+    "CurrentP_placeholder1": "Dit veld is altijd verplicht",
     
     "Language": "Taal",
     "Home": "Home",
@@ -98,8 +99,8 @@
     "LogIn_error": "Verkeerd wachtwoord",
     "LogIn_noUser": "Gebruikersnaam en wachtwoord komen niet overeen",
     "CurrentPass_error": "Wachtwoord komt niet overeen",
-    "CurrentPass_error1": "Huidig wachtwoord ontbreekt",
-    "CurrentPass_error2": "Nieuw wachtwoord ontbreekt",
+    "CurrentPass_error1": "Huidig wachtwoord ontbreekt*",
+    "CurrentPass_error2": "Geen wijzigingen gedetecteerd. Update de instellingen!",
 
     "Snek": "Snek",
     "SwitchGame": "Wissel van spel",
