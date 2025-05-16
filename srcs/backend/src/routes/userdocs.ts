@@ -273,6 +273,21 @@ export const loginUserOptions = {
 	}
 };
 
+export const logoutUserOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Logs a user out',
+		tags: ['users'],
+		consumes: ['application/json'],
+		response: {
+			200: {},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
 export const loginGameUserOptions = {
 	schema: {
 		security: [{ apiKey: [] }],
