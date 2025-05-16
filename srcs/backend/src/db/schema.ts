@@ -44,8 +44,8 @@ export const matchesTable = sqliteTable("matches", {
 	p1_alias: text("p1_alias", { length: 264 }).notNull(),
 	p2_alias: text("p2_alias", { length: 264 }).notNull(),
 	winner_alias: text("winner_alias", { length: 264 }),
-	p1_uuid: text("p1_uuid", { length: 264 }).references(() => usersTable.uuid),
-	p2_uuid: text("p2_uuid", { length: 264 }).references(() => usersTable.uuid),
+	p1_uuid: text("p1_uuid", { length: 264 }).references(() => usersTable.uuid, { onDelete: "set null" }),
+	p2_uuid: text("p2_uuid", { length: 264 }).references(() => usersTable.uuid, { onDelete: "set null" }),
 	status: int("status").$type<matchStatus>().notNull(),
 	winner_id: int("winner").$type<eWinner>().default(eWinner.NOWINNER),
 	start_time: text("start_time", { length: 264 }).default(sql`(current_timestamp)`),
@@ -60,8 +60,8 @@ export enum friendStatus {
 
 export const friendsTable = sqliteTable("friends", {
 	id: int("id").primaryKey({ autoIncrement: true }),
-	reqUUid: text("requester", { length: 264 }).references(() => usersTable.uuid).notNull(),
-	recUUid: text("recipient", { length: 264 }).references(() => usersTable.uuid).notNull(),
+	reqUUid: text("requester", { length: 264 }).references(() => usersTable.uuid, { onDelete: "cascade" }).notNull(),
+	recUUid: text("recipient", { length: 264 }).references(() => usersTable.uuid, { onDelete: "cascade" }).notNull(),
 	status: int("status").$type<friendStatus>().default(friendStatus.PENDING).notNull()
 });
 
@@ -69,8 +69,8 @@ export const snekTable = sqliteTable("snek", {
 	id: int("id").primaryKey({ autoIncrement: true }),
 	p1_alias: text("p1_alias", { length: 264 }).notNull(),
 	p2_alias: text("p2_alias", { length: 264 }).notNull(),
-	p1_uuid: text("p1_uuid", { length: 264 }).references(() => usersTable.uuid),
-	p2_uuid: text("p2_uuid", { length: 264 }).references(() => usersTable.uuid),
+	p1_uuid: text("p1_uuid", { length: 264 }).references(() => usersTable.uuid, { onDelete: "set null" }),
+	p2_uuid: text("p2_uuid", { length: 264 }).references(() => usersTable.uuid, { onDelete: "set null" }),
 	winner_id: int("winner").$type<eWinner>().default(eWinner.NOWINNER),
 	p1_score: int("p1_score").default(0),
 	p2_score: int("p2_score").default(0)
