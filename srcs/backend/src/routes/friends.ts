@@ -59,6 +59,8 @@ const FriendListOptions = {
 		},
 		response: {
 			200: friendListProperties,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -72,7 +74,8 @@ const MyFriendListOptions = {
 		tags: ['friends'],
 		response: {
 			200: friendListProperties,
-			401: errorResponseSchema,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -101,7 +104,8 @@ const createFriendOptions = {
 				}
 			},
 			400: errorResponseSchema,
-			401: errorResponseSchema,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			409: {
 				type: 'object',
@@ -131,7 +135,7 @@ const updateFriendStatusOptions = {
 		response: {
 			200: {},
 			400: errorResponseSchema,
-			401: errorResponseSchema,
+			402: errorResponseSchema,
 			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
@@ -154,7 +158,7 @@ const RemoveFriendOptions = {
 		response: {
 			200: {},
 			400: errorResponseSchema,
-			401: errorResponseSchema,
+			402: errorResponseSchema,
 			403: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -174,6 +178,8 @@ export const PublicNonFriendOptions = {
 					properties: publicUserProperties
 				}
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			500: errorResponseSchema
 		}
 	}

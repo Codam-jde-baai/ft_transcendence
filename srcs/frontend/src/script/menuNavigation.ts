@@ -1,4 +1,4 @@
-import { renderPage } from '../pages/index';
+import { setupLogOut } from '../pages/index';
 import { setupUserHome } from '../pages/home';
 import { setupSetting } from '../pages/setting';
 import { setupFriends } from '../pages/friends';
@@ -15,7 +15,7 @@ export function setupNavigation() {
 		{ id: 'Friends', path: '/friends', action: setupFriends },
 		{ id: 'History', path: '/history', action: setupMatchHistory },
 		{ id: 'Snek', path: '/snek', action: setupSnek },
-		{ id: 'LogOut', path: '/index', action: renderPage },
+		{ id: 'LogOut', path: '/index', action: setupLogOut },
 	];
 
 	navItems.forEach(({ id, path, action }) => {

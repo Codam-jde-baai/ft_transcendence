@@ -54,8 +54,9 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	// Update profile picture with multipart/form-data
 	fastify.post('/user/profile-pic', { preHandler: [authenticatePrivateToken], ...updateProfilePicOptions }, updateUserProfilePic);
 
-	// Log in
+	// Log in/out
 	fastify.post('/user/login', { preHandler: [authAPI], ...loginUserOptions }, loginUser);
+	// fastify.get('/user/logout', { preHandler: [authenticatePrivateToken], ...logoutUserOptions }, logoutUser);
 
 	fastify.post('/user/game/login', { preHandler: [authAPI], ...loginGameUserOptions }, loginUserGame);
 	// update password

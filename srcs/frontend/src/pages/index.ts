@@ -14,6 +14,7 @@ import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupTestGame } from './startSGame';
+import { connectFunc, requestBody } from '../script/connections';
 import '../component/topbar'
 import '../component/languageMenu'
 import '../component/publicUser'
@@ -86,3 +87,17 @@ export function renderPage() {
 }
 
 window.addEventListener('popstate', renderPage);
+
+export function setupLogOut() {
+
+	connectFunc("/user/logout", requestBody("GET"))
+	.then((response) => {
+		if (response.ok) {
+			renderPage()
+		}
+		else {
+			window.history.pushState({}, '', '/errorPages');
+			setupErrorPages(response.status, response.statusText);
+		}
+	})
+}

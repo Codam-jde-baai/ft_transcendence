@@ -12,7 +12,7 @@ export const authenticatePrivateToken = async (request: FastifyRequest, reply: F
 export const authAPI = async (request: FastifyRequest, reply: FastifyReply) => {
   const apiKey = request.headers['x-api-key'] as string;
   if (!apiKey) {
-    reply.code(402).send({ error: 'Authentication required' });
+    reply.code(403).send({ error: 'Authentication required' });
     return;
   }
   if (apiKey !== envConfig.private_key) {

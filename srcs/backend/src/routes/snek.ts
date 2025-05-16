@@ -52,6 +52,8 @@ const addSnekMatchOpts = {
                 properties: snekHistoryProperties
             },
             400: errorResponseSchema,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -70,6 +72,8 @@ const getHistoryOpts = {
                     properties: snekHistoryProperties
                 }
             },
+			402: errorResponseSchema,
+			403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -95,6 +99,8 @@ const getHistoryAliasOpts = {
                     properties: snekHistoryProperties
                 }
             },
+			402: errorResponseSchema,
+			403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -121,6 +127,8 @@ const getHistoryPairOpts = {
                     properties: snekHistoryProperties
                 }
             },
+			402: errorResponseSchema,
+			403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -139,6 +147,8 @@ const getTopStatsOpts = {
                     properties: snekStatsProperties
                 }
             },
+			402: errorResponseSchema,
+			403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -154,6 +164,8 @@ const getUserSnekStatsOpts = {
                 type: 'object',
                 properties: snekStatsProperties
             },
+			402: errorResponseSchema,
+			403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -176,6 +188,8 @@ const getSnekStatsAliasOpts = {
                 type: 'object',
                 properties: snekStatsProperties
             },
+			402: errorResponseSchema,
+			403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
