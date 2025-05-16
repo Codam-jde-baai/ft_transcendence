@@ -34,12 +34,7 @@ export const loginUser = async (request: FastifyRequest, reply: FastifyReply) =>
 		}
 		const samePassword = await verifyPassword(password, storedHash);
 
-		if (!userFound) {
-			reply.code(401).send({ error: 'username not found in database' });
-			return;
-		}
-
-		if (!samePassword) {
+		if (!userFound || !samePassword) {
 			reply.code(401).send({ error: 'username and password combination do not match database entry' });
 			return;
 		}
@@ -100,4 +95,3 @@ export const loginUserGame = async (request: FastifyRequest, reply: FastifyReply
 		if (sqlite) sqlite.close();
 	}
 }
-// Show Me This
