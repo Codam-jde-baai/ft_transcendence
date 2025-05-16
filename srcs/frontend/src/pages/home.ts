@@ -27,7 +27,7 @@ export function setupUserHome() {
 						</div>
 						<div class="text-container">
 							<div class="best-score-text" data-i18n="Score"></div>
-							<div id="best-score" class="score-number"> >-1200-< </div>
+							<div id="best-score" class="score-number"></div>
 						</div>
 					</div>
 					<div class="smoll-stat-container">
@@ -50,7 +50,6 @@ export function setupUserHome() {
 							</div>
 						</div>
 					</div>
-
 					<div class="buttons">
 						<button class="btn" id="StartGame" data-i18n="btn_PlayPong"></button>
 					</div>
@@ -58,6 +57,7 @@ export function setupUserHome() {
 					<button class="game-btn" id="Snek">
 						<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
 					</button>
+
 				</div>
 				
 				<div class="leaderboard">

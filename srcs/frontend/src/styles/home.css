@@ -84,14 +84,14 @@
 	@apply flex justify-center w-full mt-auto;
 }
 .btn {
-	@apply fixed w-[27vh] bottom-[300px] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
+	@apply fixed w-[27vh] top-[790px] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
 }
 .game-btn {
-	@apply fixed w-[27vh] bottom-[240px] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
+	@apply fixed w-[27vh] top-[870px] p-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-md cursor-pointer transition duration-300 font-sans;
 }
 .btn:hover, .game-btn:hover {
 	@apply bg-[#b86a8a];
 }
 .game-btn img {
-	@apply w-[25px] h-[25px] ml-[200px] mt-[-25px];
+	@apply w-[25px] h-[25px] ml-[209px] mt-[-25px];
 }

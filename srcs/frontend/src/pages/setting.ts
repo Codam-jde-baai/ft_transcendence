@@ -29,6 +29,12 @@ export function setupSetting() {
 			</button>
 			<input type="file" id="avatar" accept="image/*" style="display: none;">
 
+			<p class="p1" id="current-password" data-i18n="CurrentPassword"></p>
+			<input type="password" required minlength="6" maxlength="117" id="current_password" class="input-field">
+			<span id="show-current_password" class="field-icon">
+				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_current">
+			</span>
+
 			<p class="p1" id="user-name" data-i18n="Setting_Name"></p>
 			<input type="username" required minlength="3" maxlength= "17" id="username" class="input-field">
 
@@ -36,11 +42,6 @@ export function setupSetting() {
 			<input type="Alias_Name" required minlength="3" maxlength= "17" id="alias" class="input-field">
 
 			<div class="box">
-				<p class="p1" id="current-password" data-i18n="CurrentPassword"></p>
-				<input type="password" required minlength="6" maxlength="117" id="current_password" class="input-field">
-				<span id="show-current_password" class="field-icon">
-					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_current">
-				</span>
 
 				<p class="p1" id="userPass" data-i18n="Change_Password"></p>
 				<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">

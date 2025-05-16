@@ -38,6 +38,7 @@
     "Request_Header": "Friend Requests",
     "Blocked_Header": "Blocked users",
     "Pending_Requests_Header": "Pending Requests",
+    "LogIn_AdminHeader": "Admin Login",
     
     "Index_P": "Play classic Pong with your friends!",
     "Delete_Account": " your account permanently",
@@ -90,11 +91,12 @@
     "SignUp_error_userPass": "Password must be between 6 and 117 characters",
     "SignUp_error_user_exist": "Username taken. Try another!",
     "SignUp_error_alias_exist": "Alias taken. Try another!",
+    "Alphanumeric_error": "Not alphanumeric input!",
     
     "LogIn_error_user": "User not found",
     "LogIn_error_password": "Wrong Password",
     "LogIn_error": "Wrong Password",
-    "LogIn_noUser": "User Not Found",
+    "LogIn_noUser": "User and Password don't match",
     "CurrentPass_error": "Password doesn't match",
     "CurrentPass_error1": "Current Password missing",
     "CurrentPass_error2": "New Password missing",

@@ -37,7 +37,8 @@
     "Friends_Header": "Deine Freunde",
     "Request_Header": "Freundschaftsanfragen",
     "Blocked_Header": "Deaktivierter Benutzer",
-    "Pending_Requests_Header": "Pending RequestsDE",
+    "Pending_Requests_Header": "Ausstehende Anfragen",
+    "LogIn_AdminHeader": "Admin Anmelden",
     
     "Index_P": "Spiele klassisches Pong mit deinen Freunden!",
     "Delete_Account": " Ihr Konto dauerhaft löschen",
@@ -90,11 +91,12 @@
     "SignUp_error_userPass": "Passwort muss zwischen 6 und 117 Zeichen lang sein",
     "SignUp_error_user_exist": "Benutzername vergeben. Versuche einen anderen!",
     "SignUp_error_alias_exist": "Alias vergeben. Versuche einen anderen!",
-    
+    "Alphanumeric_error": "Keine alphanumerische Eingabe!",
+
     "LogIn_error_user": "Benutzer nicht gefunden",
     "LogIn_error_password": "Falsches Passwort",
     "LogIn_error": "Falsches Passwort",
-    "LogIn_noUser": "Benutzer nicht gefunden",
+    "LogIn_noUser": "Benutzername und Passwort stimmen nicht überein",
     "CurrentPass_error": "Passwort stimmt nicht überein",
     "CurrentPass_error1": "Aktuelles Passwort fehlt",
     "CurrentPass_error2": "Neues Passwort fehlt",

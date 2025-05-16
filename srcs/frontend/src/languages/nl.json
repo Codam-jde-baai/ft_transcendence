@@ -38,6 +38,7 @@
     "Request_Header": "Vriendschapsverzoeken",
     "Blocked_Header": "Geblokkeerde Gebruikers",
     "Pending_Requests_Header": "Wachten op Antwoord",
+    "LogIn_AdminHeader": "Admin Inloggen",
     
     "Index_P": "Speel klassieke Pong met je vrienden!",
     "Delete_Account": "Uw account permanent verwijderen",
@@ -90,11 +91,12 @@
     "SignUp_error_userPass": "Wachtwoord moet tussen 6 en 117 tekens lang zijn",
     "SignUp_error_user_exist": "Gebruikersnaam bezet. Probeer een andere!",
     "SignUp_error_alias_exist": "Alias bezet. Probeer een andere!",
-    
+    "Alphanumeric_error": "Geen alfanumerieke invoer!",
+
     "LogIn_error_user": "Gebruiker niet gevonden",
     "LogIn_error_password": "Fout wachtwoord",
     "LogIn_error": "Verkeerd wachtwoord",
-    "LogIn_noUser": "Gebruiker niet gevonden",
+    "LogIn_noUser": "Gebruikersnaam en wachtwoord komen niet overeen",
     "CurrentPass_error": "Wachtwoord komt niet overeen",
     "CurrentPass_error1": "Huidig wachtwoord ontbreekt",
     "CurrentPass_error2": "Nieuw wachtwoord ontbreekt",

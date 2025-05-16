@@ -28,7 +28,12 @@ export function checkFields(input: string[]): boolean {
 		if (elem.id === "username")
 		{
 			const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
-			if (elem.value.length < 3 || elem.value.length > 17)
+			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
+			{
+				errorDisplay(elem, errorMsg, "Alphanumeric_error");
+				isValid = false;
+			}
+			else if (elem.value.length < 3 || elem.value.length > 17)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_user");
 				isValid = false;
@@ -44,7 +49,12 @@ export function checkFields(input: string[]): boolean {
 		if (elem.id === "alias")
 		{
 			const errorMsg = document.getElementById("alias-name") as HTMLParagraphElement;
-			if (elem.value.length < 3 || elem.value.length > 17)
+			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
+			{
+				errorDisplay(elem, errorMsg, "Alphanumeric_error");
+				isValid = false;
+			}
+			else if (elem.value.length < 3 || elem.value.length > 17)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_alias");
 				isValid = false;		
@@ -60,7 +70,12 @@ export function checkFields(input: string[]): boolean {
 		if (elem.id === "password")
 		{
 			const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;
-			if (elem.value.length < 6 || elem.value.length > 117)
+			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
+			{
+				errorDisplay(elem, errorMsg, "Alphanumeric_error");
+				isValid = false;
+			}
+			else if (elem.value.length < 6 || elem.value.length > 117)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_userPass");
 				isValid = false;
@@ -87,7 +102,12 @@ export function emptyFields(input: string[]): boolean {
 		if (elem.id === "username")
 		{
 			const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
-			if (elem.value.length < 3 || elem.value.length > 17)
+			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
+			{
+				errorDisplay(elem, errorMsg, "Alphanumeric_error");
+				isValid = false;
+			}
+			else if (elem.value.length < 3 || elem.value.length > 17)
 			{
 				errorDisplay(elem, errorMsg, "LogIn_error_user");
 				isValid = false;
@@ -98,7 +118,12 @@ export function emptyFields(input: string[]): boolean {
 		if (elem.id === "password")
 		{
 			const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;
-			if (elem.value.length < 6 || elem.value.length > 117)
+			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
+			{
+				errorDisplay(elem, errorMsg, "Alphanumeric_error");
+				isValid = false;
+			}
+			else if (elem.value.length < 6 || elem.value.length > 117)
 			{
 				errorDisplay(elem, errorMsg, "LogIn_error_password");
 				isValid = false;
@@ -121,7 +146,12 @@ export function passwordFields(input: string[]): boolean {
 		if (elem.id === "username" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("user-name") as HTMLParagraphElement;
-			if (elem.value.length < 3 || elem.value.length > 17)
+			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
+			{
+				errorDisplay(elem, errorMsg, "Alphanumeric_error");
+				isValid = false;
+			}
+			else if (elem.value.length < 3 || elem.value.length > 17)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_user");
 				isValid = false;
@@ -137,7 +167,12 @@ export function passwordFields(input: string[]): boolean {
 		if (elem.id === "alias" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("alias-name") as HTMLParagraphElement;
-			if (elem.value.length < 3 || elem.value.length > 17)
+			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
+			{
+				errorDisplay(elem, errorMsg, "Alphanumeric_error");
+				isValid = false;
+			}
+			else if (elem.value.length < 3 || elem.value.length > 17)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_alias");
 				isValid = false;		
@@ -153,7 +188,12 @@ export function passwordFields(input: string[]): boolean {
 		if (elem.id === "password" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("userPass") as HTMLParagraphElement;		
-			if (elem.value.length < 6 || elem.value.length > 117)
+			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
+			{
+				errorDisplay(elem, errorMsg, "Alphanumeric_error");
+				isValid = false;
+			}
+			else if (elem.value.length < 6 || elem.value.length > 117)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_userPass");
 				isValid = false;
@@ -174,7 +214,12 @@ export function passwordFields(input: string[]): boolean {
 		if (elem.id === "current_password" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
-			if ((document.getElementById("password") as HTMLInputElement).value.length == 0)
+			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
+			{
+				errorDisplay(elem, errorMsg, "Alphanumeric_error");
+				isValid = false;
+			}
+			else if ((document.getElementById("password") as HTMLInputElement).value.length == 0)
 			{
 				errorDisplay(elem, errorMsg, "CurrentPass_error2");
 				isValid = false;
@@ -197,7 +242,12 @@ export function adminPasswordFields(input: string[]): boolean {
 		if (elem.id === "password" && elem.value !== "")
 		{
 			const errorMsg = document.getElementById("adminPass") as HTMLParagraphElement;
-			if (elem.value.length < 6 || elem.value.length > 117)
+			if (!/^[a-zA-Z0-9]*$/.test(elem.value)) // Check if value is not alphanumeric
+			{
+				errorDisplay(elem, errorMsg, "Alphanumeric_error");
+				isValid = false;
+			}
+			else if (elem.value.length < 6 || elem.value.length > 117)
 			{
 				errorDisplay(elem, errorMsg, "SignUp_error_userPass");
 				isValid = false;
