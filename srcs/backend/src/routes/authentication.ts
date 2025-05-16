@@ -12,7 +12,7 @@ export const authenticatePrivateToken = async (request: FastifyRequest, reply: F
 export const authAPI = async (request: FastifyRequest, reply: FastifyReply) => {
   const apiKey = request.headers['x-api-key'] as string;
   if (!apiKey) {
-    reply.code(401).send({ error: 'Authentication required' });
+    reply.code(402).send({ error: 'Authentication required' });
     return;
   }
   if (apiKey !== envConfig.private_key) {
@@ -25,7 +25,7 @@ export const authSession = async (request: FastifyRequest, reply: FastifyReply) 
 	const uuid = request.session.get('uuid');
 	const alias = request.session.get('alias');
 	if (!uuid || !alias) {
-    return reply.code(401).send({ error: 'Please Sign Up Or Login' });
+    return reply.code(402).send({ error: 'Please Sign Up Or Login' });
 	}
 	request.session.touch()
 }

@@ -15,7 +15,7 @@ export function setupErrorPages(errorCode: number, errorMessage: string) {
 		`);
 	}
 
-	if (errorCode === 401) {
+	if (errorCode === 402) {
 		window.history.pushState({}, '', '/logIn');
 		setupLogIn(); // Redirect to logIn
 	}
