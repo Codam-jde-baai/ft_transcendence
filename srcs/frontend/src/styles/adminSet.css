@@ -17,7 +17,7 @@
 
 /* Container for forms */
 .ucontainer {
-	@apply p-10 rounded-xl w-[490px] fixed border-4 border-[#902063] z-10;
+	@apply p-10 rounded-xl w-[490px] fixed border-4 border-[#902063] z-10 bg-black;
 }
 
 /* Title styling */
@@ -54,7 +54,7 @@
 
 /* User Picture */
 .user-picture, .upicture {
-	@apply flex justify-center items-center bg-none border-none cursor-pointer mt-3 mb-3 ml-[140px];
+	@apply flex justify-center items-center bg-none border-none mt-3 mb-3 ml-[153px];
 }
 .user-picture img, .upicture img {
 	@apply w-[100px] h-[100px] rounded-full object-cover border-2 border-white;

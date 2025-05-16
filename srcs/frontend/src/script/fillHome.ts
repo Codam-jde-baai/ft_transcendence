@@ -7,12 +7,6 @@ export function fillHome() {
 			if (userInfoResponse.ok) {
 				userInfoResponse.json().then((data) => {
 
-				// // Best Score
-				// const bestScoreElem = document.getElementById("best-score");
-				// if (bestScoreElem)
-				// 	bestScoreElem.textContent = data.score;
-				// // ^^^^^ NOT WORKING YET (NO data.Score) ^^^^^^^^^^^^^^^^
-
 				// Win
 				const winElem = document.getElementById("win");
 				if (winElem)
@@ -28,6 +22,30 @@ export function fillHome() {
 			window.history.pushState({}, '', '/errorPages');
 			setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
 		}
+	})
+	connectFunc(`/matches/score`, requestBody("GET", null))
+		.then((userInfoResponse) => {
+			if (userInfoResponse.ok) {
+				userInfoResponse.json().then((data) => {
+
+					// Best Score
+					const bestScoreElem = document.getElementById("best-score");
+					if (bestScoreElem)
+						bestScoreElem.textContent = data.score;
+
+				});
+			} else if (!userInfoResponse.ok) {
+				userInfoResponse.json().then((data) => {
+						if (data.error === "No Scores In The Database") {
+						const bestScoreElem = document.getElementById("best-score");
+						if (bestScoreElem)
+							bestScoreElem.textContent = "0";
+					}
+				});
+			} else {
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
+			}
 	})
 
 	// LeaderBoard

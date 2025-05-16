@@ -7,9 +7,54 @@ docker exec -it backend pnpm run db:migrate;
 
 
 Things that are broken:
-- user can't delete him self
-- Friend.ts does not redicect to the correct user match histoty;
-- Add score;
-- Admin can't change or delete user -> {"error":"Please Sign Up Or Login"}
-- settings: if user gives the wrong current password, it goes to 401. 
-- refreshing snek does not work.
+- Settings: if user gives the wrong current password, it goes to 401. (I can't give an error message)
+- Friend: does not redirect to the correct user match history. (Julius might already fixed it)
+- Admin: can't delete user -> {"error":"FOREIGN KEY constraint failed"}
+- Refreshing snek does not work.
+- Snek History and Home page are not 100% done.
+
+
+
+
+
+
+History: (/snek/history/{alias})
+  {
+    "id": 0,
+    "p1_alias": "string",
+    "p2_alias": "string",
+    "winner_id": 0,
+    "p1_score": 0,
+    "p2_score": 0,
+    "p2_isGuest": true
+  }
+Players: p1_alias vs p2_alias
+My score: p1_score
+Opponent Score: p2_score
+
+Home: (/snek/stats/me)
+{
+  "alias": "string",
+  "matches": 0,
+  "wins": 0,
+  "losses": 0,
+  "winrate": 0,
+  "avg_score": 0,
+  "highest_score": 0
+}
+Score: highest_score
+Win: wins
+losses: losses
+
+
+Leaderboard:(/snek/stats/{alias})
+{
+  "alias": "string",
+  "matches": 0,
+  "wins": 0,
+  "losses": 0,
+  "winrate": 0,
+  "avg_score": 0,
+  "highest_score": 0
+}
+Alias: alias

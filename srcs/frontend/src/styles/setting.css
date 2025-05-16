@@ -2,7 +2,7 @@
 
 /* Container for forms */
 .scontainer {
-	@apply absolute top-[610px] pl-7 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-[20px] w-[450px] h-[800px] z-[1];
+	@apply absolute top-[610px] pl-7 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-[20px] w-[450px] h-[820px] z-[1];
 }
 
 /* All for the Middle */
