@@ -1,4 +1,4 @@
-import { setupTestGame } from './startSGame'; // REPLACE WITH CORRECT PATH FOR SNEK GAME
+import { setupSGame } from './startSGame'; // REPLACE WITH CORRECT PATH FOR SNEK GAME
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
@@ -125,7 +125,7 @@ export function setupSnek() {
 
 		document.getElementById('StartSnek')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/startSGame');  // change path !!!!!!!!
-			setupTestGame();
+			setupSGame();
 		});
 		
 		document.getElementById('Pong')?.addEventListener('click', () => {

@@ -13,7 +13,7 @@ import { setupAdminUserSetting } from './adminUserSetting';
 import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
-import { setupTestGame } from './startSGame';
+import { setupSGame } from './startSGame';
 import { connectFunc, requestBody } from '../script/connections';
 import '../component/topbar'
 import '../component/languageMenu'
@@ -44,7 +44,7 @@ export function renderPage() {
 		'/errorPages': () => setupErrorPages(404, "Not Found"),
 		'/admin': setupAdmin,
 		'/adminUserSetting': () => setupAdminUserSetting({}),
-		'/testGame': setupTestGame,
+		'/startSGame': setupSGame,
 	};
 	if (root) {
 		const funct = routes[window.location.pathname]
