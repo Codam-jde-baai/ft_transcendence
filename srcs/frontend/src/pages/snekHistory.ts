@@ -6,8 +6,44 @@ import { connectFunc, requestBody } from '../script/connections';
 import { setupErrorPages } from './errorPages';
 import { setupMatchHistory } from './history';
 
+interface snekMatchHistory {
+		id: string;
+		p1_alias: string;
+		p2_alias: string;
+		winner_id: number;
+		p1_score: number;
+		p2_score: number;
+		p2_isGuest: boolean;
+}
+
 export function  setupSnekMatchHistory() {
 	const root = document.getElementById('app');
+	const url = new URL(window.location.href);
+    const pathSegments = url.pathname.split('/').filter(segment => segment);
+    const alias1 = pathSegments[2] || null;
+    const alias2 = pathSegments[3] || null;
+
+	let snekAPI: Promise<Response>;
+    if (alias1 === null) {
+        snekAPI = connectFunc(`/snek/history/me`, requestBody("GET", null));
+    } else if (alias2 === null) {
+        snekAPI = connectFunc(`/snek/history/${alias1}`, requestBody("GET", null));
+    } else {
+        snekAPI = connectFunc(`/snek/history/${alias1}/${alias2}`, requestBody("GET", null));
+    }
+    // Handle the resolved promise and render the HTML
+    snekAPI.then(response => {
+    if (response.ok) {
+        return response.json();
+	}
+    else if (response.status === 404) {
+    	// write statusText in the content area
+	}
+	else {
+		setupErrorPages(response.status, response.statusText);
+	}
+    })
+    .then((snekMatchHistory: snekMatchHistory[]) => {
 	if (root) {
 		root.innerHTML = "";
 		root.insertAdjacentHTML("beforeend", /*html*/`
@@ -28,6 +64,7 @@ export function  setupSnekMatchHistory() {
 				
 					<!-- ______ Table does not exist YET _______ -->
 					<!-- <snek-history-table></snek-history-table> -->
+
 					
 				</div>
 			</div>
@@ -60,4 +97,5 @@ export function  setupSnekMatchHistory() {
 			}
 		})
 	}
+})
 }
