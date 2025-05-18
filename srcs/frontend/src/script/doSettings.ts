@@ -1,7 +1,7 @@
 import { connectFunc, requestBody } from './connections';
 import { EditPicture } from './sendPic';
 import DOMPurify from 'dompurify';
-import { errorRMDisplay, errorDisplay } from '../script/errorFunctions';
+import { errorDisplay } from '../script/errorFunctions';
 
 // Save button (settings.ts)
 export async function updateUserSettings(input: string[]): Promise<boolean> {
