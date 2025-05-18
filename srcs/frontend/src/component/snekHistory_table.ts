@@ -1,4 +1,4 @@
-import { fillHistoryTable } from '../script/fillTable';
+import { fillSnekHistoryTable } from '../script/fillTable';
 import { connectFunc, requestBody } from '../script/connections';
 import { getLanguage } from '../script/language';
 
@@ -24,8 +24,7 @@ class SnekHistoryTable extends HTMLElement {
 			}
 		}).then(() => {
 			if (aliasName) {
-				// fillSnekHistoryTable(aliasName).then((entryData: { date: string; player1: string; player2: string; winner: string; score: string }[] | null) => {
-				fillHistoryTable(aliasName).then((entryData: { date: string; player1: string; player2: string; winner: string; score: string }[] | null) => {
+				fillSnekHistoryTable(aliasName).then((entryData: { player1: string; player2: string; OpScore: string; MyScore: string }[] | null) => {
 					if (entryData) {
 						
 						let rowsHtml = "";
@@ -33,10 +32,9 @@ class SnekHistoryTable extends HTMLElement {
 
 							rowsHtml += `
 								<tr>
-									<td>${entry.date}</td>
 									<td>${entry.player1} vs ${entry.player2}</td>
-									<td>${entry.winner}</td>
-									<td>${entry.score}</td>
+									<td>${entry.OpScore}</td>
+									<td>${entry.MyScore}</td>
 								</tr>
 							`;
 						});
@@ -48,15 +46,14 @@ class SnekHistoryTable extends HTMLElement {
 								<thead>
 									<tr>
 										<th data-i18n="SPl-against"></th>
-										<th data-i18n="SWinner"></th>
-										<th data-i18n="SMy-score"></th>
 										<th data-i18n="Spl-score"></th>
+										<th data-i18n="SMy-score"></th>
 									</tr>
 								</thead>
 								<tbody>
 									${rowsHtml}
 								</tbody>
-						</table>
+								</table>
 							</div>
 						`);
 

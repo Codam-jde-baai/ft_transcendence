@@ -65,18 +65,18 @@ export function setupUserHome() {
 					<div class="leaderboard-entry">
 						<div class="img-container">
 							<img src="src/Pictures/1.jpg">
+						</div>
+						<div class="text-container">
+							<div class="position" data-i18n="1"></div>
+							<div id="aliasName1" class="text"></div>
+							<div class="number">
+								<span data-i18n="wins_"></span> <span id="win1" class="number"></span>
 							</div>
-							<div class="text-container">
-								<div class="position" data-i18n="1"></div>
-								<div id="aliasName1" class="text"></div>
-								<div class="number">
-									<span data-i18n="wins_"></span> <span id="win1" class="number"></span>
-								</div>
-								<div class="number">
-									<span data-i18n="losses_"></span> <span id="loss1" class="number"></span>
-								</div>
+							<div class="number">
+								<span data-i18n="losses_"></span> <span id="loss1" class="number"></span>
 							</div>
 						</div>
+					</div>
 					<div class="leaderboard-entry">
 						<div class="img-container">
 							<img src="src/Pictures/2.jpg">

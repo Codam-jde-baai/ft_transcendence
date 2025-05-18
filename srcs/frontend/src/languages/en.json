@@ -106,10 +106,15 @@
     "SwitchGame": "Switch Game",
     "Pong": "Pong",
 
-    "SPl-against": "Played against",
-    "SWinner": "Winner",
+    "SPl-against": "Players",
     "SMy-score": "My Score",
     "Spl-score": "Opponent Score",
+
+    "HighestScore": "Highest Score",
+    "WinRate": "Win Rate",
+    "HighestScore_": "Highest Score:",
+    "WinRate_": "Win Rate:",
+
 
     "EndOfFile": ""
 }

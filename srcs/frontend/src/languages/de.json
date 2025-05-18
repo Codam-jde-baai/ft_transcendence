@@ -106,10 +106,14 @@
     "SwitchGame": "Spiel wechseln",
     "Pong": "Pong",
 
-    "SPl-against": "Gespielt gegen",
-    "SWinner": "Gewinner",
+    "SPl-against": "Spieler",
     "SMy-score": "Mein Punktestand",
     "Spl-score": "Gegnerischer Punktestand",
+
+    "HighestScore": "Höchste Punktzahl",
+    "WinRate": "Gewinnrate",
+    "HighestScore_": "Höchste Punktzahl:",
+    "WinRate_": "Gewinnrate:",
 
     "EndOfFile": ""
 }

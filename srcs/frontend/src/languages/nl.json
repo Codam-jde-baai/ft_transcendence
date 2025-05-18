@@ -106,10 +106,14 @@
     "SwitchGame": "Wissel van spel",
     "Pong": "Pong",
 
-    "SPl-against": "Gespeeld tegen",
-    "SWinner": "Winnaar",
+    "SPl-against": "Spelers",
     "SMy-score": "Mijn Score",
     "Spl-score": "Tegenstander Score",
-    
+
+    "HighestScore": "Hoogste Score",
+    "WinRate": "Winstpercentage",
+    "HighestScore_": "Hoogste Score:",
+    "WinRate_": "Winstpercentage:",
+
     "EndOfFile": ""
 }

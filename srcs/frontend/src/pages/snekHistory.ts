@@ -26,8 +26,7 @@ export function  setupSnekMatchHistory() {
 					<p class="p1" data-i18n="History_P"></p>
 					<p class="p1" id="historyAliasName"></p>
 				
-					<!-- ______ Table does not exist YET _______ -->
-					<!-- <snek-history-table></snek-history-table> -->
+					<snek-history-table></snek-history-table>
 					
 				</div>
 			</div>

@@ -1,7 +1,7 @@
 import { setupTestGame } from './startSGame'; // REPLACE WITH CORRECT PATH FOR SNEK GAME
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
-import { fillHome } from '../script/fillHome';
+import { fillSnek } from '../script/fillSnek';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
 import { setupUserHome } from '../pages/home';
@@ -20,16 +20,16 @@ export function setupSnek() {
 			<h1 class="heder" data-i18n="Header_Snek"></h1>
 
 			<div class="hcontainer">
-
-		<!-- Change for snek -->
 				<div class="user-stats">
 					<div class="stat-box">
 						<div class="best-score">
 							<img src="src/Pictures/bestScore.png">
 						</div>
 						<div class="text-container">
-							<div class="best-score-text" data-i18n="Score"></div>
-							<div id="best-score" class="score-number"> >-1200-< </div>
+							<div class="best-score-text" data-i18n="HighestScore"></div>
+							<div id="hScore" class="score-number"> </div>
+							<div class="best-score-text text-[18px]" data-i18n="WinRate"></div>
+							<div id="winRate" class="score-number"></div>
 						</div>
 					</div>
 					<div class="smoll-stat-container">
@@ -67,18 +67,18 @@ export function setupSnek() {
 					<div class="leaderboard-entry">
 						<div class="img-container">
 							<img src="src/Pictures/1.jpg">
+						</div>
+						<div class="text-container">
+							<div class="position" data-i18n="1"></div>
+							<div id="aliasName1" class="text"></div>
+							<div class="number">
+								<span data-i18n="HighestScore_"></span> <span id="hScore1" class="number"></span>
 							</div>
-							<div class="text-container">
-								<div class="position" data-i18n="1"></div>
-								<div id="aliasName1" class="text"></div>
-								<div class="number">
-									<span data-i18n="wins_"></span> <span id="win1" class="number"></span>
-								</div>
-								<div class="number">
-									<span data-i18n="losses_"></span> <span id="loss1" class="number"></span>
-								</div>
+							<div class="number">
+								<span data-i18n="WinRate_"></span> <span id="WRate1" class="number"></span>
 							</div>
 						</div>
+					</div>
 					<div class="leaderboard-entry">
 						<div class="img-container">
 							<img src="src/Pictures/2.jpg">
@@ -87,10 +87,10 @@ export function setupSnek() {
 							<div class="position" data-i18n="2"></div>
 							<div id="aliasName2" class="text"></div>
 							<div class="number">
-								<span data-i18n="wins_"></span> <span id="win2" class="number"></span>
+								<span data-i18n="HighestScore_"></span> <span id="hScore2" class="number"></span>
 							</div>
 							<div class="number">
-								<span data-i18n="losses_"></span> <span id="loss2" class="number"></span>
+								<span data-i18n="WinRate_"></span> <span id="WRate2" class="number"></span>
 							</div>
 						</div>
 					</div>
@@ -102,24 +102,21 @@ export function setupSnek() {
 							<div class="position" data-i18n="3"></div>
 							<div id="aliasName3" class="text"></div>
 							<div class="number">
-								<span data-i18n="wins_"></span> <span id="win3" class="number"></span>
+								<span data-i18n="HighestScore_"></span> <span id="hScore3" class="number"></span>
 							</div>
 							<div class="number">
-								<span data-i18n="losses_"></span> <span id="loss3" class="number"></span>
+								<span data-i18n="WinRate_"></span> <span id="WRate3" class="number"></span>
 							</div>
 						</div>
 					</div>
 				</div>
-
-			<!-- ^^^^^^^^^^^^^^^^^^^^^ -->
-
 			</div>
 		</div>
 		`);
 
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
-		fillHome();
+		fillSnek();
 		fillTopbar();
 		setupNavigation();
 
