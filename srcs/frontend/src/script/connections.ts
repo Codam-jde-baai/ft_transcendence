@@ -14,8 +14,7 @@ export function inputToContent(input: string[]): string {
 		{
 			const rawInput = elem.value;
 			const sanitizedInput = DOMPurify.sanitize(rawInput); // Removes unsafe HTML
-			const alphanumericInput = sanitizedInput.replace(/[^a-zA-Z0-9]/g, ''); // Keeps only alphanumeric
-			obj[elem.id] = alphanumericInput;
+			obj[elem.id] = sanitizedInput;
 		}
 	});
 

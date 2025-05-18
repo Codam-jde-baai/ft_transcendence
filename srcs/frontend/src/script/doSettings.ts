@@ -17,8 +17,7 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 			} else if (inputElement.id === "alias") {
 				const rawInput = inputElement.value;
 				const sanitizedInput = DOMPurify.sanitize(rawInput); // Removes unsafe HTML
-				const alphanumericInput = sanitizedInput.replace(/[^a-zA-Z0-9]/g, ''); // Keeps only alphanumeric
-				const body = requestBody("PUT", JSON.stringify({[inputElement.id]: alphanumericInput }), "application/json");
+				const body = requestBody("PUT", JSON.stringify({[inputElement.id]: sanitizedInput }), "application/json");
 				const response = await connectFunc("/user/data", body);
 				if (!response.ok)
 					return false;
@@ -26,8 +25,7 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 				const password = document.getElementById("current_password") as HTMLInputElement;
 				const rawInput = inputElement.value;
 				const sanitizedInput = DOMPurify.sanitize(rawInput); // Removes unsafe HTML
-				const alphanumericInput = sanitizedInput.replace(/[^a-zA-Z0-9]/g, ''); // Keeps only alphanumeric
-				const body = requestBody("PUT", JSON.stringify({password: password.value, newPassword: alphanumericInput}), "application/json");
+				const body = requestBody("PUT", JSON.stringify({password: password.value, newPassword: sanitizedInput}), "application/json");
 				const response = await connectFunc("/user/updatepw", body);
 				const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
 				if (!response.ok) {
@@ -44,8 +42,7 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 			} else if (inputElement.id === "username") {
 				const rawInput = inputElement.value;
 				const sanitizedInput = DOMPurify.sanitize(rawInput); // Removes unsafe HTML
-				const alphanumericInput = sanitizedInput.replace(/[^a-zA-Z0-9]/g, ''); // Keeps only alphanumeric
-				const body = requestBody("PUT", JSON.stringify({[inputElement.id]: alphanumericInput }), "application/json");
+				const body = requestBody("PUT", JSON.stringify({[inputElement.id]: sanitizedInput }), "application/json");
 				const response = await connectFunc("/user/data", body);
 				if (!response.ok)
 					return false;
