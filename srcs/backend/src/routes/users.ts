@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { getAllUsers, getUser, getUserAlias, getUserImage, getUserImageByAlias } from '../controllers/user/getUsers.ts';
 import { addUser, updateUserProfilePic } from '../controllers/user/setUsers.ts';
-import { loginUser, loginUserGame } from '../controllers/user/login.ts'
+import { loginUser, logoutUser, loginUserGame } from '../controllers/user/login.ts'
 import { deleteUser, deleteProfilePic } from '../controllers/user/deleteUser.ts'
 import { updatePassword, updateUser, setOffline, setOnline } from '../controllers/user/updateUser.ts'
 import { userStatus, eLanguage } from '../db/schema.ts';
@@ -16,6 +16,7 @@ import {
 	createUserOptions,
 	updateProfilePicOptions,
 	loginUserOptions,
+	logoutUserOptions,
 	loginGameUserOptions,
 	updatePasswordProperties,
 	updateUserStatusOptions,
@@ -54,8 +55,9 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	// Update profile picture with multipart/form-data
 	fastify.post('/user/profile-pic', { preHandler: [authenticatePrivateToken], ...updateProfilePicOptions }, updateUserProfilePic);
 
-	// Log in
+	// Log in/out
 	fastify.post('/user/login', { preHandler: [authAPI], ...loginUserOptions }, loginUser);
+	fastify.get('/user/logout', { preHandler: [authenticatePrivateToken], ...logoutUserOptions }, logoutUser);
 
 	fastify.post('/user/game/login', { preHandler: [authAPI], ...loginGameUserOptions }, loginUserGame);
 	// update password

@@ -95,3 +95,13 @@ export const loginUserGame = async (request: FastifyRequest, reply: FastifyReply
 		if (sqlite) sqlite.close();
 	}
 }
+
+export const logoutUser = async (request: FastifyRequest, reply: FastifyReply) => {
+	try {
+			request.session.delete()
+			return reply.code(200).send();
+	} catch (error) {
+		request.log.error('logoutUser failed:', error);
+		return reply.code(500).send({ error: 'Failed to logout User' });
+	}
+}

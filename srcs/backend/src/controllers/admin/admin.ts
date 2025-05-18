@@ -15,15 +15,31 @@ export const loginAdmin = async (request: FastifyRequest<{
 	try {
 		const { admin, password } = request.body
 		if (admin !== envConfig.admin || password !== envConfig.password) {
-			reply.code(471).send({ error: 'admin and password combination is not valid' });
+			reply.code(401).send({ error: 'admin and password combination is not valid' });
 			return;
 		}
-		request.session.set('uuid', 'Valid');
-		request.session.set('alias', 'Valid');
+		request.session.set('uuid', 'Admin');
+		request.session.set('alias', 'Admin');
 		return reply.code(200).send();
 	} catch (error) {
 		request.log.error('loginAdmin failed:', error);
 		return reply.code(500).send({ error: 'Failed to login Admin' });
+	}
+}
+
+export const logoutAdmin = async (request: FastifyRequest, reply: FastifyReply) => {
+	try {
+		const uuid = request.session.get('uuid');
+		if (uuid === "Admin")
+		{
+			request.session.delete()
+			return reply.code(200).send();
+		}
+		else
+			return reply.code(401).send({ error: 'You Are Not Logged In As Admin' })
+	} catch (error) {
+		request.log.error('logoutAdmin failed:', error);
+		return reply.code(500).send({ error: 'Failed to logout Admin' });
 	}
 }
 

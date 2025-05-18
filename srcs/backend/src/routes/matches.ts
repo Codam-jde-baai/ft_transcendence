@@ -45,6 +45,8 @@ const getMatchesOptions = {
 					properties: enhancedMatchProperties
 				}
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -62,6 +64,8 @@ const getTotalScoreOptions = {
 					score: { type: 'number' }
 				}
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -94,6 +98,8 @@ const addMatchOptions = {
 				type: 'object',
 				properties: enhancedMatchProperties
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -112,6 +118,8 @@ const getUserMatchesOptions = {
 					properties: enhancedMatchProperties
 				}
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -137,6 +145,8 @@ const getAliasMatchesOptions = {
 					properties: enhancedMatchProperties
 				}
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -163,6 +173,8 @@ const getPairMatchesOptions = {
 					properties: enhancedMatchProperties
 				}
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}

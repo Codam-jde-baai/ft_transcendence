@@ -62,6 +62,8 @@ export const imageOptions = {
 				type: 'object',
 				properties: profilePicProperties
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: {
 				type: 'object',
 				properties: {
@@ -93,6 +95,8 @@ export const imageOptionsByAlias = {
 				type: 'object',
 				properties: profilePicProperties
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: {
 				type: 'object',
 				properties: {
@@ -118,6 +122,8 @@ export const getUserOptions = {
 				type: 'object',
 				properties: userProperties
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -141,6 +147,8 @@ export const getUserAliasOptions = {
 				type: 'object',
 				properties: userProperties
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -160,6 +168,7 @@ export const getUsersOptions = {
 					properties: userProperties
 				}
 			},
+			402: errorResponseSchema,
 			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
@@ -180,6 +189,7 @@ export const getPublicUsersOptions = {
 					properties: publicUserProperties
 				}
 			},
+			402: errorResponseSchema,
 			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
@@ -210,6 +220,8 @@ export const createUserOptions = {
 				properties: userProperties
 			},
 			400: errorResponseSchema,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			500: errorResponseSchema
 		}
 	}
@@ -229,6 +241,8 @@ export const updateProfilePicOptions = {
 			properties: userProperties
 		},
 		400: errorResponseSchema,
+		402: errorResponseSchema,
+		403: errorResponseSchema,
 		404: errorResponseSchema,
 		500: errorResponseSchema
 	}
@@ -252,6 +266,23 @@ export const loginUserOptions = {
 			},
 			400: errorResponseSchema,
 			401: errorResponseSchema,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+export const logoutUserOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Logs a user out',
+		tags: ['users'],
+		consumes: ['application/json'],
+		response: {
+			200: {},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			500: errorResponseSchema
 		}
 	}
@@ -278,6 +309,8 @@ export const loginGameUserOptions = {
 			},
 			400: errorResponseSchema,
 			401: errorResponseSchema,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			500: errorResponseSchema
 		}
 	}
@@ -301,6 +334,8 @@ export const updatePasswordProperties = {
 			200: {},
 			400: errorResponseSchema,
 			401: errorResponseSchema,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			500: errorResponseSchema
 		}
 	}
@@ -322,6 +357,8 @@ export const updateUserStatusOptions = {
 		},
 		response: {
 			200: {},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -345,6 +382,8 @@ export const updateUserProperties = {
 		response: {
 			200: userProperties,
 			400: errorResponseSchema,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -361,6 +400,8 @@ export const deleteUserOptions = {
 				type: 'null',
 				description: 'User successfully deleted'
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -377,6 +418,8 @@ export const deleteProfilePicOptions = {
 				type: 'null',
 				description: 'Profile picture successfully deleted'
 			},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}

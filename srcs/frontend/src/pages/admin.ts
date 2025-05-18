@@ -2,6 +2,8 @@ import { renderPage } from './index';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillUserTable } from '../script/fillTable';
+import { connectFunc, requestBody } from '../script/connections';
+import { setupErrorPages } from './errorPages';
 
 
 export function setupAdmin() {
@@ -27,7 +29,16 @@ export function setupAdmin() {
 		
 		document.getElementById('LogOut')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/index');
-			renderPage();
+			connectFunc("/admin/logout", requestBody("GET"))
+			.then((response) => {
+				if (response.ok) {
+					renderPage()
+				}
+				else {
+					window.history.pushState({}, '', '/errorPages');
+					setupErrorPages(response.status, response.statusText);
+				}
+			})
 		});
 	}
 }

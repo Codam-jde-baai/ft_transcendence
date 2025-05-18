@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import { authenticatePrivateToken, authAPI } from './authentication.ts';
 import {
 	loginAdmin,
-	// getAdmin,
+	logoutAdmin,
 	adminDeleteUser,
 	adminUpdateUserPassword,
 } from '../controllers/admin/admin.ts';
@@ -23,7 +23,24 @@ const loginAdminOptions = {
 		},
 		response: {
 			200: {},
-			471: errorResponseSchema,
+			401: errorResponseSchema,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
+const logoutAdminOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		tags: ['admin'],
+		consumes: ['application/json'],
+		response: {
+			200: {},
+			401: errorResponseSchema,
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			500: errorResponseSchema
 		}
 	}
@@ -43,6 +60,8 @@ const adminDeleteOptions = {
 		},
 		response: {
 			204: {},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -64,6 +83,8 @@ const adminUpdateOptions = {
 		},
 		response: {
 			201: {},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
 			404: errorResponseSchema,
 			500: errorResponseSchema
 		}
@@ -75,6 +96,7 @@ function adminRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 					admin: string;
 					password: string;
 	}}>('/admin/login', { preHandler: [authAPI], ...loginAdminOptions}, loginAdmin);	
+	fastify.get('/admin/logout', { preHandler: [authenticatePrivateToken], ...logoutAdminOptions}, logoutAdmin);	
 	fastify.delete<{ Body: {
 		username: string;
 	}}>('/admin/deleteUser', { preHandler: [authenticatePrivateToken], ...adminDeleteOptions}, adminDeleteUser);	
