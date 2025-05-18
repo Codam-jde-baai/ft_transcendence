@@ -229,7 +229,6 @@ export function passwordFields(input: string[]): boolean {
 			const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
 			if ((document.getElementById("current_password") as HTMLInputElement).value === "")
 			{
-				const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
 				errorDisplay(elem, errorMsg, "CurrentPass_error1");
 				isValid = false;
 			}
