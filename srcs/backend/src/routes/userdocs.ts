@@ -316,32 +316,6 @@ export const loginGameUserOptions = {
 	}
 };
 
-// Now Obsolete
-// export const updatePasswordProperties = {
-// 	schema: {
-// 		security: [{ apiKey: [] }],
-// 		summary: 'Updates the user password',
-// 		tags: ['users'],
-// 		consumes: ['application/json'],
-// 		body: {
-// 			type: 'object',
-// 			required: ['password', 'newPassword'],
-// 			properties: {
-// 				password: { type: 'string', minLength: 6 },
-// 				newPassword: { type: 'string', minLength: 6 }
-// 			}
-// 		},
-// 		response: {
-// 			200: {},
-// 			400: errorResponseSchema,
-// 			401: errorResponseSchema,
-// 			402: errorResponseSchema,
-// 			403: errorResponseSchema,
-// 			500: errorResponseSchema
-// 		}
-// 	}
-// };
-
 export const updateUserStatusOptions = {
 	schema: {
 		security: [{ apiKey: [] }],
