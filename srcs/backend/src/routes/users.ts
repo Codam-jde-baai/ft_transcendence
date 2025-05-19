@@ -3,7 +3,8 @@ import { getAllUsers, getUser, getUserAlias, getUserImage, getUserImageByAlias }
 import { addUser, updateUserProfilePic } from '../controllers/user/setUsers.ts';
 import { loginUser, logoutUser, loginUserGame } from '../controllers/user/login.ts'
 import { deleteUser, deleteProfilePic } from '../controllers/user/deleteUser.ts'
-import { updatePassword, updateUser, setOffline, setOnline } from '../controllers/user/updateUser.ts'
+// import { updatePassword, updateUser, setOffline, setOnline } from '../controllers/user/updateUser.ts'
+import { updateUser, setOffline, setOnline } from '../controllers/user/updateUser.ts'
 import { userStatus, eLanguage } from '../db/schema.ts';
 import { authenticatePrivateToken, authAPI } from './authentication.ts';
 import {
@@ -18,7 +19,7 @@ import {
 	loginUserOptions,
 	logoutUserOptions,
 	loginGameUserOptions,
-	updatePasswordProperties,
+	// updatePasswordProperties,
 	updateUserStatusOptions,
 	updateUserProperties,
 	deleteProfilePicOptions,
@@ -60,17 +61,19 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	fastify.get('/user/logout', { preHandler: [authenticatePrivateToken], ...logoutUserOptions }, logoutUser);
 
 	fastify.post('/user/game/login', { preHandler: [authAPI], ...loginGameUserOptions }, loginUserGame);
-	// update password
-	fastify.put<{
-		Body: {
-			uuid: string;
-			password: string;
-			newPassword: string;
-		}
-	}>('/user/updatepw', { preHandler: [authenticatePrivateToken], ...updatePasswordProperties }, updatePassword);
+	// update password (obsolete)
+	// fastify.put<{
+	// 	Body: {
+	// 		uuid: string;
+	// 		password: string;
+	// 		newPassword: string;
+	// 	}
+	// }>('/user/updatepw', { preHandler: [authenticatePrivateToken], ...updatePasswordProperties }, updatePassword);
 	// update data
 	fastify.put<{
 		Body: {
+			current_password: string;
+			password?: string;
 			username?: string;
 			alias?: string;
 			language?: eLanguage;
@@ -81,7 +84,7 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 	fastify.put<{ Params: { uuid: string } }>('/user/:uuid/setOffline', { preHandler: [authenticatePrivateToken], ...updateUserStatusOptions }, setOffline);
 
 	fastify.delete('/user/profile-pic', { preHandler: [authenticatePrivateToken], ...deleteProfilePicOptions }, deleteProfilePic);
-	fastify.delete('/user/delete', { preHandler: [authenticatePrivateToken], ...deleteUserOptions }, deleteUser);
+	fastify.delete<{ Body: { current_password: string; }}>('/user/delete', { preHandler: [authenticatePrivateToken], ...deleteUserOptions }, deleteUser);
 	done();
 }
 

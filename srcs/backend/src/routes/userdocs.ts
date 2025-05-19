@@ -316,30 +316,31 @@ export const loginGameUserOptions = {
 	}
 };
 
-export const updatePasswordProperties = {
-	schema: {
-		security: [{ apiKey: [] }],
-		summary: 'Updates the user password',
-		tags: ['users'],
-		consumes: ['application/json'],
-		body: {
-			type: 'object',
-			required: ['password', 'newPassword'],
-			properties: {
-				password: { type: 'string', minLength: 6 },
-				newPassword: { type: 'string', minLength: 6 }
-			}
-		},
-		response: {
-			200: {},
-			400: errorResponseSchema,
-			401: errorResponseSchema,
-			402: errorResponseSchema,
-			403: errorResponseSchema,
-			500: errorResponseSchema
-		}
-	}
-};
+// Now Obsolete
+// export const updatePasswordProperties = {
+// 	schema: {
+// 		security: [{ apiKey: [] }],
+// 		summary: 'Updates the user password',
+// 		tags: ['users'],
+// 		consumes: ['application/json'],
+// 		body: {
+// 			type: 'object',
+// 			required: ['password', 'newPassword'],
+// 			properties: {
+// 				password: { type: 'string', minLength: 6 },
+// 				newPassword: { type: 'string', minLength: 6 }
+// 			}
+// 		},
+// 		response: {
+// 			200: {},
+// 			400: errorResponseSchema,
+// 			401: errorResponseSchema,
+// 			402: errorResponseSchema,
+// 			403: errorResponseSchema,
+// 			500: errorResponseSchema
+// 		}
+// 	}
+// };
 
 export const updateUserStatusOptions = {
 	schema: {
@@ -373,7 +374,10 @@ export const updateUserProperties = {
 		consumes: ['application/json'],
 		body: {
 			type: 'object',
+			required: ['current_password'],
 			properties: {
+				currrent_password: { type: 'string', minLength: 6 },
+				password: { type: 'string', minLength: 6 },
 				username: { type: 'string', minLength: 3 },
 				alias: { type: 'string', minLength: 3 },
 				language: { type: 'string' }
@@ -382,6 +386,7 @@ export const updateUserProperties = {
 		response: {
 			200: userProperties,
 			400: errorResponseSchema,
+			401: errorResponseSchema,
 			402: errorResponseSchema,
 			403: errorResponseSchema,
 			404: errorResponseSchema,
@@ -395,11 +400,19 @@ export const deleteUserOptions = {
 		security: [{ apiKey: [] }],
 		summary: 'deletes a user',
 		tags: ['users'],
-		response: {
+		consumes: ['application/json'],
+		body: {
+			type: 'object',
+			required: ['current_password'],
+			properties: {
+				current_password: { type: 'string', minLength: 6 }
+			}
+		},response: {
 			204: {
 				type: 'null',
 				description: 'User successfully deleted'
 			},
+			401: errorResponseSchema,
 			402: errorResponseSchema,
 			403: errorResponseSchema,
 			404: errorResponseSchema,

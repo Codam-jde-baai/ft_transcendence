@@ -6,7 +6,7 @@ import { passwordFields } from '../script/errorFunctions';
 import { updateUserSettings } from '../script/doSettings';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
-import { connectFunc, requestBody } from '../script/connections';
+import { connectFunc, inputToContent, requestBody } from '../script/connections';
 import { renderPage } from './index';
 import { errorDisplay } from '../script/errorFunctions';
 
@@ -105,7 +105,7 @@ export function setupSetting() {
 
 				if (confirmed)
 				{
-					const response = connectFunc("/user/delete", requestBody("DELETE", null));
+					const response = connectFunc("/user/delete", requestBody("DELETE", inputToContent(["current_password"]), "application/json"));
 					response.then((response) => {
 						if (response.ok) {
 							window.history.pushState({}, '', '/index');
