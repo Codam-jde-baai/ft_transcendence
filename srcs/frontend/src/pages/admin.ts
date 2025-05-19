@@ -33,8 +33,7 @@ export function setupAdmin() {
 			.then((response) => {
 				if (response.ok) {
 					renderPage()
-				}
-				else {
+				} else {
 					window.history.pushState({}, '', '/errorPages');
 					setupErrorPages(response.status, response.statusText);
 				}

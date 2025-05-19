@@ -24,17 +24,17 @@ class SnekHistoryTable extends HTMLElement {
 			}
 		}).then(() => {
 			if (aliasName) {
-				fillSnekHistoryTable(aliasName).then((entryData: { player1: string; player2: string; OpScore: string; MyScore: string }[] | null) => {
-					if (entryData) {
+				fillSnekHistoryTable(aliasName).then((SnekEntryData: { player1: string; player2: string; OpScore: string; MyScore: string }[] | null) => {
+					if (SnekEntryData) {
 						
-						let rowsHtml = "";
-						entryData.forEach((entry: any) => {
+						let rowsSHtml = "";
+						SnekEntryData.forEach((SnekEntry: any) => {
 
-							rowsHtml += `
+							rowsSHtml += `
 								<tr>
-									<td>${entry.player1} vs ${entry.player2}</td>
-									<td>${entry.OpScore}</td>
-									<td>${entry.MyScore}</td>
+									<td>${SnekEntry.player1} vs ${SnekEntry.player2}</td>
+									<td>${SnekEntry.OpScore}</td>
+									<td>${SnekEntry.MyScore}</td>
 								</tr>
 							`;
 						});
@@ -51,7 +51,7 @@ class SnekHistoryTable extends HTMLElement {
 									</tr>
 								</thead>
 								<tbody>
-									${rowsHtml}
+									${rowsSHtml}
 								</tbody>
 								</table>
 							</div>
