@@ -6,15 +6,15 @@ export async function fillUserTable(): Promise<any[] | null> {
 
 	const table = document.querySelector('#userTable');
 
-	const Response = await connectFunc(`/users`, requestBody("GET", null, "application/json"));
-	const data = await Response.json();
+	const response = await connectFunc(`/users`, requestBody("GET", null, "application/json"));
+	const data = await response.json();
 	
-	if (data.error === "No Matches In The Database For This User") {
+	if (data.error === "No users in database") {
 		if (table) {
 			table.innerHTML = ``;
 		}
 		return null;
-	} else if (Response.ok) {
+	} else if (response.ok) {
 				
 		const formattedData = data.map((entry: { username: string; alias: string }) => ({
 			username: entry.username,
@@ -25,7 +25,7 @@ export async function fillUserTable(): Promise<any[] | null> {
 		return formattedData;
 	} else {
 		window.history.pushState({}, '', '/errorPages');
-		setupErrorPages(Response.status, Response.statusText);
+		setupErrorPages(response.status, response.statusText);
 		return null;
 	}
 }
@@ -35,15 +35,15 @@ export async function fillHistoryTable(aliasName: string): Promise<{ date: strin
 
 	const table = document.querySelector('#userTable');
 
-	const Response = await connectFunc(`/matches/${aliasName}`, requestBody("GET", null, "application/json"));
-	const data = await Response.json();
+	const response = await connectFunc(`/matches/${aliasName}`, requestBody("GET", null, "application/json"));
+	const data = await response.json();
 
 	if (data.error === "No Matches In The Database For This User") {
 		if (table) {
 			table.innerHTML = ``;
 		}
 		return null;
-	} else if (Response.ok) {
+	} else if (response.ok) {
 		const formattedData = data.map((entry: any) => ({
 			date: entry.date,
 			player1: entry.p1_alias,
@@ -54,7 +54,7 @@ export async function fillHistoryTable(aliasName: string): Promise<{ date: strin
 		return formattedData;
 	} else {
 		window.history.pushState({}, '', '/errorPages');
-		setupErrorPages(Response.status, Response.statusText);
+		setupErrorPages(response.status, response.statusText);
 		return null;
 	}
 }
@@ -64,15 +64,15 @@ export async function fillHistoryTable(aliasName: string): Promise<{ date: strin
 
 // 	const table = document.querySelector('#userTable');
 
-// 	const Response = await connectFunc(`/matches/${aliasName}`, requestBody("GET", null, "application/json"));
-// 	const data = await Response.json();
+// 	const response = await connectFunc(`/matches/${aliasName}`, requestBody("GET", null, "application/json"));
+// 	const data = await response.json();
 
 // 	if (data.error === "No Matches In The Database For This User") {
 // 		if (table) {
 // 			table.innerHTML = ``;
 // 		}
 // 		return null;
-// 	} else if (Response.ok) {
+// 	} else if (response.ok) {
 // 		const formattedData = data.map((entry: any) => ({
 // 			date: entry.date,
 // 			player1: entry.p1_alias,
@@ -83,7 +83,7 @@ export async function fillHistoryTable(aliasName: string): Promise<{ date: strin
 // 		return formattedData;
 // 	} else {
 // 		window.history.pushState({}, '', '/errorPages');
-// 		setupErrorPages(Response.status, Response.statusText);
+// 		setupErrorPages(response.status, response.statusText);
 // 		return null;
 // 	}
 // }
