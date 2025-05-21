@@ -17,7 +17,7 @@ import { setupSGame } from './startSGame';
 import { connectFunc, requestBody } from '../script/connections';
 import '../component/topbar'
 import '../component/languageMenu'
-import '../component/publicUser'
+import '../component/friendsRows'
 import '../component/adminTopbar'
 import '../component/admin_userTable'
 import '../component/history_table'

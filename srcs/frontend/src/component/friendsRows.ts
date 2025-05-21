@@ -49,6 +49,7 @@ class PublicUser extends HTMLElement {
 			<p> ${alias} </p>
 			
 			<button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="History"> </button>
+			<button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="OurHistory"> </button>
 			<button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="btn_Remove_Friend"> </button>
 
 			<button class="btn accept" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Accept"> . </button>
