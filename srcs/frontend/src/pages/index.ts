@@ -13,7 +13,7 @@ import { setupAdminUserSetting } from './adminUserSetting';
 import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
-import { setupTestGame } from './startSGame';
+import { setupStartSGame } from './startSGame';
 import { setupAdminLogIn } from './adminLogin';
 import { connectFunc, requestBody } from '../script/connections';
 import '../component/topbar'
@@ -46,7 +46,7 @@ export function renderPage() {
 		'/errorPages': () => setupErrorPages(404, "Not Found"),
 		'/admin': setupAdmin,
 		'/adminUserSetting': () => setupAdminUserSetting(),
-		'/testGame': setupTestGame,
+		'/startSGame': setupStartSGame,
 		'/adminLogin': setupAdminLogIn,
 	};
 	if (root) {

@@ -67,8 +67,6 @@ export async function fillSnekHistoryTable(aliasName: string): Promise<{ player1
 	const response = await connectFunc(`/snek/history/${aliasName}`, requestBody("GET", null, "application/json"));
 	const data = await response.json();
 
-	console.log("data", data);
-
 	if (data.error === "nothing to see here") {
 		if (table) {
 			table.innerHTML = ``;

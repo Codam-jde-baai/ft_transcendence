@@ -46,9 +46,7 @@ const authState: AuthState = {
     userAlias: ""
 };
 
-export function setupTestGame() {
-    // window.history.pushState({}, '', '/startSGame');
-    // console.log("testgame page");
+export function setupStartSGame() {
 
     const userDataPromise = connectFunc("/snek/stats/me", requestBody("GET", null, "application/json"))
         .then(response => {

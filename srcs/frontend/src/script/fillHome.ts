@@ -34,14 +34,6 @@ export function fillHome() {
 						bestScoreElem.textContent = data.score;
 
 				});
-			} else if (!userInfoResponse.ok) {
-				userInfoResponse.json().then((data) => {
-						if (data.error === "No Scores In The Database") {
-						const bestScoreElem = document.getElementById("best-score");
-						if (bestScoreElem)
-							bestScoreElem.textContent = "0";
-					}
-				});
 			} else {
 				window.history.pushState({}, '', '/errorPages');
 				setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
