@@ -13,7 +13,6 @@ export function  setupMatchHistory() {
 		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/history.css"> <!-- Link to the CSS file -->
 		<div class="overlay"></div>
-		
 		<dropdown-menu></dropdown-menu>
 		
 		<!-- Switching between games -->

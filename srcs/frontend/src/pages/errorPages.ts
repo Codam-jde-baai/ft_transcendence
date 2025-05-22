@@ -1,4 +1,5 @@
 import { setupLogIn } from '../pages/logIn'
+import { renderPage } from '../pages/index'
 
 export function setupErrorPages(errorCode: number, errorMessage: string) {
 	const root = document.getElementById('app');
@@ -10,6 +11,8 @@ export function setupErrorPages(errorCode: number, errorMessage: string) {
 			<div class="eecontainer">
 				<div class="eerror-code">${errorCode}</div>
 				<h1 class="errorH">${errorMessage}</h1>
+				<p class="errorP">Go back to <a id="Index" href="#" style="color: blue; text-decoration: underline;">Home</a>
+				</p>
 			</div>
 		</div>
 		`);
@@ -19,4 +22,9 @@ export function setupErrorPages(errorCode: number, errorMessage: string) {
 		window.history.pushState({}, '', '/logIn');
 		setupLogIn(); // Redirect to logIn
 	}
+	document.getElementById('Index')?.addEventListener('click', (e) => {
+		e.preventDefault(); // Prevent default <a> behavior
+		window.history.pushState({}, '', '/index');
+		renderPage();
+	});
 }

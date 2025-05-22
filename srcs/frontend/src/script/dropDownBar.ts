@@ -1,5 +1,4 @@
 import { switchLanguage } from '../script/language';
-import { switchGame } from '../script/switchGame';
 
 // DropDown Function
 export function dropDownBar(input: string[]) {

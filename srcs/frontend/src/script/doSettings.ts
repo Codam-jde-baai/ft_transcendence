@@ -45,3 +45,4 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 		return EditPicture();
 	return true;
 }
+
