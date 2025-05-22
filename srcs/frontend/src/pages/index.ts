@@ -22,6 +22,7 @@ import '../component/publicUser'
 import '../component/adminTopbar'
 import '../component/admin_userTable'
 import '../component/history_table'
+import '../component/snekHistory_table'
 
 document.addEventListener('DOMContentLoaded', () => {
 	if (!document.getElementById('app')?.hasChildNodes()) {
@@ -44,7 +45,7 @@ export function renderPage() {
 		'/snekHistory': setupSnekMatchHistory,
 		'/errorPages': () => setupErrorPages(404, "Not Found"),
 		'/admin': setupAdmin,
-		'/adminUserSetting': () => setupAdminUserSetting({}),
+		'/adminUserSetting': () => setupAdminUserSetting(),
 		'/testGame': setupTestGame,
 		'/adminLogin': setupAdminLogIn,
 	};

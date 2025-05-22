@@ -22,14 +22,14 @@ export function setupSnek() {
 			<div class="hcontainer">
 				<div class="user-stats">
 					<div class="stat-box">
-						<div class="best-score">
-							<img src="src/Pictures/bestScore.png">
+						<div class="Sbest-score">
+							<img src="src/Pictures/SnekS.png">
 						</div>
 						<div class="text-container">
 							<div class="best-score-text" data-i18n="HighestScore"></div>
 							<div id="hScore" class="score-number"> </div>
-							<div class="best-score-text text-[18px]" data-i18n="WinRate"></div>
-							<div id="winRate" class="score-number"></div>
+							<div class="best-score-text text-[18px] mt-4" data-i18n="WinRate"></div>
+							<div id="winRate" class="score-number text-[15px]"></div>
 						</div>
 					</div>
 					<div class="smoll-stat-container">
@@ -77,6 +77,12 @@ export function setupSnek() {
 							<div class="number">
 								<span data-i18n="WinRate_"></span> <span id="WRate1" class="number"></span>
 							</div>
+							<div class="number">
+								<span data-i18n="wins_"></span> <span id="SWin1" class="number"></span>
+							</div>
+							<div class="number">
+								<span data-i18n="losses_"></span> <span id="Sloss1" class="number"></span>
+							</div>
 						</div>
 					</div>
 					<div class="leaderboard-entry">
@@ -92,6 +98,12 @@ export function setupSnek() {
 							<div class="number">
 								<span data-i18n="WinRate_"></span> <span id="WRate2" class="number"></span>
 							</div>
+							<div class="number">
+								<span data-i18n="wins_"></span> <span id="SWin2" class="number"></span>
+							</div>
+							<div class="number">
+								<span data-i18n="losses_"></span> <span id="Sloss2" class="number"></span>
+							</div>
 						</div>
 					</div>
 					<div class="leaderboard-entry">
@@ -106,6 +118,12 @@ export function setupSnek() {
 							</div>
 							<div class="number">
 								<span data-i18n="WinRate_"></span> <span id="WRate3" class="number"></span>
+							</div>
+							<div class="number">
+								<span data-i18n="wins_"></span> <span id="SWin3" class="number"></span>
+							</div>
+							<div class="number">
+								<span data-i18n="losses_"></span> <span id="Sloss3" class="number"></span>
 							</div>
 						</div>
 					</div>

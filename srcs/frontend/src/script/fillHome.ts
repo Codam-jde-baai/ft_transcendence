@@ -62,6 +62,7 @@ export function fillHome() {
 			setupErrorPages(leaderboardResponse.status, leaderboardResponse.statusText);
 		}
 	})
+
 }
 
 // Find the 3 best user scores (Leaderboard)
@@ -87,5 +88,10 @@ function findBestUsers(data: any) {
 		const lossElem = document.getElementById(`loss${index + 1}`);
 		if (lossElem) 
 			lossElem.textContent = user.losses?.toString() || "0";
+
+		// Score
+		const scoreElem = document.getElementById(`score${index + 1}`);
+		if (scoreElem) 
+			scoreElem.textContent = user.score?.toString() || "0";
 	});
 }

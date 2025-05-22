@@ -2,7 +2,7 @@ import { fillSnekHistoryTable } from '../script/fillTable';
 import { connectFunc, requestBody } from '../script/connections';
 import { getLanguage } from '../script/language';
 
-class SnekHistoryTable extends HTMLElement {
+class SnekTable extends HTMLElement {
 	constructor() {
 		super();
 	}
@@ -66,4 +66,4 @@ class SnekHistoryTable extends HTMLElement {
 }
 
 // Define the custom element
-customElements.define('snek-history-table', SnekHistoryTable);
+customElements.define('snek-table', SnekTable);

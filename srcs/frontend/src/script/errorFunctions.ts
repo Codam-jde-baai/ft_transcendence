@@ -240,7 +240,7 @@ export function passwordFields(input: string[]): boolean {
 			else if (
 				!(document.getElementById("password") as HTMLInputElement).value && 
 				!(document.getElementById("alias") as HTMLInputElement).value && 
-				// !(document.getElementById("avatar") as HTMLInputElement).value && 
+				!(document.getElementById("avatar") as HTMLInputElement).value && 
 				!(document.getElementById("username") as HTMLInputElement).value
 			) {
 				errorDisplay(elem, errorMsg, "CurrentPass_error2");

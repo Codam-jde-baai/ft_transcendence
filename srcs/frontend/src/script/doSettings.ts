@@ -4,7 +4,6 @@ import DOMPurify from 'dompurify';
 import { errorDisplay } from '../script/errorFunctions';
 
 // Save button (settings.ts)
-// Save button (settings.ts)
 export async function updateUserSettings(input: string[]): Promise<boolean> {
 
 	let updateAvatar: boolean = false;
@@ -47,52 +46,3 @@ export async function updateUserSettings(input: string[]): Promise<boolean> {
 	return true;
 }
 
-
-// // Save button (settings.ts)
-// export async function updateUserSettings(input: string[]): Promise<boolean> {
-
-// 	for (const element of input) {
-// 		const inputElement = document.getElementById(element) as HTMLInputElement;
-		
-// 		if (inputElement.value !== "" && inputElement.value !== null) {
-
-// 			if (inputElement.id === "avatar") {
-// 				if (!EditPicture())
-// 					return false;
-// 			} else if (inputElement.id === "alias") {
-// 				const rawInput = inputElement.value;
-// 				const sanitizedInput = DOMPurify.sanitize(rawInput); // Removes unsafe HTML
-// 				const body = requestBody("PUT", JSON.stringify({[inputElement.id]: sanitizedInput }), "application/json");
-// 				const response = await connectFunc("/user/data", body);
-// 				if (!response.ok)
-// 					return false;
-// 			} else if (inputElement.id === "password") {
-// 				const password = document.getElementById("current_password") as HTMLInputElement;
-// 				const rawInput = inputElement.value;
-// 				const sanitizedInput = DOMPurify.sanitize(rawInput); // Removes unsafe HTML
-// 				const body = requestBody("PUT", JSON.stringify({password: password.value, newPassword: sanitizedInput}), "application/json");
-// 				const response = await connectFunc("/user/updatepw", body);
-// 				const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
-// 				if (!response.ok) {
-// 					response.json().then((data) => {
-// 						if (data.error === "user and password combination do not match database entry") {	
-// 							errorDisplay(password, errorMsg, "LogIn_error");
-// 							return false;
-// 						}
-// 						else
-// 							return false;
-// 					})
-// 					return false;
-// 				} 
-// 			} else if (inputElement.id === "username") {
-// 				const rawInput = inputElement.value;
-// 				const sanitizedInput = DOMPurify.sanitize(rawInput); // Removes unsafe HTML
-// 				const body = requestBody("PUT", JSON.stringify({[inputElement.id]: sanitizedInput }), "application/json");
-// 				const response = await connectFunc("/user/data", body);
-// 				if (!response.ok)
-// 					return false;
-// 			}
-// 		}
-// 	}
-// 	return true;
-// }

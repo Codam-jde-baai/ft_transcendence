@@ -84,6 +84,7 @@
     "3": "3. Platz",
     "wins_": "Siege: ",
     "losses_": "Niederlagen: ",
+    "score_": "Punktestand: ",
 
     "SignUp_error_admin": "Admin-Name nicht erlaubt",
     "SignUp_error_password": "Passwörter stimmen nicht überein",
