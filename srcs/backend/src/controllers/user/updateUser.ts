@@ -7,28 +7,25 @@ import { eq } from 'drizzle-orm'
 import { usersTable, eLanguage, userStatus } from '../../db/schema.ts';
 import { verifyPassword, hashPassword, toPublicUser } from '../../models/users.ts';
 
-export const updatePassword = async (request: FastifyRequest<{
+export const updateUser = async (request: FastifyRequest<{
 	Body: {
-		password: string;
-		newPassword: string;
+		current_password: string;
+		password?: string;
+		username?: string;
+		alias?: string;
+		language?: eLanguage;
 	}
 }>, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const { password, newPassword } = request.body as { password?: string, newPassword?: string };
-		const uuid = request.session.get("uuid") as string;
-		if (!password || !newPassword) {
-			reply.code(400).send({ error: 'Username, password and the new password are required' });
-			return;
-		}
-		if (newPassword.length < 6) {
-			return reply.code(400).send({ error: 'New Password length should be at least 6 characters' })
-		}
-		// for time consistency 
+		const uuid = request.session.get('uuid') as string;		
+		const { username, alias, language } = request.body;
+		const password = request.body.current_password;
+		const newPassword = request.body.password;
+
 		let userFound = false;
 		let user = null;
 		let storedHash = '$argon2id$v=19$m=65536,t=3,p=4$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
-
 
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);
@@ -46,32 +43,8 @@ export const updatePassword = async (request: FastifyRequest<{
 			return;
 		}
 
-		const hashedPassword = await hashPassword(newPassword);
-		await db.update(usersTable)
-			.set({ password: hashedPassword })
-			.where(eq(usersTable.uuid, uuid));
-		return reply.code(200).send();
-	} catch (error) {
-		request.log.error('updatePassword failed:', error);
-		return reply.code(500).send({ error: 'Failed to retrieve users' });
-	} finally {
-		if (sqlite) sqlite.close();
-	}
-}
-
-export const updateUser = async (request: FastifyRequest<{
-	Body: {
-		username?: string;
-		alias?: string;
-		language?: eLanguage;
-	}
-}>, reply: FastifyReply) => {
-	let sqlite = null;
-	try {
-		const uuid = request.session.get('uuid') as string;
-		const { username, alias, language } = request.body;
-
 		const updateData: { [key: string]: any } = {};
+		if (newPassword !== undefined) updateData.password = await hashPassword(newPassword);
 		if (username !== undefined) updateData.username = username;
 		if (alias !== undefined) updateData.alias = alias;
 		if (language !== undefined) updateData.language = language;
@@ -79,21 +52,14 @@ export const updateUser = async (request: FastifyRequest<{
 			return reply.code(400).send({ error: "no data provided to update" })
 		}
 
-		sqlite = new Database('./data/data.db', { verbose: console.log })
-		const db = drizzle(sqlite);
 		const updatedUser = await db.update(usersTable).set(updateData).where(eq(usersTable.uuid, uuid)).returning();
-		if (updatedUser.length === 0) {
-			reply.code(404).send({ error: 'User not found' });
-			return;
-		}
 		request.session.set('alias', updatedUser[0].alias);
 		return reply.code(200).send(toPublicUser(updatedUser[0]));
 	} catch (error) {
 		const errorMessage = error instanceof Error ? error.message : 'updateUser error';
 		request.log.error('updateUser failed:', error);
 		return reply.status(500).send({ error: errorMessage });
-	}
-	finally {
+	} finally {
 		if (sqlite) sqlite.close();
 	}
 }

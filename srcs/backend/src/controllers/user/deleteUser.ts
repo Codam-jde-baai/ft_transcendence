@@ -3,17 +3,39 @@ import { drizzle } from 'drizzle-orm/better-sqlite3'
 import Database from 'better-sqlite3'
 import { eq } from 'drizzle-orm'
 import { usersTable } from '../../db/schema.ts';
+import { verifyPassword } from '../../models/users.ts';
+
 
 export const deleteUser = async (
-	request: FastifyRequest, reply: FastifyReply) => {
+	request: FastifyRequest<{ Body: { current_password: string; }}>, reply: FastifyReply) => {
 	let sqlite = null;
-	try {
+	try {		
 		const uuid = request.session.get('uuid') as string;
+		const password = request.body.current_password;
+
+		let userFound = false;
+		let user = null;
+		let storedHash = '$argon2id$v=19$m=65536,t=3,p=4$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);
+		const userArray = await db.select().from(usersTable).where(eq(usersTable.uuid, uuid));
+
+		if (userArray.length > 0) {
+			userFound = true;
+			user = userArray[0];
+			storedHash = user.password
+		}
+		const samePassword = await verifyPassword(password, storedHash);
+
+		if (!userFound || !samePassword) {
+			reply.code(401).send({ error: 'user and password combination do not match database entry' });
+			return;
+		}
+
 		const result = await db.delete(usersTable).where(eq(usersTable.uuid, uuid));
 		if (result.changes === 0) {
-			reply.code(404).send({ error: "uuid did not match database, no changes made" })
+			reply.code(404).send({ error: "user did not match database, no changes made" })
 			return
 		}
 		return reply.code(204).send();

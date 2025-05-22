@@ -27,6 +27,19 @@ export const loginAdmin = async (request: FastifyRequest<{
 	}
 }
 
+export const checkAdmin = async (request: FastifyRequest, reply: FastifyReply) => {
+	try {
+		const uuid = request.session.get('uuid');
+		if (uuid === "Admin")
+			return reply.code(200).send();
+		else
+			return reply.code(401).send({ error: 'You Are Not Logged In As Admin' })
+	} catch (error) {
+		request.log.error('checkAdmin failed:', error);
+		return reply.code(500).send({ error: 'Failed to check if you are logged in as Admin' });
+	}
+}
+
 export const logoutAdmin = async (request: FastifyRequest, reply: FastifyReply) => {
 	try {
 		const uuid = request.session.get('uuid');
