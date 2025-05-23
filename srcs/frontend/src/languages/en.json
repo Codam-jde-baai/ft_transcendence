@@ -17,6 +17,8 @@
     "btn_Unblock_User": "Unblock",
     "btn_Cancel": "Cancel",
     "btn_Delete": "Delete",
+    "btn_T&C": "Terms & Conditions",
+    "btn_ViewData": "View my Data",
 
     "Password": "Password",
     "ConfirmPassword": "Confirm Password",
@@ -46,6 +48,7 @@
     "SignUp_P": "Already have an account?",
     "History_P": "Of",
     "Admin_P": "Of",
+    "T&C_P": " I agree to the ",
     
     "LogIn_placeholder1": "Intra Name",
     "SignUp_placeholder1": "Only used for Log In (Intra-Name)",

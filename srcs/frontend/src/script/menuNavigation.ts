@@ -16,6 +16,10 @@ export function setupNavigation() {
 		{ id: 'LogOut', path: '/index', action: setupLogOut },
 	];
 
+	document.getElementById('TC')?.addEventListener('click', () => {
+		console.log("T&C_page");
+	});
+
 	navItems.forEach(({ id, path, action }) => {
 		if (path === currentPath) 
 		return;

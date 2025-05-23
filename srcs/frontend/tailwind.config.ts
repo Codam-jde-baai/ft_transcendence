@@ -7,10 +7,15 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        customPink: {
-          DEFAULT: '#902063', // Base color
-          hover: '#b86a8a',   // Hover color
+      keyframes: {
+        wiggle: {
+          '0%': { transform: 'translateX(0)' },
+          '15%': { transform: 'translateX(-5px)' },
+          '30%': { transform: 'translateX(5px)' },
+          '45%': { transform: 'translateX(-5px)' },
+          '60%': { transform: 'translateX(5px)' },
+          '75%': { transform: 'translateX(-5px)' },
+          '100%': { transform: 'translateX(0)' },
         },
       },
     },

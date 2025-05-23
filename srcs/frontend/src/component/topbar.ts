@@ -37,6 +37,7 @@ class DropdownMenu extends HTMLElement {
 					<div class="dropdown-item ${currentPage === '/friends' ? 'currentPage' : ''}" id="Friends" data-i18n="Friends"></div>
 					<div class="dropdown-item ${currentPage === '/history' || currentPage === '/snekHistory' ? 'currentPage' : ''}" id="History" data-i18n="History" onclick="window.location.pathname = (window.location.pathname === '/snekHistory' ? '/snekHistory' : '/history')"></div>
 					<div class="dropdown-item" id="LogOut" data-i18n="LogOut"></div>
+					<div class="dropdown-item mt-2" id="TC" data-i18n="btn_T&C" style="font-size: 15px;"></div>
 				</div>
 			</div>
 			<div class="topBarFrame">

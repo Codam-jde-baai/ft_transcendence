@@ -23,6 +23,9 @@ export function setupSetting() {
 		<div class="smiddle"></div>
 		<div class="scontainer">
 			<h1 class="header" data-i18n="Setting_Header"></h1>
+			<p class="text-left mt-2 mb-[-15px]">
+				<a id="viewData" target="_blank" class="cursor-pointer text-pink-600 underline" data-i18n="btn_ViewData"></a>
+			</p>
 				
 			<p class="p1" data-i18n="Setting_Avatar"></p>
 			<button class="edit-picture" onclick="document.getElementById('avatar').click()">
@@ -90,6 +93,10 @@ export function setupSetting() {
 					errorBox.classList.remove("hidden");
 				}
 			}
+		});
+		
+		document.getElementById('viewData')?.addEventListener('click', async () => {
+			console.log("View Data clicked");
 		});
 
 		document.getElementById('delete_Account')?.addEventListener('click', () => {

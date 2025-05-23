@@ -17,6 +17,8 @@
     "btn_Unblock_User": "Deblokkeer",
     "btn_Cancel": "Annuleren",
     "btn_Delete": "Verwijderen",
+    "btn_T&C": "Algemene voorwaarden",
+    "btn_ViewData": "Mijn gegevens bekijken",
 
     "Password": "Wachtwoord",
     "ConfirmPassword": "Bevestig wachtwoord",
@@ -46,6 +48,7 @@
     "SignUp_P": "Heb je al een account?",
     "History_P": "Van",
     "Admin_P": "Van",
+    "T&C_P": "Ik ga akkoord met de ",
 
     "LogIn_placeholder1": "Intra-naam",
     "SignUp_placeholder1": "Alleen gebruikt voor inloggen (Intra-naam)",

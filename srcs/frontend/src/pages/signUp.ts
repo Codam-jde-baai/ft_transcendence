@@ -45,13 +45,19 @@ export function setupSignUp() {
 					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
 				</span>	
 
-				<div class="buttons">
+				<p class="text-left">
+					<input type="checkbox" id="termsCheckbox">
+					<span class="text-white" data-i18n="T&C_P"></span>
+					<a id="T&C" target="_blank" class="cursor-pointer text-pink-600 underline" data-i18n="btn_T&C"></a>
+				</p>
+
+				<div class="buttons mt-2">
 					<button class="btn" id="Home" data-i18n="btn_SignUp"></button>
 				</div> 
 
 				<p>
 					<span data-i18n="SignUp_P"></span>
-					<a id="LogIn" style="color: rgb(209, 7, 128); 0.5%; text-decoration: underline;" data-i18n="btn_LogIn"></a>
+					<a id="LogIn" class="cursor-pointer text-pink-600 underline" data-i18n="btn_LogIn"></a>
 				</p>
 			</div>
 		</div>
@@ -66,8 +72,12 @@ export function setupSignUp() {
 			setupLogIn();
 		});	
 
+		document.getElementById('T&C')?.addEventListener('click', () => {
+			console.log("Terms and Conditions clicked");
+		});
+
 		document.getElementById('Home')?.addEventListener('click', () => {
-			const isValid = checkFields(["username", "alias", "password", "password_confirm"]);
+			const isValid = checkFields(["username", "alias", "password", "password_confirm", "termsCheckbox"]);
 			if (!isValid)
 				return; // Stop execution if validation fails
 
@@ -111,3 +121,4 @@ export function setupSignUp() {
 		});
 	}
 }
+

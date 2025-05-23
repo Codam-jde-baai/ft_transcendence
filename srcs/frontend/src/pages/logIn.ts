@@ -34,7 +34,7 @@ export function setupLogIn() {
 
 				<p>
 					<span data-i18n="LogIn_P"></span>
-					<a id="SignUp" style="color: rgb(209, 7, 128);: 0.5%; text-decoration: underline;" data-i18n="btn_SignUp"></a>
+					<a id="SignUp" class="cursor-pointer text-pink-600 underline" data-i18n="btn_SignUp"></a>
 				</p>
 			</div>
 		</div>

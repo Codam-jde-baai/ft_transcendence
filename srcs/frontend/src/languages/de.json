@@ -17,6 +17,8 @@
     "btn_Unblock_User": "deblokkeren",
     "btn_Cancel": "stornieren",
     "btn_Delete": "Löschen",
+    "btn_T&C": "Allgemeine Geschäftsbedingungen",
+    "btn_ViewData": "Meine Daten anzeigen",
 
     "Password": "Passwort",
     "ConfirmPassword": "Passwort bestätigen",
@@ -46,6 +48,7 @@
     "SignUp_P": "Du  hast bereits ein Konto?",
     "History_P": "Von",
     "Admin_P": "Von",
+    "T&C_P": " ",
 
     "LogIn_placeholder1": "Intra-Name",
     "SignUp_placeholder1": "Nur für die Anmeldung verwendet (Intra-Name)",
