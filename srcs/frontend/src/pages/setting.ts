@@ -23,9 +23,24 @@ export function setupSetting() {
 		<div class="smiddle"></div>
 		<div class="scontainer">
 			<h1 class="header" data-i18n="Setting_Header"></h1>
+			
 			<p class="text-left mt-2 mb-[-15px]">
 				<a id="viewData" target="_blank" class="cursor-pointer text-pink-600 underline" data-i18n="btn_ViewData"></a>
 			</p>
+			<!-- Popup for viewing user data -->
+			<div id="settingsPopup" class="popup hidden">
+				<div class="popup-content">
+					<span class="close">&times;</span>
+					<h2 class="text-[20px] mt-3 mb-3" data-i18n="UserP_Header"></h2>
+					<form>
+						<p class="text-black text-left" data-i18n="LogIn_Name"></p>
+						<div type="text" id="username" value="john_doe" readonly></div>
+						
+						<p class="text-black text-left" data-i18n="SignUp_Alias"></p>
+						<div type="text" id="alias" value="Johnny" readonly></div>
+					</form>
+				</div>
+			</div>
 				
 			<p class="p1" data-i18n="Setting_Avatar"></p>
 			<button class="edit-picture" onclick="document.getElementById('avatar').click()">
@@ -97,7 +112,20 @@ export function setupSetting() {
 		
 		document.getElementById('viewData')?.addEventListener('click', async () => {
 			console.log("View Data clicked");
+			const settingsPopup = document.getElementById('settingsPopup');
+			if (settingsPopup) {
+				settingsPopup.classList.remove('hidden');
+			}
 		});
+		const closeButton = document.querySelector('.close');
+		if (closeButton) {
+			closeButton.addEventListener('click', () => {
+				const settingsPopup = document.getElementById('settingsPopup');
+				if (settingsPopup) {
+					settingsPopup.classList.add('hidden');
+				}
+			});
+		}
 
 		document.getElementById('delete_Account')?.addEventListener('click', () => {
 
