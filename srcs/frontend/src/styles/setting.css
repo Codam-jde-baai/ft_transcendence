@@ -94,4 +94,13 @@ p {
 .close {
 	@apply absolute top-2 right-3 text-[24px] cursor-pointer;
 }
+.PWpopup {
+	@apply fixed top-0 left-[-20px] w-[500px] h-full bg-[rgba(0,0,0,0.8)] flex justify-center items-center z-40;
+}
+.PWpopup-content {
+	@apply bg-white p-5 rounded-[8px] min-w-[300px] relative;
+}
+.PWclose {
+	@apply absolute top-2 right-3 text-[24px] cursor-pointer;
+}
 

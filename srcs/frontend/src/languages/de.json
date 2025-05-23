@@ -42,6 +42,7 @@
     "Pending_Requests_Header": "Ausstehende Anfragen",
     "LogIn_AdminHeader": "Admin Anmelden",
     "UserP_Header": "Benutzerdaten",
+    "UserPW_Header": "Aus Sicherheitsgründen geben Sie bitte Ihr Passwort ein",
     
     "Index_P": "Spiele klassisches Pong mit deinen Freunden!",
     "Delete_Account": " Ihr Konto dauerhaft löschen",
@@ -50,6 +51,7 @@
     "History_P": "Von",
     "Admin_P": "Von",
     "T&C_P": " ",
+    "Pop_setting_P": "Dies sind Ihre aktuellen Daten",
 
     "LogIn_placeholder1": "Intra-Name",
     "SignUp_placeholder1": "Nur für die Anmeldung verwendet (Intra-Name)",

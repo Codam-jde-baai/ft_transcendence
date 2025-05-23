@@ -42,6 +42,7 @@
     "Pending_Requests_Header": "Pending Requests",
     "LogIn_AdminHeader": "Admin Login",
     "UserP_Header": "User Personal Data",
+    "UserPW_Header": "For Security reasons, please enter your password",
     
     "Index_P": "Play classic Pong with your friends!",
     "Delete_Account": " your account permanently",
@@ -50,6 +51,7 @@
     "History_P": "Of",
     "Admin_P": "Of",
     "T&C_P": " I agree to the ",
+    "Pop_setting_P": "This is yout current data",
     
     "LogIn_placeholder1": "Intra Name",
     "SignUp_placeholder1": "Only used for Log In (Intra-Name)",
@@ -119,7 +121,6 @@
     "WinRate": "Win Rate",
     "HighestScore_": "Highest Score:",
     "WinRate_": "Win Rate:",
-
 
     "EndOfFile": ""
 }

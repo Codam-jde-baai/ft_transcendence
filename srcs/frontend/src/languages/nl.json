@@ -42,6 +42,7 @@
     "Pending_Requests_Header": "Wachten op Antwoord",
     "LogIn_AdminHeader": "Admin Inloggen",
     "UserP_Header": "Gebruikersgegevens",
+    "UserPW_Header": "Voer om veiligheidsredenen uw wachtwoord in",
     
     "Index_P": "Speel klassieke Pong met je vrienden!",
     "Delete_Account": "Uw account permanent verwijderen",
@@ -50,6 +51,7 @@
     "History_P": "Van",
     "Admin_P": "Van",
     "T&C_P": "Ik ga akkoord met de ",
+    "Pop_setting_P": "Dit zijn uw huidige gegevens",
 
     "LogIn_placeholder1": "Intra-naam",
     "SignUp_placeholder1": "Alleen gebruikt voor inloggen (Intra-naam)",

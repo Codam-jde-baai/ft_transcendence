@@ -1,4 +1,5 @@
 import { setupUserHome } from './home';
+import DOMPurify from 'dompurify'; 
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { eyeIcon_Button } from '../script/buttonHandling';
@@ -27,20 +28,35 @@ export function setupSetting() {
 			<p class="text-left mt-2 mb-[-15px]">
 				<a id="viewData" target="_blank" class="cursor-pointer text-pink-600 underline" data-i18n="btn_ViewData"></a>
 			</p>
-			<!-- Popup for viewing user data -->
-			<div id="settingsPopup" class="popup hidden">
-				<div class="popup-content">
+			<!-- Popup PW check -->
+			<div id="PWPopup" class="PWpopup hidden">
+				<div class="PWpopup-content">
 					<span class="close">&times;</span>
-					<h2 class="text-[20px] mt-3 mb-3" data-i18n="UserP_Header"></h2>
+					<h2 class="text-[20px] mt-3" data-i18n="UserPW_Header"></h2>
 					<form>
-						<p class="text-black text-left" data-i18n="LogIn_Name"></p>
-						<div type="text" id="username" value="john_doe" readonly></div>
-						
-						<p class="text-black text-left" data-i18n="SignUp_Alias"></p>
-						<div type="text" id="alias" value="Johnny" readonly></div>
+						<p class="text-black text-left" data-i18n="Password"></p>
+						<input type="text" id="PWpassword"></div>
+						<div class="buttons">
+							<button class="btn" id="PWSave" data-i18n="btn_Save"></button>
+						</div>
 					</form>
 				</div>
 			</div>
+			<!-- Popup for viewing user data -->
+			<!-- <div id="settingsPopup" class="popup hidden">
+				<div class="popup-content">
+					<span class="close">&times;</span>
+					<h2 class="text-[20px] mt-3" data-i18n="UserP_Header"></h2>
+					<p class="text-[13px] mt-[-10px] mb-3 text-black text-left" data-i18n="Pop_setting_P"></p>
+					<form>
+						<p class="text-black text-left" data-i18n="LogIn_Name"></p>
+						<div type="text" id="Susername"></div>
+						
+						<p class="text-black text-left" data-i18n="SignUp_Alias"></p>
+						<div type="text" id="Salias"></div>
+					</form>
+				</div>
+			</div> -->
 				
 			<p class="p1" data-i18n="Setting_Avatar"></p>
 			<button class="edit-picture" onclick="document.getElementById('avatar').click()">
@@ -111,11 +127,64 @@ export function setupSetting() {
 		});
 		
 		document.getElementById('viewData')?.addEventListener('click', async () => {
-			console.log("View Data clicked");
-			const settingsPopup = document.getElementById('settingsPopup');
-			if (settingsPopup) {
-				settingsPopup.classList.remove('hidden');
+			const PWPopup = document.getElementById('PWPopup');
+
+			// Retrieve the data from localStorage
+			// const SettingsUserData = localStorage.getItem('SettingsUser');	
+			// const SettingsUser = SettingsUserData ? JSON.parse(SettingsUserData) : null;
+			if (PWPopup) {
+				PWPopup.classList.remove('hidden');
+			// 	document.getElementById('PWSave')?.addEventListener('click', async () => {
+			// 		const PWElement = document.getElementById("password") as HTMLInputElement;
+			// 		const rawInput = PWElement.value;
+			// 		const sanitizedInput = DOMPurify.sanitize(rawInput); // Removes unsafe HTML
+			// 		const alphanumericInput = sanitizedInput.replace(/[^a-zA-Z0-9]/g, ''); // Keeps only alphanumeric
+					
+			// 		if (SettingsUser) {
+			// 			console.log("JAS",JSON.stringify({["username"]: SettingsUser , ["password"]: alphanumericInput}));
+			// 			connectFunc("/user/login", requestBody("POST", JSON.stringify({["username"]: SettingsUser , ["password"]: alphanumericInput}), "application/json"))
+			// 			.then(async (response) => {
+			// 				if (response.ok) {
+								// const settingsPopup = document.getElementById('settingsPopup');
+								// // Retrieve the data from localStorage
+								// const SettingsAliasData = localStorage.getItem('SettingsAlias');	
+								// const SettingsAlias = SettingsAliasData ? JSON.parse(SettingsAliasData) : null;
+								// if (settingsPopup) {
+								// 	settingsPopup.classList.remove('hidden');
+								// 	if (SettingsAlias) {
+								// 		connectFunc(`/useralias/${SettingsAlias}`, requestBody("GET", null, "application/json"))
+								// 		.then(async (response) => {
+								// 			if (response.ok) {
+								// 				response.json().then((data) => {
+								// 					const usernameElem = document.getElementById('Susername');
+								// 					const aliasElem = document.getElementById('Salias');
+								// 					if (usernameElem && aliasElem) {
+								// 						usernameElem.textContent = data.username;
+								// 						aliasElem.textContent = data.alias;
+								// 					}
+								// 				});
+								// 			} else {
+								// 				window.history.pushState({}, '', '/setting');
+								// 				setupSetting();
+								// 			}
+								// 		});
+								// 	} else {
+								// 		window.history.pushState({}, '', '/setting');
+								// 		setupSetting();
+								// 	}
+								// }
+			// 				} else {
+			// 					/// EROR MESSAGE
+			// 					console.error("SettingsUser not found in localStorage");
+			// 				}
+			// 			});
+			// 		}
+			// 	});
+			} else {
+				window.history.pushState({}, '', '/setting');
+				setupSetting();
 			}
+				
 		});
 		const closeButton = document.querySelector('.close');
 		if (closeButton) {
@@ -123,6 +192,10 @@ export function setupSetting() {
 				const settingsPopup = document.getElementById('settingsPopup');
 				if (settingsPopup) {
 					settingsPopup.classList.add('hidden');
+				}
+				const PWPopup = document.getElementById('PWPopup');
+				if (PWPopup) {
+					PWPopup.classList.add('hidden');
 				}
 			});
 		}
