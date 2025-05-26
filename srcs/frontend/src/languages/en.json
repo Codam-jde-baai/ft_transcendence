@@ -20,7 +20,7 @@
 
     "Password": "Password",
     "ConfirmPassword": "Confirm Password",
-    "CurrentPassword": "Current Password",
+    "CurrentPassword": "Current Password *",
     "LogIn_Name": "Login Name",
     "SignUp_Avatar": "Add your Avatar",
     "SignUp_Alias": "Alias Name",
@@ -38,6 +38,7 @@
     "Request_Header": "Friend Requests",
     "Blocked_Header": "Blocked users",
     "Pending_Requests_Header": "Pending Requests",
+    "LogIn_AdminHeader": "Admin Login",
     
     "Index_P": "Play classic Pong with your friends!",
     "Delete_Account": " your account permanently",
@@ -51,6 +52,7 @@
     "SignUp_placeholder2": "Visible for other users",
     "Admin_placeholder1": "Search users...",
     "Friends_placeholder1": "Search for friends...",
+    "CurrentP_placeholder1": "This field is always required",
     
     "Language": "Language",
     "Home": "Home",
@@ -82,6 +84,7 @@
     "3": "3rd Place",
     "wins_": "wins: ",
     "losses_": "losses:",
+    "score_": "score:",
 
     "SignUp_error_admin": "Admin name not allowed",
     "SignUp_error_password": "Passwords Don't Match",
@@ -90,23 +93,29 @@
     "SignUp_error_userPass": "Password must be between 6 and 117 characters",
     "SignUp_error_user_exist": "Username taken. Try another!",
     "SignUp_error_alias_exist": "Alias taken. Try another!",
+    "Alphanumeric_error": "Not alphanumeric input!",
     
     "LogIn_error_user": "User not found",
     "LogIn_error_password": "Wrong Password",
     "LogIn_error": "Wrong Password",
-    "LogIn_noUser": "User Not Found",
+    "LogIn_noUser": "User and Password don't match",
     "CurrentPass_error": "Password doesn't match",
-    "CurrentPass_error1": "Current Password missing",
-    "CurrentPass_error2": "New Password missing",
+    "CurrentPass_error1": "Current Password missing*",
+    "CurrentPass_error2": "No changes detected. Please update settings!",
 
     "Snek": "Snek",
     "SwitchGame": "Switch Game",
     "Pong": "Pong",
 
-    "SPl-against": "Played against",
-    "SWinner": "Winner",
+    "SPl-against": "Players",
     "SMy-score": "My Score",
     "Spl-score": "Opponent Score",
+
+    "HighestScore": "Highest Score",
+    "WinRate": "Win Rate",
+    "HighestScore_": "Highest Score:",
+    "WinRate_": "Win Rate:",
+
 
     "EndOfFile": ""
 }

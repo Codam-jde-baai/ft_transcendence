@@ -12,9 +12,6 @@ export const getAllHistory = async (req: FastifyRequest, reply: FastifyReply) =>
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
 		const snek = await db.select().from(snekTable);
-		if (snek.length === 0){
-			return reply.code(404).send({ error: "nothing to see here" })
-		}
 		snek.sort((a, b) => b.id - a.id);
 		return reply.send(snek.map(toPublicSnek));
 	}

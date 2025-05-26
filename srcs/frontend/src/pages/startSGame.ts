@@ -46,7 +46,8 @@ const authState: AuthState = {
     userAlias: ""
 };
 
-export function setupSGame() {
+
+export function setupStartSGame() {
     const userDataPromise = connectFunc("/snek/stats/me", requestBody("GET", null, "application/json"))
         .then(response => {
             if (response.ok) {

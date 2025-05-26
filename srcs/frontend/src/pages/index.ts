@@ -13,7 +13,8 @@ import { setupAdminUserSetting } from './adminUserSetting';
 import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
-import { setupSGame } from './startSGame';
+import { setupStartSGame } from './startSGame';
+import { setupAdminLogIn } from './adminLogin';
 import { connectFunc, requestBody } from '../script/connections';
 import '../component/topbar'
 import '../component/languageMenu'
@@ -21,6 +22,7 @@ import '../component/friendsRows'
 import '../component/adminTopbar'
 import '../component/admin_userTable'
 import '../component/history_table'
+import '../component/snekHistory_table'
 
 document.addEventListener('DOMContentLoaded', () => {
 	if (!document.getElementById('app')?.hasChildNodes()) {
@@ -43,8 +45,9 @@ export function renderPage() {
 		'/snekHistory': setupSnekMatchHistory,
 		'/errorPages': () => setupErrorPages(404, "Not Found"),
 		'/admin': setupAdmin,
-		'/adminUserSetting': () => setupAdminUserSetting({}),
-		'/startSGame': setupSGame,
+		'/adminUserSetting': () => setupAdminUserSetting(),
+		'/startSGame': setupStartSGame,
+		'/adminLogin': setupAdminLogIn,
 	};
 	if (root) {
 		const funct = routes[window.location.pathname]

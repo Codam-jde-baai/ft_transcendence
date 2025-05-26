@@ -6,8 +6,9 @@ import { passwordFields } from '../script/errorFunctions';
 import { updateUserSettings } from '../script/doSettings';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
-import { connectFunc, requestBody } from '../script/connections';
+import { connectFunc, inputToContent, requestBody } from '../script/connections';
 import { renderPage } from './index';
+import { errorDisplay } from '../script/errorFunctions';
 
 
 export function setupSetting() {
@@ -29,6 +30,12 @@ export function setupSetting() {
 			</button>
 			<input type="file" id="avatar" accept="image/*" style="display: none;">
 
+			<p class="p1" id="current-password" data-i18n="CurrentPassword"></p>
+			<input type="password" required minlength="6" maxlength="117" id="current_password" class="input-field" data-i18n-placeholder="CurrentP_placeholder1">
+			<span id="show-current_password" class="field-icon">
+				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_current">
+			</span>
+
 			<p class="p1" id="user-name" data-i18n="Setting_Name"></p>
 			<input type="username" required minlength="3" maxlength= "17" id="username" class="input-field">
 
@@ -36,12 +43,6 @@ export function setupSetting() {
 			<input type="Alias_Name" required minlength="3" maxlength= "17" id="alias" class="input-field">
 
 			<div class="box">
-				<p class="p1" id="current-password" data-i18n="CurrentPassword"></p>
-				<input type="password" required minlength="6" maxlength="117" id="current_password" class="input-field">
-				<span id="show-current_password" class="field-icon">
-					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_current">
-				</span>
-
 				<p class="p1" id="userPass" data-i18n="Change_Password"></p>
 				<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
 				<span id="show-password" class="field-iconn">
@@ -93,23 +94,31 @@ export function setupSetting() {
 
 		document.getElementById('delete_Account')?.addEventListener('click', () => {
 
-			const confirmed = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
-
-			if (confirmed)
+			if ((document.getElementById("current_password") as HTMLInputElement).value === "")
 			{
-				const response = connectFunc("/user/delete", requestBody("DELETE", null));
-				response.then((response) => {
-					if (response.ok) {
-						window.history.pushState({}, '', '/index');
-						renderPage();
-					} else {
-						alert("Failed to delete the account. Please try again.");
-					}
-				});
+				const elem = document.getElementById("current_password") as HTMLInputElement
+				const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
+				errorDisplay(elem, errorMsg, "CurrentPass_error1");
+				return ;
 			} else {
-				// User clicked "Cancel"
-				window.history.pushState({}, '', '/setting');
-				setupSetting();
+				const confirmed = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
+
+				if (confirmed)
+				{
+					const response = connectFunc("/user/delete", requestBody("DELETE", inputToContent(["current_password"]), "application/json"));
+					response.then((response) => {
+						if (response.ok) {
+							window.history.pushState({}, '', '/index');
+							renderPage();
+						} else {
+							alert("Failed to delete the account. Please try again.");
+						}
+					});
+				} else {
+					// User clicked "Cancel"
+					window.history.pushState({}, '', '/setting');
+					setupSetting();
+				}
 			}
 		});
 	}

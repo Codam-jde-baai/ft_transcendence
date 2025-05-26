@@ -20,7 +20,7 @@
 
     "Password": "Passwort",
     "ConfirmPassword": "Passwort bestätigen",
-    "CurrentPassword": "Aktuelles Passwort",
+    "CurrentPassword": "Aktuelles Passwort *",
     "LogIn_Name": "Anmelde-Name",
     "SignUp_Avatar": "Füge dein Avatar hinzu",
     "SignUp_Alias": "Alias-Name",
@@ -37,7 +37,8 @@
     "Friends_Header": "Deine Freunde",
     "Request_Header": "Freundschaftsanfragen",
     "Blocked_Header": "Deaktivierter Benutzer",
-    "Pending_Requests_Header": "Pending RequestsDE",
+    "Pending_Requests_Header": "Ausstehende Anfragen",
+    "LogIn_AdminHeader": "Admin Anmelden",
     
     "Index_P": "Spiele klassisches Pong mit deinen Freunden!",
     "Delete_Account": " Ihr Konto dauerhaft löschen",
@@ -51,6 +52,7 @@
     "SignUp_placeholder2": "Sichtbar für andere Benutzer",
     "Admin_placeholder1": "Benutzer suchen...",
     "Friends_placeholder1": "Nach Freunden suchen...",
+    "CurrentP_placeholder1": "Dieses Feld ist immer erforderlich",
     
     "Language": "Sprache",
     "Home": "Startseite",
@@ -82,6 +84,7 @@
     "3": "3. Platz",
     "wins_": "Siege: ",
     "losses_": "Niederlagen: ",
+    "score_": "Punktestand: ",
 
     "SignUp_error_admin": "Admin-Name nicht erlaubt",
     "SignUp_error_password": "Passwörter stimmen nicht überein",
@@ -90,23 +93,28 @@
     "SignUp_error_userPass": "Passwort muss zwischen 6 und 117 Zeichen lang sein",
     "SignUp_error_user_exist": "Benutzername vergeben. Versuche einen anderen!",
     "SignUp_error_alias_exist": "Alias vergeben. Versuche einen anderen!",
-    
+    "Alphanumeric_error": "Keine alphanumerische Eingabe!",
+
     "LogIn_error_user": "Benutzer nicht gefunden",
     "LogIn_error_password": "Falsches Passwort",
     "LogIn_error": "Falsches Passwort",
-    "LogIn_noUser": "Benutzer nicht gefunden",
+    "LogIn_noUser": "Benutzername und Passwort stimmen nicht überein",
     "CurrentPass_error": "Passwort stimmt nicht überein",
-    "CurrentPass_error1": "Aktuelles Passwort fehlt",
-    "CurrentPass_error2": "Neues Passwort fehlt",
+    "CurrentPass_error1": "Aktuelles Passwort fehlt*",
+    "CurrentPass_error2": "Keine Änderungen erkannt. Bitte Einstellungen aktualisieren!",
 
     "Snek": "Snek",
     "SwitchGame": "Spiel wechseln",
     "Pong": "Pong",
 
-    "SPl-against": "Gespielt gegen",
-    "SWinner": "Gewinner",
+    "SPl-against": "Spieler",
     "SMy-score": "Mein Punktestand",
     "Spl-score": "Gegnerischer Punktestand",
+
+    "HighestScore": "Höchste Punktzahl",
+    "WinRate": "Gewinnrate",
+    "HighestScore_": "Höchste Punktzahl:",
+    "WinRate_": "Gewinnrate:",
 
     "EndOfFile": ""
 }

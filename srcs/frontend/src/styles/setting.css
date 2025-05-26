@@ -55,7 +55,7 @@ p {
 
 /* Eye icon for password */
 .field-icon {
-	@apply cursor-pointer absolute top-[463px] right-[40px];
+	@apply cursor-pointer absolute top-[273px] right-[40px];
 }
 .field-icon img {
 	@apply w-[25px] h-[20px];

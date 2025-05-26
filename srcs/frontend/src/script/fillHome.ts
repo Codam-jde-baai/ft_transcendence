@@ -34,14 +34,6 @@ export function fillHome() {
 						bestScoreElem.textContent = data.score;
 
 				});
-			} else if (!userInfoResponse.ok) {
-				userInfoResponse.json().then((data) => {
-						if (data.error === "No Scores In The Database") {
-						const bestScoreElem = document.getElementById("best-score");
-						if (bestScoreElem)
-							bestScoreElem.textContent = "0";
-					}
-				});
 			} else {
 				window.history.pushState({}, '', '/errorPages');
 				setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
@@ -62,6 +54,7 @@ export function fillHome() {
 			setupErrorPages(leaderboardResponse.status, leaderboardResponse.statusText);
 		}
 	})
+
 }
 
 // Find the 3 best user scores (Leaderboard)
@@ -87,5 +80,10 @@ function findBestUsers(data: any) {
 		const lossElem = document.getElementById(`loss${index + 1}`);
 		if (lossElem) 
 			lossElem.textContent = user.losses?.toString() || "0";
+
+		// Score
+		const scoreElem = document.getElementById(`score${index + 1}`);
+		if (scoreElem) 
+			scoreElem.textContent = user.score?.toString() || "0";
 	});
 }

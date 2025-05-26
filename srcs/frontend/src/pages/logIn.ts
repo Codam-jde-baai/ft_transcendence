@@ -1,7 +1,5 @@
-import envConfig from '../config/env';
 import { setupUserHome } from './home';
 import { setupSignUp } from './signUp';
-import { setupAdmin } from './admin';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
 import { emptyFields, errorDisplay } from '../script/errorFunctions';

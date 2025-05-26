@@ -2,22 +2,26 @@
 
 /* Dark overlay -> for background */
 .overlay {
-	@apply fixed inset-0 w-full h-screen bg-white/90 -z-10;
+	@apply fixed inset-0 w-full h-screen bg-white/90 z-10;
 }
 
 /* Container */
 .eecontainer {
-	@apply bg-white/0 p-5 rounded-[15px] w-[570px] h-[250px] relative text-center z-10 flex flex-col items-center min-w-fit font-sans;
+	@apply bg-white/0 mb-[100px] p-5 rounded-[15px] w-[570px] h-[250px] relative text-center z-10 flex flex-col items-center min-w-fit font-sans;
 }
 
 /* Error title styling*/
 .eerror-code {
-	@apply text-[13em] font-bold mb-[-0.1em] text-gray-800;
+	@apply text-[13em] font-bold mb-[-45px] text-gray-800;
 }
 
 /* Title styling */
-errorH {
-	@apply text-[2.5em] mb-[0.1em] text-gray-800;
+.errorH {
+	@apply text-[2.5em] text-gray-800;
 }
+.errorP {
+	@apply text-[1em] text-gray-800;
+}
+
 
 

@@ -4,10 +4,14 @@ import { adminPasswordFields } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { connectFunc, requestBody } from '../script/connections';
 
-export function setupAdminUserSetting(data: any) {
+export function setupAdminUserSetting() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
+		// Retrieve the data in setupAdminUserSetting
+		const savedData = localStorage.getItem('adminUserData');
+		const data = savedData ? JSON.parse(savedData) : null;
+
 		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/adminSet.css"> <!-- Link to the CSS file -->
 		

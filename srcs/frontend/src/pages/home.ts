@@ -27,7 +27,7 @@ export function setupUserHome() {
 						</div>
 						<div class="text-container">
 							<div class="best-score-text" data-i18n="Score"></div>
-							<div id="best-score" class="score-number"> >-1200-< </div>
+							<div id="best-score" class="score-number"></div>
 						</div>
 					</div>
 					<div class="smoll-stat-container">
@@ -50,7 +50,6 @@ export function setupUserHome() {
 							</div>
 						</div>
 					</div>
-
 					<div class="buttons">
 						<button class="btn" id="StartGame" data-i18n="btn_PlayPong"></button>
 					</div>
@@ -58,6 +57,7 @@ export function setupUserHome() {
 					<button class="game-btn" id="Snek">
 						<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
 					</button>
+
 				</div>
 				
 				<div class="leaderboard">
@@ -65,18 +65,21 @@ export function setupUserHome() {
 					<div class="leaderboard-entry">
 						<div class="img-container">
 							<img src="src/Pictures/1.jpg">
+						</div>
+						<div class="text-container">
+							<div class="position" data-i18n="1"></div>
+							<div id="aliasName1" class="text"></div>
+							<div class="number">
+								<span data-i18n="score_"></span> <span id="score1" class="number"></span>
 							</div>
-							<div class="text-container">
-								<div class="position" data-i18n="1"></div>
-								<div id="aliasName1" class="text"></div>
-								<div class="number">
-									<span data-i18n="wins_"></span> <span id="win1" class="number"></span>
-								</div>
-								<div class="number">
-									<span data-i18n="losses_"></span> <span id="loss1" class="number"></span>
-								</div>
+							<div class="number">
+								<span data-i18n="wins_"></span> <span id="win1" class="number"></span>
+							</div>
+							<div class="number">
+								<span data-i18n="losses_"></span> <span id="loss1" class="number"></span>
 							</div>
 						</div>
+					</div>
 					<div class="leaderboard-entry">
 						<div class="img-container">
 							<img src="src/Pictures/2.jpg">
@@ -85,11 +88,14 @@ export function setupUserHome() {
 							<div class="position" data-i18n="2"></div>
 							<div id="aliasName2" class="text"></div>
 							<div class="number">
+								<span data-i18n="score_"></span> <span id="score2" class="number"></span>
+							</div>
+							<div class="number">
 								<span data-i18n="wins_"></span> <span id="win2" class="number"></span>
 							</div>
 							<div class="number">
 								<span data-i18n="losses_"></span> <span id="loss2" class="number"></span>
-							</div>v>
+							</div>
 						</div>
 					</div>
 					<div class="leaderboard-entry">
@@ -99,6 +105,9 @@ export function setupUserHome() {
 						<div class="test-container">
 							<div class="position" data-i18n="3"></div>
 							<div id="aliasName3" class="text"></div>
+							<div class="number">
+								<span data-i18n="score_"></span> <span id="score3" class="number"></span>
+							</div>
 							<div class="number">
 								<span data-i18n="wins_"></span> <span id="win3" class="number"></span>
 							</div>

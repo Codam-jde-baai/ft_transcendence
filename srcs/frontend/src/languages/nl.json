@@ -20,7 +20,7 @@
 
     "Password": "Wachtwoord",
     "ConfirmPassword": "Bevestig wachtwoord",
-    "CurrentPassword": "Huidig wachtwoord",
+    "CurrentPassword": "Huidig wachtwoord *",
     "LogIn_Name": "Inlognaam",
     "SignUp_Avatar": "Voeg je avatar toe",
     "SignUp_Alias": "Aliasnaam",
@@ -38,6 +38,7 @@
     "Request_Header": "Vriendschapsverzoeken",
     "Blocked_Header": "Geblokkeerde Gebruikers",
     "Pending_Requests_Header": "Wachten op Antwoord",
+    "LogIn_AdminHeader": "Admin Inloggen",
     
     "Index_P": "Speel klassieke Pong met je vrienden!",
     "Delete_Account": "Uw account permanent verwijderen",
@@ -51,6 +52,7 @@
     "SignUp_placeholder2": "Zichtbaar voor andere gebruikers",
     "Admin_placeholder1": "Zoek gebruikers...",
     "Friends_placeholder1": "Zoek naar vrienden...",
+    "CurrentP_placeholder1": "Dit veld is altijd verplicht",
     
     "Language": "Taal",
     "Home": "Home",
@@ -82,6 +84,7 @@
     "3": "3e plaats",
     "wins_": "overwinningen: ",
     "losses_": "verliezen: ",
+    "score_": "score:",
 
     "SignUp_error_admin": "Admin-naam niet toegestaan",
     "SignUp_error_password": "Wachtwoorden komen niet overeen",
@@ -90,23 +93,28 @@
     "SignUp_error_userPass": "Wachtwoord moet tussen 6 en 117 tekens lang zijn",
     "SignUp_error_user_exist": "Gebruikersnaam bezet. Probeer een andere!",
     "SignUp_error_alias_exist": "Alias bezet. Probeer een andere!",
-    
+    "Alphanumeric_error": "Geen alfanumerieke invoer!",
+
     "LogIn_error_user": "Gebruiker niet gevonden",
     "LogIn_error_password": "Fout wachtwoord",
     "LogIn_error": "Verkeerd wachtwoord",
-    "LogIn_noUser": "Gebruiker niet gevonden",
+    "LogIn_noUser": "Gebruikersnaam en wachtwoord komen niet overeen",
     "CurrentPass_error": "Wachtwoord komt niet overeen",
-    "CurrentPass_error1": "Huidig wachtwoord ontbreekt",
-    "CurrentPass_error2": "Nieuw wachtwoord ontbreekt",
+    "CurrentPass_error1": "Huidig wachtwoord ontbreekt*",
+    "CurrentPass_error2": "Geen wijzigingen gedetecteerd. Update de instellingen!",
 
     "Snek": "Snek",
     "SwitchGame": "Wissel van spel",
     "Pong": "Pong",
 
-    "SPl-against": "Gespeeld tegen",
-    "SWinner": "Winnaar",
+    "SPl-against": "Spelers",
     "SMy-score": "Mijn Score",
     "Spl-score": "Tegenstander Score",
-    
+
+    "HighestScore": "Hoogste Score",
+    "WinRate": "Winstpercentage",
+    "HighestScore_": "Hoogste Score:",
+    "WinRate_": "Winstpercentage:",
+
     "EndOfFile": ""
 }

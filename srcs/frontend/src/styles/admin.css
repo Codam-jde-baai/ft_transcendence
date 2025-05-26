@@ -7,7 +7,7 @@
 
 /* All for the Middle */
 .amiddle {
-	@apply bg-black bg-opacity-80 fixed p-2 top-[200px] left-[220px] rounded-[15px] w-[85%] min-h-[20%] z-[1];
+	@apply bg-black bg-opacity-80 fixed p-2 top-[200px] left-[220px] rounded-[15px] w-[80%] min-h-[20%] z-[1];
 }
 
 /* Table Styling */

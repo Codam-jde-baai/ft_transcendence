@@ -34,7 +34,8 @@ export const getTotalScore = async (request: FastifyRequest, reply: FastifyReply
 		const db = drizzle(sqlite);
 		const Scores = await db.select({ match_duration:matchesTable.match_duration }).from(matchesTable)
 		if (Scores.length === 0){
-			return reply.code(404).send({ error: "No Scores In The Database" })
+			return reply.status(200).send({ score: 0 })
+			// return reply.code(404).send({ error: "No Scores In The Database" })
 		}
 		const score:number = Scores.reduce((sum:number, current) => sum + current.match_duration!, 0)
 		return reply.status(200).send({score: score});

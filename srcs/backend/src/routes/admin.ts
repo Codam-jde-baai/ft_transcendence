@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify';
 import { authenticatePrivateToken, authAPI } from './authentication.ts';
 import {
+	checkAdmin,
 	loginAdmin,
 	logoutAdmin,
 	adminDeleteUser,
@@ -31,7 +32,7 @@ const loginAdminOptions = {
 	}
 };
 
-const logoutAdminOptions = {
+const getAdminOptions = {
 	schema: {
 		security: [{ apiKey: [] }],
 		tags: ['admin'],
@@ -96,7 +97,8 @@ function adminRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 					admin: string;
 					password: string;
 	}}>('/admin/login', { preHandler: [authAPI], ...loginAdminOptions}, loginAdmin);	
-	fastify.get('/admin/logout', { preHandler: [authenticatePrivateToken], ...logoutAdminOptions}, logoutAdmin);	
+	fastify.get('/admin', { preHandler: [authenticatePrivateToken], ...getAdminOptions}, checkAdmin);	
+	fastify.get('/admin/logout', { preHandler: [authenticatePrivateToken], ...getAdminOptions}, logoutAdmin);	
 	fastify.delete<{ Body: {
 		username: string;
 	}}>('/admin/deleteUser', { preHandler: [authenticatePrivateToken], ...adminDeleteOptions}, adminDeleteUser);	

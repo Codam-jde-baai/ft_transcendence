@@ -68,9 +68,12 @@ class UserTable extends HTMLElement {
 								if (userData.ok) {
 									userData.json().then((data) => {
 
+										// Save the data in localStorage before navigating
+										localStorage.setItem('adminUserData', JSON.stringify(data));
+										
 										// Change users Password
 										window.history.pushState({}, '', '/adminUserSetting');
-										setupAdminUserSetting(data);
+										setupAdminUserSetting();
 									});
 								} else {
 									window.history.pushState({}, '', '/errorPages');
