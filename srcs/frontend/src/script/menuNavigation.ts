@@ -17,7 +17,11 @@ export function setupNavigation() {
 	];
 
 	document.getElementById('TC')?.addEventListener('click', () => {
-		console.log("T&C_page");
+		// Open in a new tab
+		window.open('./src/T&C/Terms&Conditions.pdf', '_blank');
+
+		// // Open in a new tab
+		// window.location.href = './src/T&C/Terms&Conditions.pdf';
 	});
 
 	navItems.forEach(({ id, path, action }) => {
