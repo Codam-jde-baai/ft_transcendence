@@ -20,7 +20,7 @@ export function setupAdminUserSetting() {
 		<div class="admin-popup-overlay">
 			<div class="asmiddle">
 				<div class="ucontainer">
-					<button id="close-popup" class="close-popup">X</button>
+					<button id="close-popup" class="close-popup">&times;</button>
 					<h1 class="admin_header" data-i18n="Admin_Header"></h1>
 					<p class="p2" data-i18n="Admin_P"></p>
 					<p class="p2">${data.username}</p>
