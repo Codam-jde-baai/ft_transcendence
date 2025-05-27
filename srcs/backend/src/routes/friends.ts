@@ -5,6 +5,7 @@ import { addFriend } from '../controllers/friends/addFriends.ts';
 import { getFriends, getMyFriends } from '../controllers/friends/getFriends.ts';
 import { AcceptFriendReq, RemoveFriendRelation } from '../controllers/friends/updateFriends.ts';
 import { getNonFriends } from '../controllers/friends/publicUsers.ts'
+import { stat } from 'fs';
 
 const relationProperties = {
 	type: 'object',
@@ -17,6 +18,17 @@ const relationProperties = {
 }
 
 const friendProperties = {
+	type: 'object',
+	properties: {
+		friendid: { type: 'number' },
+		friend: {
+			type: 'object',
+			properties: { ...publicUserProperties, status: { type: 'number' } }
+		}
+	}
+}
+
+const nonFriendProperties = {
 	type: 'object',
 	properties: {
 		friendid: { type: 'number' },
@@ -36,11 +48,11 @@ const friendListProperties = {
 		},
 		sentRequests: {
 			type: 'array',
-			items: friendProperties
+			items: nonFriendProperties
 		},
 		receivedRequests: {
 			type: 'array',
-			items: friendProperties
+			items: nonFriendProperties
 		}
 	}
 }

@@ -26,6 +26,7 @@ export type friendSchema = {
 		};
 		win: number;
 		loss: number;
+		status: number;
 	}
 }
 
@@ -244,6 +245,7 @@ function refreshContainer(containerId: string) {
                     friendid=${element.friendid} 
                     profilePicData=${element.friend.profile_pic.data} 
                     profilePicMimeType=${element.friend.profile_pic.mimeType}>
+					status="${element.friend.status || ''}"
                 </public-user>
             `).join('');
 

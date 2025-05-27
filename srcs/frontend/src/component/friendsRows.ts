@@ -20,9 +20,10 @@ class PublicUser extends HTMLElement {
 					bubbles: true,
 					detail: {
 						action: buttonAction,
-						alias: this.getAttribute('alias'), //unused
+						alias: this.getAttribute('alias'),
 						friendid: this.getAttribute('friendid'),
-						type: this.getAttribute("type") //unused
+						type: this.getAttribute("type"),
+						status: this.getAttribute("status"),
 					}
 				}));
 			});
@@ -38,13 +39,13 @@ class PublicUser extends HTMLElement {
 		if (profilePicData != "null" && profilePicMimeType != "null") {
 			image = `data:${profilePicMimeType};base64,${profilePicData}`;
 		}
-		else
-		{
+		else {
 			image = "src/Pictures/defaultPP.png"
 		}
 		this.innerHTML = "";
 		this.insertAdjacentHTML("beforeend", /*html*/`
 		<div class="publicUser">
+			<span class=statusIndicator ${type === 'friend' ? '' : 'hidden'} ></span>
 			<img src=${image} alt="Profile Picture">
 			<p> ${alias} </p>
 			

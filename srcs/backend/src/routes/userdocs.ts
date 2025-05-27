@@ -36,7 +36,6 @@ const userProperties = {
 	},
 	status: { type: 'number' },
 	language: { type: 'string' },
-	// score: { type: 'number' },
 	win: { type: 'number' },
 	loss: { type: 'number' }
 };
@@ -47,7 +46,6 @@ export const publicUserProperties = {
 		type: 'object',
 		properties: profilePicProperties
 	},
-	// score: { type: 'number' },
 	win: { type: 'number' },
 	loss: { type: 'number' }
 };
@@ -381,7 +379,7 @@ export const deleteUserOptions = {
 			properties: {
 				current_password: { type: 'string', minLength: 6 }
 			}
-		},response: {
+		}, response: {
 			204: {
 				type: 'null',
 				description: 'User successfully deleted'
