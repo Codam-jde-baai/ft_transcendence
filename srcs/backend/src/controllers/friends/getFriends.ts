@@ -16,7 +16,7 @@ export const getFriends = async (request: FastifyRequest<{ Params: { alias: stri
 
 		const userExist = await db.select().from(usersTable).where(eq(usersTable.alias, alias)).limit(1);
 		if (userExist.length === 0) {
-			return reply.code(400).send({ error: 'user does not exist' });
+			return reply.code(404).send({ error: 'user does not exist' });
 		}
 
 		const uuid = userExist[0].uuid
@@ -27,7 +27,7 @@ export const getFriends = async (request: FastifyRequest<{ Params: { alias: stri
 			)
 		);
 		if (RelationArray.length === 0) {
-			return reply.code(404).send("nothing to see here")
+			return reply.code(200).send({})
 		}
 		const reqRelation = RelationArray.filter(relation => relation.reqUUid === uuid);
 		const recRelation = RelationArray.filter(relation => relation.recUUid === uuid);
@@ -118,7 +118,7 @@ export const getMyFriends = async (request: FastifyRequest, reply: FastifyReply)
 			)
 		);
 		if (RelationArray.length === 0) {
-			return reply.code(404).send("nothing to see here")
+			return reply.code(200).send({})
 		}
 		const reqRelation = RelationArray.filter(relation => relation.reqUUid === uuid);
 		const recRelation = RelationArray.filter(relation => relation.recUUid === uuid);

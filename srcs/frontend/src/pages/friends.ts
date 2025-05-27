@@ -6,6 +6,16 @@ import { fillTopbar } from '../script/fillTopbar';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupNavigation } from '../script/menuNavigation';
 
+export type PubUserSchema = {
+	alias: string;
+	profile_pic: {
+		data: string;
+		mimeType: string;
+	};
+	win: number;
+	loss: number;
+};
+
 export type friendSchema = {
 	friendid: number;
 	friend: {
@@ -24,6 +34,8 @@ type FriendRelations = {
 	receivedRequests: friendSchema[];
 	sentRequests: friendSchema[];
 };
+
+let publicUsers: PubUserSchema[] = [];
 
 export function setupFriends() {
 	const root = document.getElementById('app');
