@@ -27,7 +27,12 @@ export const getFriends = async (request: FastifyRequest<{ Params: { alias: stri
 			)
 		);
 		if (RelationArray.length === 0) {
-			return reply.code(200).send({})
+			return reply.code(200).send(
+				{
+					friends: [],
+					sentRequests: [],
+					receivedRequests: []
+				})
 		}
 		const reqRelation = RelationArray.filter(relation => relation.reqUUid === uuid);
 		const recRelation = RelationArray.filter(relation => relation.recUUid === uuid);
@@ -118,7 +123,12 @@ export const getMyFriends = async (request: FastifyRequest, reply: FastifyReply)
 			)
 		);
 		if (RelationArray.length === 0) {
-			return reply.code(200).send({})
+			return reply.code(200).send(
+				{
+					friends: [],
+					sentRequests: [],
+					receivedRequests: []
+				})
 		}
 		const reqRelation = RelationArray.filter(relation => relation.reqUUid === uuid);
 		const recRelation = RelationArray.filter(relation => relation.recUUid === uuid);
