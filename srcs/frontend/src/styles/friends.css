@@ -33,7 +33,7 @@
 
 /* PublicUser Box */
 .publicUser {
-    @apply flex items-center bg-white p-2.5 rounded-lg shadow-md;
+    @apply flex justify-between bg-white p-2.5 rounded-lg shadow-md;
     box-shadow: 5px 5px 5px rgba(144, 32, 99);
 }
 .publicUser img {

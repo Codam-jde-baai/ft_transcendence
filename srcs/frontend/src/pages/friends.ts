@@ -102,8 +102,8 @@ export function setupFriends() {
 						<div class="your-friends-list-wrapper">
 							<div class="friends-list" id="friends-container">
 								${friendRelations.friends.map((element: friendSchema) => `
-								<public-user type="friend" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-								`).join('')}
+                                <public-user type="friend" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType} status="${element.friend.status}"></public-user>
+                                `).join('')}
 							</div>
 						</div>
 
@@ -244,8 +244,8 @@ function refreshContainer(containerId: string) {
                     alias=${element.friend.alias} 
                     friendid=${element.friendid} 
                     profilePicData=${element.friend.profile_pic.data} 
-                    profilePicMimeType=${element.friend.profile_pic.mimeType}>
-					status="${element.friend.status || ''}"
+                    profilePicMimeType=${element.friend.profile_pic.mimeType}
+                    status="${element.friend.status || 0}">
                 </public-user>
             `).join('');
 
