@@ -1,3 +1,5 @@
+import "../styles/friends.css"
+
 class PublicUser extends HTMLElement {
 	constructor() {
 		super();
@@ -47,13 +49,13 @@ class PublicUser extends HTMLElement {
         this.innerHTML = "";
         this.insertAdjacentHTML("beforeend", /*html*/`
         <div class="publicUser">
-            <div flex-row>
+			<div>
                 <span class="statusIndicator ${type === 'friend' ? userStatus : 'hidden'}"></span>
                 <img src=${image} alt="Profile Picture">
                 <p> ${alias} </p>
             </div>
             
-                <div flex-row>
+            <div>
                 <button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="History"> </button>
                 <button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="OurHistory"> </button>
                 <button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="btn_Remove_Friend"> </button>
