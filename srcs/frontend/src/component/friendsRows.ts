@@ -33,21 +33,21 @@ class PublicUser extends HTMLElement {
 	}
 
 	render() {
-        const type: string = this.getAttribute("type") || "Could Not Load User"
-        const alias: string = this.getAttribute("alias") || "Alias"
-        const profilePicData: string = this.getAttribute("profilePicData") || "null"
-        const profilePicMimeType: string = this.getAttribute("profilePicMimeType") || "null"
-        const statusData: string | null = this.getAttribute("status")
-        let image = ""
-        if (profilePicData != "null" && profilePicMimeType != "null") {
-            image = `data:${profilePicMimeType};base64,${profilePicData}`;
-        }
-        else {
-            image = "src/Pictures/defaultPP.png"
-        }
-        const userStatus: string = statusData === "1" ? "online" : "offline";
-        this.innerHTML = "";
-        this.insertAdjacentHTML("beforeend", /*html*/`
+		const type: string = this.getAttribute("type") || "Could Not Load User"
+		const alias: string = this.getAttribute("alias") || "Alias"
+		const profilePicData: string = this.getAttribute("profilePicData") || "null"
+		const profilePicMimeType: string = this.getAttribute("profilePicMimeType") || "null"
+		const statusData: string | null = this.getAttribute("status")
+		let image = ""
+		if (profilePicData != "null" && profilePicMimeType != "null") {
+			image = `data:${profilePicMimeType};base64,${profilePicData}`;
+		}
+		else {
+			image = "src/Pictures/defaultPP.png"
+		}
+		const userStatus: string = statusData === "1" ? "online" : "offline";
+		this.innerHTML = "";
+		this.insertAdjacentHTML("beforeend", /*html*/`
         <div class="publicUser">
 			<div class="statusProfile">
 				<span class="statusIndicator ${type === 'friend' ? userStatus : 'hidden'}"></span>
@@ -60,7 +60,7 @@ class PublicUser extends HTMLElement {
             <div>
                 <button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="History"> </button>
                 <button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="OurHistory"> </button>
-                <button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="btn_Remove_Friend"> </button>
+                <button class="btn bg-red-800" ${type === 'friend' ? '' : 'hidden'} data-i18n="btn_Remove_Friend"> </button>
 
                 <button class="btn accept" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Accept"> . </button>
                 <button class="btn decline" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Decline"> . </button>
@@ -78,7 +78,7 @@ class PublicUser extends HTMLElement {
             <button class="btn" ${type === "blocked" ? '' : 'hidden'} data-i18n="btn_Unblock_User"> </button>
             -->
         </div>`)
-    }
+	}
 }
 
 customElements.define('public-user', PublicUser);

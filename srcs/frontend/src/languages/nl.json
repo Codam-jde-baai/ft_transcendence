@@ -17,7 +17,6 @@
     "btn_Unblock_User": "Deblokkeer",
     "btn_Cancel": "Annuleren",
     "btn_Delete": "Verwijderen",
-
     "Password": "Wachtwoord",
     "ConfirmPassword": "Bevestig wachtwoord",
     "CurrentPassword": "Huidig wachtwoord *",
@@ -25,7 +24,6 @@
     "SignUp_Avatar": "Voeg je avatar toe",
     "SignUp_Alias": "Aliasnaam",
     "Admin": "Admin",
-    
     "Index_Header": "Welkom bij Transcendence",
     "Header_Pong": "Welkom bij Pong",
     "Header_Snek": "Welkom bij Snek",
@@ -39,42 +37,36 @@
     "Blocked_Header": "Geblokkeerde Gebruikers",
     "Pending_Requests_Header": "Wachten op Antwoord",
     "LogIn_AdminHeader": "Admin Inloggen",
-    
     "Index_P": "Speel klassieke Pong met je vrienden!",
     "Delete_Account": "Uw account permanent verwijderen",
     "LogIn_P": "Heb je geen account?",
     "SignUp_P": "Heb je al een account?",
     "History_P": "Van",
     "Admin_P": "Van",
-
     "LogIn_placeholder1": "Intra-naam",
     "SignUp_placeholder1": "Alleen gebruikt voor inloggen (Intra-naam)",
     "SignUp_placeholder2": "Zichtbaar voor andere gebruikers",
     "Admin_placeholder1": "Zoek gebruikers...",
     "Friends_placeholder1": "Zoek naar vrienden...",
     "CurrentP_placeholder1": "Dit veld is altijd verplicht",
-    
     "Language": "Taal",
     "Home": "Home",
     "Settings": "Instellingen",
     "Friends": "Vrienden",
     "History": "Wedstrijden",
+    "OurHistory": "1v1 Wedstrijden",
     "LogOut": "Uitloggen",
-
     "English": "Engels",
     "German": "Duits",
     "Dutch": "Nederlands",
-
     "Setting_Avatar": "Avatar bewerken",
     "Setting_Name": "Inlognaam bewerken",
     "Setting_Alias": "Aliasnaam bewerken",
     "Change_Password": "Wachtwoord wijzigen",
-    
     "Action": "Acties",
     "Date": "Datum",
     "1v1_Game": "1v1 Spel",
     "Winner": "Winnaar",
-    
     "Score": "Score",
     "Wins": "Overwinningen",
     "Losses": "Verliezen",
@@ -85,7 +77,6 @@
     "wins_": "overwinningen: ",
     "losses_": "verliezen: ",
     "score_": "score:",
-
     "SignUp_error_admin": "Admin-naam niet toegestaan",
     "SignUp_error_password": "Wachtwoorden komen niet overeen",
     "SignUp_error_user": "Gebruikersnaam moet tussen 3 en 17 tekens lang zijn",
@@ -94,7 +85,6 @@
     "SignUp_error_user_exist": "Gebruikersnaam bezet. Probeer een andere!",
     "SignUp_error_alias_exist": "Alias bezet. Probeer een andere!",
     "Alphanumeric_error": "Geen alfanumerieke invoer!",
-
     "LogIn_error_user": "Gebruiker niet gevonden",
     "LogIn_error_password": "Fout wachtwoord",
     "LogIn_error": "Verkeerd wachtwoord",
@@ -102,19 +92,15 @@
     "CurrentPass_error": "Wachtwoord komt niet overeen",
     "CurrentPass_error1": "Huidig wachtwoord ontbreekt*",
     "CurrentPass_error2": "Geen wijzigingen gedetecteerd. Update de instellingen!",
-
     "Snek": "Snek",
     "SwitchGame": "Wissel van spel",
     "Pong": "Pong",
-
     "SPl-against": "Spelers",
     "SMy-score": "Mijn Score",
     "Spl-score": "Tegenstander Score",
-
     "HighestScore": "Hoogste Score",
     "WinRate": "Winstpercentage",
     "HighestScore_": "Hoogste Score:",
     "WinRate_": "Winstpercentage:",
-
     "EndOfFile": ""
 }

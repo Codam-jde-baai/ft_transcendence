@@ -17,7 +17,6 @@
     "btn_Unblock_User": "deblokkeren",
     "btn_Cancel": "stornieren",
     "btn_Delete": "Löschen",
-
     "Password": "Passwort",
     "ConfirmPassword": "Passwort bestätigen",
     "CurrentPassword": "Aktuelles Passwort *",
@@ -25,7 +24,6 @@
     "SignUp_Avatar": "Füge dein Avatar hinzu",
     "SignUp_Alias": "Alias-Name",
     "Admin": "Admin",
-    
     "Index_Header": "Willkommen bei Transcendence",
     "Header_Pong": "Willkommen bei Pong",
     "Header_Snek": "Willkommen bei Snek",
@@ -39,42 +37,36 @@
     "Blocked_Header": "Deaktivierter Benutzer",
     "Pending_Requests_Header": "Ausstehende Anfragen",
     "LogIn_AdminHeader": "Admin Anmelden",
-    
     "Index_P": "Spiele klassisches Pong mit deinen Freunden!",
     "Delete_Account": " Ihr Konto dauerhaft löschen",
     "LogIn_P": "Du hast kein Konto?",
     "SignUp_P": "Du  hast bereits ein Konto?",
     "History_P": "Von",
     "Admin_P": "Von",
-
     "LogIn_placeholder1": "Intra-Name",
     "SignUp_placeholder1": "Nur für die Anmeldung verwendet (Intra-Name)",
     "SignUp_placeholder2": "Sichtbar für andere Benutzer",
     "Admin_placeholder1": "Benutzer suchen...",
     "Friends_placeholder1": "Nach Freunden suchen...",
     "CurrentP_placeholder1": "Dieses Feld ist immer erforderlich",
-    
     "Language": "Sprache",
     "Home": "Startseite",
     "Settings": "Einstellungen",
     "Friends": "Freunde",
     "History": "Spielverlauf",
+    "OurHistory": "1v1 Spielverlauf",
     "LogOut": "Abmelden",
-
     "English": "Englisch",
     "German": "Deutsch",
     "Dutch": "Niederländisch",
-
     "Setting_Avatar": "Avatar bearbeiten",
     "Setting_Name": "Anmeldename bearbeiten",
     "Setting_Alias": "Aliasnamen bearbeiten",
     "Change_Password": "Passwort ändern",
-
     "Action": "Aktionen",
     "Date": "Datum",
     "1v1_Game": "1v1 Spiel",
     "Winner": "Gewinner",
-    
     "Score": "Punktestand",
     "Wins": "Siege",
     "Losses": "Niederlagen",
@@ -85,7 +77,6 @@
     "wins_": "Siege: ",
     "losses_": "Niederlagen: ",
     "score_": "Punktestand: ",
-
     "SignUp_error_admin": "Admin-Name nicht erlaubt",
     "SignUp_error_password": "Passwörter stimmen nicht überein",
     "SignUp_error_user": "Benutzername muss zwischen 3 und 17 Zeichen lang sein",
@@ -94,7 +85,6 @@
     "SignUp_error_user_exist": "Benutzername vergeben. Versuche einen anderen!",
     "SignUp_error_alias_exist": "Alias vergeben. Versuche einen anderen!",
     "Alphanumeric_error": "Keine alphanumerische Eingabe!",
-
     "LogIn_error_user": "Benutzer nicht gefunden",
     "LogIn_error_password": "Falsches Passwort",
     "LogIn_error": "Falsches Passwort",
@@ -102,19 +92,15 @@
     "CurrentPass_error": "Passwort stimmt nicht überein",
     "CurrentPass_error1": "Aktuelles Passwort fehlt*",
     "CurrentPass_error2": "Keine Änderungen erkannt. Bitte Einstellungen aktualisieren!",
-
     "Snek": "Snek",
     "SwitchGame": "Spiel wechseln",
     "Pong": "Pong",
-
     "SPl-against": "Spieler",
     "SMy-score": "Mein Punktestand",
     "Spl-score": "Gegnerischer Punktestand",
-
     "HighestScore": "Höchste Punktzahl",
     "WinRate": "Gewinnrate",
     "HighestScore_": "Höchste Punktzahl:",
     "WinRate_": "Gewinnrate:",
-
     "EndOfFile": ""
 }
