@@ -49,11 +49,13 @@ class PublicUser extends HTMLElement {
         this.innerHTML = "";
         this.insertAdjacentHTML("beforeend", /*html*/`
         <div class="publicUser">
-			<div>
-                <span class="statusIndicator ${type === 'friend' ? userStatus : 'hidden'}"></span>
-                <img src=${image} alt="Profile Picture">
-                <p> ${alias} </p>
-            </div>
+			<div class="statusProfile">
+				<span class="statusIndicator ${type === 'friend' ? userStatus : 'hidden'}"></span>
+				<div class="profile-content">
+					<img src=${image} alt="Profile Picture">
+					<p> ${alias} </p>
+				</div>
+			</div>
             
             <div>
                 <button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="History"> </button>
