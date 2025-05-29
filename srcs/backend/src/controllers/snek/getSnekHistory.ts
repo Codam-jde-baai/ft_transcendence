@@ -31,8 +31,8 @@ export const getMyHistory = async (req: FastifyRequest, reply: FastifyReply) => 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
 		const snek = await db.select().from(snekTable).where(eq(snekTable.p1_uuid, uuid));
-		if (snek.length === 0){
-			return reply.code(404).send({ error: "nothing to see here" })
+		if (snek.length === 0) {
+			return reply.code(200).send(snek.map(toPublicSnek));
 		}
 		snek.sort((a, b) => b.id - a.id);
 		return reply.send(snek.map(toPublicSnek));
@@ -56,8 +56,8 @@ export const getHistoryByAlias = async (req: FastifyRequest<{ Params: { alias: s
 			eq(snekTable.p1_alias, alias),
 			eq(snekTable.p2_alias, alias)
 		));
-		if (snek.length === 0){
-			return reply.code(404).send({ error: "nothing to see here" })
+		if (snek.length === 0) {
+			return reply.code(200).send(snek.map(toPublicSnek));
 		}
 		snek.sort((a, b) => b.id - a.id);
 		return reply.send(snek.map(toPublicSnek));
@@ -79,11 +79,11 @@ export const getHistoryByPair = async (req: FastifyRequest<{ Params: { p1_alias:
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
 		const snek = await db.select().from(snekTable).where(or(
-    		and(eq(snekTable.p1_alias, p1_alias), eq(snekTable.p2_alias, p2_alias)),
-    		and(eq(snekTable.p1_alias, p2_alias), eq(snekTable.p2_alias, p1_alias))
+			and(eq(snekTable.p1_alias, p1_alias), eq(snekTable.p2_alias, p2_alias)),
+			and(eq(snekTable.p1_alias, p2_alias), eq(snekTable.p2_alias, p1_alias))
 		));
-		if (snek.length === 0){
-			return reply.code(404).send({ error: "nothing to see here" })
+		if (snek.length === 0) {
+			return reply.code(200).send(snek.map(toPublicSnek));
 		}
 		snek.sort((a, b) => b.id - a.id);
 		return reply.send(snek.map(toPublicSnek));
