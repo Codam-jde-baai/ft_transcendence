@@ -6,7 +6,7 @@ import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
 import { setupSnek } from '../pages/snek';
 
-export function setupUserHome() {
+export function setupUserHome(refresh: boolean = false) {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
@@ -125,14 +125,14 @@ export function setupUserHome() {
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
 		fillHome();
-		fillTopbar();
+		fillTopbar(refresh);
 		setupNavigation();
 
 		document.getElementById('StartGame')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/startPGame');
 			setupStartGame();
 		});
-		
+
 		document.getElementById('Snek')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/snek');
 			setupSnek();
@@ -141,4 +141,3 @@ export function setupUserHome() {
 	}
 }
 
-	

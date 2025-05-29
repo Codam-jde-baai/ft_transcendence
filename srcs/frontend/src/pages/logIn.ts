@@ -58,15 +58,14 @@ export function setupLogIn() {
 			const response = connectFunc("/user/login", body);
 			response.then((response) => {
 				if (response.ok) {
-					response.json().then(() => {	
+					response.json().then(() => {
 						window.history.pushState({}, '', '/home');
-						setupUserHome();
+						setupUserHome(true);
 					});
-				} 
-				else 
-				{
+				}
+				else {
 					response.json().then((data) => {
-						if (data.error === "username and password combination do not match database entry") {	
+						if (data.error === "username and password combination do not match database entry") {
 							const elem = document.getElementById("username") as HTMLInputElement
 							const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
 							errorDisplay(elem, errorMsg, "LogIn_noUser");

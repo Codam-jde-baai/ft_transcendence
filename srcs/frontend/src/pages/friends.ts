@@ -5,6 +5,7 @@ import { connectFunc, requestBody } from "../script/connections"
 import { fillTopbar } from '../script/fillTopbar';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupNavigation } from '../script/menuNavigation';
+import { setupErrorPages } from './errorPages';
 
 export type PubUserSchema = {
 	alias: string;
@@ -318,14 +319,20 @@ function setupUserActionListeners() {
 	}
 
 	function viewUserHistory(alias: string) {
-		window.history.pushState({ userData: alias }, '', `/history?user=${alias}`);
-		setupMatchHistory(alias);
+		window.history.pushState({ userData: alias }, '', `/history/?alias=${alias}}`);
+		setupMatchHistory();
 		console.log("viewUserHistory button, alias: ", alias);
 	}
 
 	function viewOurHistory(alias: string) {
-		window.history.pushState({ userData: alias }, '', `/history?user=${alias}`);
-		setupMatchHistory(userAlias, alias);
+		const storedAlias = localStorage.getItem('myAlias');
+		if (!storedAlias) {
+			console.error("Can't find user alias");
+			setupErrorPages(500, "User alias is not stored locally");
+			return;
+		}
+		window.history.pushState({ userData: alias }, '', `/history/?alias1=${storedAlias}/?alias2=${alias}`);
+		setupMatchHistory();
 		console.log("viewUserHistory button, alias: ", alias);
 	}
 
