@@ -103,8 +103,10 @@ export function setupSnekMatchHistory() {
 				setupSnekSearchFunctionality();
 
 				document.getElementById('PongHistory')?.addEventListener('click', () => {
-					window.history.pushState({}, '', '/history');
-					setupMatchHistory();
+					const url = new URL(window.location.href);
+					const searchParams = url.search;
+					window.location.href = `/history${searchParams}`;
+					setupSnekMatchHistory();
 				});
 
 				document.getElementById('MyHistoryBtn')?.addEventListener('click', () => {

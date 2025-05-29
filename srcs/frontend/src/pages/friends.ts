@@ -313,7 +313,7 @@ function setupUserActionListeners() {
 	}
 
 	function viewUserHistory(alias: string) {
-		window.history.pushState({ userData: alias }, '', `/history/?alias=${alias}}`);
+		window.history.pushState({ userData: alias }, '', `/history?alias=${alias}`);
 		setupMatchHistory();
 	}
 
@@ -325,7 +325,7 @@ function setupUserActionListeners() {
 			window.location.reload();
 			return;
 		}
-		window.history.pushState({ userData: alias }, '', `/history/?alias1=${storedAlias}&alias2=${alias}`);
+		window.history.pushState({ userData: alias }, '', `/history?alias1=${storedAlias}&alias2=${alias}`);
 		setupMatchHistory();
 	}
 
