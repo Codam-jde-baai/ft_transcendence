@@ -73,15 +73,15 @@ export function setupSetting() {
 		eyeIcon_Button(["show-password", "show-password_confirm", "show-current_password", "avatar"]);
 		fillTopbar();
 		setupNavigation();
-		
+
 		document.getElementById('Save')?.addEventListener('click', async () => {
 			const isValid = passwordFields(["username", "alias", "password", "password_confirm", "current_password"]);
 			if (!isValid)
 				return; // Stop execution if validation fails
 
 			if (await updateUserSettings(["username", "alias", "password", "avatar", "current_password"])) {
-					window.history.pushState({}, '', '/home');
-					setupUserHome();
+				window.history.pushState({}, '', '/home');
+				setupUserHome(true);
 			}
 			else {
 				const errorBox = document.getElementById("settings-error");
@@ -94,17 +94,15 @@ export function setupSetting() {
 
 		document.getElementById('delete_Account')?.addEventListener('click', () => {
 
-			if ((document.getElementById("current_password") as HTMLInputElement).value === "")
-			{
+			if ((document.getElementById("current_password") as HTMLInputElement).value === "") {
 				const elem = document.getElementById("current_password") as HTMLInputElement
 				const errorMsg = document.getElementById("current-password") as HTMLParagraphElement;
 				errorDisplay(elem, errorMsg, "CurrentPass_error1");
-				return ;
+				return;
 			} else {
 				const confirmed = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
 
-				if (confirmed)
-				{
+				if (confirmed) {
 					const response = connectFunc("/user/delete", requestBody("DELETE", inputToContent(["current_password"]), "application/json"));
 					response.then((response) => {
 						if (response.ok) {
