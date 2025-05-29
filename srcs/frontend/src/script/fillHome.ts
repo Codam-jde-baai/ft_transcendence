@@ -19,7 +19,6 @@ export function fillHome() {
 
 				// Save the data in localStorage
 				localStorage.setItem('SettingsUser', JSON.stringify(data.username));
-				localStorage.setItem('SettingsAlias', JSON.stringify(data.alias));
 
 			});
 		} else {
