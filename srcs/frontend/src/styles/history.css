@@ -32,10 +32,26 @@
 
 .userTable td {
 	@apply p-3 text-center text-black border-b border-gray-300 text-base font-sans;
+	transition: background-color 0.2s ease;
 }
 
 .userTable th {
 	@apply text-black p-3 bg-gray-300 font-bold text-lg font-sans sticky top-0 z-[2];
+}
+
+/* Enhanced row styling for match results */
+.userTable tbody tr {
+	transition: all 0.2s ease;
+}
+
+.userTable tbody tr:hover {
+	transform: scale(1.01);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Crown emoji styling - ensure it displays properly */
+.userTable td {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 /* Scroll */
@@ -88,6 +104,11 @@
 
 .find-btn:hover {
 	@apply bg-[#b86a8a];
+}
+
+/* Error styling */
+.error {
+	@apply text-red-500 text-center p-4 font-sans text-lg;
 }
 
 /* Old game button (keeping for compatibility) */
