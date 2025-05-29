@@ -52,8 +52,8 @@ const addSnekMatchOpts = {
                 properties: snekHistoryProperties
             },
             400: errorResponseSchema,
-			402: errorResponseSchema,
-			403: errorResponseSchema,
+            402: errorResponseSchema,
+            403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -72,8 +72,8 @@ const getHistoryOpts = {
                     properties: snekHistoryProperties
                 }
             },
-			402: errorResponseSchema,
-			403: errorResponseSchema,
+            402: errorResponseSchema,
+            403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -99,8 +99,8 @@ const getHistoryAliasOpts = {
                     properties: snekHistoryProperties
                 }
             },
-			402: errorResponseSchema,
-			403: errorResponseSchema,
+            402: errorResponseSchema,
+            403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -127,8 +127,8 @@ const getHistoryPairOpts = {
                     properties: snekHistoryProperties
                 }
             },
-			402: errorResponseSchema,
-			403: errorResponseSchema,
+            402: errorResponseSchema,
+            403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -147,8 +147,8 @@ const getTopStatsOpts = {
                     properties: snekStatsProperties
                 }
             },
-			402: errorResponseSchema,
-			403: errorResponseSchema,
+            402: errorResponseSchema,
+            403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -164,8 +164,8 @@ const getUserSnekStatsOpts = {
                 type: 'object',
                 properties: snekStatsProperties
             },
-			402: errorResponseSchema,
-			403: errorResponseSchema,
+            402: errorResponseSchema,
+            403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -188,8 +188,8 @@ const getSnekStatsAliasOpts = {
                 type: 'object',
                 properties: snekStatsProperties
             },
-			402: errorResponseSchema,
-			403: errorResponseSchema,
+            402: errorResponseSchema,
+            403: errorResponseSchema,
             404: errorResponseSchema,
             500: errorResponseSchema
         }
@@ -200,12 +200,12 @@ const getSnekStatsAliasOpts = {
 
 function snekRoutes(fastify: FastifyInstance, options: any, done: () => void) {
     // get match history
-    fastify.get('/snek/history/all', { preHandler: [authenticatePrivateToken], ...getHistoryOpts }, getAllHistory);
-    fastify.get('/snek/history/me', { preHandler: [authenticatePrivateToken], ...getHistoryOpts }, getMyHistory);
+    fastify.get('/snekHistory/all', { preHandler: [authenticatePrivateToken], ...getHistoryOpts }, getAllHistory);
+    fastify.get('/snekHistory/me', { preHandler: [authenticatePrivateToken], ...getHistoryOpts }, getMyHistory);
     fastify.get<{ Params: { alias: string } }>
-        ('/snek/history/:alias', { preHandler: [authenticatePrivateToken], ...getHistoryAliasOpts }, getHistoryByAlias);
+        ('/snekHistory/:alias', { preHandler: [authenticatePrivateToken], ...getHistoryAliasOpts }, getHistoryByAlias);
     fastify.get<{ Params: { p1_alias: string, p2_alias: string } }>
-        ('/snek/history/:p1_alias/:p2_alias', { preHandler: [authenticatePrivateToken], ...getHistoryPairOpts }, getHistoryByPair);
+        ('/snekHistory/:p1_alias/:p2_alias', { preHandler: [authenticatePrivateToken], ...getHistoryPairOpts }, getHistoryByPair);
 
     // get stats
     fastify.get('/snek/stats/top', { preHandler: [authenticatePrivateToken], ...getTopStatsOpts }, getTopStats);

@@ -94,13 +94,13 @@ window.addEventListener('popstate', renderPage);
 export function setupLogOut() {
 
 	connectFunc("/user/logout", requestBody("GET"))
-	.then((response) => {
-		if (response.ok) {
-			renderPage()
-		}
-		else {
-			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(response.status, response.statusText);
-		}
-	})
+		.then((response) => {
+			if (response.ok) {
+				renderPage()
+			}
+			else {
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(response.status, response.statusText);
+			}
+		})
 }

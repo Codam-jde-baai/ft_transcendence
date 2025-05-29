@@ -6,8 +6,15 @@ import { connectFunc, requestBody } from '../script/connections';
 import { setupErrorPages } from './errorPages';
 import { setupSnekMatchHistory } from '../pages/snekHistory';
 
-export function  setupMatchHistory() {
+export function setupMatchHistory() {
 	const root = document.getElementById('app');
+	const storedAlias = localStorage.getItem('myAlias');
+	if (!storedAlias) {
+		console.error("Can't find user alias");
+		fillTopbar(true);
+		window.location.reload();
+		return;
+	}
 	if (root) {
 		root.innerHTML = "";
 		root.insertAdjacentHTML("beforeend", /*html*/`
@@ -23,9 +30,9 @@ export function  setupMatchHistory() {
 			<div class="hcontainer">
 				<h1 class="Pongheader" data-i18n="Pong"></h1>
 				<h1 class="header" data-i18n="History"></h1>
-				<p class="p1" data-i18n="History_P"></p>
-				<p class="p1" id="historyAliasName"></p>
-			
+				<!-- <p class="p1" data-i18n="History_P"></p> -->
+				<p class="p1">${storedAlias}</p>
+				<p class="p1" data-i18n="History_Pong"></p>
 				<history-table></history-table>
 
 			</div>
@@ -43,20 +50,20 @@ export function  setupMatchHistory() {
 		});
 
 		connectFunc(`/user`, requestBody("GET", null))
-		.then((userInfoResponse) => {
-			if (userInfoResponse.ok) {
-				userInfoResponse.json().then((data) => {
+			.then((userInfoResponse) => {
+				if (userInfoResponse.ok) {
+					userInfoResponse.json().then((data) => {
 
-					// Alias Name
-					const aliasElem = document.getElementById("historyAliasName");
-					if (aliasElem)
-						aliasElem.textContent = data.alias;
+						// Alias Name
+						const aliasElem = document.getElementById("historyAliasName");
+						if (aliasElem)
+							aliasElem.textContent = data.alias;
 
-				});
-			} else {
-				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
-			}
-		})
+					});
+				} else {
+					window.history.pushState({}, '', '/errorPages');
+					setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
+				}
+			})
 	}
 }

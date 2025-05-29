@@ -7,13 +7,14 @@
 
 /* All for the Middle */
 .imiddle {
-	@apply bg-black bg-opacity-80 fixed p-2 top-[200px] left-[220px] rounded-[15px] w-[75%] h-[75%] z-[1];
+	@apply bg-black bg-opacity-80 fixed p-2 top-[320px] left-[220px] rounded-[15px] w-[75%] h-[65%] z-[1];
 }
 
 /* Title styling */
 .header {
 	@apply text-4xl my-1 box-border font-sans text-white text-center;
 }
+
 .Pongheader {
 	@apply text-4xl mt-[-8px] mb-[-4px] box-border font-sans text-[#dbb9cd] text-center;
 	text-shadow: 5px 5px 7px #902063;
@@ -28,25 +29,76 @@
 .userTable {
 	@apply w-full border-collapse bg-white table-fixed;
 }
+
 .userTable td {
 	@apply p-3 text-center text-black border-b border-gray-300 text-base font-sans;
 }
+
 .userTable th {
 	@apply text-black p-3 bg-gray-300 font-bold text-lg font-sans sticky top-0 z-[2];
 }
 
 /* Scroll */
 .table-wrapper {
-	@apply pl-2 max-h-[640px] mt-[10px] w-full overflow-y-auto block;
+	@apply pl-2 max-h-[520px] mt-[10px] w-full overflow-y-auto block;
 }
 
-/* Game */
+/* Game Button - Full Width */
+.game-btn-full {
+	@apply fixed left-[220px] top-[130px] bg-[#902063] w-[75%] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
+}
+
+.game-btn-full:hover {
+	@apply bg-[#b86a8a];
+}
+
+.game-btn-full img {
+	@apply w-[25px] h-[25px] ml-2;
+}
+
+/* My History Button */
+.my-history-btn {
+	@apply fixed left-[220px] top-[180px] bg-[#902063] w-[75%] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
+}
+
+.my-history-btn:hover {
+	@apply bg-[#b86a8a];
+}
+
+/* Search Section */
+.search-section {
+	@apply fixed left-[220px] top-[230px] w-[75%] z-[1];
+}
+
+.search-fields {
+	@apply flex gap-4 items-center justify-center bg-black bg-opacity-80 p-4 rounded-[15px];
+}
+
+.alias-input {
+	@apply w-[200px] p-2.5 rounded text-[15px] font-sans border border-gray-300;
+}
+
+.alias-input:focus {
+	@apply outline-none border-[#902063] ring-2 ring-[#902063] ring-opacity-50;
+}
+
+.find-btn {
+	@apply bg-[#902063] px-6 py-2.5 text-white cursor-pointer text-[15px] font-sans border-none rounded;
+}
+
+.find-btn:hover {
+	@apply bg-[#b86a8a];
+}
+
+/* Old game button (keeping for compatibility) */
 .game-btn {
 	@apply absolute left-[230px] top-[153px] bg-[#902063] w-[16vh] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
 }
+
 .game-btn:hover {
 	@apply bg-[#b86a8a];
 }
+
 .game-btn img {
 	@apply w-[25px] h-[25px];
 }

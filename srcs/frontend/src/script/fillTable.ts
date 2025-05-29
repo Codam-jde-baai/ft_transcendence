@@ -8,14 +8,14 @@ export async function fillUserTable(): Promise<any[] | null> {
 
 	const response = await connectFunc(`/users`, requestBody("GET", null, "application/json"));
 	const data = await response.json();
-	
+
 	if (data.error === "No users in database") {
 		if (table) {
 			table.innerHTML = ``;
 		}
 		return null;
 	} else if (response.ok) {
-				
+
 		const formattedData = data.map((entry: { username: string; alias: string }) => ({
 			username: entry.username,
 			alias: entry.alias,
@@ -64,7 +64,7 @@ export async function fillSnekHistoryTable(aliasName: string): Promise<{ player1
 
 	const table = document.querySelector('#userTable');
 
-	const response = await connectFunc(`/snek/history/${aliasName}`, requestBody("GET", null, "application/json"));
+	const response = await connectFunc(`/snekHistory/${aliasName}`, requestBody("GET", null, "application/json"));
 	const data = await response.json();
 
 	if (data.error === "nothing to see here") {
