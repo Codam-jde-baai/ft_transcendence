@@ -2,6 +2,7 @@ import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
+import { Pong } from './babylon.ts';
 
 export function setupStartGame() {
 	const root = document.getElementById('app');
@@ -23,7 +24,7 @@ export function setupStartGame() {
 					<button class="btn" data-i18n="btn_Match"></button>
 				</div>
 				<div class="buttons">
-					<button class="btn" data-i18n="btn_Solo"></button>
+					<button class="btn" id ="btn_Solo" data-i18n="btn_Solo"></button>
 				</div>
 			</div>
 		</div>
@@ -33,6 +34,23 @@ export function setupStartGame() {
 		fillTopbar();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		setupNavigation();
+
+// Add event listener to launch Pong game
+const soloBtn = document.getElementById("btn_Solo");
+soloBtn?.addEventListener("click", () => {
+console.log("clicked SOLO");
+root.innerHTML = `
+<canvas id="renderCanvas" style="width: 100vw; height: 100vh; display: block;"></canvas>
+`;
+
+const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
+if (canvas) {
+const game = new Pong(canvas);
+game.run(); // You can also pass options if needed
+}
+});
 	}
 }
+
+// Needs A Bunch Of Modification
 
