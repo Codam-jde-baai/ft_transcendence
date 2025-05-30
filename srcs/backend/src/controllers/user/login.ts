@@ -46,6 +46,8 @@ export const loginUser = async (request: FastifyRequest, reply: FastifyReply) =>
 
 		const updatedUser = await db.select().from(usersTable).where(eq(usersTable.username, username));
 		const pubUser = toPublicUser(updatedUser[0]);
+		if (request.session.get("uuid"))
+			request.session.delete()
 		request.session.set('uuid', updatedUser[0].uuid);
 		request.session.set('alias', updatedUser[0].alias);
 		return reply.code(200).send(pubUser);

@@ -18,6 +18,8 @@ export const loginAdmin = async (request: FastifyRequest<{
 			reply.code(401).send({ error: 'admin and password combination is not valid' });
 			return;
 		}
+		if (request.session.get("uuid"))
+			request.session.delete()
 		request.session.set('uuid', 'Admin');
 		request.session.set('alias', 'Admin');
 		return reply.code(200).send();
