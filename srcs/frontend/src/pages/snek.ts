@@ -75,9 +75,6 @@ export function setupSnek() {
 								<span data-i18n="HighestScore_"></span> <span id="hScore1" class="number"></span>
 							</div>
 							<div class="number">
-								<span data-i18n="WinRate_"></span> <span id="WRate1" class="number"></span>
-							</div>
-							<div class="number">
 								<span data-i18n="wins_"></span> <span id="SWin1" class="number"></span>
 							</div>
 							<div class="number">
@@ -96,9 +93,6 @@ export function setupSnek() {
 								<span data-i18n="HighestScore_"></span> <span id="hScore2" class="number"></span>
 							</div>
 							<div class="number">
-								<span data-i18n="WinRate_"></span> <span id="WRate2" class="number"></span>
-							</div>
-							<div class="number">
 								<span data-i18n="wins_"></span> <span id="SWin2" class="number"></span>
 							</div>
 							<div class="number">
@@ -115,9 +109,6 @@ export function setupSnek() {
 							<div id="aliasName3" class="text"></div>
 							<div class="number">
 								<span data-i18n="HighestScore_"></span> <span id="hScore3" class="number"></span>
-							</div>
-							<div class="number">
-								<span data-i18n="WinRate_"></span> <span id="WRate3" class="number"></span>
 							</div>
 							<div class="number">
 								<span data-i18n="wins_"></span> <span id="SWin3" class="number"></span>
@@ -142,7 +133,7 @@ export function setupSnek() {
 			window.history.pushState({}, '', '/startSGame');
 			setupStartSGame();
 		});
-		
+
 		document.getElementById('Pong')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/home');
 			setupUserHome();
@@ -151,4 +142,3 @@ export function setupSnek() {
 	}
 }
 
-	

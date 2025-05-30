@@ -62,22 +62,15 @@ class PublicUser extends HTMLElement {
                 <button class="btn" ${type === 'friend' ? '' : 'hidden'} data-i18n="OurHistory"> </button>
                 <button class="btn bg-red-800" ${type === 'friend' ? '' : 'hidden'} data-i18n="btn_Remove_Friend"> </button>
 
-                <button class="btn accept" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Accept"> . </button>
-                <button class="btn decline" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Decline"> . </button>
-                <!-- for blocked implementation
-                <button class="btn blok" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Block"> </button>
-                -->
-                
-                <button class="btn" ${type === "unfriend" ? '' : 'hidden'} data-i18n="btn_Add_Friend"></button>
-                <button class="btn" ${type === "unfriend" ? '' : 'hidden'} data-i18n="History"></button>
+			<button class="btn accept" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Accept"> . </button>
+			<button class="btn decline" ${type === "friend-request" ? '' : 'hidden'} data-i18n="btn_Decline"> . </button>
+			
+			<button class="btn" ${type === "unfriend" ? '' : 'hidden'} data-i18n="btn_Add_Friend"></button>
+			<button class="btn" ${type === "unfriend" ? '' : 'hidden'} data-i18n="History"></button>
 
-                <button class="btn accept" ${type === "pendingRequests" ? '' : 'hidden'} data-i18n="btn_Cancel"> </button>
-            
-            </div>
-            <!-- for blocked implementation
-            <button class="btn" ${type === "blocked" ? '' : 'hidden'} data-i18n="btn_Unblock_User"> </button>
-            -->
-        </div>`)
+			<button class="btn accept" ${type === "pendingRequests" ? '' : 'hidden'} data-i18n="btn_Cancel"> </button>
+			
+		</div>`)
 	}
 }
 

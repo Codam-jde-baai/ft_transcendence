@@ -46,7 +46,6 @@ const authState: AuthState = {
     userAlias: ""
 };
 
-
 export function setupStartSGame() {
     const userDataPromise = connectFunc("/snek/stats/me", requestBody("GET", null, "application/json"))
         .then(response => {
@@ -140,19 +139,19 @@ export function setupStartSGame() {
     </div>
 `);
 
-        document.getElementById('SnekHome')?.addEventListener('click', () => {
-            window.history.pushState({}, '', '/snek');
-            setupSnek();
-        });
+            document.getElementById('SnekHome')?.addEventListener('click', () => {
+                window.history.pushState({}, '', '/snek');
+                setupSnek();
+            });
 
-        // getLanguage();
-        // setupNavigation();
+            // getLanguage();
+            // setupNavigation();
 
         }
         const container = document.getElementById('gameContainer') as HTMLElement;
         if (container) {
             preGameScreen(container).then((app: Application) => {
-                
+
                 setupGuestAliasLocking();
                 FormToggleListener();
                 setupLoginValidation(app);
@@ -246,7 +245,7 @@ function updateStartGameButton() {
         player2InfoElements.forEach(element => {
             element.textContent = displayName;
         });
-        
+
         // Show player2 stats if authenticated
         if (player2StatsContainer) {
             if (authState.isAuthenticated) {
@@ -262,7 +261,7 @@ function updateStartGameButton() {
         player2InfoElements.forEach(element => {
             element.textContent = "";
         });
-        
+
         // Hide player2 stats
         if (player2StatsContainer) {
             player2StatsContainer.classList.add('hidden');
@@ -330,10 +329,10 @@ async function fetchPlayer2Stats(alias: string): Promise<PlayerStats | null> {
     try {
         const sanitizedAlias = DOMPurify.sanitize(alias);
         const response = await connectFunc(
-            `/snek/stats/${encodeURIComponent(sanitizedAlias)}`, 
+            `/snek/stats/${encodeURIComponent(sanitizedAlias)}`,
             requestBody("GET", null, "application/json")
         );
-        
+
         if (response.ok) {
             return await response.json();
         } else {
@@ -412,7 +411,7 @@ function setupLoginValidation(app: Application) {
         authState.isAuthenticated = false;
         authState.userAlias = "";
         authState.userUuid = undefined;
-        
+
         usernameInput.disabled = false;
         passwordInput.disabled = false;
         usernameInput.value = "";
@@ -440,10 +439,10 @@ async function validateLogin(username: string, password: string): Promise<UserDa
 
     try {
         const response = await connectFunc(
-            "/user/game/login", 
+            "/user/game/login",
             requestBody("POST", JSON.stringify({ username, password }), "application/json")
         );
-        
+
         if (response.ok) {
             const userData: UserData = await response.json();
             return userData;
@@ -467,20 +466,20 @@ async function recordGameResults(gameData: gameEndData): Promise<boolean> {
             p1_score: gameData.p1score,
             p2_score: gameData.p2score
         };
-        
+
         // Add UUID if player2 is authenticated
         if (authState.isAuthenticated && authState.userUuid) {
             payload.p2_uuid = DOMPurify.sanitize(authState.userUuid);
         }
-        
+
         console.log("Submitting game results:", payload);
-        
+
         // Make the API call
         const response = await connectFunc(
             "/snek/new",
             requestBody("POST", JSON.stringify(payload), "application/json")
         );
-        
+
         if (response.ok) {
             console.log("Game results recorded successfully");
             return true;
@@ -514,11 +513,11 @@ async function startGameListeners(app: Application): Promise<void> {
         startGameButton.disabled = true;
         startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
         startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-        
+
         try {
             const gameData: gameEndData = await startSnek(app, "player1", player2Name);
             console.log("Game ended with data:", gameData);
-            
+
             // Record game results
             const recordSuccess = await recordGameResults(gameData);
             if (recordSuccess) {
@@ -526,7 +525,7 @@ async function startGameListeners(app: Application): Promise<void> {
             } else {
                 console.warn("Failed to record game results");
             }
-            
+
             // If player2 is authenticated, refresh their stats
             if (authState.isAuthenticated) {
                 const updatedStats = await fetchPlayer2Stats(authState.userAlias);
@@ -547,11 +546,11 @@ async function startGameListeners(app: Application): Promise<void> {
         const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
         replayButtons.classList.remove('flex');
         replayButtons.classList.add('hidden');
-        
+
         try {
             const gameData: gameEndData = await restartSnek(app, "player1", player2Name);
             console.log("Restarted Game results:", gameData);
-            
+
             // Record game results
             const recordSuccess = await recordGameResults(gameData);
             if (recordSuccess) {
@@ -559,7 +558,7 @@ async function startGameListeners(app: Application): Promise<void> {
             } else {
                 console.warn("Failed to record game results");
             }
-            
+
             // If player2 is authenticated, refresh their stats
             if (authState.isAuthenticated) {
                 const updatedStats = await fetchPlayer2Stats(authState.userAlias);
@@ -570,7 +569,7 @@ async function startGameListeners(app: Application): Promise<void> {
         } catch (error) {
             console.error("Error during game restart:", error);
         }
-        
+
         replayButtons.classList.remove('hidden');
         replayButtons.classList.add('flex');
     });

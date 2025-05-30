@@ -16,6 +16,14 @@ export function setupNavigation() {
 		{ id: 'LogOut', path: '/index', action: setupLogOut },
 	];
 
+	document.getElementById('TC')?.addEventListener('click', () => {
+		// Open in a new tab
+		window.open('./src/T&C/Terms&Conditions.pdf', '_blank');
+
+		// // Open in a new tab
+		// window.location.href = './src/T&C/Terms&Conditions.pdf';
+	});
+
 	navItems.forEach(({ id, path, action }) => {
 		if (path === currentPath) 
 		return;

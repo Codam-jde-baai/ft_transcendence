@@ -4,7 +4,6 @@ import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
 import { connectFunc, requestBody } from '../script/connections';
 import { setupErrorPages } from './errorPages';
-import { setupMatchHistory } from './history';
 import DOMPurify from 'dompurify';
 
 interface snekMatchHistory {
@@ -87,7 +86,6 @@ export function setupSnekMatchHistory() {
 				<div class="hcontainer">
 					<h1 class="Pongheader" data-i18n="Snek"></h1>
 					<h1 class="header" data-i18n="History"></h1>
-					<!-- <p class="p1" data-i18n="History_P"></p> -->
 					<p class="p1">${displayedAlias}</p>
 					<p class="p1 text-red-600" ${matches === 0 ? '' : 'hidden'}>No matches found</p>
 					<snek-table></snek-table>

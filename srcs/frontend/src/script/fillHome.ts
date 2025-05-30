@@ -6,7 +6,7 @@ export function fillHome() {
 		.then((userInfoResponse) => {
 			if (userInfoResponse.ok) {
 				userInfoResponse.json().then((data) => {
-
+	
 				// Win
 				const winElem = document.getElementById("win");
 				if (winElem)
@@ -16,6 +16,9 @@ export function fillHome() {
 				const lossElem = document.getElementById("loss");
 				if (lossElem)
 					lossElem.textContent = data.loss;
+
+				// Save the data in localStorage
+				localStorage.setItem('SettingsUser', JSON.stringify(data.username));
 
 			});
 		} else {

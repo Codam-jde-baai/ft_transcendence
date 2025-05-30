@@ -88,6 +88,20 @@ export function checkFields(input: string[]): boolean {
 			else
 				errorRMDisplay(elem, errorMsg, "Password");
 		}
+		if (elem.id === "termsCheckbox")
+		{
+			if (!elem.checked)
+				isValid = false;
+
+			// Wiggle effect
+			const parent = elem.closest('p');
+			if (parent) {
+				parent.classList.add("wiggle");
+				setTimeout(() => {
+					parent.classList.remove("wiggle");
+				}, 400);
+			}
+		}
 	});
 	return isValid;
 }

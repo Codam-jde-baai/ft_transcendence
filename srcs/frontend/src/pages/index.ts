@@ -15,6 +15,7 @@ import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupStartSGame } from './startSGame';
 import { setupAdminLogIn } from './adminLogin';
+import { setupViewData } from './viewData';
 import { connectFunc, requestBody } from '../script/connections';
 import '../component/topbar'
 import '../component/languageMenu'
@@ -48,6 +49,7 @@ export function renderPage() {
 		'/adminUserSetting': () => setupAdminUserSetting(),
 		'/startSGame': setupStartSGame,
 		'/adminLogin': setupAdminLogIn,
+		'/viewData': setupViewData,
 	};
 	if (root) {
 		const funct = routes[window.location.pathname]
