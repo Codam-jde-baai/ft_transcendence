@@ -17,6 +17,9 @@
     "btn_Unblock_User": "deblokkeren",
     "btn_Cancel": "stornieren",
     "btn_Delete": "Löschen",
+    "btn_T&C": "Allgemeine Geschäftsbedingungen",
+    "btn_ViewData": "Meine Daten anzeigen",
+
     "Password": "Passwort",
     "ConfirmPassword": "Passwort bestätigen",
     "CurrentPassword": "Aktuelles Passwort *",
@@ -24,6 +27,7 @@
     "SignUp_Avatar": "Füge dein Avatar hinzu",
     "SignUp_Alias": "Alias-Name",
     "Admin": "Admin",
+
     "Index_Header": "Willkommen bei Transcendence",
     "Header_Pong": "Willkommen bei Pong",
     "Header_Snek": "Willkommen bei Snek",
@@ -37,18 +41,25 @@
     "Blocked_Header": "Deaktivierter Benutzer",
     "Pending_Requests_Header": "Ausstehende Anfragen",
     "LogIn_AdminHeader": "Admin Anmelden",
+    "UserP_Header": "Benutzerdaten",
+    "UserPW_Header": "Aus Sicherheitsgründen geben Sie bitte Ihr Passwort ein",
+ 
     "Index_P": "Spiele klassisches Pong mit deinen Freunden!",
     "Delete_Account": " Ihr Konto dauerhaft löschen",
     "LogIn_P": "Du hast kein Konto?",
     "SignUp_P": "Du  hast bereits ein Konto?",
     "History_P": "Von",
     "Admin_P": "Von",
+    "T&C_P": " ",
+    "Pop_setting_P": "Dies sind Ihre aktuellen Daten",
+
     "LogIn_placeholder1": "Intra-Name",
     "SignUp_placeholder1": "Nur für die Anmeldung verwendet (Intra-Name)",
     "SignUp_placeholder2": "Sichtbar für andere Benutzer",
     "Admin_placeholder1": "Benutzer suchen...",
     "Friends_placeholder1": "Nach Freunden suchen...",
     "CurrentP_placeholder1": "Dieses Feld ist immer erforderlich",
+
     "Language": "Sprache",
     "Home": "Startseite",
     "Settings": "Einstellungen",
@@ -59,10 +70,12 @@
     "English": "Englisch",
     "German": "Deutsch",
     "Dutch": "Niederländisch",
+
     "Setting_Avatar": "Avatar bearbeiten",
     "Setting_Name": "Anmeldename bearbeiten",
     "Setting_Alias": "Aliasnamen bearbeiten",
     "Change_Password": "Passwort ändern",
+
     "Action": "Aktionen",
     "Date": "Datum",
     "1v1_Game": "1v1 Spiel",
@@ -77,6 +90,7 @@
     "wins_": "Siege: ",
     "losses_": "Niederlagen: ",
     "score_": "Punktestand: ",
+
     "SignUp_error_admin": "Admin-Name nicht erlaubt",
     "SignUp_error_password": "Passwörter stimmen nicht überein",
     "SignUp_error_user": "Benutzername muss zwischen 3 und 17 Zeichen lang sein",
@@ -92,6 +106,7 @@
     "CurrentPass_error": "Passwort stimmt nicht überein",
     "CurrentPass_error1": "Aktuelles Passwort fehlt*",
     "CurrentPass_error2": "Keine Änderungen erkannt. Bitte Einstellungen aktualisieren!",
+
     "Snek": "Snek",
     "SwitchGame": "Spiel wechseln",
     "Pong": "Pong",
