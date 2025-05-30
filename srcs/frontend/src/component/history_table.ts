@@ -49,7 +49,7 @@ class HistoryTable extends HTMLElement {
 										<th data-i18n="Date"></th>
 										<th data-i18n="1v1_Game"></th>
 										<th data-i18n="Winner"></th>
-										<th data-i18n="Score"></th>
+										<th data-i18n="WinRate"></th>
 									</tr>
 								</thead>
 								<tbody>

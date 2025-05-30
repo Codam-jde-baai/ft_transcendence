@@ -26,7 +26,7 @@ export function setupUserHome(refresh: boolean = false) {
 							<img src="src/Pictures/bestScore.png">
 						</div>
 						<div class="text-container">
-							<div class="best-score-text" data-i18n="Score"></div>
+							<div class="best-score-text" data-i18n="WinRate"></div>
 							<div id="best-score" class="score-number"></div>
 						</div>
 					</div>
@@ -70,7 +70,7 @@ export function setupUserHome(refresh: boolean = false) {
 							<div class="position" data-i18n="1"></div>
 							<div id="aliasName1" class="text"></div>
 							<div class="number">
-								<span data-i18n="score_"></span> <span id="score1" class="number"></span>
+								<span data-i18n="WinRate_"></span> <span id="score1" class="number"></span>
 							</div>
 							<div class="number">
 								<span data-i18n="wins_"></span> <span id="win1" class="number"></span>
@@ -88,7 +88,7 @@ export function setupUserHome(refresh: boolean = false) {
 							<div class="position" data-i18n="2"></div>
 							<div id="aliasName2" class="text"></div>
 							<div class="number">
-								<span data-i18n="score_"></span> <span id="score2" class="number"></span>
+								<span data-i18n="WinRate_"></span> <span id="score2" class="number"></span>
 							</div>
 							<div class="number">
 								<span data-i18n="wins_"></span> <span id="win2" class="number"></span>
@@ -106,7 +106,7 @@ export function setupUserHome(refresh: boolean = false) {
 							<div class="position" data-i18n="3"></div>
 							<div id="aliasName3" class="text"></div>
 							<div class="number">
-								<span data-i18n="score_"></span> <span id="score3" class="number"></span>
+								<span data-i18n="WinRate_"></span> <span id="score3" class="number"></span>
 							</div>
 							<div class="number">
 								<span data-i18n="wins_"></span> <span id="win3" class="number"></span>
