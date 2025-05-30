@@ -17,6 +17,9 @@
     "btn_Unblock_User": "Unblock",
     "btn_Cancel": "Cancel",
     "btn_Delete": "Delete",
+    "btn_T&C": "Terms & Conditions",
+    "btn_ViewData": "View my Data",
+
     "Password": "Password",
     "ConfirmPassword": "Confirm Password",
     "CurrentPassword": "Current Password *",
@@ -24,6 +27,7 @@
     "SignUp_Avatar": "Add your Avatar",
     "SignUp_Alias": "Alias Name",
     "Admin": "Admin",
+
     "Index_Header": "Welcome to Transcendence",
     "Header_Pong": "Welcome to Pong",
     "Header_Snek": "Welcome to Snek",
@@ -37,18 +41,25 @@
     "Blocked_Header": "Blocked users",
     "Pending_Requests_Header": "Pending Requests",
     "LogIn_AdminHeader": "Admin Login",
+    "UserP_Header": "User Personal Data",
+    "UserPW_Header": "For security reasons, please enter your password",
+
     "Index_P": "Play classic Pong with your friends!",
     "Delete_Account": " your account permanently",
     "LogIn_P": "Don't have an account?",
     "SignUp_P": "Already have an account?",
     "History_P": "Of",
     "Admin_P": "Of",
+    "T&C_P": " I agree to the ",
+    "Pop_setting_P": "This is your current data",    
+
     "LogIn_placeholder1": "Intra Name",
     "SignUp_placeholder1": "Only used for Log In (Intra-Name)",
     "SignUp_placeholder2": "Visible for other users",
     "Admin_placeholder1": "Search users...",
     "Friends_placeholder1": "Search for friends...",
     "CurrentP_placeholder1": "This field is always required",
+
     "Language": "Language",
     "Home": "Home",
     "Settings": "Settings",
@@ -59,10 +70,12 @@
     "English": "English",
     "German": "German",
     "Dutch": "Netherlands",
+
     "Setting_Avatar": "Edit your Avatar",
     "Setting_Name": "Edit Login Name",
     "Setting_Alias": "Edit Alias Name",
     "Change_Password": "Change Password",
+
     "Action": "Actions",
     "Date": "Date",
     "1v1_Game": "1v1 Game",
@@ -77,6 +90,7 @@
     "wins_": "wins: ",
     "losses_": "losses:",
     "score_": "score:",
+
     "SignUp_error_admin": "Admin name not allowed",
     "SignUp_error_password": "Passwords Don't Match",
     "SignUp_error_user": "Username must be between 3 and 17 characters",
@@ -92,6 +106,7 @@
     "CurrentPass_error": "Password doesn't match",
     "CurrentPass_error1": "Current Password missing*",
     "CurrentPass_error2": "No changes detected. Please update settings!",
+
     "Snek": "Snek",
     "SwitchGame": "Switch Game",
     "Pong": "Pong",
@@ -102,5 +117,6 @@
     "WinRate": "Win Rate",
     "HighestScore_": "Highest Score:",
     "WinRate_": "Win Rate:",
+    
     "EndOfFile": ""
 }

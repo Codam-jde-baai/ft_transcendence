@@ -55,19 +55,19 @@ p {
 
 /* Eye icon for password */
 .field-icon {
-	@apply cursor-pointer absolute top-[296px] right-[40px];
+	@apply cursor-pointer absolute top-[296px] right-[30px];
 }
 .field-icon img {
 	@apply w-[25px] h-[20px];
 }
 .field-iconn {
-	@apply cursor-pointer absolute top-[572px] right-[40px];
+	@apply cursor-pointer absolute top-[572px] right-[30px];
 }
 .field-iconn img {
 	@apply w-[25px] h-[20px];
 }
 .field-iconnn {
-	@apply cursor-pointer absolute top-[658px] right-[40px];
+	@apply cursor-pointer absolute top-[658px] right-[30px];
 }
 .field-iconnn img {
 	@apply w-[25px] h-[20px];
