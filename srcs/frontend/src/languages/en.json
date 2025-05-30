@@ -87,9 +87,9 @@
     "1": "1st Place",
     "2": "2nd Place",
     "3": "3rd Place",
-    "wins_": "wins: ",
-    "losses_": "losses:",
-    "score_": "score:",
+    "wins_": "Wins: ",
+    "losses_": "Losses:",
+    "score_": "Score:",
 
     "SignUp_error_admin": "Admin name not allowed",
     "SignUp_error_password": "Passwords Don't Match",
