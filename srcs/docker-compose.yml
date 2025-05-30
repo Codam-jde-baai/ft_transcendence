@@ -11,13 +11,12 @@ services:
     ports:
       - "5173:5173" 
     volumes:
-      - ./frontend:/app 
       - /app/node_modules     # Ensures node_modules are not overwritten by the host, allowing container to manage dependencies
+      - frontend:certs/
     env_file:
       - ./.env
     environment:              # Add the .env variabes to the container enviroment as VITE_-variables
       - VITE_PRIVATE_KEY=${PRIVATE_KEY}
-    entrypoint: [ "/app/docker-entrypoint/certificate.sh" ]
     command: [ "pnpm", "run" ]
   backend:                    # backend written with Fastify and .ts/js          
     build:
@@ -30,7 +29,6 @@ services:
       - "3000:3000"
       - "4983:4983"
     volumes:
-      - ./backend:/app 
       - /app/node_modules
       - sqlite_data:/app/data
       - cookie_data:/app/cookie-key
@@ -60,10 +58,3 @@ volumes:
       type: none
       device: ${HOME}/ft_transcendence/cookie-key
       o: bind
-  frontend:
-    driver: local
-    driver_opts:
-      type: none
-      device: ${HOME}/ft_transcendence/frontend
-      o: bind
-
