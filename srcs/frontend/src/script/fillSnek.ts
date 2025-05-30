@@ -2,35 +2,35 @@ import { connectFunc, requestBody } from './connections';
 import { setupErrorPages } from '../pages/errorPages';
 
 export function fillSnek() {
-		connectFunc(`/snek/stats/me`, requestBody("GET", null))
+	connectFunc(`/snek/stats/me`, requestBody("GET", null))
 		.then((userInfoResponse) => {
 			if (userInfoResponse.ok) {
 				userInfoResponse.json().then((data) => {
 
-				// Hisest Score
-				const highestScoreElem = document.getElementById("hScore");
-				if (highestScoreElem)
-					highestScoreElem.textContent = data.highest_score;
+					// Hisest Score
+					const highestScoreElem = document.getElementById("hScore");
+					if (highestScoreElem)
+						highestScoreElem.textContent = data.highest_score;
 
-				// Win
-				const winElem = document.getElementById("win");
-				if (winElem)
-					winElem.textContent = data.wins;
+					// Win
+					const winElem = document.getElementById("win");
+					if (winElem)
+						winElem.textContent = data.wins;
 
-				// losses
-				const lossElem = document.getElementById("loss");
-				if (lossElem)
-					lossElem.textContent = data.losses;
+					// losses
+					const lossElem = document.getElementById("loss");
+					if (lossElem)
+						lossElem.textContent = data.losses;
 
-			});
-		} else {
-			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
-		}
-	})
+				});
+			} else {
+				window.history.pushState({}, '', '/errorPages');
+				setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
+			}
+		})
 
 	// LeaderBoard
-	const leaderboardResponse = connectFunc(`/snek/history/all`, requestBody("GET", null));	
+	const leaderboardResponse = connectFunc(`/snek/history/all`, requestBody("GET", null));
 	leaderboardResponse.then((leaderboardResponse) => {
 		if (leaderboardResponse.ok) {
 			leaderboardResponse.json().then((data) => {
@@ -76,30 +76,30 @@ function findBestSnekUsers(data: Match[]) {
 
 	topThreeAliases.forEach((alias, index) => {
 		const topResponse = connectFunc(`/snek/stats/${alias}`, requestBody("GET", null));
-		
+
 		topResponse.then((topResponse) => {
 			if (topResponse.ok) {
 				topResponse.json().then((topData) => {
 
-						// Alias-name
-						const aliasElem = document.getElementById(`aliasName${index + 1}`);
-						if (aliasElem) 
-							aliasElem.textContent = topData.alias;
+					// Alias-name
+					const aliasElem = document.getElementById(`aliasName${index + 1}`);
+					if (aliasElem)
+						aliasElem.textContent = topData.alias;
 
-						// Highest Score
-						const scoreElem = document.getElementById(`hScore${index + 1}`);
-						if (scoreElem) 
-							scoreElem.textContent = topData.highest_score?.toString() || "0";
+					// Highest Score
+					const scoreElem = document.getElementById(`hScore${index + 1}`);
+					if (scoreElem)
+						scoreElem.textContent = topData.highest_score?.toString() || "0";
 
-						// Win
-						const winElem = document.getElementById(`SWin${index + 1}`);
-						if (winElem) 
-							winElem.textContent = topData.wins?.toString() || "0";
+					// Win
+					const winElem = document.getElementById(`SWin${index + 1}`);
+					if (winElem)
+						winElem.textContent = topData.wins?.toString() || "0";
 
-						// Losses
-						const lossElem = document.getElementById(`Sloss${index + 1}`);
-						if (lossElem) 
-							lossElem.textContent = topData.losses?.toString() || "0";
+					// Losses
+					const lossElem = document.getElementById(`Sloss${index + 1}`);
+					if (lossElem)
+						lossElem.textContent = topData.losses?.toString() || "0";
 				});
 			} else {
 				window.history.pushState({}, '', '/errorPages');
