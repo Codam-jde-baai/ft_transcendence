@@ -37,7 +37,8 @@ const userProperties = {
 	status: { type: 'number' },
 	language: { type: 'string' },
 	win: { type: 'number' },
-	loss: { type: 'number' }
+	loss: { type: 'number' },
+	win_rate: {type: 'number'}
 };
 
 export const publicUserProperties = {
@@ -47,7 +48,8 @@ export const publicUserProperties = {
 		properties: profilePicProperties
 	},
 	win: { type: 'number' },
-	loss: { type: 'number' }
+	loss: { type: 'number' },
+	win_rate: {type: 'number'}
 };
 
 export const imageOptions = {
