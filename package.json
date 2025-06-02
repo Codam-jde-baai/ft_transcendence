@@ -4,6 +4,8 @@
     "tailwindcss": "^4.1.6"
   },
   "devDependencies": {
-    "@types/dompurify": "^3.2.0"
+    "@types/dompurify": "^3.2.0",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "vite-plugin-mkcert": "^1.17.8"
   }
 }
