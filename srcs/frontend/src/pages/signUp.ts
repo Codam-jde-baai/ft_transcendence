@@ -96,7 +96,7 @@ export function setupSignUp() {
 						sendPicture();
 
 						window.history.pushState({}, '', '/home');
-						setupUserHome();
+						setupUserHome(true);
 					});
 
 				} else {
