@@ -15,6 +15,9 @@ interface UserConnection {
 
 const connectedUsers = new Map<string, UserConnection>();
 
+const HEARTBEAT_INTERVAL = 30000; // 30 seconds
+const heartbeatIntervals = new Map<string, NodeJS.Timeout>();
+
 export const newUserConnection = async (connection: { socket: WebSocket }, req: FastifyRequest) => {
     console.log('New WebSocket connection attempt');
     const apiKey = (req.query as { apiKey: string }).apiKey;
@@ -30,15 +33,28 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
         connection.socket.close(1008, 'User not authenticated');
         return;
     }
-    console.log(`User ${alias} (${uuid}) connected via WebSocket`);
+    
     connectedUsers.set(uuid, {
         uuid,
         alias,
         socket: connection.socket,
     });
 
-    // Update database - set user status to online
     await updateUserStatusInDB(uuid, userStatus.ONLINE);
+
+    const heartbeat = setInterval(() => {
+        if (connection.socket.readyState === connection.socket.OPEN) {
+            connection.socket.ping();
+        } else {
+            clearInterval(heartbeat);
+            heartbeatIntervals.delete(uuid);
+            handleDisconnection(uuid, alias);
+        }
+    }, HEARTBEAT_INTERVAL);
+    heartbeatIntervals.set(uuid, heartbeat);
+    connection.socket.on('pong', () => {
+        console.log(`Heartbeat received from ${alias} (${uuid})`);
+    });
 
     connection.socket.send(JSON.stringify({
         type: 'connection_established',
@@ -58,6 +74,7 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
                 case 'ping':
                     connection.socket.send(JSON.stringify({
                         type: 'pong',
+                        timestamp: Date.now()
                     }));
                     break;
                 case 'status_update':
@@ -77,18 +94,45 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
             }));
         }
     });
-    connection.socket.on('close', async () => {
-        console.log(`User ${alias} (${uuid}) disconnected`);
-        connectedUsers.delete(uuid);
-        await updateUserStatusInDB(uuid, userStatus.OFFLINE);
-        await broadcastToFriends(uuid, alias, 'offline');
+
+    connection.socket.on('close', async (code: number, reason: Buffer) => {
+        console.log(`User ${alias} (${uuid}) disconnected with code ${code}: ${reason.toString()}`);
+        await handleDisconnection(uuid, alias);
     });
 
-    connection.socket.on('error', (error: string) => {
+    connection.socket.on('error', async (error: Error) => {
         console.error(`WebSocket error for user ${alias} (${uuid}):`, error);
-        connectedUsers.delete(uuid);
+        await handleDisconnection(uuid, alias);
     });
 };
+
+
+async function handleDisconnection(uuid: string, alias: string) {
+    // Clear heartbeat
+    const heartbeat = heartbeatIntervals.get(uuid);
+    if (heartbeat) {
+        clearInterval(heartbeat);
+        heartbeatIntervals.delete(uuid);
+    }
+    
+    connectedUsers.delete(uuid);
+    
+    // Update database status
+    await updateUserStatusInDB(uuid, userStatus.OFFLINE);
+    await broadcastToFriends(uuid, alias, 'offline');
+}
+
+// Clean up function for server shutdown
+export function cleanupConnections() {
+    // Clear all heartbeat intervals
+    heartbeatIntervals.forEach((interval) => {
+        clearInterval(interval);
+    });
+    heartbeatIntervals.clear();
+    
+    // Close all connections
+    closeAllConnections();
+}
 
 
 async function updateUserStatusInDB(uuid: string, status: typeof userStatus[keyof typeof userStatus]) {
