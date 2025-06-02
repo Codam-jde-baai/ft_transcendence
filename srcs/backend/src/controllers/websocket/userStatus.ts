@@ -43,7 +43,7 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
     await updateUserStatusInDB(uuid, userStatus.ONLINE);
 
     const heartbeat = setInterval(() => {
-        if (connection.socket.readyState === connection.socket.OPEN) {
+        if (connection.socket && connection.socket.readyState === connection.socket.OPEN) {
             connection.socket.ping();
         } else {
             clearInterval(heartbeat);
