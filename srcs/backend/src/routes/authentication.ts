@@ -22,10 +22,10 @@ export const authAPI = async (request: FastifyRequest, reply: FastifyReply) => {
 }
 
 export const authSession = async (request: FastifyRequest, reply: FastifyReply) => {
-	const uuid = request.session.get('uuid');
-	const alias = request.session.get('alias');
-	if (!uuid || !alias) {
+  const uuid = request.session.get('uuid');
+  const alias = request.session.get('alias');
+  if (!uuid || !alias) {
     return reply.code(402).send({ error: 'Please Sign Up Or Login' });
-	}
-	request.session.touch()
+  }
+  request.session.touch();
 }

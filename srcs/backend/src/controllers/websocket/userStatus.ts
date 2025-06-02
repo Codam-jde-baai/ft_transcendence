@@ -5,8 +5,8 @@ import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import { eq, or } from 'drizzle-orm';
 import { usersTable, userStatus, friendsTable, friendStatus } from '../../db/schema.ts';
+import envConfig from '../../config/env.ts';
 
-// Simple in-memory store for connected users
 interface UserConnection {
     uuid: string;
     alias: string;
@@ -16,6 +16,13 @@ interface UserConnection {
 const connectedUsers = new Map<string, UserConnection>();
 
 export const newUserConnection = async (connection: { socket: WebSocket }, req: FastifyRequest) => {
+    console.log('New WebSocket connection attempt');
+    const apiKey = (req.query as { apiKey: string }).apiKey;
+    if (apiKey !== envConfig.private_key) {
+        connection.socket.close(1008, 'Invalid API key');
+        return;
+    }
+    
     const uuid = req.session.get('uuid');
     const alias = req.session.get('alias');
     
@@ -60,7 +67,6 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
                     connection.socket.send(JSON.stringify({
                         type: 'echo',
                         originalMessage: data,
-                        timestamp: new Date().toISOString()
                     }));
             }
         } catch (error) {
@@ -138,11 +144,15 @@ async function broadcastToFriends(uuid: string, alias: string, status: 'online' 
         if (friendUuids.length === 0) {
             return;
         }
+        let text: string = '';
+        if (status === 'online') {
+            text = "came online";
+        } else {
+            text = "went offline";
+        }
         const message = JSON.stringify({
-            type: 'friend_status_change',
-            uuid: uuid,
             alias: alias,
-            status: status,
+            message: text,
         });
         friendUuids.forEach(friendUuid => {
             const friendConnection = connectedUsers.get(friendUuid);

@@ -104,13 +104,7 @@ fastify.register(swaggerUi, {
 
 fastify.register(websocketPlugin, {
 	options: {
-		maxPayload: 1048576,
-		verifyClient: (info: { req: { headers: { [key: string]: string } } }, next: (result: boolean) => void) => {
-			if (info.req.headers['x-api-key'] !== envConfig.private_key) {
-				return next(false);
-			}
-			next(true);
-		}
+		maxPayload: 1048576
 	}
 });
 

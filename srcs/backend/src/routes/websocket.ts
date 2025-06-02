@@ -1,19 +1,23 @@
 import { FastifyInstance } from 'fastify';
-
-import { securitySchemes } from './userdocs.ts';
-import { authenticatePrivateToken } from './authentication.ts';
+import { authSession } from './authentication.ts';
 
 import { newUserConnection } from '../controllers/websocket/userStatus.ts';
 
-function socketRoutes(fastify: FastifyInstance, options: any, done: () => void) {
-    fastify.addSchema({
-        $id: 'security',
-        security: securitySchemes
-    });
+const wsConnectSchema = {
+    querystring: {
+        type: 'object',
+        properties: {
+            apiKey: { type: 'string' }
+        },
+        required: ['apiKey']
+    }
+};
 
+function socketRoutes(fastify: FastifyInstance, options: any, done: () => void) {
     fastify.get('/ws/connect', { 
         websocket: true, 
-        preHandler: [authenticatePrivateToken] 
+        preHandler: [authSession],
+        schema: wsConnectSchema
     }, newUserConnection);
     
     done();

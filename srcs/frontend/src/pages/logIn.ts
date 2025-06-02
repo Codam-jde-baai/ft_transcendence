@@ -5,6 +5,7 @@ import { connectFunc, requestBody, inputToContent } from '../script/connections'
 import { emptyFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
+import envConfig from '../config/env';
 
 export function setupLogIn() {
 	const root = document.getElementById('app');
@@ -59,6 +60,11 @@ export function setupLogIn() {
 			response.then((response) => {
 				if (response.ok) {
 					response.json().then(() => {
+						const socket = new WebSocket(`ws://${envConfig.backendURL}/ws/connect?apiKey=${envConfig.privateKey}`);
+						socket.onopen = () => {
+							console.log("WebSocket connection established");
+						}
+						//localStorage.setitem(socket); ?? how to use the socket on other pages
 						window.history.pushState({}, '', '/home');
 						setupUserHome(true);
 					});
