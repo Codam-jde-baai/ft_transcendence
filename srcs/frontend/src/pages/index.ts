@@ -17,6 +17,8 @@ import { setupStartSGame } from './startSGame';
 import { setupAdminLogIn } from './adminLogin';
 import { setupViewData } from './viewData';
 import { connectFunc, requestBody } from '../script/connections';
+import { initializeWebSocket } from '../script/socketConnect';
+import { websocketManager } from '../script/socketClass';
 import '../component/topbar'
 import '../component/languageMenu'
 import '../component/friendsRows'
@@ -29,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (!document.getElementById('app')?.hasChildNodes()) {
 		renderPage();
 	}
+	initializeWebSocket();
 });
 
 export function renderPage() {
@@ -73,7 +76,7 @@ export function renderPage() {
 					</div>
 				</div>
 			</div>
-				`);
+			`);
 
 			getLanguage();
 			dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
@@ -94,6 +97,10 @@ export function renderPage() {
 window.addEventListener('popstate', renderPage);
 
 export function setupLogOut() {
+	if (websocketManager.isConnected()) {
+		websocketManager.updateStatus('offline');
+		websocketManager.disconnect();
+	}
 
 	connectFunc("/user/logout", requestBody("GET"))
 		.then((response) => {

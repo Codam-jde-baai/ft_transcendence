@@ -7,6 +7,7 @@ import { checkFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
 import { sendPicture } from '../script/sendPic';
+import { websocketManager } from '../script/socketClass';
 
 export function setupSignUp() {
 	const root = document.getElementById('app');
@@ -75,7 +76,6 @@ export function setupSignUp() {
 		document.getElementById('T&C')?.addEventListener('click', () => {
 			// Open in current tab
 			window.location.href = './src/T&C/Terms&Conditions.pdf';
-
 			// Open in a new tab
 			// window.open('./src/T&C/Terms&Conditions.pdf', '_blank');
 
@@ -91,10 +91,9 @@ export function setupSignUp() {
 				.then((response) => {
 				if (response.ok) {
 					response.json().then(() => {
-
 						// Add Profile Pic
 						sendPicture();
-
+						websocketManager.connect().catch(console.error);
 						window.history.pushState({}, '', '/home');
 						setupUserHome(true);
 					});

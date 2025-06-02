@@ -94,3 +94,17 @@
 .language-btn img {
 	@apply w-[25px] h-[15px] ml-40 mt-[-20px];
 }
+
+/* Notification Area */
+.notification-area {
+	@apply flex flex-col gap-1 mr-4;
+}
+.notification-field {
+	@apply bg-[#7a1b52] rounded px-2 py-1 min-h-[20px] flex items-center;
+}
+.notification-alias {
+	@apply text-white text-sm font-medium max-w-[100px] truncate;
+}
+.notification-message {
+	@apply text-white text-xs max-w-[200px] truncate;
+}
