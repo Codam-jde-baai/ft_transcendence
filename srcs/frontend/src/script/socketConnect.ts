@@ -1,26 +1,32 @@
 import {websocketManager} from "./socketClass.ts";
 
-// Main initialization function to be called from index.ts
+let listenersSetup = false;
+
 export function initializeWebSocket() {
-    setupUserStatusTracking();
-    setupWebSocketConnection();
+    setupWebSocketEventListeners();
 }
 
-function setupWebSocketConnection() {    
-    // Handle visibility changes
-    if (websocketManager.isConnected()) {
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden') {
-                console.log('Page hidden, keeping WebSocket connection alive');
-            } else if (document.visibilityState === 'visible') {
-                // User came back - ensure connection is still alive
-                if (!websocketManager.isConnected()) {
-                    console.log('Page visible, attempting to reconnect WebSocket');
-                    websocketManager.connect().catch(console.error);
-                }
-            }
-        });
+export function connectWebSocket() {
+    return websocketManager.connect();
+}
+
+// Set up event listeners (but don't connect yet)
+function setupWebSocketEventListeners() {
+    if (listenersSetup) {
+        return;
     }
+    listenersSetup = true;
+
+    setupUserStatusTracking();
+
+    // Handle visibility changes - only relevant when user is logged in
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            if (!websocketManager.isConnected() && isUserLoggedIn()) {
+                websocketManager.connect().catch(console.error);
+            }
+        }
+    });
 }
 
 function setupUserStatusTracking() {
@@ -28,10 +34,7 @@ function setupUserStatusTracking() {
     window.addEventListener('beforeunload', () => {
         if (websocketManager.isConnected()) {
             websocketManager.updateStatus('offline');
-            // Small delay to allow message to send
-            setTimeout(() => {
-                websocketManager.disconnect();
-            }, 100);
+            // Don't disconnect immediately, let the status update send first
         }
     });
 
@@ -51,10 +54,17 @@ function setupUserStatusTracking() {
         }
     });
 
-    // Handle focus/blur for better status tracking
     window.addEventListener('focus', () => {
-        if (websocketManager.isConnected()) {
-            websocketManager.updateStatus('online');
+        if (!websocketManager.isConnected() && isUserLoggedIn()) {
+            websocketManager.connect().catch(console.error);
         }
     });
+}
+
+// Helper function to check if user is logged in
+// You might want to implement this based on your session/auth logic
+function isUserLoggedIn(): boolean {
+    const protectedRoutes = ['/home', '/setting', '/friends', '/history', '/startPGame', '/startSGame', '/snek', '/snekHistory'];
+    const currentPath = window.location.pathname;
+    return protectedRoutes.includes(currentPath);
 }

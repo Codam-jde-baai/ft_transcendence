@@ -7,7 +7,7 @@
 
 /* All for the Middle */
 .smiddle {
-	@apply absolute top-[610px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1] rounded-[15px] w-[550px] h-[75%] p-5 rounded-[15px] bg-[rgba(0,0,0,0.8)];
+	@apply absolute top-[610px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1] w-[550px] h-[75%] p-5 rounded-[15px] bg-[rgba(0,0,0,0.8)];
 }
 .box {
 	@apply pl-[40px] pr-[35px] pb-[20px] ml-[-45px] mt-4 mb-4 w-[120%] rounded-[15px] border-[2px] border-[#902063] flex flex-col items-center justify-center;

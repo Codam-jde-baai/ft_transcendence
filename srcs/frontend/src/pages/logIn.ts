@@ -5,8 +5,7 @@ import { connectFunc, requestBody, inputToContent } from '../script/connections'
 import { emptyFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
-import envConfig from '../config/env';
-import { websocketManager } from '../script/socketClass';
+import { connectWebSocket } from '../script/socketConnect';
 
 export function setupLogIn() {
 	const root = document.getElementById('app');
@@ -61,9 +60,17 @@ export function setupLogIn() {
 			response.then((response) => {
 				if (response.ok) {
 					response.json().then(() => {
-						websocketManager.connect().catch(console.error);
-						window.history.pushState({}, '', '/home');
-						setupUserHome(true);
+						connectWebSocket()
+							.then(() => {
+								console.log('WebSocket connected after successful login');
+								window.history.pushState({}, '', '/home');
+								setupUserHome(true);
+							})
+							.catch((error) => {
+								console.error('Failed to connect WebSocket after login:', error);
+								window.history.pushState({}, '', '/home');
+								setupUserHome(true);
+							});
 					});
 				}
 				else {

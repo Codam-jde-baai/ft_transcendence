@@ -27,15 +27,22 @@ import '../component/admin_userTable'
 import '../component/history_table'
 import '../component/snekHistory_table'
 
+// Track if WebSocket listeners have been initialized
+let webSocketInitialized = false;
+
 document.addEventListener('DOMContentLoaded', () => {
 	if (!document.getElementById('app')?.hasChildNodes()) {
 		renderPage();
 	}
-	initializeWebSocket();
+	
+	// Only initialize WebSocket listeners once (but don't connect yet)
+	if (!webSocketInitialized) {
+		initializeWebSocket(); // This only sets up listeners, no connection
+		webSocketInitialized = true;
+	}
 });
 
 export function renderPage() {
-
 	const root = document.getElementById('app');
 	const routes: { [key: string]: () => void } = {
 		'/home': setupUserHome,
@@ -54,11 +61,13 @@ export function renderPage() {
 		'/adminLogin': setupAdminLogIn,
 		'/viewData': setupViewData,
 	};
+	
 	if (root) {
 		const funct = routes[window.location.pathname]
 		if (funct) {
 			funct();
 		} else {
+			// Landing page - no WebSocket connection needed
 			root.innerHTML = "";
 			root.insertAdjacentHTML("beforeend", /*html*/`
 			<link rel="stylesheet" href="src/styles/index.css"> <!-- Link to the CSS file -->
@@ -105,6 +114,8 @@ export function setupLogOut() {
 	connectFunc("/user/logout", requestBody("GET"))
 		.then((response) => {
 			if (response.ok) {
+				// Navigate to landing page after logout
+				window.history.pushState({}, '', '/');
 				renderPage()
 			}
 			else {

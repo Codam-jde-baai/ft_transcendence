@@ -6,6 +6,7 @@ import Database from 'better-sqlite3';
 //files
 import { friendsTable, usersTable } from '../../db/schema.ts'
 import { createRelation, toPublicRelation } from '../../models/friends.ts'
+import { sendMessageToUser } from '../websocket/userStatus.ts';
 
 export const addFriend = async (request: FastifyRequest<{
 	Body: {
@@ -47,6 +48,10 @@ export const addFriend = async (request: FastifyRequest<{
 
 		const relation = createRelation(reqUUid, receiver.uuid)
 		const result = await db.insert(friendsTable).values(relation).returning()
+		sendMessageToUser(receiver.uuid, {
+			alias: request.session.get('alias') as string,
+			message: "sent you a friend request"
+		});
 		return reply.code(201).send({ msg: "created relation", relation: toPublicRelation(result[0]) })
 	}
 	catch (error) {

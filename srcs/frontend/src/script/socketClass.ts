@@ -8,21 +8,34 @@ class WebSocketManager {
     private reconnectInterval = 1000; // 1 sec
     private isIntentionallyClosed = false;
     private messageHandlers: Map<string, (data: any) => void> = new Map();
+    private connectionPromise: Promise<WebSocket> | null = null;
 
     connect(): Promise<WebSocket> {
-        return new Promise((resolve, reject) => {
-            if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-                resolve(this.socket);
-                return;
+        if (this.connectionPromise) {
+            return this.connectionPromise;
+        }
+        if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+            return Promise.resolve(this.socket);
+        }
+
+        this.connectionPromise = new Promise((resolve, reject) => {
+            this.isIntentionallyClosed = false;
+            
+            if (this.socket && this.socket.readyState !== WebSocket.OPEN) {
+                this.socket.close();
+                this.socket = null;
             }
 
-            this.isIntentionallyClosed = false;
-            this.socket = new WebSocket(`ws://${envConfig.backendURL}/ws/connect?apiKey=${envConfig.privateKey}`);
+            const wsUrl = `ws://${envConfig.backendURL}/ws/connect?apiKey=${envConfig.privateKey}`;
+            console.log('Attempting WebSocket connection to:', wsUrl);
+            
+            this.socket = new WebSocket(wsUrl);
 
             this.socket.onopen = () => {
                 console.log("WebSocket connection established");
                 this.reconnectAttempts = 0;
                 this.reconnectInterval = 1000;
+                this.connectionPromise = null;
                 resolve(this.socket!);
             };
 
@@ -50,29 +63,46 @@ class WebSocketManager {
             this.socket.onclose = (event) => {
                 console.log('WebSocket connection closed:', event.code, event.reason);
                 this.socket = null;
+                this.connectionPromise = null; // Clear the promise
                 
+                // Only attempt reconnect if not intentionally closed and connection was previously established
                 if (!this.isIntentionallyClosed && this.reconnectAttempts < this.maxReconnectAttempts) {
-                    this.attemptReconnect();
+                    // Add delay before reconnection attempt
+                    setTimeout(() => {
+                        this.attemptReconnect();
+                    }, this.reconnectInterval);
                 }
             };
 
             this.socket.onerror = (error) => {
                 console.error('WebSocket error:', error);
+                this.connectionPromise = null; // Clear the promise
                 reject(error);
             };
+
+            // Add timeout for connection attempt
+            setTimeout(() => {
+                if (this.socket && this.socket.readyState === WebSocket.CONNECTING) {
+                    console.log('WebSocket connection timeout');
+                    this.socket.close();
+                    this.connectionPromise = null;
+                    reject(new Error('WebSocket connection timeout'));
+                }
+            }, 10000); // 10 second timeout
         });
+
+        return this.connectionPromise;
     }
 
     private attemptReconnect() {
         this.reconnectAttempts++;
         console.log(`Attempting to reconnect... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
         
-        setTimeout(() => {
-            this.connect().catch(() => {
-                // If reconnect fails, try again with exponential backoff
-                this.reconnectInterval = Math.min(this.reconnectInterval * 2, 30000);
-            });
-        }, this.reconnectInterval);
+        this.connect().catch((error) => {
+            console.error('Reconnection failed:', error);
+            // Exponential backoff
+            this.reconnectInterval = Math.min(this.reconnectInterval * 2, 30000);
+        });
     }
 
     sendMessage(message: any): boolean {
@@ -138,10 +168,14 @@ class WebSocketManager {
 
     disconnect() {
         this.isIntentionallyClosed = true;
+        this.reconnectAttempts = this.maxReconnectAttempts; // Prevent reconnection
+        
         if (this.socket) {
             this.socket.close(1000, 'User initiated disconnect');
             this.socket = null;
         }
+        
+        this.connectionPromise = null;
     }
 
     isConnected(): boolean {
@@ -153,7 +187,6 @@ class WebSocketManager {
     }
 }
 
-// Create a singleton instance
 export const websocketManager = new WebSocketManager();
 
 // Setup keepalive ping every 30 seconds
