@@ -1,16 +1,20 @@
 import * as BABYLON from '@babylonjs/core'
 import * as GUI from '@babylonjs/gui'
 
+interface sceneOptions {
+  scoreToWin: number;
+}
+
 export class Pong {
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
 
-    constructor(readonly canvas: HTMLCanvasElement) {
+    constructor(readonly canvas: HTMLCanvasElement, options?: sceneOptions) {
         this.engine = new BABYLON.Engine(canvas)
         window.addEventListener('resize', () => {
             this.engine.resize();
         });
-        this.scene = createScene(this.engine, this.canvas)
+        this.scene = createScene(this.engine, this.canvas, options)
 
     }
 
@@ -22,10 +26,6 @@ export class Pong {
 
 
 
-}
-
-interface sceneOptions {
-  scoreToWin: number;
 }
 
 function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options?: sceneOptions): BABYLON.Scene {
