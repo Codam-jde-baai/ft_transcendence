@@ -5,13 +5,13 @@ import multipart from '@fastify/multipart';
 import fastifyCors from '@fastify/cors'
 import secureSession from '@fastify/secure-session';
 import rateLimit from '@fastify/rate-limit';
-import websocket from '@fastify/websocket';
-import { FastifyRequest, FastifyReply } from 'fastify';
+import websocketPlugin from '@fastify/websocket';
 import userRoutes from './routes/users.ts';
 import friendsRoutes from './routes/friends.ts';
 import matchesRoutes from './routes/matches.ts';
 import adminRoutes from './routes/admin.ts';
 import snekRoutes from './routes/snek.ts';
+import socketRoutes from './routes/websocket.ts';
 import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
 
@@ -102,27 +102,24 @@ fastify.register(swaggerUi, {
 	routePrefix: '/docs'
 });
 
-fastify.register(websocket, {
-	errorHandler: function (error, socket, req: FastifyRequest, reply: FastifyReply) {
-		socket.terminate()
-	},
+fastify.register(websocketPlugin, {
 	options: {
 		maxPayload: 1048576,
-		verifyClient: function (info: FastifyRequest, next: any) {
-			if (info.headers['x-api-key'] !== envConfig.private_key) {
-				return next(false)
+		verifyClient: (info: { req: { headers: { [key: string]: string } } }, next: (result: boolean) => void) => {
+			if (info.req.headers['x-api-key'] !== envConfig.private_key) {
+				return next(false);
 			}
-			next(true)
+			next(true);
 		}
 	}
-}
-);
+});
 
 fastify.register(userRoutes);
 fastify.register(friendsRoutes);
 fastify.register(matchesRoutes);
 fastify.register(adminRoutes);
 fastify.register(snekRoutes);
+fastify.register(socketRoutes);
 
 const start = async () => {
 	try {
