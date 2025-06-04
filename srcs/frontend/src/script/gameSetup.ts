@@ -1,5 +1,3 @@
-import { resetGame } from '../game/snek/main';
-import { Application } from 'pixi.js'
 import DOMPurify from 'dompurify';
 import { connectFunc, requestBody } from './connections';
 
@@ -160,7 +158,7 @@ export function setupGuestAliasLocking(authState:AuthState) {
 
 
 // logs the user in
-export function setupLoginValidation(app: Application, authState:AuthState) {
+export function setupLoginValidation(authState:AuthState) {
 	const loginButton = document.getElementById('loginButton');
 	const logoutButton = document.getElementById('logoutButton');
 	const usernameInput = document.getElementById('loginUsername') as HTMLInputElement;
@@ -228,7 +226,7 @@ export function setupLoginValidation(app: Application, authState:AuthState) {
 		logoutButton.classList.add('hidden');
 		loginStatus.classList.add('hidden');
 
-		resetGame(app);
+		// resetGame(app);
 		updateStartGameButton(authState);
 		updateFormToggle();
 	});
@@ -265,7 +263,7 @@ export async function validateLogin(username: string, password: string): Promise
 }
 
 // logic for resetting the game ( newplayer button )
-export function newPlayersButton(app: Application, authState:AuthState) {
+export function newPlayersButton(authState:AuthState) {
     const newGameButton = document.getElementById('newGame');
     if (!newGameButton) {
         console.error("New game button not found");
@@ -334,7 +332,7 @@ export function newPlayersButton(app: Application, authState:AuthState) {
         }
 
         // Update start game button state
-        resetGame(app);
+        // resetGame(app);
         updateStartGameButton(authState);
 
         console.log("New players button clicked");

@@ -143,7 +143,7 @@ export function setupStartSGame() {
 
                 setupGuestAliasLocking(authState);
                 FormToggleListener(authState);
-                setupLoginValidation(app, authState);
+                setupLoginValidation(authState);
 				if (authState.isAuthenticated)
 				{
 					// Fetch and display player2 stats
@@ -153,7 +153,23 @@ export function setupStartSGame() {
 				}
                 updateStartGameButton(authState);
                 startGameListeners(app);
-                newPlayersButton(app, authState);
+                newPlayersButton(authState);
+
+				const changeButton = document.getElementById("changeGuestAlias") as HTMLButtonElement;
+				if (changeButton)
+					changeButton.addEventListener('click', () => {
+						resetGame(app);
+    				});
+				const logoutButton = document.getElementById('logoutButton');
+				if (logoutButton)
+					logoutButton.addEventListener('click', () => {
+						resetGame(app);
+    				});
+				const newGameButton = document.getElementById('newGame');
+				if (newGameButton)
+					newGameButton.addEventListener('click', () => {
+        				resetGame(app);
+    				});
             }).catch((error) => {
                 console.error("Error setting up the game:", error);
                 window.history.pushState({}, '', '/errorPages');
