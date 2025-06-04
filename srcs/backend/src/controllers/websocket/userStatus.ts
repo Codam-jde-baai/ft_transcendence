@@ -113,7 +113,7 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
         alias: alias,
     }));
 
-    await broadcastToFriends(uuid, alias, 'online');
+    await broadcastToFriends(uuid, alias, 'came online');
 
     connection.socket.on('message', async (message: Buffer) => {
         try {
@@ -172,7 +172,7 @@ async function handleDisconnection(uuid: string, alias: string) {
     
     // Update database status
     await updateUserStatusInDB(uuid, userStatus.OFFLINE);
-    await broadcastToFriends(uuid, alias, 'offline');
+    await broadcastToFriends(uuid, alias, 'went offline');
     
     console.log(`User ${alias} (${uuid}) fully disconnected`);
 }
@@ -237,40 +237,28 @@ async function getUserFriends(uuid: string): Promise<string[]> {
 }
 
 // Broadcast status changes only to online friends
-async function broadcastToFriends(uuid: string, alias: string, status: 'online' | 'offline') {
+async function broadcastToFriends(uuid: string, alias: string, message: string) {
     try {
         const friendUuids = await getUserFriends(uuid);
         if (friendUuids.length === 0) {
             return;
         }
-        
-        let text: string = '';
-        if (status === 'online') {
-            text = "came online";
-        } else {
-            text = "went offline";
-        }
-        
-        const message = JSON.stringify({
+        const notificationPayload = JSON.stringify({
+            type: "notification",
             alias: alias,
-            message: text,
+            message: message,
         });
-        
-        let successCount = 0;
         friendUuids.forEach(friendUuid => {
             const friendConnection = connectedUsers.get(friendUuid);
             if (friendConnection && friendConnection.socket.readyState === friendConnection.socket.OPEN) {
                 try {
-                    friendConnection.socket.send(message);
-                    successCount++;
+                    friendConnection.socket.send(notificationPayload);
                 } catch (error) {
                     console.error(`Failed to send status update to friend ${friendUuid}:`, error);
                     connectedUsers.delete(friendUuid);
                 }
             }
         });
-        
-        console.log(`Broadcasted ${status} status for ${alias} to ${successCount} online friends`);
     } catch (error) {
         console.error('Failed to broadcast to friends:', error);
     }
@@ -279,19 +267,22 @@ async function broadcastToFriends(uuid: string, alias: string, status: 'online' 
 // Helper function to handle status updates
 async function handleStatusUpdate(uuid: string, alias: string, status: 'online' | 'offline') {
     let dbStatus;
+    let msg : string;
     switch (status.toLowerCase()) {
         case 'online':
             dbStatus = userStatus.ONLINE;
+            msg = 'came online';
             break;
         case 'offline':
             dbStatus = userStatus.OFFLINE;
+            msg = 'went offline';
             break;
         default:
             console.log(`Invalid status: ${status}`);
             return;
     }
     await updateUserStatusInDB(uuid, dbStatus);
-    await broadcastToFriends(uuid, alias, status);
+    await broadcastToFriends(uuid, alias, msg);
 }
 
 export function getConnectedUsers(): Array<{uuid: string, alias: string}> {

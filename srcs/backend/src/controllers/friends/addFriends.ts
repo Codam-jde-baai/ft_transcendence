@@ -49,6 +49,7 @@ export const addFriend = async (request: FastifyRequest<{
 		const relation = createRelation(reqUUid, receiver.uuid)
 		const result = await db.insert(friendsTable).values(relation).returning()
 		sendMessageToUser(receiver.uuid, {
+			type: "notification",
 			alias: request.session.get('alias') as string,
 			message: "sent you a friend request"
 		});
