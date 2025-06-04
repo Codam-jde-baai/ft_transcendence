@@ -4,30 +4,27 @@ import { Application } from 'pixi.js'
 import { setupErrorPages } from './errorPages';
 import DOMPurify from 'dompurify';
 import { connectFunc, requestBody } from '../script/connections';
-import { setupSnek } from './snek';
 
 import "../styles/snek.css"
 
 import { AuthState } from '../script/gameSetup'
 import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, newPlayersButton } from '../script/gameSetup'
 import { Pong } from "./babylon.ts";
+import { setupUserHome } from './home.ts';
 
 interface PlayerStats {
 	alias: string;
-	matches: number;
-	wins: number;
-	losses: number;
-	winrate: number;
-	avg_score: number;
-	highest_score: number;
+	win: number;
+	loss: number;
+	win_rate: number;
 }
 
 interface GameEndPayload {
+	p1_alias: string;
 	p2_alias: string;
+	p1_uuid?: string;
 	p2_uuid?: string;
 	winner_id: number;
-	p1_score: number;
-	p2_score: number;
 }
 
 const authState: AuthState = {
@@ -68,11 +65,8 @@ export function setupStartGame() {
 					<p>Player1 (WASD)</p>
 					<p class="text-center">${playerStats.alias}</p>
 					<div class="bg-red-600 p-2 rounded">
-						<p>Matches: ${playerStats.matches}</p>
 						<p>Wins: ${playerStats.wins} | Losses: ${playerStats.losses}</p>
 						<p>Win Rate: ${(playerStats.winrate)}%</p>
-						<p>Avg Score: ${playerStats.avg_score}</p>
-						<p>Highest Score: ${playerStats.highest_score}</p>
 					</div>
 				</div>
 				<div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
@@ -109,11 +103,8 @@ export function setupStartGame() {
 					<p class="text-center player2-info"></p>
 					<!-- Player2 Stats Container (initially hidden) -->
 					<div id="player2StatsContainer" class="bg-green-600 p-2 rounded hidden">
-						<p>Matches: <span id="p2-matches">0</span></p>
 						<p>Wins: <span id="p2-wins">0</span> | Losses: <span id="p2-losses">0</span></p>
 						<p>Win Rate: <span id="p2-winrate">0.0</span>%</p>
-						<p>Avg Score: <span id="p2-avg-score">0.0</span></p>
-						<p>Highest Score: <span id="p2-highest-score">0</span></p>
 					</div>
 				</div>
 			</div>
@@ -127,8 +118,8 @@ export function setupStartGame() {
 		`);
 
             document.getElementById('SnekHome')?.addEventListener('click', () => {
-                window.history.pushState({}, '', '/snek');
-                setupSnek();
+                window.history.pushState({}, '', '/home');
+                setupUserHome();
             });
 
             // getLanguage();
@@ -137,21 +128,30 @@ export function setupStartGame() {
         }
         const container = document.getElementById('gameContainer') as HTMLElement;
         if (container) {
-            preGameScreen(container).then(async (app: Application) => {
+            preGameScreen(container).then((app: Application) => {
 
                 setupGuestAliasLocking(authState);
                 FormToggleListener(authState);
-                setupLoginValidation(app, authState);
-				if (authState.isAuthenticated)
-				{
-					// Fetch and display player2 stats
-					const player2Stats = await fetchPlayer2Stats(authState.userAlias);
-					if (player2Stats)
-						updatePlayer2StatsDisplay(player2Stats);
-				}
+                setupLoginValidation(authState, "pong");
                 updateStartGameButton(authState);
                 startGameListeners(app);
-                newPlayersButton(app, authState);
+                newPlayersButton(authState);
+				
+				const changeButton = document.getElementById("changeGuestAlias") as HTMLButtonElement;
+				if (changeButton)
+					changeButton.addEventListener('click', () => {
+						resetGame(app); // Pong Version Needed
+    				});
+				const logoutButton = document.getElementById('logoutButton');
+				if (logoutButton)
+					logoutButton.addEventListener('click', () => {
+						resetGame(app); // Pong Version Needed
+    				});
+				const newGameButton = document.getElementById('newGame');
+				if (newGameButton)
+					newGameButton.addEventListener('click', () => {
+        				resetGame(app); // Pong Version Needed
+    				});
             }).catch((error) => {
                 console.error("Error setting up the game:", error);
                 window.history.pushState({}, '', '/errorPages');
@@ -165,29 +165,23 @@ export function setupStartGame() {
 
 }
 
-// Function to update player2 stats display (for Snek)
-function updatePlayer2StatsDisplay(stats: PlayerStats) {
-    const matches = document.getElementById('p2-matches');
+// Function to update player2 stats display (for Pong) // Also needed for p1 for tournament
+export function updatePongPlayer2StatsDisplay(stats: PlayerStats) {
     const wins = document.getElementById('p2-wins');
     const losses = document.getElementById('p2-losses');
     const winrate = document.getElementById('p2-winrate');
-    const avgScore = document.getElementById('p2-avg-score');
-    const highestScore = document.getElementById('p2-highest-score');
 
-    if (matches) matches.textContent = stats.matches.toString();
-    if (wins) wins.textContent = stats.wins.toString();
-    if (losses) losses.textContent = stats.losses.toString();
-    if (winrate) winrate.textContent = stats.winrate.toString();
-    if (avgScore) avgScore.textContent = stats.avg_score.toString();
-    if (highestScore) highestScore.textContent = stats.highest_score.toString();
+    if (wins) wins.textContent = stats.win.toString();
+    if (losses) losses.textContent = stats.loss.toString();
+    if (winrate) winrate.textContent = stats.win_rate.toString();
 }
 
-// Function to fetch player2 stats (for Snek)
-async function fetchPlayer2Stats(alias: string): Promise<PlayerStats | null> {
+// Function to fetch player2 stats (for Pong) // Also needed for p1 for tournament
+export async function fetchPongPlayer2Stats(alias: string): Promise<PlayerStats | null> {
     try {
         const sanitizedAlias = DOMPurify.sanitize(alias);
         const response = await connectFunc(
-            `/snek/stats/${encodeURIComponent(sanitizedAlias)}`,
+            `/useralias/${encodeURIComponent(sanitizedAlias)}`,
             requestBody("GET", null, "application/json")
         );
 
@@ -208,10 +202,9 @@ async function recordGameResults(gameData: gameEndData): Promise<boolean> {
     try {
         // Prepare the payload for the API
         const payload: GameEndPayload = {
-            p2_alias: DOMPurify.sanitize(authState.isAuthenticated ? authState.userAlias : authState.guestAlias),
+            p1_alias: "Enter Alias", //TODO
+			p2_alias: DOMPurify.sanitize(authState.isAuthenticated ? authState.userAlias : authState.guestAlias),
             winner_id: gameData.winner,
-            p1_score: gameData.p1score,
-            p2_score: gameData.p2score
         };
 
         // Add UUID if player2 is authenticated
@@ -261,40 +254,40 @@ async function startGameListeners(app: Application): Promise<void> {
 			const game = new Pong(canvas);
 			game.run();
 		} return ;
-		
-		// Get the player2 name based on authentication state
-        const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
 
-        // Start the game with the appropriate player names
-        startGameButton.disabled = true;
-        startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
-        startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+		// // Get the player2 name based on authentication state
+        // const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
 
-        try {
-            const gameData: gameEndData = await startSnek(app, "player1", player2Name);
-            console.log("Game ended with data:", gameData);
+        // // Start the game with the appropriate player names
+        // startGameButton.disabled = true;
+        // startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+        // startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 
-            // Record game results
-            const recordSuccess = await recordGameResults(gameData);
-            if (recordSuccess) {
-                console.log("Game results recorded successfully");
-            } else {
-                console.warn("Failed to record game results");
-            }
+        // try {
+        //     const gameData: gameEndData = await startSnek(app, "player1", player2Name);
+        //     console.log("Game ended with data:", gameData);
 
-            // If player2 is authenticated, refresh their stats
-            if (authState.isAuthenticated) {
-                const updatedStats = await fetchPlayer2Stats(authState.userAlias);
-                if (updatedStats) {
-                    updatePlayer2StatsDisplay(updatedStats);
-                }
-            }
-        } catch (error) {
-            console.error("Error during game:", error);
-        }
+        //     // Record game results
+        //     const recordSuccess = await recordGameResults(gameData);
+        //     if (recordSuccess) {
+        //         console.log("Game results recorded successfully");
+        //     } else {
+        //         console.warn("Failed to record game results");
+        //     }
 
-        replayButtons.classList.remove('hidden');
-        replayButtons.classList.add('flex');
+        //     // If player2 is authenticated, refresh their stats
+        //     if (authState.isAuthenticated) {
+        //         const updatedStats = await fetchPongPlayer2Stats(authState.userAlias);
+        //         if (updatedStats) {
+        //             updatePongPlayer2StatsDisplay(updatedStats);
+        //         }
+        //     }
+        // } catch (error) {
+        //     console.error("Error during game:", error);
+        // }
+
+        // replayButtons.classList.remove('hidden');
+        // replayButtons.classList.add('flex');
     });
 
     restartGameButton.addEventListener('click', async () => {
@@ -317,9 +310,9 @@ async function startGameListeners(app: Application): Promise<void> {
 
             // If player2 is authenticated, refresh their stats
             if (authState.isAuthenticated) {
-                const updatedStats = await fetchPlayer2Stats(authState.userAlias);
+                const updatedStats = await fetchPongPlayer2Stats(authState.userAlias);
                 if (updatedStats) {
-                    updatePlayer2StatsDisplay(updatedStats);
+                    updatePongPlayer2StatsDisplay(updatedStats);
                 }
             }
         } catch (error) {

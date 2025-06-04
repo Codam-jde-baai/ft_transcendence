@@ -1,5 +1,7 @@
 import DOMPurify from 'dompurify';
 import { connectFunc, requestBody } from './connections';
+import { updateSnekPlayer2StatsDisplay, fetchSnekPlayer2Stats } from '../pages/startSGame'
+import { updatePongPlayer2StatsDisplay, fetchPongPlayer2Stats } from '../pages/startPGame'
 
 export interface AuthState {
 	isAuthenticated: boolean;
@@ -13,12 +15,6 @@ export interface UserData {
 	uuid: string;
 	alias: string;
 }
-// const authState: AuthState = {
-// 	isAuthenticated: false,
-// 	isGuestLocked: false,
-// 	guestAlias: "",
-// 	userAlias: ""
-// };
 
 // Prevents the toggle from being used if user is logged in / guest is locked in
 export function FormToggleListener(authState:AuthState) {
@@ -158,7 +154,7 @@ export function setupGuestAliasLocking(authState:AuthState) {
 
 
 // logs the user in
-export function setupLoginValidation(authState:AuthState) {
+export function setupLoginValidation(authState:AuthState, game:string) {
 	const loginButton = document.getElementById('loginButton');
 	const logoutButton = document.getElementById('logoutButton');
 	const usernameInput = document.getElementById('loginUsername') as HTMLInputElement;
@@ -195,6 +191,17 @@ export function setupLoginValidation(authState:AuthState) {
 				passwordInput.disabled = true;
 				loginButton.classList.add('hidden');
 				logoutButton.classList.remove('hidden');
+
+                // Fetch and display player2 stats
+                if (game === "pong") {
+					const player2Stats = await fetchPongPlayer2Stats(userData.alias);
+					if (player2Stats)
+						updatePongPlayer2StatsDisplay(player2Stats);
+				} else {
+					const player2Stats = await fetchSnekPlayer2Stats(userData.alias);
+					if (player2Stats)
+						updateSnekPlayer2StatsDisplay(player2Stats);
+				}
 
 				updateStartGameButton(authState);
 				updateFormToggle();

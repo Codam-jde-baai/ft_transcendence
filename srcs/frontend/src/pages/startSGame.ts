@@ -143,14 +143,7 @@ export function setupStartSGame() {
 
                 setupGuestAliasLocking(authState);
                 FormToggleListener(authState);
-                setupLoginValidation(authState);
-				if (authState.isAuthenticated)
-				{
-					// Fetch and display player2 stats
-					const player2Stats = await fetchPlayer2Stats(authState.userAlias);
-					if (player2Stats)
-						updatePlayer2StatsDisplay(player2Stats);
-				}
+                setupLoginValidation(authState, "snek");
                 updateStartGameButton(authState);
                 startGameListeners(app);
                 newPlayersButton(authState);
@@ -184,7 +177,7 @@ export function setupStartSGame() {
 }
 
 // Function to update player2 stats display (for Snek)
-function updatePlayer2StatsDisplay(stats: PlayerStats) {
+export function updateSnekPlayer2StatsDisplay(stats: PlayerStats) {
     const matches = document.getElementById('p2-matches');
     const wins = document.getElementById('p2-wins');
     const losses = document.getElementById('p2-losses');
@@ -201,7 +194,7 @@ function updatePlayer2StatsDisplay(stats: PlayerStats) {
 }
 
 // Function to fetch player2 stats (for Snek)
-async function fetchPlayer2Stats(alias: string): Promise<PlayerStats | null> {
+export async function fetchSnekPlayer2Stats(alias: string): Promise<PlayerStats | null> {
     try {
         const sanitizedAlias = DOMPurify.sanitize(alias);
         const response = await connectFunc(
@@ -293,9 +286,9 @@ async function startGameListeners(app: Application): Promise<void> {
 
             // If player2 is authenticated, refresh their stats
             if (authState.isAuthenticated) {
-                const updatedStats = await fetchPlayer2Stats(authState.userAlias);
+                const updatedStats = await fetchSnekPlayer2Stats(authState.userAlias);
                 if (updatedStats) {
-                    updatePlayer2StatsDisplay(updatedStats);
+                    updateSnekPlayer2StatsDisplay(updatedStats);
                 }
             }
         } catch (error) {
@@ -326,9 +319,9 @@ async function startGameListeners(app: Application): Promise<void> {
 
             // If player2 is authenticated, refresh their stats
             if (authState.isAuthenticated) {
-                const updatedStats = await fetchPlayer2Stats(authState.userAlias);
+                const updatedStats = await fetchSnekPlayer2Stats(authState.userAlias);
                 if (updatedStats) {
-                    updatePlayer2StatsDisplay(updatedStats);
+                    updateSnekPlayer2StatsDisplay(updatedStats);
                 }
             }
         } catch (error) {
