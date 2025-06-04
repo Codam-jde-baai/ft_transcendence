@@ -5,7 +5,7 @@ import { connectFunc, requestBody, inputToContent } from '../script/connections'
 import { emptyFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
-import { connectWebSocket } from '../script/socketConnect';
+import { websocketManager } from '../script/socketClass';
 
 export function setupLogIn() {
 	const root = document.getElementById('app');
@@ -50,39 +50,32 @@ export function setupLogIn() {
 			setupSignUp();
 		});
 
-		document.getElementById('Home')?.addEventListener('click', () => {
+		document.getElementById('Home')?.addEventListener('click', async () => {
 			const isValid = emptyFields(["username", "password"]);
-			if (!isValid)
-				return; // Stop execution if validation fails				
-			const content: string = inputToContent(["username", "password"])
+			if (!isValid) return;
+			
+			const content = inputToContent(["username", "password"]);
 			const body = requestBody("POST", content, "application/json");
-			const response = connectFunc("/user/login", body);
-			response.then((response) => {
+			
+			try {
+				const response = await connectFunc("/user/login", body);
+				
 				if (response.ok) {
-					response.json().then(() => {
-						connectWebSocket()
-							.then(() => {
-								console.log('WebSocket connected after successful login');
-								window.history.pushState({}, '', '/home');
-								setupUserHome(true);
-							})
-							.catch((error) => {
-								console.error('Failed to connect WebSocket after login:', error);
-								window.history.pushState({}, '', '/home');
-								setupUserHome(true);
-							});
-					});
+					await new Promise(resolve => setTimeout(resolve, 200));
+					await websocketManager.connect();
+					window.history.pushState({}, '', '/home');
+					setupUserHome(true);
+				} else {
+					const data = await response.json();
+					if (data.error === "username and password combination do not match database entry") {
+						const elem = document.getElementById("username") as HTMLInputElement;
+						const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
+						errorDisplay(elem, errorMsg, "LogIn_noUser");
+					}
 				}
-				else {
-					response.json().then((data) => {
-						if (data.error === "username and password combination do not match database entry") {
-							const elem = document.getElementById("username") as HTMLInputElement
-							const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
-							errorDisplay(elem, errorMsg, "LogIn_noUser");
-						}
-					})
-				}
-			})
+			} catch (error) {
+				console.error('Login error:', error);
+			}
 		});
 	}
 }

@@ -1,5 +1,4 @@
 import { FastifyInstance } from 'fastify';
-import { authSession } from './authentication.ts';
 
 import { newUserConnection } from '../controllers/websocket/userStatus.ts';
 
@@ -15,8 +14,7 @@ const wsConnectSchema = {
 
 function socketRoutes(fastify: FastifyInstance, options: any, done: () => void) {
     fastify.get('/ws/connect', { 
-        websocket: true, 
-        preHandler: [authSession],
+        websocket: true,
         schema: wsConnectSchema
     }, newUserConnection);
     

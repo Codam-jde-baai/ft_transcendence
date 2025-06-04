@@ -18,37 +18,56 @@ const connectedUsers = new Map<string, UserConnection>();
 const HEARTBEAT_INTERVAL = 30000; // 30 seconds
 const heartbeatIntervals = new Map<string, NodeJS.Timeout>();
 
+function connectAuthentication(connection: { socket: WebSocket }, req: FastifyRequest): { uuid: string; alias: string } | null {
+    const apiKey = (req.query as { apiKey: string }).apiKey;
+    if (apiKey !== envConfig.private_key) {
+        connection.socket.close(1008, 'Invalid API key');
+        return null;
+    }
+
+    let uuid: string | undefined;
+    let alias: string | undefined;
+    try {
+        uuid = req.session.get('uuid');
+        alias = req.session.get('alias');
+        console.log('Session data retrieved:', { 
+            uuid: uuid ? 'present' : 'missing', 
+            alias: alias ? 'present' : 'missing' 
+        });
+    } catch (error) {
+        connection.socket.close(1008, 'Session access error');
+        return null;
+    }
+    if (!uuid || !alias) {
+        connection.socket.close(1008, 'User not authenticated');
+        return null;
+    }
+    return { uuid, alias };
+}
+
 export const newUserConnection = async (connection: { socket: WebSocket }, req: FastifyRequest) => {
     console.log('New WebSocket connection attempt');
     
-    const apiKey = (req.query as { apiKey: string }).apiKey;
-    if (apiKey !== envConfig.private_key) {
-        console.log('Invalid API key provided');
-        connection.socket.close(1008, 'Invalid API key');
+    const authResult = connectAuthentication(connection, req);
+    if (!authResult)
+    {
+        console.error('Authentication failed for WebSocket connection');
         return;
-    }
+    } 
+    const { uuid, alias } = authResult;
     
-    const uuid = req.session.get('uuid');
-    const alias = req.session.get('alias');
-    
-    console.log('Session data:', { uuid: uuid ? 'present' : 'missing', alias: alias ? 'present' : 'missing' });
-    
-    if (!uuid || !alias) {
-        console.log('User not authenticated - session missing uuid or alias');
-        connection.socket.close(1008, 'User not authenticated');
-        return;
-    }
-    
-    // If user already has a connection, close the old one first
     const existingConnection = connectedUsers.get(uuid);
     if (existingConnection) {
         console.log(`Closing existing connection for user ${alias} (${uuid})`);
         const existingHeartbeat = heartbeatIntervals.get(uuid);
         if (existingHeartbeat) {
             clearInterval(existingHeartbeat);
+            heartbeatIntervals.delete(uuid);
         }
         try {
-            existingConnection.socket.close(1000, 'New connection established');
+            if (existingConnection.socket.readyState === existingConnection.socket.OPEN) {
+                existingConnection.socket.close(1000, 'New connection established');
+            }
         } catch (error) {
             console.error('Error closing existing connection:', error);
         }
@@ -60,6 +79,7 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
         socket: connection.socket,
     });
 
+
     console.log(`User ${alias} (${uuid}) connected successfully`);
 
     await updateUserStatusInDB(uuid, userStatus.ONLINE);
@@ -69,25 +89,30 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
             connection.socket.ping();
         } else {
             clearInterval(heartbeat);
-            heartbeatIntervals.delete(uuid);
-            handleDisconnection(uuid, alias);
+            heartbeatIntervals.delete(uuid!);
+            handleDisconnection(uuid!, alias!);
         }
     }, HEARTBEAT_INTERVAL);
     heartbeatIntervals.set(uuid, heartbeat);
     
+    if (!connection.socket) {
+        console.error('WebSocket connection is undefined');
+        return;
+    }
+
+    // Ensure socket is valid before proceeding
     connection.socket.on('pong', () => {
         console.log(`Heartbeat received from ${alias} (${uuid})`);
     });
 
     // Send connection confirmation
     connection.socket.send(JSON.stringify({
-        type: 'connection_established',
+        type: 'system',
         message: 'Connected successfully',
         uuid: uuid,
         alias: alias,
     }));
 
-    // Broadcast to online friends that this user came online
     await broadcastToFriends(uuid, alias, 'online');
 
     connection.socket.on('message', async (message: Buffer) => {
@@ -103,7 +128,7 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
                     }));
                     break;
                 case 'status_update':
-                    await handleStatusUpdate(uuid, alias, data.status);
+                    await handleStatusUpdate(uuid!, alias!, data.status);
                     break;
                 default:
                     console.log(`Unknown message type: ${data.type}`);
@@ -123,12 +148,12 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
 
     connection.socket.on('close', async (code: number, reason: Buffer) => {
         console.log(`User ${alias} (${uuid}) disconnected with code ${code}: ${reason.toString()}`);
-        await handleDisconnection(uuid, alias);
+        await handleDisconnection(uuid!, alias!);
     });
 
     connection.socket.on('error', async (error: Error) => {
         console.error(`WebSocket error for user ${alias} (${uuid}):`, error);
-        await handleDisconnection(uuid, alias);
+        await handleDisconnection(uuid!, alias!);
     });
 };
 
@@ -142,6 +167,7 @@ async function handleDisconnection(uuid: string, alias: string) {
         heartbeatIntervals.delete(uuid);
     }
     
+    // Remove from connected users
     connectedUsers.delete(uuid);
     
     // Update database status
@@ -301,7 +327,9 @@ export function sendMessageToUser(uuid: string, message: any): boolean {
 export function closeAllConnections() {
     connectedUsers.forEach((userConnection) => {
         try {
-            userConnection.socket.close(1001, 'Server shutting down');
+            if (userConnection.socket.readyState === userConnection.socket.OPEN) {
+                userConnection.socket.close(1001, 'Server shutting down');
+            }
         } catch (error) {
             console.error('Error closing WebSocket connection:', error);
         }
