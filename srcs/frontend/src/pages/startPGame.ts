@@ -1,10 +1,3 @@
-import { getLanguage } from '../script/language';
-import { dropDownBar } from '../script/dropDownBar';
-import { fillTopbar } from '../script/fillTopbar';
-import { setupNavigation } from '../script/menuNavigation';
-import { Pong } from './babylon.ts';
-import { inputToContent } from '../script/connections.ts';
-
 import { startSnek, preGameScreen, restartSnek, resetGame } from '../game/snek/main';
 import { gameEndData } from '../game/snek/main';
 import { Application } from 'pixi.js'
@@ -15,49 +8,9 @@ import { setupSnek } from './snek';
 
 import "../styles/snek.css"
 
-export function setupStartGame() {
-	const root = document.getElementById('app');
-	if (root) {
-		root.innerHTML = "";
-		root.insertAdjacentHTML("beforeend", /*html*/`
-		<link rel="stylesheet" href="src/styles/startGame.css"> <!-- Link to the CSS file -->
-		<div class="overlay"></div>
-		<dropdown-menu></dropdown-menu>
-		
-		<div class="middle" id="middle">
-			<div class="container">
-				<h1 class="header" data-i18n="Game_Header"></h1>
-					
-				<div class="buttons">
-					<button class="btn" id ="btn_1v1" data-i18n="btn_1v1"></button>
-				</div>
-				<div class="buttons">
-					<button class="btn" data-i18n="btn_Tournament"></button>
-				</div>
-			</div>
-		</div>
-		`);
-
-		getLanguage();
-		fillTopbar();
-		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
-		setupNavigation();
-
-// Add event listener to launch Pong game
-	const Btn1v1 = document.getElementById("btn_1v1");
-	Btn1v1?.addEventListener("click", () => {
-		Pong1v1();
-		});
-	}
-}
-
-interface AuthState {
-	isAuthenticated: boolean;
-	isGuestLocked: boolean;
-	guestAlias: string;
-	userAlias: string;
-	userUuid?: string; // Added UUID for authenticated users
-}
+import { AuthState } from '../script/gameSetup'
+import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, newPlayersButton } from '../script/gameSetup'
+import { Pong } from "./babylon.ts";
 
 interface PlayerStats {
 	alias: string;
@@ -67,11 +20,6 @@ interface PlayerStats {
 	winrate: number;
 	avg_score: number;
 	highest_score: number;
-}
-
-interface UserData {
-	uuid: string;
-	alias: string;
 }
 
 interface GameEndPayload {
@@ -89,15 +37,30 @@ const authState: AuthState = {
 	userAlias: ""
 };
 
+export function setupStartGame() {
+    const userDataPromise = connectFunc("/snek/stats/me", requestBody("GET", null, "application/json"))
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                setupErrorPages(500, "Error fetching user data");
+                throw new Error("Failed to fetch user data");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching player stats:", error);
+            // Return default stats object if fetch fails
+            window.history.pushState({}, '', '/errorPages');
+            setupErrorPages(500, "Error fetching player stats");
+            return;
+        });
 
-function Pong1v1()
-{
-	const playerStats:PlayerStats = [];
-	const middle = document.getElementById("middle");
-	if (middle) {
-		middle.innerHTML = "";
-		middle.insertAdjacentHTML("beforeend", /*html*/ `
-		<canvas id="renderCanvas" style="position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block;"></canvas>
+    userDataPromise.then((playerStats: PlayerStats) => {
+        const root = document.getElementById('app');
+        if (root) {
+            root.innerHTML = "";
+            root.insertAdjacentHTML("beforeend", /*html*/ `
+		<canvas id="renderCanvas" style="pointer-events:none; position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block;"></canvas>
 		<div class="flex flex-col gap-4 items-center bg-black bg-opacity-75 py-20 px-8 rounded">
 			<!-- <button class="fixed top-4 left-4 w-[190px] py-3 text-lg text-white bg-green-600 rounded-[7px] cursor-pointer mt-5 transition-all box-border font-sans hover:bg-green-500" id="SnekHome">Go back to home</button> -->
 			<div class="flex flex-row w-full gap-20 bg-pink-500 text-white py-2 px-4 rounded justify-center">
@@ -162,549 +125,208 @@ function Pong1v1()
 			</div>
 		</div>
 		`);
-	}
+
+            document.getElementById('SnekHome')?.addEventListener('click', () => {
+                window.history.pushState({}, '', '/snek');
+                setupSnek();
+            });
+
+            // getLanguage();
+            // setupNavigation();
+
+        }
+        const container = document.getElementById('gameContainer') as HTMLElement;
+        if (container) {
+            preGameScreen(container).then(async (app: Application) => {
+
+                setupGuestAliasLocking(authState);
+                FormToggleListener(authState);
+                setupLoginValidation(app, authState);
+				if (authState.isAuthenticated)
+				{
+					// Fetch and display player2 stats
+					const player2Stats = await fetchPlayer2Stats(authState.userAlias);
+					if (player2Stats)
+						updatePlayer2StatsDisplay(player2Stats);
+				}
+                updateStartGameButton(authState);
+                startGameListeners(app);
+                newPlayersButton(app, authState);
+            }).catch((error) => {
+                console.error("Error setting up the game:", error);
+                window.history.pushState({}, '', '/errorPages');
+                setupErrorPages(500, "Error launching game");
+            });
+        } else {
+            console.error("Game container not found");
+            return;
+        }
+    });
+
 }
 
-// export function setupStartSGame() {
-// 	const userDataPromise = connectFunc("/snek/stats/me", requestBody("GET", null, "application/json"))
-// 		.then(response => {
-// 			if (response.ok) {
-// 				return response.json();
-// 			} else {
-// 				setupErrorPages(500, "Error fetching user data");
-// 				throw new Error("Failed to fetch user data");
-// 			}
-// 		})
-// 		.catch(error => {
-// 			console.error("Error fetching player stats:", error);
-// 			// Return default stats object if fetch fails
-// 			window.history.pushState({}, '', '/errorPages');
-// 			setupErrorPages(500, "Error fetching player stats");
-// 			return;
-// 		});
-
-// 	userDataPromise.then((playerStats: PlayerStats) => {
-// 		const root = document.getElementById('app');
-
-// 			document.getElementById('SnekHome')?.addEventListener('click', () => {
-// 				window.history.pushState({}, '', '/snek');
-// 				setupSnek();
-// 			});
-
-// 			// getLanguage();
-// 			// setupNavigation();
-
-// 		}
-// 		const container = document.getElementById('gameContainer') as HTMLElement;
-// 		if (container) {
-// 			preGameScreen(container).then((app: Application) => {
-
-// 				setupGuestAliasLocking();
-// 				FormToggleListener();
-// 				setupLoginValidation(app);
-// 				updateStartGameButton();
-// 				startGameListeners(app);
-// 				newPlayersButton(app);
-// 			}).catch((error) => {
-// 				console.error("Error setting up the game:", error);
-// 				window.history.pushState({}, '', '/errorPages');
-// 				setupErrorPages(500, "Error launching game");
-// 			});
-// 		} else {
-// 			console.error("Game container not found");
-// 			return;
-// 		}
-// 	});
-
-// }
-
-// Prevents the toggle from being used if user is logged in / guest is locked in
-function FormToggleListener() {
-	const toggle = document.getElementById("authToggle") as HTMLInputElement;
-	if (!toggle) {
-		console.error("Auth toggle not found");
-		return;
-	}
-
-	toggle.addEventListener('change', () => {
-		if (authState.isGuestLocked || authState.isAuthenticated) {
-			toggle.checked = !toggle.checked;
-			return;
-		}
-		updateFormToggle();
-	});
-}
-
-// updates the state of the form toggle
-function updateFormToggle() {
-	const toggle = document.getElementById("authToggle") as HTMLInputElement;
-	const toggleBackground = document.getElementById("toggleBackground");
-	const toggleCircle = document.getElementById("toggleCircle");
-	const guestForm = document.getElementById("GuestAliasform") as HTMLFormElement;
-	const loginForm = document.getElementById("LoginForm") as HTMLFormElement;
-
-	if (!toggle || !toggleBackground || !toggleCircle || !guestForm || !loginForm) {
-		console.error("Form toggle not found");
-		return;
-	}
-	if (toggle.checked) {
-		toggleBackground.classList.add('bg-blue-600');
-		toggleBackground.classList.remove('bg-gray-300');
-		toggleCircle.style.transform = 'translateX(32px)'
-		guestForm.classList.add('hidden');
-		guestForm.classList.remove('flex');
-		loginForm.classList.remove('hidden');
-		loginForm.classList.add('flex');
-	} else {
-		toggleBackground.classList.remove('bg-blue-600');
-		toggleBackground.classList.add('bg-gray-300');
-		toggleCircle.style.transform = 'translateX(0)';
-		loginForm.classList.add('hidden');
-		loginForm.classList.remove('flex');
-		guestForm.classList.remove('hidden');
-		guestForm.classList.add('flex');
-
-		const loginStatus = document.getElementById('loginStatus');
-		if (loginStatus) {
-			loginStatus.classList.add('hidden');
-		}
-		(document.getElementById('loginUsername') as HTMLInputElement).value = '';
-		(document.getElementById('loginPassword') as HTMLInputElement).value = '';
-	}
-}
-
-// enables the start game button and displays the player2 alias
-function updateStartGameButton() {
-	const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
-	const player2InfoElements = document.querySelectorAll('.player2-info');
-	const player2StatsContainer = document.getElementById('player2StatsContainer');
-
-	if (!startGameButton) {
-		console.error("Start game button not found");
-		return;
-	}
-	if (authState.isAuthenticated || authState.isGuestLocked) {
-		startGameButton.disabled = false;
-		startGameButton.classList.remove('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
-		startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-
-		const displayName = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
-		player2InfoElements.forEach(element => {
-			element.textContent = displayName;
-		});
-
-		// Show player2 stats if authenticated
-		if (player2StatsContainer) {
-			if (authState.isAuthenticated) {
-				player2StatsContainer.classList.remove('hidden');
-			} else {
-				player2StatsContainer.classList.add('hidden');
-			}
-		}
-	} else {
-		startGameButton.disabled = true;
-		startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
-		startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-		player2InfoElements.forEach(element => {
-			element.textContent = "";
-		});
-
-		// Hide player2 stats
-		if (player2StatsContainer) {
-			player2StatsContainer.classList.add('hidden');
-		}
-	}
-}
-
-// validates and locks/unlocks the guest alias
-function setupGuestAliasLocking() {
-	const guestInputField = document.getElementById("guestAliasInput") as HTMLInputElement;
-	const lockInButton = document.getElementById("lockInGuest") as HTMLButtonElement;
-	const changeButton = document.getElementById("changeGuestAlias") as HTMLButtonElement;
-
-	if (!guestInputField || !lockInButton || !changeButton) {
-		console.error("Guest alias input or buttons not found");
-		return;
-	}
-
-	lockInButton.addEventListener('click', () => {
-		const rawInput = guestInputField.value.trim();
-		const sanitizedInput = rawInput.replace(/[^a-zA-Z0-9]/g, '');
-		const guestInput = DOMPurify.sanitize(sanitizedInput);
-
-		if (guestInput.length < 3) {
-			alert("Guest alias must be at least 3 characters long.");
-			return;
-		}
-		guestInputField.disabled = true;
-		lockInButton.classList.add('hidden');
-		changeButton.classList.remove('hidden');
-
-		authState.isGuestLocked = true;
-		authState.guestAlias = "(guest) " + guestInput;
-		updateStartGameButton();
-	});
-
-	changeButton.addEventListener('click', () => {
-		guestInputField.disabled = false;
-		changeButton.classList.add('hidden');
-		lockInButton.classList.remove('hidden');
-		authState.isGuestLocked = false;
-		updateStartGameButton();
-	});
-}
-
-// Function to update player2 stats display
+// Function to update player2 stats display (for Snek)
 function updatePlayer2StatsDisplay(stats: PlayerStats) {
-	const matches = document.getElementById('p2-matches');
-	const wins = document.getElementById('p2-wins');
-	const losses = document.getElementById('p2-losses');
-	const winrate = document.getElementById('p2-winrate');
-	const avgScore = document.getElementById('p2-avg-score');
-	const highestScore = document.getElementById('p2-highest-score');
+    const matches = document.getElementById('p2-matches');
+    const wins = document.getElementById('p2-wins');
+    const losses = document.getElementById('p2-losses');
+    const winrate = document.getElementById('p2-winrate');
+    const avgScore = document.getElementById('p2-avg-score');
+    const highestScore = document.getElementById('p2-highest-score');
 
-	if (matches) matches.textContent = stats.matches.toString();
-	if (wins) wins.textContent = stats.wins.toString();
-	if (losses) losses.textContent = stats.losses.toString();
-	if (winrate) winrate.textContent = stats.winrate.toString();
-	if (avgScore) avgScore.textContent = stats.avg_score.toString();
-	if (highestScore) highestScore.textContent = stats.highest_score.toString();
+    if (matches) matches.textContent = stats.matches.toString();
+    if (wins) wins.textContent = stats.wins.toString();
+    if (losses) losses.textContent = stats.losses.toString();
+    if (winrate) winrate.textContent = stats.winrate.toString();
+    if (avgScore) avgScore.textContent = stats.avg_score.toString();
+    if (highestScore) highestScore.textContent = stats.highest_score.toString();
 }
 
-// Function to fetch player2 stats
+// Function to fetch player2 stats (for Snek)
 async function fetchPlayer2Stats(alias: string): Promise<PlayerStats | null> {
-	try {
-		const sanitizedAlias = DOMPurify.sanitize(alias);
-		const response = await connectFunc(
-			`/snek/stats/${encodeURIComponent(sanitizedAlias)}`,
-			requestBody("GET", null, "application/json")
-		);
+    try {
+        const sanitizedAlias = DOMPurify.sanitize(alias);
+        const response = await connectFunc(
+            `/snek/stats/${encodeURIComponent(sanitizedAlias)}`,
+            requestBody("GET", null, "application/json")
+        );
 
-		if (response.ok) {
-			return await response.json();
-		} else {
-			console.error(`Failed to fetch stats for ${alias}: ${response.status}`);
-			return null;
-		}
-	} catch (error) {
-		console.error(`Error fetching stats for ${alias}:`, error);
-		return null;
-	}
+        if (response.ok) {
+            return await response.json();
+        } else {
+            console.error(`Failed to fetch stats for ${alias}: ${response.status}`);
+            return null;
+        }
+    } catch (error) {
+        console.error(`Error fetching stats for ${alias}:`, error);
+        return null;
+    }
 }
 
-// logs the user in
-function setupLoginValidation(app: Application) {
-	const loginButton = document.getElementById('loginButton');
-	const logoutButton = document.getElementById('logoutButton');
-	const usernameInput = document.getElementById('loginUsername') as HTMLInputElement;
-	const passwordInput = document.getElementById('loginPassword') as HTMLInputElement;
-	const loginStatus = document.getElementById('loginStatus');
-
-	if (!loginButton || !logoutButton || !usernameInput || !passwordInput || !loginStatus) {
-		console.error("Login elements not found");
-		return;
-	}
-
-	loginButton.addEventListener('click', async () => {
-		const usernameIn = usernameInput.value.trim().replace(/[^a-zA-Z0-9]/g, '');
-		const passwordIn = passwordInput.value.trim().replace(/[^a-zA-Z0-9]/g, '');
-		const username = DOMPurify.sanitize(usernameIn);
-		const password = DOMPurify.sanitize(passwordIn);
-		if (!username || username.length < 3) {
-			showLoginStatus(loginStatus, "Username must be at least 3 characters long", false);
-			return;
-		}
-		if (!password || password.length < 6) {
-			showLoginStatus(loginStatus, "Password must be at least 6 characters long", false);
-			return;
-		}
-		try {
-			const userData = await validateLogin(username, password);
-			if (userData) {
-				showLoginStatus(loginStatus, "Login successful!", true);
-				authState.isAuthenticated = true;
-				authState.userAlias = userData.alias;
-				authState.userUuid = userData.uuid; // Store UUID for game results
-
-				usernameInput.disabled = true;
-				passwordInput.disabled = true;
-				loginButton.classList.add('hidden');
-				logoutButton.classList.remove('hidden');
-
-				// Fetch and display player2 stats
-				const player2Stats = await fetchPlayer2Stats(userData.alias);
-				if (player2Stats) {
-					updatePlayer2StatsDisplay(player2Stats);
-				}
-
-				updateStartGameButton();
-				updateFormToggle();
-			} else {
-				showLoginStatus(loginStatus, "Invalid username or password", false);
-				authState.isAuthenticated = false;
-				updateStartGameButton();
-				updateFormToggle();
-			}
-		} catch (error) {
-			showLoginStatus(loginStatus, "Error during login. Please try again.", false);
-			console.error("Login error:", error);
-			authState.isAuthenticated = false;
-			updateStartGameButton();
-			updateFormToggle();
-		}
-	});
-
-	logoutButton.addEventListener('click', () => {
-		authState.isAuthenticated = false;
-		authState.userAlias = "";
-		authState.userUuid = undefined;
-
-		usernameInput.disabled = false;
-		passwordInput.disabled = false;
-		usernameInput.value = "";
-		passwordInput.value = "";
-		loginButton.classList.remove('hidden');
-		logoutButton.classList.add('hidden');
-		loginStatus.classList.add('hidden');
-
-		resetGame(app);
-		updateStartGameButton();
-		updateFormToggle();
-	});
-}
-
-// displays output of login attempt
-function showLoginStatus(statusElement: HTMLElement, message: string, isSuccess: boolean) {
-	statusElement.textContent = message;
-	statusElement.classList.remove('hidden', 'text-green-500', 'text-red-500');
-	statusElement.classList.add(isSuccess ? 'text-green-500' : 'text-red-500');
-}
-
-// calls login API
-async function validateLogin(username: string, password: string): Promise<UserData | null> {
-	console.log(`Attempting to login with username: ${username}`);
-
-	try {
-		const response = await connectFunc(
-			"/user/game/login",
-			requestBody("POST", JSON.stringify({ username, password }), "application/json")
-		);
-
-		if (response.ok) {
-			const userData: UserData = await response.json();
-			return userData;
-		} else {
-			console.error(`Login failed: ${response.status}`);
-			return null;
-		}
-	} catch (error) {
-		console.error("Login error:", error);
-		return null;
-	}
-}
-
-// Record game results
+// Record game results (for Snek)
 async function recordGameResults(gameData: gameEndData): Promise<boolean> {
-	try {
-		// Prepare the payload for the API
-		const payload: GameEndPayload = {
-			p2_alias: DOMPurify.sanitize(authState.isAuthenticated ? authState.userAlias : authState.guestAlias),
-			winner_id: gameData.winner,
-			p1_score: gameData.p1score,
-			p2_score: gameData.p2score
-		};
+    try {
+        // Prepare the payload for the API
+        const payload: GameEndPayload = {
+            p2_alias: DOMPurify.sanitize(authState.isAuthenticated ? authState.userAlias : authState.guestAlias),
+            winner_id: gameData.winner,
+            p1_score: gameData.p1score,
+            p2_score: gameData.p2score
+        };
 
-		// Add UUID if player2 is authenticated
-		if (authState.isAuthenticated && authState.userUuid) {
-			payload.p2_uuid = DOMPurify.sanitize(authState.userUuid);
-		}
+        // Add UUID if player2 is authenticated
+        if (authState.isAuthenticated && authState.userUuid) {
+            payload.p2_uuid = DOMPurify.sanitize(authState.userUuid);
+        }
 
-		console.log("Submitting game results:", payload);
+        console.log("Submitting game results:", payload);
 
-		// Make the API call
-		const response = await connectFunc(
-			"/snek/new",
-			requestBody("POST", JSON.stringify(payload), "application/json")
-		);
+        // Make the API call
+        const response = await connectFunc(
+            "/snek/new",
+            requestBody("POST", JSON.stringify(payload), "application/json")
+        );
 
-		if (response.ok) {
-			console.log("Game results recorded successfully");
-			return true;
-		} else {
-			console.error(`Failed to record game results: ${response.status}`);
-			return false;
-		}
-	} catch (error) {
-		console.error("Error recording game results:", error);
-		return false;
-	}
+        if (response.ok) {
+            console.log("Game results recorded successfully");
+            return true;
+        } else {
+            console.error(`Failed to record game results: ${response.status}`);
+            return false;
+        }
+    } catch (error) {
+        console.error("Error recording game results:", error);
+        return false;
+    }
 }
 
-// starts the listeners for the game button
+// starts the listeners for the game button (for Snek)
 async function startGameListeners(app: Application): Promise<void> {
-	const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
-	const restartGameButton = document.getElementById('restartGame');
-	const gameContainer = document.getElementById('gameContainer');
-	const replayButtons = document.getElementById('replayButtons');
+    const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
+    const restartGameButton = document.getElementById('restartGame');
+    const gameContainer = document.getElementById('gameContainer');
+    const replayButtons = document.getElementById('replayButtons');
 
-	if (!gameContainer || !startGameButton || !restartGameButton || !replayButtons) {
-		console.error("One or more elements not found");
-		return;
-	}
+    if (!gameContainer || !startGameButton || !restartGameButton || !replayButtons) {
+        console.error("One or more elements not found");
+        return;
+    }
 
-	startGameButton.addEventListener('click', async () => {
+    startGameButton.addEventListener('click', async () => {
+        
+		const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
+		if (canvas) {
+			// const options:scene = []
+			// const game = new Pong(canvas, options);
+			const game = new Pong(canvas);
+			game.run();
+		} return ;
+		
 		// Get the player2 name based on authentication state
-		const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
+        const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
 
-		// Start the game with the appropriate player names
-		startGameButton.disabled = true;
-		startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
-		startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+        // Start the game with the appropriate player names
+        startGameButton.disabled = true;
+        startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+        startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 
-		try {
-				const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
-				if (canvas) {
-					// const options:scene = []
-					// const game = new Pong(canvas, options);
-					const game = new Pong(canvas);
-					game.run();
-				}
-			// const gameData: gameEndData = await startSnek(app, "player1", player2Name);
-			// console.log("Game ended with data:", gameData);
+        try {
+            const gameData: gameEndData = await startSnek(app, "player1", player2Name);
+            console.log("Game ended with data:", gameData);
 
-			// // Record game results
-			// const recordSuccess = await recordGameResults(gameData);
-			// if (recordSuccess) {
-			// 	console.log("Game results recorded successfully");
-			// } else {
-			// 	console.warn("Failed to record game results");
-			// }
+            // Record game results
+            const recordSuccess = await recordGameResults(gameData);
+            if (recordSuccess) {
+                console.log("Game results recorded successfully");
+            } else {
+                console.warn("Failed to record game results");
+            }
 
-			// // If player2 is authenticated, refresh their stats
-			// if (authState.isAuthenticated) {
-			// 	const updatedStats = await fetchPlayer2Stats(authState.userAlias);
-			// 	if (updatedStats) {
-			// 		updatePlayer2StatsDisplay(updatedStats);
-			// 	}
-			// }
-		} catch (error) {
-			console.error("Error during game:", error);
-		}
+            // If player2 is authenticated, refresh their stats
+            if (authState.isAuthenticated) {
+                const updatedStats = await fetchPlayer2Stats(authState.userAlias);
+                if (updatedStats) {
+                    updatePlayer2StatsDisplay(updatedStats);
+                }
+            }
+        } catch (error) {
+            console.error("Error during game:", error);
+        }
 
-		replayButtons.classList.remove('hidden');
-		replayButtons.classList.add('flex');
-	});
+        replayButtons.classList.remove('hidden');
+        replayButtons.classList.add('flex');
+    });
 
-	restartGameButton.addEventListener('click', async () => {
-		// Get the player2 name based on authentication state
-		const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
-		replayButtons.classList.remove('flex');
-		replayButtons.classList.add('hidden');
+    restartGameButton.addEventListener('click', async () => {
+        // Get the player2 name based on authentication state
+        const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
+        replayButtons.classList.remove('flex');
+        replayButtons.classList.add('hidden');
 
-		try {
-			const gameData: gameEndData = await restartSnek(app, "player1", player2Name);
-			console.log("Restarted Game results:", gameData);
+        try {
+            const gameData: gameEndData = await restartSnek(app, "player1", player2Name);
+            console.log("Restarted Game results:", gameData);
 
-			// Record game results
-			const recordSuccess = await recordGameResults(gameData);
-			if (recordSuccess) {
-				console.log("Game results recorded successfully");
-			} else {
-				console.warn("Failed to record game results");
-			}
+            // Record game results
+            const recordSuccess = await recordGameResults(gameData);
+            if (recordSuccess) {
+                console.log("Game results recorded successfully");
+            } else {
+                console.warn("Failed to record game results");
+            }
 
-			// If player2 is authenticated, refresh their stats
-			if (authState.isAuthenticated) {
-				const updatedStats = await fetchPlayer2Stats(authState.userAlias);
-				if (updatedStats) {
-					updatePlayer2StatsDisplay(updatedStats);
-				}
-			}
-		} catch (error) {
-			console.error("Error during game restart:", error);
-		}
+            // If player2 is authenticated, refresh their stats
+            if (authState.isAuthenticated) {
+                const updatedStats = await fetchPlayer2Stats(authState.userAlias);
+                if (updatedStats) {
+                    updatePlayer2StatsDisplay(updatedStats);
+                }
+            }
+        } catch (error) {
+            console.error("Error during game restart:", error);
+        }
 
-		replayButtons.classList.remove('hidden');
-		replayButtons.classList.add('flex');
-	});
-}
-
-// logic for resetting the game ( newplayer button )
-// logic for resetting the game ( newplayer button )
-function newPlayersButton(app: Application) {
-	const newGameButton = document.getElementById('newGame');
-	if (!newGameButton) {
-		console.error("New game button not found");
-		return;
-	}
-
-	newGameButton.addEventListener('click', () => {
-		window.history.pushState({}, '', '/home');
-
-		// Reset auth state
-		authState.isAuthenticated = false;
-		authState.isGuestLocked = false;
-		authState.guestAlias = "";
-		authState.userAlias = "";
-		authState.userUuid = undefined;
-
-		// Reset guest form
-		const guestInput = document.getElementById("guestAliasInput") as HTMLInputElement;
-		const lockInButton = document.getElementById("lockInGuest") as HTMLButtonElement;
-		const changeButton = document.getElementById("changeGuestAlias") as HTMLButtonElement;
-
-		if (guestInput && lockInButton && changeButton) {
-			guestInput.value = "";
-			guestInput.disabled = false;
-			lockInButton.classList.remove('hidden');
-			changeButton.classList.add('hidden');
-		}
-
-		// Reset login form
-		const usernameInput = document.getElementById("loginUsername") as HTMLInputElement;
-		const passwordInput = document.getElementById("loginPassword") as HTMLInputElement;
-		const loginButton = document.getElementById("loginButton") as HTMLButtonElement;
-		const logoutButton = document.getElementById("logoutButton") as HTMLButtonElement;
-		const loginStatus = document.getElementById("loginStatus");
-
-		if (usernameInput && passwordInput && loginStatus) {
-			usernameInput.value = "";
-			passwordInput.value = "";
-			usernameInput.disabled = false;
-			passwordInput.disabled = false;
-			loginStatus.classList.add('hidden');
-		}
-
-		// Reset login/logout buttons
-		if (loginButton && logoutButton) {
-			loginButton.classList.remove('hidden');
-			logoutButton.classList.add('hidden');
-		}
-
-		// Reset toggle to guest mode
-		const toggle = document.getElementById("authToggle") as HTMLInputElement;
-		if (toggle) {
-			toggle.checked = false;
-			updateFormToggle();
-		}
-
-		// Hide player2 stats
-		const player2StatsContainer = document.getElementById('player2StatsContainer');
-		if (player2StatsContainer) {
-			player2StatsContainer.classList.add('hidden');
-		}
-
-		// Hide replay buttons
-		const replayButtons = document.getElementById('replayButtons');
-		if (replayButtons) {
-			replayButtons.classList.add('hidden');
-			replayButtons.classList.remove('flex');
-		}
-
-		// Update start game button state
-		resetGame(app);
-		updateStartGameButton();
-
-		console.log("New players button clicked");
-	});
+        replayButtons.classList.remove('hidden');
+        replayButtons.classList.add('flex');
+    });
 }
