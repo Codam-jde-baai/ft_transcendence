@@ -7,6 +7,7 @@ import Database from 'better-sqlite3';
 import { friendsTable, usersTable } from '../../db/schema.ts'
 import { createRelation, toPublicRelation } from '../../models/friends.ts'
 import { sendMessageToUser } from '../websocket/userStatus.ts';
+import { createNotificationMessage } from '../websocket/messageTypes.ts';
 
 export const addFriend = async (request: FastifyRequest<{
 	Body: {
@@ -19,6 +20,7 @@ export const addFriend = async (request: FastifyRequest<{
 		if (!alias)
 			reply.code(400).send({ error: "recepient alias should have a value" });
 		const reqUUid = request.session.get('uuid') as string;
+		const reqAlias = request.session.get('alias') as string;
 
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite)
@@ -48,11 +50,7 @@ export const addFriend = async (request: FastifyRequest<{
 
 		const relation = createRelation(reqUUid, receiver.uuid)
 		const result = await db.insert(friendsTable).values(relation).returning()
-		sendMessageToUser(receiver.uuid, {
-			type: "notification",
-			alias: request.session.get('alias') as string,
-			message: "sent you a friend request"
-		});
+		sendMessageToUser(receiver.uuid, createNotificationMessage(reqAlias, "sent a friend request"));
 		return reply.code(201).send({ msg: "created relation", relation: toPublicRelation(result[0]) })
 	}
 	catch (error) {

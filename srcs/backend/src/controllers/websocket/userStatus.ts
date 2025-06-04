@@ -280,6 +280,8 @@ export function getUserConnectionCount(): number {
 }
 
 export function sendMessageToUser(uuid: string, message: SendMessage): boolean {
+    console.log(`Sending message to user ${uuid}:`, message);
+
     const userConnection = connectedUsers.get(uuid);
     if (userConnection && userConnection.socket.readyState === WebSocket.OPEN) {
         try {
