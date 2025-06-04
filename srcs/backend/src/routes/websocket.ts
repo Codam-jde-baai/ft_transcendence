@@ -13,11 +13,13 @@ const wsConnectSchema = {
 };
 
 function socketRoutes(fastify: FastifyInstance, options: any, done: () => void) {
-    fastify.get('/ws/connect', { 
+    fastify.get('/ws/connect', {
         websocket: true,
         schema: wsConnectSchema
-    }, newUserConnection);
-    
+    }, (connection, req) => {
+        newUserConnection(connection, req);
+    });
+
     done();
 }
 

@@ -5,7 +5,7 @@ import { connectFunc, requestBody, inputToContent } from '../script/connections'
 import { emptyFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
-import { websocketManager } from '../script/socketClass';
+import { websocketManager } from '../script/socket/socketClass';
 
 export function setupLogIn() {
 	const root = document.getElementById('app');
@@ -53,13 +53,13 @@ export function setupLogIn() {
 		document.getElementById('Home')?.addEventListener('click', async () => {
 			const isValid = emptyFields(["username", "password"]);
 			if (!isValid) return;
-			
+
 			const content = inputToContent(["username", "password"]);
 			const body = requestBody("POST", content, "application/json");
-			
+
 			try {
 				const response = await connectFunc("/user/login", body);
-				
+
 				if (response.ok) {
 					await new Promise(resolve => setTimeout(resolve, 200));
 					await websocketManager.connect();

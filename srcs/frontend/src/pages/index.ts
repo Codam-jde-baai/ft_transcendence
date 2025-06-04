@@ -17,8 +17,8 @@ import { setupStartSGame } from './startSGame';
 import { setupAdminLogIn } from './adminLogin';
 import { setupViewData } from './viewData';
 import { connectFunc, requestBody } from '../script/connections';
-import { initializeWebSocket } from '../script/socketConnect';
-import { websocketManager } from '../script/socketClass';
+import { initializeWebSocket } from '../script/socket/socketConnect';
+import { websocketManager } from '../script/socket/socketClass';
 import '../component/topbar'
 import '../component/languageMenu'
 import '../component/friendsRows'
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (!document.getElementById('app')?.hasChildNodes()) {
 		renderPage();
 	}
-	
+
 	// Only initialize WebSocket listeners once (but don't connect yet)
 	if (!webSocketInitialized) {
 		initializeWebSocket(); // This only sets up listeners, no connection
@@ -61,7 +61,7 @@ export function renderPage() {
 		'/adminLogin': setupAdminLogIn,
 		'/viewData': setupViewData,
 	};
-	
+
 	if (root) {
 		const funct = routes[window.location.pathname]
 		if (funct) {

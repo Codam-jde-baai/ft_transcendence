@@ -14,6 +14,7 @@ import snekRoutes from './routes/snek.ts';
 import socketRoutes from './routes/websocket.ts';
 import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
+import { cleanupConnections } from './controllers/websocket/userStatus.ts';
 
 const fastify = Fastify({
 	logger: true,
@@ -132,3 +133,17 @@ const start = async () => {
 }
 
 start()
+
+process.on('SIGTERM', async () => {
+	console.log('SIGTERM received, shutting down gracefully');
+	cleanupConnections();
+	await fastify.close();
+	process.exit(0);
+});
+
+process.on('SIGINT', async () => {
+	console.log('SIGINT received, shutting down gracefully');
+	cleanupConnections();
+	await fastify.close();
+	process.exit(0);
+});

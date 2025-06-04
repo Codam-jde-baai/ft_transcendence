@@ -7,7 +7,7 @@ import { checkFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
 import { sendPicture } from '../script/sendPic';
-import { websocketManager } from '../script/socketClass';
+import { websocketManager } from '../script/socket/socketClass';
 
 export function setupSignUp() {
 	const root = document.getElementById('app');

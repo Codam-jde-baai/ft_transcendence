@@ -1,11 +1,13 @@
-import envConfig from '../config/env';
+import envConfig from '../../config/env';
+import { ClientReceiveMessage, ClientSendMessage, isClientReceiveMessage } from './messageTypes.ts';
+
 class WebSocketManager {
     private socket: WebSocket | null = null;
     private reconnectAttempts = 0;
     private readonly maxReconnectAttempts = 5;
     private reconnectDelay = 1000;
     private isManuallyDisconnected = false;
-    private messageHandlers = new Map<string, (data: any) => void>();
+    private messageHandlers = new Map<string, (data: ClientReceiveMessage) => void>();
     private connectionPromise: Promise<WebSocket> | null = null;
     private lastServerMessage = Date.now();
 
@@ -22,7 +24,7 @@ class WebSocketManager {
 
         this.connectionPromise = new Promise((resolve, reject) => {
             this.isManuallyDisconnected = false;
-            
+
             // Clean up existing socket
             if (this.socket) {
                 this.socket.close();
@@ -33,7 +35,7 @@ class WebSocketManager {
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
             const wsUrl = `${protocol}//${envConfig.backendURL}/ws/connect?apiKey=${envConfig.privateKey}`;
             console.log('Attempting WebSocket connection to:', wsUrl);
-            
+
             try {
                 this.socket = new WebSocket(wsUrl);
             } catch (error) {
@@ -65,37 +67,47 @@ class WebSocketManager {
             this.socket.onmessage = (event) => {
                 this.lastServerMessage = Date.now();
                 try {
-                    const data = JSON.parse(event.data);
-                    console.log('WebSocket message received:', data);
-                    
-                    // Handle ping from server with pong response
-                    if (data.type === 'ping') {
-                        this.send({ type: 'pong', timestamp: Date.now() });
+                    const rawData = JSON.parse(event.data);
+                    console.log('WebSocket message received:', rawData);
+
+                    // Type-safe message handling
+                    if (!isClientReceiveMessage(rawData)) {
+                        console.warn('Received message with unknown format:', rawData);
                         return;
                     }
 
-                    // Handle connection established message
-                    if (data.type === 'connection_established') {
-                        console.log('Connection established:', data);
-                        const handler = this.messageHandlers.get('connection_established');
+                    const data = rawData as ClientReceiveMessage;
+
+                    // Handle ping from server with pong response
+                    if (data.type === 'ping') {
+                        this.sendTypedMessage({ type: 'pong', timestamp: Date.now() });
+                        return;
+                    }
+
+                    // Handle system messages
+                    if (data.type === 'system') {
+                        console.log('System message:', data.message);
+                        const handler = this.messageHandlers.get('system');
                         handler?.(data);
                         return;
                     }
 
-                    // Handle notification format (alias + message)
-                    if (data.alias && data.message && !data.type) {
+                    // Handle notifications - show to user
+                    if (data.type === 'notification') {
                         this.showNotification(data.alias, data.message);
+                        const handler = this.messageHandlers.get('notification');
+                        handler?.(data);
                         return;
                     }
 
-                    // Handle typed messages
+                    // Handle other message types
                     const handler = this.messageHandlers.get(data.type);
                     if (handler) {
                         handler(data);
                     } else {
                         console.log('No handler for message type:', data.type);
                     }
-                    
+
                 } catch (error) {
                     console.error('Message parse error:', error);
                 }
@@ -106,7 +118,7 @@ class WebSocketManager {
                 clearTimeout(timeout);
                 this.socket = null;
                 this.connectionPromise = null;
-                
+
                 // Only reconnect if not manually disconnected and we haven't exceeded attempts
                 if (!this.isManuallyDisconnected && this.reconnectAttempts < this.maxReconnectAttempts) {
                     // Don't reconnect immediately for certain error codes
@@ -114,7 +126,7 @@ class WebSocketManager {
                         console.error('Authentication error, not attempting reconnect');
                         return;
                     }
-                    
+
                     setTimeout(() => this.reconnect(), this.reconnectDelay);
                 } else if (this.reconnectAttempts >= this.maxReconnectAttempts) {
                     console.warn('Max reconnection attempts reached');
@@ -135,7 +147,7 @@ class WebSocketManager {
     private async reconnect() {
         this.reconnectAttempts++;
         console.log(`Reconnecting... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
-        
+
         try {
             await this.connect();
             console.log('Reconnection successful');
@@ -145,6 +157,22 @@ class WebSocketManager {
         }
     }
 
+    // Type-safe message sending
+    private sendTypedMessage(message: ClientSendMessage): boolean {
+        if (this.socket?.readyState === WebSocket.OPEN) {
+            try {
+                this.socket.send(JSON.stringify(message));
+                return true;
+            } catch (error) {
+                console.error('Send error:', error);
+            }
+        } else {
+            console.warn('WebSocket not connected, message not sent:', message);
+        }
+        return false;
+    }
+
+    // Legacy send method for backwards compatibility
     send(message: any): boolean {
         if (this.socket?.readyState === WebSocket.OPEN) {
             try {
@@ -160,12 +188,16 @@ class WebSocketManager {
     }
 
     // Convenience methods
-    updateStatus(status: 'online' | 'offline') {
-        return this.send({ type: 'status_update', status });
+    updateStatus(status: 'online' | 'offline'): boolean {
+        return this.sendTypedMessage({ type: 'status_update', status });
+    }
+
+    sendPing(): boolean {
+        return this.sendTypedMessage({ type: 'ping', timestamp: Date.now() });
     }
 
     // Message handler management
-    on(type: string, handler: (data: any) => void) {
+    on(type: string, handler: (data: ClientReceiveMessage) => void) {
         this.messageHandlers.set(type, handler);
     }
 
@@ -176,28 +208,31 @@ class WebSocketManager {
     private showNotification(alias: string, message: string) {
         const aliasEl = document.getElementById('notification-alias');
         const messageEl = document.getElementById('notification-message');
-        
+
         if (aliasEl && messageEl) {
             aliasEl.textContent = alias.substring(0, 12);
             messageEl.textContent = message.substring(0, 30);
-            
+
             setTimeout(() => {
                 aliasEl.textContent = '';
                 messageEl.textContent = '';
             }, 5000);
         }
+
+        // Also log to console for debugging
+        console.log(`Notification: ${alias} ${message}`);
     }
 
     disconnect() {
         console.log('Manually disconnecting WebSocket');
         this.isManuallyDisconnected = true;
         this.reconnectAttempts = this.maxReconnectAttempts; // Prevent reconnection
-        
+
         if (this.socket) {
             this.socket.close(1000, 'Manual disconnect');
             this.socket = null;
         }
-        
+
         this.connectionPromise = null;
     }
 
@@ -212,9 +247,18 @@ class WebSocketManager {
 
 export const websocketManager = new WebSocketManager();
 
-// Set up connection established handler
-websocketManager.on('connection_established', (data) => {
-    console.log('WebSocket connection established:', data);
+// Set up system message handler
+websocketManager.on('system', (data) => {
+    if (data.type === 'system') {
+        console.log('System message received:', data.message);
+    }
+});
+
+// Set up notification handler
+websocketManager.on('notification', (data) => {
+    if (data.type === 'notification') {
+        console.log(`Friend notification: ${data.alias} ${data.message}`);
+    }
 });
 
 // Auto-ping every 30 seconds - but only send if we haven't heard from server recently
@@ -223,7 +267,7 @@ setInterval(() => {
         // Only send ping if we haven't received a server message recently
         const timeSinceLastMessage = Date.now() - websocketManager.getLastServerMessage();
         if (timeSinceLastMessage > 25000) { // 25 seconds
-            websocketManager.send({ type: 'ping', timestamp: Date.now() });
+            websocketManager.sendPing();
         }
     }
 }, 30000);

@@ -1,11 +1,20 @@
 // userStatus.ts
 import { FastifyRequest } from 'fastify';
-import { WebSocket } from '@fastify/websocket';
+import { WebSocket } from 'ws';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
 import Database from 'better-sqlite3';
 import { eq, or } from 'drizzle-orm';
 import { usersTable, userStatus, friendsTable, friendStatus } from '../../db/schema.ts';
 import envConfig from '../../config/env.ts';
+import {
+    SendMessage,
+    ReceiveMessage,
+    isReceiveMessage,
+    createSystemMessage,
+    createNotificationMessage,
+    createErrorMessage,
+    createPongMessage
+} from './messageTypes.ts';
 
 interface UserConnection {
     uuid: string;
@@ -15,13 +24,13 @@ interface UserConnection {
 
 const connectedUsers = new Map<string, UserConnection>();
 
-const HEARTBEAT_INTERVAL = 30000; // 30 seconds
+const HEARTBEAT_INTERVAL = 30000;
 const heartbeatIntervals = new Map<string, NodeJS.Timeout>();
 
-function connectAuthentication(connection: { socket: WebSocket }, req: FastifyRequest): { uuid: string; alias: string } | null {
+function connectAuthentication(socket: WebSocket, req: FastifyRequest): { uuid: string; alias: string } | null {
     const apiKey = (req.query as { apiKey: string }).apiKey;
     if (apiKey !== envConfig.private_key) {
-        connection.socket.close(1008, 'Invalid API key');
+        socket.close(1008, 'Invalid API key');
         return null;
     }
 
@@ -30,32 +39,37 @@ function connectAuthentication(connection: { socket: WebSocket }, req: FastifyRe
     try {
         uuid = req.session.get('uuid');
         alias = req.session.get('alias');
-        console.log('Session data retrieved:', { 
-            uuid: uuid ? 'present' : 'missing', 
-            alias: alias ? 'present' : 'missing' 
+        console.log('Session data retrieved:', {
+            uuid: uuid ? 'present' : 'missing',
+            alias: alias ? 'present' : 'missing'
         });
     } catch (error) {
-        connection.socket.close(1008, 'Session access error');
+        socket.close(1008, 'Session access error');
         return null;
     }
     if (!uuid || !alias) {
-        connection.socket.close(1008, 'User not authenticated');
+        socket.close(1008, 'User not authenticated');
         return null;
     }
     return { uuid, alias };
 }
 
-export const newUserConnection = async (connection: { socket: WebSocket }, req: FastifyRequest) => {
+export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) => {
     console.log('New WebSocket connection attempt');
-    
-    const authResult = connectAuthentication(connection, req);
-    if (!authResult)
-    {
+
+    // Verify we have a valid socket
+    if (!socket) {
+        console.error("WebSocket socket is undefined!");
+        return;
+    }
+
+    const authResult = connectAuthentication(socket, req);
+    if (!authResult) {
         console.error('Authentication failed for WebSocket connection');
         return;
-    } 
+    }
     const { uuid, alias } = authResult;
-    
+
     const existingConnection = connectedUsers.get(uuid);
     if (existingConnection) {
         console.log(`Closing existing connection for user ${alias} (${uuid})`);
@@ -65,128 +79,123 @@ export const newUserConnection = async (connection: { socket: WebSocket }, req: 
             heartbeatIntervals.delete(uuid);
         }
         try {
-            if (existingConnection.socket.readyState === existingConnection.socket.OPEN) {
+            if (existingConnection.socket.readyState === WebSocket.OPEN) {
                 existingConnection.socket.close(1000, 'New connection established');
             }
         } catch (error) {
             console.error('Error closing existing connection:', error);
         }
     }
-    
+
     connectedUsers.set(uuid, {
         uuid,
         alias,
-        socket: connection.socket,
+        socket: socket,
     });
-
 
     console.log(`User ${alias} (${uuid}) connected successfully`);
 
     await updateUserStatusInDB(uuid, userStatus.ONLINE);
 
+    // Set up heartbeat
     const heartbeat = setInterval(() => {
-        if (connection.socket && connection.socket.readyState === connection.socket.OPEN) {
-            connection.socket.ping();
+        if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.ping();
         } else {
             clearInterval(heartbeat);
-            heartbeatIntervals.delete(uuid!);
-            handleDisconnection(uuid!, alias!);
+            heartbeatIntervals.delete(uuid);
+            handleDisconnection(uuid, alias);
         }
     }, HEARTBEAT_INTERVAL);
     heartbeatIntervals.set(uuid, heartbeat);
-    
-    if (!connection.socket) {
-        console.error('WebSocket connection is undefined');
-        return;
-    }
 
-    // Ensure socket is valid before proceeding
-    connection.socket.on('pong', () => {
+    // Set up event listeners
+    socket.on('pong', () => {
         console.log(`Heartbeat received from ${alias} (${uuid})`);
     });
 
-    // Send connection confirmation
-    connection.socket.send(JSON.stringify({
-        type: 'system',
-        message: 'Connected successfully',
-        uuid: uuid,
-        alias: alias,
-    }));
+    // Send welcome message
+    sendMessageToSocket(socket, createSystemMessage('Connected successfully', uuid, alias));
 
     await broadcastToFriends(uuid, alias, 'came online');
 
-    connection.socket.on('message', async (message: Buffer) => {
+    socket.on('message', async (message: Buffer) => {
         try {
-            const data = JSON.parse(message.toString());
-            console.log(`Received message from ${alias} (${uuid}):`, data);
-            
+            const rawData = JSON.parse(message.toString());
+            console.log(`Received message from ${alias} (${uuid}):`, rawData);
+
+            // Type-safe message handling
+            if (!isReceiveMessage(rawData)) {
+                console.log(`Invalid message format from ${alias}:`, rawData);
+                sendMessageToSocket(socket, createErrorMessage('Invalid message format'));
+                return;
+            }
+
+            const data = rawData as ReceiveMessage;
+
             switch (data.type) {
                 case 'ping':
-                    connection.socket.send(JSON.stringify({
-                        type: 'pong',
-                        timestamp: Date.now()
-                    }));
+                    sendMessageToSocket(socket, createPongMessage(Date.now()));
                     break;
                 case 'status_update':
-                    await handleStatusUpdate(uuid!, alias!, data.status);
+                    await handleStatusUpdate(uuid, alias, data.status);
+                    break;
+                case 'pong':
+                    // Handle pong from client (optional logging)
+                    console.log(`Pong received from ${alias} (${uuid})`);
                     break;
                 default:
-                    console.log(`Unknown message type: ${data.type}`);
-                    connection.socket.send(JSON.stringify({
-                        type: 'echo',
-                        originalMessage: data,
-                    }));
+                    // TypeScript will ensure this is exhaustive
+                    const _exhaustive: never = data;
+                    console.log(`Unhandled message type:`, data);
             }
         } catch (error) {
             console.error('Error parsing WebSocket message:', error);
-            connection.socket.send(JSON.stringify({
-                type: 'error',
-                message: 'Invalid message format'
-            }));
+            sendMessageToSocket(socket, createErrorMessage('Invalid message format'));
         }
     });
 
-    connection.socket.on('close', async (code: number, reason: Buffer) => {
+    socket.on('close', async (code: number, reason: Buffer) => {
         console.log(`User ${alias} (${uuid}) disconnected with code ${code}: ${reason.toString()}`);
-        await handleDisconnection(uuid!, alias!);
+        await handleDisconnection(uuid, alias);
     });
 
-    connection.socket.on('error', async (error: Error) => {
+    socket.on('error', async (error: Error) => {
         console.error(`WebSocket error for user ${alias} (${uuid}):`, error);
-        await handleDisconnection(uuid!, alias!);
+        await handleDisconnection(uuid, alias);
     });
 };
 
 async function handleDisconnection(uuid: string, alias: string) {
     console.log(`Handling disconnection for ${alias} (${uuid})`);
-    
+
     // Clear heartbeat
     const heartbeat = heartbeatIntervals.get(uuid);
     if (heartbeat) {
         clearInterval(heartbeat);
         heartbeatIntervals.delete(uuid);
     }
-    
+
     // Remove from connected users
     connectedUsers.delete(uuid);
-    
+
     // Update database status
     await updateUserStatusInDB(uuid, userStatus.OFFLINE);
     await broadcastToFriends(uuid, alias, 'went offline');
-    
+
     console.log(`User ${alias} (${uuid}) fully disconnected`);
 }
 
 // Clean up function for server shutdown
 export function cleanupConnections() {
     console.log('Cleaning up all WebSocket connections');
-    
+
     // Clear all heartbeat intervals
     heartbeatIntervals.forEach((interval) => {
         clearInterval(interval);
     });
     heartbeatIntervals.clear();
-    
+
     // Close all connections
     closeAllConnections();
 }
@@ -220,13 +229,13 @@ async function getUserFriends(uuid: string): Promise<string[]> {
                     eq(friendsTable.recUUid, uuid)
                 )
             );
-        
+
         const friendUuids = friendships
             .filter(friendship => friendship.status === friendStatus.ACCEPTED)
             .map(friendship => {
                 // Return the UUID that's not the current user's UUID
                 return friendship.reqUUid === uuid ? friendship.recUUid : friendship.reqUUid;
-            }); 
+            });
         return friendUuids;
     } catch (error) {
         console.error('Failed to get user friends:', error);
@@ -243,16 +252,12 @@ async function broadcastToFriends(uuid: string, alias: string, message: string) 
         if (friendUuids.length === 0) {
             return;
         }
-        const notificationPayload = JSON.stringify({
-            type: "notification",
-            alias: alias,
-            message: message,
-        });
+        const notification = createNotificationMessage(alias, message);
         friendUuids.forEach(friendUuid => {
             const friendConnection = connectedUsers.get(friendUuid);
-            if (friendConnection && friendConnection.socket.readyState === friendConnection.socket.OPEN) {
+            if (friendConnection && friendConnection.socket.readyState === WebSocket.OPEN) {
                 try {
-                    friendConnection.socket.send(notificationPayload);
+                    sendMessageToSocket(friendConnection.socket, notification);
                 } catch (error) {
                     console.error(`Failed to send status update to friend ${friendUuid}:`, error);
                     connectedUsers.delete(friendUuid);
@@ -267,7 +272,7 @@ async function broadcastToFriends(uuid: string, alias: string, message: string) 
 // Helper function to handle status updates
 async function handleStatusUpdate(uuid: string, alias: string, status: 'online' | 'offline') {
     let dbStatus;
-    let msg : string;
+    let msg: string;
     switch (status.toLowerCase()) {
         case 'online':
             dbStatus = userStatus.ONLINE;
@@ -285,7 +290,7 @@ async function handleStatusUpdate(uuid: string, alias: string, status: 'online' 
     await broadcastToFriends(uuid, alias, msg);
 }
 
-export function getConnectedUsers(): Array<{uuid: string, alias: string}> {
+export function getConnectedUsers(): Array<{ uuid: string, alias: string }> {
     return Array.from(connectedUsers.values()).map(conn => ({
         uuid: conn.uuid,
         alias: conn.alias,
@@ -300,11 +305,11 @@ export function getUserConnectionCount(): number {
     return connectedUsers.size;
 }
 
-export function sendMessageToUser(uuid: string, message: any): boolean {
+export function sendMessageToUser(uuid: string, message: SendMessage): boolean {
     const userConnection = connectedUsers.get(uuid);
-    if (userConnection && userConnection.socket.readyState === userConnection.socket.OPEN) {
+    if (userConnection && userConnection.socket.readyState === WebSocket.OPEN) {
         try {
-            userConnection.socket.send(JSON.stringify(message));
+            sendMessageToSocket(userConnection.socket, message);
             return true;
         } catch (error) {
             console.error(`Failed to send message to user ${uuid}:`, error);
@@ -315,10 +320,17 @@ export function sendMessageToUser(uuid: string, message: any): boolean {
     return false;
 }
 
+// Helper function for sending typed messages to WebSocket
+function sendMessageToSocket(socket: WebSocket, message: SendMessage): void {
+    if (socket.readyState === WebSocket.OPEN) {
+        socket.send(JSON.stringify(message));
+    }
+}
+
 export function closeAllConnections() {
     connectedUsers.forEach((userConnection) => {
         try {
-            if (userConnection.socket.readyState === userConnection.socket.OPEN) {
+            if (userConnection.socket.readyState === WebSocket.OPEN) {
                 userConnection.socket.close(1001, 'Server shutting down');
             }
         } catch (error) {

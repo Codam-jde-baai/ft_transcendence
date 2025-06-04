@@ -6,7 +6,6 @@ export function initializeWebSocket() {
     setupWebSocketEventListeners();
 }
 
-// Set up event listeners (but don't connect yet)
 function setupWebSocketEventListeners() {
     if (listenersSetup) {
         return;
@@ -15,7 +14,6 @@ function setupWebSocketEventListeners() {
 
     setupUserStatusTracking();
 
-    // Handle visibility changes - only relevant when user is logged in
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
             if (!websocketManager.isConnected() && isUserLoggedIn()) {
@@ -26,11 +24,9 @@ function setupWebSocketEventListeners() {
 }
 
 function setupUserStatusTracking() {
-    // Handle browser close/refresh - send offline status
     window.addEventListener('beforeunload', () => {
         if (websocketManager.isConnected()) {
             websocketManager.updateStatus('offline');
-            // Small delay to allow message to send
             setTimeout(() => {
                 websocketManager.disconnect();
             }, 50);
@@ -63,7 +59,7 @@ function setupUserStatusTracking() {
     });
 }
 
-// Helper function to check if user is logged in
+
 function isUserLoggedIn(): boolean {
     const protectedRoutes = ['/home', '/setting', '/friends', '/history', '/startPGame', '/startSGame', '/snek', '/snekHistory'];
     const currentPath = window.location.pathname;

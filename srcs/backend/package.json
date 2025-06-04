@@ -26,7 +26,8 @@
 		"uuid": "^9.0.1",
 		"@fastify/multipart": "^9.0.3",
 		"argon2": "^0.41.0",
-		"@fastify/websocket": "^11.1.0"
+		"@fastify/websocket": "^11.1.0",
+		"ws": "^8.18.2"
 	},
 	"devDependencies": {
 		"@fastify/swagger": "^9.x.x",
