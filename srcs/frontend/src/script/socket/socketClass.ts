@@ -84,6 +84,11 @@ class WebSocketManager {
                         return;
                     }
 
+                    if (data.type === 'pong') {
+                        console.log('Received pong from server');
+                        return;
+                    }
+
                     // Handle system messages
                     if (data.type === 'system') {
                         console.log('System message:', data.message);

@@ -21,6 +21,12 @@ function setupWebSocketEventListeners() {
             }
         }
     });
+
+    if (isUserLoggedIn()) {
+        websocketManager.connect()
+            .then(() => websocketManager.updateStatus('online'))
+            .catch(console.error);
+    }
 }
 
 function setupUserStatusTracking() {
@@ -32,33 +38,7 @@ function setupUserStatusTracking() {
             }, 50);
         }
     });
-
-    // Use Page Visibility API for better detection
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden && websocketManager.isConnected()) {
-            websocketManager.updateStatus('offline');
-        } else if (!document.hidden && !websocketManager.isConnected() && isUserLoggedIn()) {
-            websocketManager.connect()
-                .then(() => websocketManager.updateStatus('online'))
-                .catch(console.error);
-        }
-    });
-
-    window.addEventListener('focus', () => {
-        if (!websocketManager.isConnected() && isUserLoggedIn()) {
-            websocketManager.connect()
-                .then(() => websocketManager.updateStatus('online'))
-                .catch(console.error);
-        }
-    });
-
-    window.addEventListener('blur', () => {
-        if (websocketManager.isConnected()) {
-            websocketManager.updateStatus('offline');
-        }
-    });
 }
-
 
 function isUserLoggedIn(): boolean {
     const protectedRoutes = ['/home', '/setting', '/friends', '/history', '/startPGame', '/startSGame', '/snek', '/snekHistory'];

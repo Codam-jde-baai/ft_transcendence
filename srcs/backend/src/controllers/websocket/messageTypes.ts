@@ -16,18 +16,17 @@ export type ReceiveMessage =
 	| { type: 'ping'; timestamp?: number }
 	| { type: 'pong'; timestamp: number }; // Add pong from client
 
-// Client-side types (what client receives from server)
+
 export type ClientReceiveMessage = SendMessage;
 
-// Client-side types (what client sends to server)
+
 export type ClientSendMessage = ReceiveMessage;
 
-// Helper type for parsing received messages safely
 export interface WebSocketMessageHandler {
 	(message: ReceiveMessage): void | Promise<void>;
 }
 
-// Type guard functions for runtime type checking
+// type guards for message types
 export function isSendMessage(obj: any): obj is SendMessage {
 	return obj && typeof obj === 'object' && 'type' in obj &&
 		['system', 'notification', 'error', 'pong', 'echo', 'connection_established', 'ping'].includes(obj.type);
@@ -38,7 +37,7 @@ export function isReceiveMessage(obj: any): obj is ReceiveMessage {
 		['status_update', 'ping', 'pong'].includes(obj.type);
 }
 
-// Client-side type guards
+// Type guards for client messages
 export function isClientReceiveMessage(obj: any): obj is ClientReceiveMessage {
 	return isSendMessage(obj);
 }

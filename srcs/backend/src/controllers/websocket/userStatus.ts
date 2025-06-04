@@ -1,4 +1,3 @@
-// userStatus.ts
 import { FastifyRequest } from 'fastify';
 import { WebSocket } from 'ws';
 import { drizzle } from 'drizzle-orm/better-sqlite3';
@@ -20,6 +19,7 @@ interface UserConnection {
     uuid: string;
     alias: string;
     socket: WebSocket;
+    isAlive: boolean;
 }
 
 const connectedUsers = new Map<string, UserConnection>();
@@ -33,7 +33,6 @@ function connectAuthentication(socket: WebSocket, req: FastifyRequest): { uuid: 
         socket.close(1008, 'Invalid API key');
         return null;
     }
-
     let uuid: string | undefined;
     let alias: string | undefined;
     try {
@@ -55,14 +54,6 @@ function connectAuthentication(socket: WebSocket, req: FastifyRequest): { uuid: 
 }
 
 export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) => {
-    console.log('New WebSocket connection attempt');
-
-    // Verify we have a valid socket
-    if (!socket) {
-        console.error("WebSocket socket is undefined!");
-        return;
-    }
-
     const authResult = connectAuthentication(socket, req);
     if (!authResult) {
         console.error('Authentication failed for WebSocket connection');
@@ -70,9 +61,9 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
     }
     const { uuid, alias } = authResult;
 
+    // close existing connection if it exists for user
     const existingConnection = connectedUsers.get(uuid);
     if (existingConnection) {
-        console.log(`Closing existing connection for user ${alias} (${uuid})`);
         const existingHeartbeat = heartbeatIntervals.get(uuid);
         if (existingHeartbeat) {
             clearInterval(existingHeartbeat);
@@ -91,14 +82,21 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
         uuid,
         alias,
         socket: socket,
+        isAlive: true, // Initialize as alive
     });
 
-    console.log(`User ${alias} (${uuid}) connected successfully`);
-
-    await updateUserStatusInDB(uuid, userStatus.ONLINE);
-
-    // Set up heartbeat
     const heartbeat = setInterval(() => {
+        const userConn = connectedUsers.get(uuid);
+        if (!userConn) return;
+        if (userConn.isAlive === false) {
+            console.log(`No heartbeat from ${alias} (${uuid}), terminating connection.`);
+            socket.terminate();
+            clearInterval(heartbeat);
+            heartbeatIntervals.delete(uuid);
+            handleDisconnection(uuid, alias);
+            return;
+        }
+        userConn.isAlive = false; // Mark as not alive before ping
         if (socket && socket.readyState === WebSocket.OPEN) {
             socket.ping();
         } else {
@@ -109,30 +107,25 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
     }, HEARTBEAT_INTERVAL);
     heartbeatIntervals.set(uuid, heartbeat);
 
-    // Set up event listeners
-    socket.on('pong', () => {
-        console.log(`Heartbeat received from ${alias} (${uuid})`);
-    });
-
-    // Send welcome message
+    await updateUserStatusInDB(uuid, userStatus.ONLINE);
     sendMessageToSocket(socket, createSystemMessage('Connected successfully', uuid, alias));
-
     await broadcastToFriends(uuid, alias, 'came online');
 
+    socket.on('pong', () => {
+        const userConn = connectedUsers.get(uuid);
+        if (userConn) userConn.isAlive = true; // Mark as alive on pong
+        console.log(`Heartbeat received from ${alias} (${uuid})`);
+    });
     socket.on('message', async (message: Buffer) => {
         try {
             const rawData = JSON.parse(message.toString());
             console.log(`Received message from ${alias} (${uuid}):`, rawData);
-
-            // Type-safe message handling
             if (!isReceiveMessage(rawData)) {
                 console.log(`Invalid message format from ${alias}:`, rawData);
                 sendMessageToSocket(socket, createErrorMessage('Invalid message format'));
                 return;
             }
-
             const data = rawData as ReceiveMessage;
-
             switch (data.type) {
                 case 'ping':
                     sendMessageToSocket(socket, createPongMessage(Date.now()));
@@ -141,11 +134,8 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
                     await handleStatusUpdate(uuid, alias, data.status);
                     break;
                 case 'pong':
-                    // Handle pong from client (optional logging)
-                    console.log(`Pong received from ${alias} (${uuid})`);
                     break;
                 default:
-                    // TypeScript will ensure this is exhaustive
                     const _exhaustive: never = data;
                     console.log(`Unhandled message type:`, data);
             }
@@ -154,12 +144,10 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
             sendMessageToSocket(socket, createErrorMessage('Invalid message format'));
         }
     });
-
     socket.on('close', async (code: number, reason: Buffer) => {
         console.log(`User ${alias} (${uuid}) disconnected with code ${code}: ${reason.toString()}`);
         await handleDisconnection(uuid, alias);
     });
-
     socket.on('error', async (error: Error) => {
         console.error(`WebSocket error for user ${alias} (${uuid}):`, error);
         await handleDisconnection(uuid, alias);
@@ -168,35 +156,23 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
 
 async function handleDisconnection(uuid: string, alias: string) {
     console.log(`Handling disconnection for ${alias} (${uuid})`);
-
-    // Clear heartbeat
     const heartbeat = heartbeatIntervals.get(uuid);
     if (heartbeat) {
         clearInterval(heartbeat);
         heartbeatIntervals.delete(uuid);
     }
-
-    // Remove from connected users
     connectedUsers.delete(uuid);
-
-    // Update database status
     await updateUserStatusInDB(uuid, userStatus.OFFLINE);
     await broadcastToFriends(uuid, alias, 'went offline');
-
-    console.log(`User ${alias} (${uuid}) fully disconnected`);
 }
 
 // Clean up function for server shutdown
 export function cleanupConnections() {
     console.log('Cleaning up all WebSocket connections');
-
-    // Clear all heartbeat intervals
     heartbeatIntervals.forEach((interval) => {
         clearInterval(interval);
     });
     heartbeatIntervals.clear();
-
-    // Close all connections
     closeAllConnections();
 }
 
