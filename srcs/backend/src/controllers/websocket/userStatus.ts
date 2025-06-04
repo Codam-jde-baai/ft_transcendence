@@ -87,22 +87,20 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
 
     const heartbeat = setInterval(() => {
         const userConn = connectedUsers.get(uuid);
-        if (!userConn) return;
+        if (!userConn) {
+            clearInterval(heartbeat);
+            heartbeatIntervals.delete(uuid);
+            return;
+        }
         if (userConn.isAlive === false) {
             console.log(`No heartbeat from ${alias} (${uuid}), terminating connection.`);
             socket.terminate();
-            clearInterval(heartbeat);
-            heartbeatIntervals.delete(uuid);
             handleDisconnection(uuid, alias);
             return;
         }
-        userConn.isAlive = false; // Mark as not alive before ping
+        userConn.isAlive = false;
         if (socket && socket.readyState === WebSocket.OPEN) {
             socket.ping();
-        } else {
-            clearInterval(heartbeat);
-            heartbeatIntervals.delete(uuid);
-            handleDisconnection(uuid, alias);
         }
     }, HEARTBEAT_INTERVAL);
     heartbeatIntervals.set(uuid, heartbeat);
@@ -113,7 +111,7 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
 
     socket.on('pong', () => {
         const userConn = connectedUsers.get(uuid);
-        if (userConn) userConn.isAlive = true; // Mark as alive on pong
+        if (userConn) userConn.isAlive = true;
         console.log(`Heartbeat received from ${alias} (${uuid})`);
     });
     socket.on('message', async (message: Buffer) => {
@@ -221,7 +219,7 @@ async function getUserFriends(uuid: string): Promise<string[]> {
     }
 }
 
-// Broadcast status changes only to online friends
+// Broadcast any messsage to all friends of user
 async function broadcastToFriends(uuid: string, alias: string, message: string) {
     try {
         const friendUuids = await getUserFriends(uuid);
