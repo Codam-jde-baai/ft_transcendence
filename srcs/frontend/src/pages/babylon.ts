@@ -1,15 +1,21 @@
 import * as BABYLON from '@babylonjs/core'
 import * as GUI from '@babylonjs/gui'
 
-interface sceneOptions {
-  scoreToWin: number;
+export interface SceneOptions {
+	p1_alias?: string;
+	p2_alias?: string;
+	// User Options
+	scoreToWin?: number;
+	// Ball Speed
+	// Ball Acceleration
+	// Ball Speed
 }
 
 export class Pong {
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
 
-    constructor(readonly canvas: HTMLCanvasElement, options?: sceneOptions) {
+    constructor(readonly canvas: HTMLCanvasElement, options: SceneOptions) {
         this.engine = new BABYLON.Engine(canvas)
         window.addEventListener('resize', () => {
             this.engine.resize();
@@ -28,7 +34,7 @@ export class Pong {
 
 }
 
-function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options?: sceneOptions): BABYLON.Scene {
+function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options: SceneOptions): BABYLON.Scene {
     const scene = new BABYLON.Scene(engine);
 
     // Adjustable Variables
@@ -52,7 +58,9 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options?
     const ballColour        = new BABYLON.Color3(1, 1, 1);
     const goalColour        = new BABYLON.Color3(0, 1, 0);
     // User Variables
-    const scoreToWin        =  options?.scoreToWin ?? 1;
+	const player1Alias		= options.p1_alias ?? "Player 1";
+	const player2Alias		= options.p2_alias ?? "Player 2";
+    const scoreToWin        = options.scoreToWin ?? 2;
     // Loop Variables
     let ballSpeed           = ballBaseSpeed;
     let paddle1Direction    = 0;
@@ -184,16 +192,16 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options?
             // Track Score
             if (ball.position.x > 0) {
                 player1Score++;
-                player1Text.text = `Player 1: ${player1Score}`;
+                player1Text.text = `${player1Alias}: ${player1Score}`;
             } else {
                 player2Score++;
-                player2Text.text = `Player 2: ${player2Score}`;
+                player2Text.text = `${player2Alias}: ${player2Score}`;
             }
             // Check For Game End
             if (player1Score == scoreToWin || player2Score == scoreToWin)
             {
                 paused = 0;
-                const winner = player1Score === scoreToWin ? "Player 1" : "Player 2";
+                const winner = player1Score === scoreToWin ? `${player1Alias}` : `${player2Alias}`;
                 alert(`${winner} WINS!`); // Better Alert
                 // Exit Game
             }
@@ -254,7 +262,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options?
     scoreToWinText.textVerticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
     gui.addControl(scoreToWinText);
     const player1Text = new GUI.TextBlock();
-    player1Text.text = `Player 1: ${player1Score}`;
+    player1Text.text = `${player1Alias}: ${player1Score}`;
     player1Text.color = "white";
     player1Text.fontSize = 24;
     player1Text.top = "10px";
@@ -263,7 +271,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options?
     player1Text.textVerticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
     gui.addControl(player1Text);
     const player2Text = new GUI.TextBlock();
-    player2Text.text = `Player 2: ${player2Score}`;
+    player2Text.text = `${player2Alias}: ${player2Score}`;
     player2Text.color = "white";
     player2Text.fontSize = 24;
     player2Text.top = "10px";
