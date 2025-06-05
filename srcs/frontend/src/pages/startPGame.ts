@@ -10,7 +10,6 @@ import "../styles/snek.css"
 import { AuthState } from '../script/gameSetup'
 import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, newPlayersButton } from '../script/gameSetup'
 import { Pong, SceneOptions } from "./babylon.ts";
-import { setupUserHome } from './home.ts';
 import { getLanguage } from '../script/language.ts';
 import { dropDownBar } from '../script/dropDownBar.ts';
 import { fillTopbar } from '../script/fillTopbar.ts';
@@ -101,7 +100,7 @@ export function Pong1v1() {
         if (page) {
             page.innerHTML = "";
             page.insertAdjacentHTML("beforeend", /*html*/ `
-			<canvas id="renderCanvas" style="pointer-events:none; position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block;"></canvas> <!-- Edit Canvas -->
+			<canvas id="renderCanvas" style="pointer-events:none; position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block; z-index: 42;"></canvas> <!-- Edit Canvas -->
 			<div class="fixed top-[120px] left-[220px] bg-black bg-opacity-75 py-10 px-8 rounded w-[500px] h-[100vh]">
 				<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full">
 					<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
@@ -167,8 +166,9 @@ export function Pong1v1() {
         }
         const container = document.getElementById('gameContainer') as HTMLElement;
         if (container) {
-            preGameScreen(container).then((app: Application) => {
-
+            // preGameScreen(container).then((app: Application) => {
+				try {
+				const app = null;
                 setupGuestAliasLocking(authState);
                 FormToggleListener(authState);
                 setupLoginValidation(authState, "pong");
@@ -191,17 +191,16 @@ export function Pong1v1() {
 					newGameButton.addEventListener('click', () => {
         				resetGame(app); // Pong Version Needed
     				});
-            }).catch((error) => {
+            } catch (error) {
                 console.error("Error setting up the game:", error);
                 window.history.pushState({}, '', '/errorPages');
                 setupErrorPages(500, "Error launching game");
-            });
+            };
         } else {
             console.error("Game container not found");
             return;
         }
     });
-
 }
 
 // Function to update player2 stats display (for Pong) // Also needed for p1 for tournament
