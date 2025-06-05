@@ -1,19 +1,11 @@
 #!/bin/sh
 
 echo "Starting entrypoint..."
+set -e
 
-# # # -> RUN this firt on your host machine to install mkcert <-
-# curl -JLO "https://github.com/FiloSottile/mkcert/releases/latest/download/mkcert-v$(curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest | grep -Po '"tag_name": "\K[^"]+')-darwin-amd64"
-# chmod +x mkcert-v*-darwin-amd64
-# mkdir -p ~/.local/bin
-# mv mkcert-v*-darwin-amd64 ~/.local/bin/mkcert
-# chmod +x ~/.local/bin/mkcert
-# export PATH=$HOME/.local/bin:$PATH
-# mkcert -install
-# mkcert -cert-file certs/localhost.pem -key-file certs/localhost-key.pem localhost
-
-CERT_PATH=/certs
+CERT_PATH=/app/certs
 mkdir -p $CERT_PATH
+chmod 700 $CERT_PATH
 
 # Create certs if they don't exist
 if [ ! -f "$CERT_PATH/localhost.pem" ] || [ ! -s "$CERT_PATH/localhost.pem" ]; then
@@ -22,6 +14,8 @@ if [ ! -f "$CERT_PATH/localhost.pem" ] || [ ! -s "$CERT_PATH/localhost.pem" ]; t
     -out "$CERT_PATH/localhost.pem" \
     -days 365 \
     -subj "/CN=localhost"
+    
+    echo "Certificate generated."
 fi
 
 # Set env vars so Vite uses HTTPS
