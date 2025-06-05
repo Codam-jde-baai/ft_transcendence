@@ -94,13 +94,13 @@ p {
 
 /* Eye Icon for Password */
 .field-icon {
-	@apply cursor-pointer absolute top-[590px] right-[50px];
+	@apply cursor-pointer absolute top-[598px] right-[50px];
 }
 .field-icon img {
 	@apply w-[25px] h-[20px];
 }
 .field-iconn {
-	@apply cursor-pointer absolute top-[500px] right-[50px];
+	@apply cursor-pointer absolute top-[508px] right-[50px];
 }
 .field-iconn img {
 	@apply w-[25px] h-[20px];
