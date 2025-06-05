@@ -14,13 +14,16 @@ export interface SceneOptions {
 export class Pong {
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
+	winner_id: number | 0 = 0;
 
     constructor(readonly canvas: HTMLCanvasElement, options: SceneOptions) {
         this.engine = new BABYLON.Engine(canvas)
         window.addEventListener('resize', () => {
             this.engine.resize();
         });
-        this.scene = createScene(this.engine, this.canvas, options)
+        this.scene = createScene(this.engine, this.canvas, options, (winner_id:number) => {
+			this.winner_id = winner_id
+		})
 
     }
 
@@ -34,7 +37,7 @@ export class Pong {
 
 }
 
-function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options: SceneOptions): BABYLON.Scene {
+function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options: SceneOptions, setWinner: (winner:number) => void): BABYLON.Scene {
     const scene = new BABYLON.Scene(engine);
 
     // Adjustable Variables
@@ -201,8 +204,10 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
             if (player1Score == scoreToWin || player2Score == scoreToWin)
             {
                 paused = 0;
-                const winner = player1Score === scoreToWin ? `${player1Alias}` : `${player2Alias}`;
-                alert(`${winner} WINS!`); // Better Alert
+                const winner:string = player1Score === scoreToWin ? `${player1Alias}` : `${player2Alias}`;
+                const winner_id:number = player1Score === scoreToWin ? 1 : 2;
+				setWinner(winner_id);
+				alert(`${winner} WINS!`); // Better Alert?
                 // Exit Game
             }
             // Reset Game

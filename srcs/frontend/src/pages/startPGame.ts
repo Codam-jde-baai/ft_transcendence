@@ -27,7 +27,8 @@ interface GameEndPayload {
 	p2_alias: string;
 	p1_uuid?: string;
 	p2_uuid?: string;
-	winner_id: number;
+	winner_id?: number;
+	status: number;
 }
 
 const authState: AuthState = {
@@ -152,7 +153,8 @@ export function Pong1v1() {
 						</div>
 					</div>
 					<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startGame" disabled>Start Game</button>
-					<button class="button-main pointer-events-none opacity-0" ></button>
+					<!-- Scroll Buffer -->
+					<button class="button-main py-10 pointer-events-none opacity-0" ></button>
 				</div>
 			</div>
 			<div class="flex flex-col gap-4 items-center bg-black bg-opacity-75 py-20 px-8 rounded">
@@ -284,14 +286,23 @@ async function startGameListeners(app: Application): Promise<void> {
     }
 
     startGameButton.addEventListener('click', async () => {
-        
+		const gamePayload:GameEndPayload = {
+			p1_alias: options.p1_alias!,
+			p2_alias: options.p2_alias!,
+			p1_uuid: "",
+			p2_uuid: authState.userUuid,
+			status: 0
+		}
+		options.p2_alias = authState.isAuthenticated ? authState.userAlias : authState.guestAlias
 		const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
 		if (canvas) {
-			options.p2_alias = authState.isAuthenticated ? authState.userAlias : authState.guestAlias
 			const game = new Pong(canvas, options);
 			game.run();
-		} return ;
+			gamePayload.status = game.winner_id
+		}
+		console.log(gamePayload.winner_id) // make game an async function so you can wait for the winner
 
+		return ;
 		// // Get the player2 name based on authentication state
         // const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
 
