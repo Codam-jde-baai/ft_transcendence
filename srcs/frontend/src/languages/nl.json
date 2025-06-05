@@ -102,7 +102,7 @@
     "LogIn_error_user": "Gebruiker niet gevonden",
     "LogIn_error_password": "Fout wachtwoord",
     "LogIn_error": "Verkeerd wachtwoord",
-    "LogIn_noUser": "Gebruikersnaam en wachtwoord komen niet overeen",
+    "LogIn_noUser": "Naam en wachtwoord komen niet overeen",
     "CurrentPass_error": "Wachtwoord komt niet overeen",
     "CurrentPass_error1": "Huidig wachtwoord ontbreekt*",
     "CurrentPass_error2": "Geen wijzigingen gedetecteerd. Update de instellingen!",

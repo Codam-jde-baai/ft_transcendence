@@ -102,7 +102,7 @@
     "LogIn_error_user": "Benutzer nicht gefunden",
     "LogIn_error_password": "Falsches Passwort",
     "LogIn_error": "Falsches Passwort",
-    "LogIn_noUser": "Benutzername und Passwort stimmen nicht überein",
+    "LogIn_noUser": "Name und Passwort stimmen nicht überein",
     "CurrentPass_error": "Passwort stimmt nicht überein",
     "CurrentPass_error1": "Aktuelles Passwort fehlt*",
     "CurrentPass_error2": "Keine Änderungen erkannt. Bitte Einstellungen aktualisieren!",

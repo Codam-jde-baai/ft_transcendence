@@ -1,32 +1,61 @@
 services:
-  frontend:
+  frontend:                   # frontend written in typescript/.js with tailwind CSS
     depends_on:
       - backend
     build:
       context: ./frontend
       dockerfile: ../docker/frontend.Dockerfile
-    container_name: ft_frontend
+    image: img_frontend
+    container_name: frontend
     restart: unless-stopped
+    ports:
+      - "5173:5173" 
+    volumes:
+      - /app/node_modules     # Ensures node_modules are not overwritten by the host, allowing container to manage dependencies
+      - frontend:certs/
+    env_file:
+      - ./.env
+    environment:              # Add the .env variabes to the container enviroment as VITE_-variables
+      - VITE_PRIVATE_KEY=${PRIVATE_KEY}
+      - VITE_BACKEND_PORT=${BACKEND_PORT}
     command: [ "pnpm", "run" ]
-  backend:
+  backend:                    # backend written with Fastify and .ts/js          
     build:
       context: ./backend
       dockerfile: ../docker/backend.Dockerfile
-    container_name: ft_backend
+    container_name: backend
+    image: img_backend
     restart: unless-stopped
     ports:
       - "3000:3000"
+      - "4983:4983"
+    volumes:
+      - /app/node_modules
+      - sqlite_data:/app/data
+      - cookie_data:/app/cookie-key
     environment:
       - NODE_ENV=production
-    volume:
-      - db_data:/app/database # Dedicated volume for SQLite
+    env_file:
+      - ./.env
+    entrypoint: [ "/app/docker-entrypoint/generateDb.sh" ]
     command: [ "pnpm", "run" ]
 
 networks:
   transcendence:
+    name: transcendence_net
     driver: bridge
     external: false
 
 volumes:
-  db_data:
+  sqlite_data:
     driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/ft_transcendence/data
+      o: bind
+  cookie_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/ft_transcendence/cookie-key
+      o: bind

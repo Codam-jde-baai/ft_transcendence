@@ -5,9 +5,9 @@ WORKDIR /app
 # install pnpm
 RUN npm install -g pnpm
 
-# Copy package.json and install dependencies
 COPY . .
 
+# Install dependencies
 RUN pnpm install --force
 
 RUN pnpm install tailwindcss @tailwindcss/vite
