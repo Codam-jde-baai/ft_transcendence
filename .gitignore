@@ -1,5 +1,6 @@
 # the .vscode
 .vscode
+srcs/frontend/certs/
 
 # ignore .env in any dir
 **/.env

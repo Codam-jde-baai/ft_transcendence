@@ -72,7 +72,7 @@ export async function connectFunc(url: string, request: RequestInit): Promise<Re
 	// console.log("Connect To " + url + " Using:")
 	// console.log(request)
 
-	const response = await httpGet("http://localhost:3000" + url, request);
+	const response = await httpGet("https://localhost:3000" + url, request);
 	if (response.status === 402) {
 		window.history.pushState({}, '', '/logIn');
 		setupLogIn(); // Redirect to logIn
