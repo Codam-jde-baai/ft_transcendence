@@ -1,0 +1,46 @@
+:root {
+	--color-btn-bg: #8a3f6c;
+	--color-btn-hover-bg: #b86a8a;
+	--color-btn-accept-bg: #4CAF50;
+	--color-btn-decline-bg: #f44336;
+	--color-bg: rgba(0,0,0,0.8);
+	--color-box-border: #902063;
+	--color-text: #fff;
+}
+
+.middle {
+	@apply fixed left-[220px] h-full flex items-center justify-center overflow-auto  flex-col py-6 space-y-12;
+	width: calc(100% - 220px);
+	top: 140px;
+	height: calc(100% - 140px);
+	/* background-color: #4CAF50; add background colour to see outline of middle */
+}
+
+@media (min-width: 880px) {
+	.middle {
+		right: 220px;
+		width: auto;
+	}
+}
+.contentArea {
+	@apply w-full h-full flex items-center justify-center rounded-lg;
+	background-color: var(--color-bg);
+}
+
+.btn {
+	@apply w-[200px] px-3 py-2 rounded cursor-pointer text-[14px] ml-1;
+	background-color: var(--color-btn-bg);
+	color: var(--color-text);
+}
+
+.btn.accept {
+	background-color: var(--color-btn-accept-bg);
+}
+
+.btn.decline {
+	background-color: var(--color-btn-decline-bg);
+}
+
+.btn:hover {
+	background-color: var(--color-btn-hover-bg);
+}
