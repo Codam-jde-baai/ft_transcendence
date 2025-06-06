@@ -1,11 +1,10 @@
-//import { getLanguage } from '../script/language';
+import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
-import { connectFunc } from '../script/connections';
 
 
-export function setupMatchMaking() {
+export function setupCssTemplate() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
@@ -48,6 +47,6 @@ export function setupMatchMaking() {
 		fillTopbar();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		setupNavigation();
-		//getLanguage();
+		getLanguage();
 	}
 }

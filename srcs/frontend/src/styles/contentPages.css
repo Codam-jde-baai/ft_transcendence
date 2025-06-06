@@ -24,7 +24,7 @@
 	}
 }
 .contentArea {
-	@apply w-full h-full flex flex-col p-6 space-y-6 items-center justify-items-stretch rounded-lg;
+	@apply w-full h-full flex flex-col p-6 space-y-4 items-center justify-items-stretch rounded-lg;
 	background-color: var(--color-bg);
 }
 

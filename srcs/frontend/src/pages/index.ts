@@ -26,7 +26,7 @@ import '../component/adminTopbar'
 import '../component/admin_userTable'
 import '../component/history_table'
 import '../component/snekHistory_table'
-import { setupMatchMaking } from './matchMaking';
+import { setupCssTemplate } from './cssTemplate';
 
 // Track if WebSocket listeners have been initialized
 let webSocketInitialized = false;
@@ -61,7 +61,7 @@ export function renderPage() {
 		'/startSGame': setupStartSGame,
 		'/adminLogin': setupAdminLogIn,
 		'/viewData': setupViewData,
-		'/matchMaking': setupMatchMaking
+		'/cssTemplate': setupCssTemplate
 	};
 
 	if (root) {
