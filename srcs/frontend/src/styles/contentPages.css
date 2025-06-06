@@ -1,19 +1,20 @@
 :root {
 	--color-btn-bg: #8a3f6c;
 	--color-btn-hover-bg: #b86a8a;
+	--color-secondary: #cb3f03;
+	--color-secondary-hover: #ff4d00;
 	--color-btn-accept-bg: #4CAF50;
-	--color-btn-decline-bg: #f44336;
+	--color-btn-decline-bg: #fc1f1f;
 	--color-bg: rgba(0,0,0,0.8);
 	--color-box-border: #902063;
 	--color-text: #fff;
 }
 
 .middle {
-	@apply fixed left-[220px] h-full flex items-center justify-center overflow-auto  flex-col py-6 space-y-12;
-	width: calc(100% - 220px);
-	top: 140px;
-	height: calc(100% - 140px);
-	/* background-color: #4CAF50; add background colour to see outline of middle */
+    @apply flex flex-col overflow-auto py-6 space-y-1;
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    margin-top: 60px;
 }
 
 @media (min-width: 880px) {
@@ -23,24 +24,79 @@
 	}
 }
 .contentArea {
-	@apply w-full h-full flex items-center justify-center rounded-lg;
+	@apply w-full h-full flex flex-col p-6 space-y-6 items-center justify-items-stretch rounded-lg;
 	background-color: var(--color-bg);
 }
 
-.btn {
-	@apply w-[200px] px-3 py-2 rounded cursor-pointer text-[14px] ml-1;
+.btnFullWidth {
+	@apply w-full p-3 border-none rounded-md;
 	background-color: var(--color-btn-bg);
 	color: var(--color-text);
+	cursor: pointer;
+}
+.btnFullWidth:hover {
+	background-color: var(--color-btn-hover-bg);
 }
 
-.btn.accept {
+.btnFullWidth.secondary {
+    @apply w-full p-3 border-none rounded-md;
+    background-color: var(--color-secondary); /* <-- Use the secondary color */
+    color: var(--color-text);
+    cursor: pointer;
+}
+.btnFullWidth.secondary:hover {
+    background-color: var(--color-secondary-hover); /* <-- Use the secondary hover color */
+}
+
+/**
+ * default button - currently using c in front of class so it doesnt conflict. once applied everywhere remove c
+ * grows with size
+ */
+.cbtn {
+	@apply p-3 border-none rounded-md;
+	background-color: var(--color-btn-bg);
+	color: var(--color-text);
+	cursor: pointer;
+}
+.cbtn:hover {
+	background-color: var(--color-btn-hover-bg);
+}
+
+.cbtn.accept {
 	background-color: var(--color-btn-accept-bg);
 }
 
-.btn.decline {
+.cbtn.decline {
 	background-color: var(--color-btn-decline-bg);
 }
 
-.btn:hover {
+.cbtn:hover {
 	background-color: var(--color-btn-hover-bg);
+}
+
+.cbtn.secondary {
+	background-color: var(--color-secondary);
+}
+.cbtn.secondary:hover {
+	background-color: var(--color-secondary-hover);
+}
+
+/* fonts */
+.p1 {
+	@apply text-base font-normal leading-relaxed text-white;
+}
+.p2 {
+	@apply text-sm font-normal leading-relaxed text-white;
+}
+.p3 {
+	@apply text-xs font-normal leading-relaxed text-white;
+}
+.h1 {
+	@apply mb-5 w-full text-center pt-5 font-bold text-[55px] font-sans text-[#dcdbdb] drop-shadow-[5px_5px_7px_#902063];
+}
+.h2 {
+	@apply text-2xl font-semibold leading-snug text-white;
+}
+.h3 {
+	@apply text-xl font-medium leading-snug text-white;
 }
