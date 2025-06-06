@@ -43,6 +43,67 @@ export function setupCssTemplate() {
 				<div class="contentArea">
 					<p> seconary content area </p>
 				</div>
+				<h1 class="h1">examples of splits in the content Area</h1>
+				<div class="contentArea">
+					<!-- Single content box -->
+					<div class="contentBox">
+						<p class="p1">content in rows(vertical)</p>
+						<button class="cbtn"><span>abc</span></button>
+					</div>
+				
+					<!-- Row content box -->
+					<div class="contentBox row">
+						<p class="p1">content in columns(horizontal)</p>
+						<button class="cbtn"><span>abc</span></button>
+					</div>
+				
+					<!-- Split 1-3 -->
+					<div class="split-1-3">
+						<div class="contentBox">
+							<p class="p1">1/3 of the content area</p>
+							<button class="cbtn"><span>abc</span></button>
+						</div>
+						<div class="contentBox">
+							<p class="p1">2/3 of the content area</p>
+							<button class="cbtn"><span>abc</span></button>
+						</div>
+					</div>
+				
+					<!-- Split 1-1 -->
+					<div class="split-1-1">
+						<div class="contentBox">
+							<p class="p1">50-50 content</p>
+							<button class="cbtn"><span>abc</span></button>
+						</div>
+						<div class="contentBox">
+							<p class="p1">50-50 content</p>
+							<button class="cbtn"><span>abc</span></button>
+						</div>
+					</div>
+				
+					<!-- Split 2-1 -->
+					<div class="split-2-1">
+						<div class="contentBox">
+							<p class="p1">2/3rd of the content area</p>
+							<button class="cbtn"><span>abc</span></button>
+						</div>
+						<div class="contentBox">
+							<p class="p1">1/3rd of the content area</p>
+							<button class="cbtn"><span>abc</span></button>
+						</div>
+					</div>
+		</div>
+					<h2 class="h2">Search Players from History</h2>
+					<div class="contentArea">
+						<div class="itemsCenter">
+							<input type="text" class="alias-input" placeholder="placeholderField">
+							<input type="text" class="alias-input" placeholder="placeholderField">
+							<button class="small-btn">
+								<span>Find</span>
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		`);
