@@ -1,6 +1,5 @@
 /* signUp.css */
 
-
 /* Dark overlay -> for background */
 .overlay {
 	@apply fixed inset-0 w-full h-screen bg-[rgba(0,0,0,0.4)] z-[-1];
