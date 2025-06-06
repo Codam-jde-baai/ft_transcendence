@@ -40,6 +40,9 @@ export function setupCssTemplate() {
 				<button class="btnFullWidth">
 					<span>Full width primary button</span>
 				</button>
+				<div class="contentArea">
+					<p> seconary content area </p>
+				</div>
 			</div>
 		</div>
 		`);
