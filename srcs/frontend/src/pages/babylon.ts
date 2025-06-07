@@ -15,6 +15,7 @@ export class Pong {
     engine: BABYLON.Engine;
     scene: BABYLON.Scene;
 	winner_id: number | 0 = 0;
+	private _onGameEndCallback?: (winner_id: number) => void;
 
     constructor(readonly canvas: HTMLCanvasElement, options: SceneOptions) {
         this.engine = new BABYLON.Engine(canvas)
@@ -23,14 +24,22 @@ export class Pong {
         });
         this.scene = createScene(this.engine, this.canvas, options, (winner_id:number) => {
 			this.winner_id = winner_id
+			if (this._onGameEndCallback)
+				this._onGameEndCallback(winner_id);
 		})
 
     }
 
-    run() {
-        this.engine.runRenderLoop(() => {
-            this.scene.render();
-        });
+    run(): Promise<number> {
+        return new Promise((resolve) => {
+			this._onGameEndCallback = (winner_id: number) => {
+				this.engine.stopRenderLoop();
+				resolve(winner_id);
+			};
+			this.engine.runRenderLoop(() => {
+				this.scene.render();
+			});
+		});
     }
 
 
@@ -84,9 +93,8 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 
     // light
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-	let StopComplaining;
-	StopComplaining = light;
-
+	let StopComplaining = light;
+	StopComplaining = "";
 
 
     // Ground, Playing Field
