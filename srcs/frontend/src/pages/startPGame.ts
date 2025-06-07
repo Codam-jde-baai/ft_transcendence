@@ -1,5 +1,4 @@
-import { startSnek, preGameScreen, restartSnek, resetGame } from '../game/snek/main';
-import { gameEndData } from '../game/snek/main';
+import { restartSnek, resetGame } from '../game/snek/main';
 import { Application } from 'pixi.js'
 import { setupErrorPages } from './errorPages';
 import DOMPurify from 'dompurify';
@@ -25,9 +24,9 @@ interface PlayerStats {
 interface GameEndPayload {
 	p1_alias: string;
 	p2_alias: string;
-	p1_uuid?: string;
-	p2_uuid?: string;
-	winner_id?: number;
+	winner_alias: string | null;
+	p1_uuid: string | null;
+	p2_uuid: string | null;
 	status: number;
 }
 
@@ -206,7 +205,7 @@ export function Pong1v1() {
 }
 
 // Function to update player2 stats display (for Pong) // Also needed for p1 for tournament
-export function updatePongPlayer2StatsDisplay(stats: PlayerStats) {
+export function updatePongPlayerStatsDisplay(stats: PlayerStats) {
     const wins = document.getElementById('p2-wins');
     const losses = document.getElementById('p2-losses');
     const winrate = document.getElementById('p2-winrate');
@@ -217,7 +216,7 @@ export function updatePongPlayer2StatsDisplay(stats: PlayerStats) {
 }
 
 // Function to fetch player2 stats (for Pong) // Also needed for p1 for tournament
-export async function fetchPongPlayer2Stats(alias: string): Promise<PlayerStats | null> {
+export async function fetchPongPlayerStats(alias: string): Promise<PlayerStats | null> {
     try {
         const sanitizedAlias = DOMPurify.sanitize(alias);
         const response = await connectFunc(
@@ -237,29 +236,31 @@ export async function fetchPongPlayer2Stats(alias: string): Promise<PlayerStats 
     }
 }
 
+async function startPong(gamePayload:GameEndPayload): Promise<GameEndPayload> {
+	const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
+	try {
+		if (!canvas)
+			throw new Error("Canvas element with id 'renderCanvas' not found.");
+		const game = new Pong(canvas, options);
+		const winner_id = await game.run();
+		gamePayload.status = winner_id
+		gamePayload.winner_alias = winner_id === 1 ? gamePayload.p1_alias : gamePayload.p2_alias
+	} catch (error) {
+    	console.error("Error Starting Pong:", error);
+		gamePayload.status = -1;
+	}
+	return (gamePayload);
+}
+
 // Record game results (for Snek)
-async function recordGameResults(gameData: gameEndData): Promise<boolean> {
+async function recordGameResults(gamePayload: GameEndPayload): Promise<boolean> {
     try {
-        // Prepare the payload for the API
-        const payload: GameEndPayload = {
-            p1_alias: "Enter Alias", //TODO
-			p2_alias: DOMPurify.sanitize(authState.isAuthenticated ? authState.userAlias : authState.guestAlias),
-            winner_id: gameData.winner,
-        };
-
-        // Add UUID if player2 is authenticated
-        if (authState.isAuthenticated && authState.userUuid) {
-            payload.p2_uuid = DOMPurify.sanitize(authState.userUuid);
-        }
-
-        console.log("Submitting game results:", payload);
-
+        console.log("Submitting game results:", gamePayload);
         // Make the API call
         const response = await connectFunc(
-            "/snek/new",
-            requestBody("POST", JSON.stringify(payload), "application/json")
+            "/matches/new",
+            requestBody("POST", JSON.stringify(gamePayload), "application/json")
         );
-
         if (response.ok) {
             console.log("Game results recorded successfully");
             return true;
@@ -286,88 +287,88 @@ async function startGameListeners(app: Application): Promise<void> {
     }
 
     startGameButton.addEventListener('click', async () => {
-		const gamePayload:GameEndPayload = {
-			p1_alias: options.p1_alias!,
-			p2_alias: options.p2_alias!,
-			p1_uuid: "",
-			p2_uuid: authState.userUuid,
-			status: 0
-		}
-		options.p2_alias = authState.isAuthenticated ? authState.userAlias : authState.guestAlias
-		const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
-		if (canvas) {
-			const game = new Pong(canvas, options);
-			game.run();
-			gamePayload.status = game.winner_id
-		}
-		console.log(gamePayload.winner_id) // make game an async function so you can wait for the winner
+        // Start the game with the appropriate player names
+        startGameButton.disabled = true;
+        startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+        startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 
-		return ;
-		// // Get the player2 name based on authentication state
-        // const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
+		try {
+			options.p2_alias = authState.isAuthenticated ? authState.userAlias : authState.guestAlias
+			let gamePayload:GameEndPayload = {
+				p1_alias: options.p1_alias!,
+				p2_alias: options.p2_alias!,
+				winner_alias: null,
+				p1_uuid: null,
+				p2_uuid: authState.isAuthenticated ? authState.userUuid! : null,
+				status: 0
+			}
+            // const gameData: gameEndData = await startSnek(app, "player1", player2Name);
+			gamePayload = await startPong(gamePayload);
+			console.log("Game ended with data:", gamePayload);
 
-        // // Start the game with the appropriate player names
-        // startGameButton.disabled = true;
-        // startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
-        // startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-
-        // try {
-        //     const gameData: gameEndData = await startSnek(app, "player1", player2Name);
-        //     console.log("Game ended with data:", gameData);
-
-        //     // Record game results
-        //     const recordSuccess = await recordGameResults(gameData);
-        //     if (recordSuccess) {
-        //         console.log("Game results recorded successfully");
-        //     } else {
-        //         console.warn("Failed to record game results");
-        //     }
-
-        //     // If player2 is authenticated, refresh their stats
-        //     if (authState.isAuthenticated) {
-        //         const updatedStats = await fetchPongPlayer2Stats(authState.userAlias);
-        //         if (updatedStats) {
-        //             updatePongPlayer2StatsDisplay(updatedStats);
-        //         }
-        //     }
-        // } catch (error) {
-        //     console.error("Error during game:", error);
-        // }
-
-        // replayButtons.classList.remove('hidden');
-        // replayButtons.classList.add('flex');
-    });
-
-    restartGameButton.addEventListener('click', async () => {
-        // Get the player2 name based on authentication state
-        const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
-        replayButtons.classList.remove('flex');
-        replayButtons.classList.add('hidden');
-
-        try {
-            const gameData: gameEndData = await restartSnek(app, "player1", player2Name);
-            console.log("Restarted Game results:", gameData);
-
-            // Record game results
-            const recordSuccess = await recordGameResults(gameData);
+			// Add p1.uuid
+            // Record Game Results (Unless Played By 2 Guests Or Error Occurred)
+			// if (gamePayload.status == -1 || !(gamePayload.p1_uuid || gamePayload.p2_uuid))
+			if (gamePayload.status == -1)
+				return; // TODO reset Pong
+            const recordSuccess = await recordGameResults(gamePayload);
             if (recordSuccess) {
                 console.log("Game results recorded successfully");
             } else {
                 console.warn("Failed to record game results");
             }
-
+			// Change4Tournament
+			if (1) {
+				const updatedStats = await fetchPongPlayerStats(gamePayload.p1_alias);
+                if (updatedStats) {
+                    updatePongPlayerStatsDisplay(updatedStats);
+                }
+			}
             // If player2 is authenticated, refresh their stats
             if (authState.isAuthenticated) {
-                const updatedStats = await fetchPongPlayer2Stats(authState.userAlias);
+                const updatedStats = await fetchPongPlayerStats(authState.userAlias);
                 if (updatedStats) {
-                    updatePongPlayer2StatsDisplay(updatedStats);
+                    updatePongPlayerStatsDisplay(updatedStats);
                 }
             }
         } catch (error) {
-            console.error("Error during game restart:", error);
+            console.error("Error during game:", error);
         }
 
         replayButtons.classList.remove('hidden');
         replayButtons.classList.add('flex');
     });
+
+//     restartGameButton.addEventListener('click', async () => {
+//         // Get the player2 name based on authentication state
+//         const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
+//         replayButtons.classList.remove('flex');
+//         replayButtons.classList.add('hidden');
+
+//         try {
+//             const gameData: gameEndData = await restartSnek(app, "player1", player2Name);
+//             console.log("Restarted Game results:", gameData);
+
+//             // Record game results
+//             const recordSuccess = await recordGameResults(gameData);
+//             if (recordSuccess) {
+//                 console.log("Game results recorded successfully");
+//             } else {
+//                 console.warn("Failed to record game results");
+//             }
+
+//             // If player2 is authenticated, refresh their stats
+//             if (authState.isAuthenticated) {
+//                 const updatedStats = await fetchPongPlayerStats(authState.userAlias);
+//                 if (updatedStats) {
+//                     updatePongPlayerStatsDisplay(updatedStats);
+//                 }
+//             }
+//         } catch (error) {
+//             console.error("Error during game restart:", error);
+//         }
+
+//         replayButtons.classList.remove('hidden');
+//         replayButtons.classList.add('flex');
+//     });
 }

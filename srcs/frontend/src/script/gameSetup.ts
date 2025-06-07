@@ -1,7 +1,7 @@
 import DOMPurify from 'dompurify';
 import { connectFunc, requestBody } from './connections';
 import { updateSnekPlayer2StatsDisplay, fetchSnekPlayer2Stats } from '../pages/startSGame'
-import { updatePongPlayer2StatsDisplay, fetchPongPlayer2Stats } from '../pages/startPGame'
+import { updatePongPlayerStatsDisplay, fetchPongPlayerStats } from '../pages/startPGame'
 
 export interface AuthState {
 	isAuthenticated: boolean;
@@ -194,9 +194,9 @@ export function setupLoginValidation(authState:AuthState, game:string) {
 
                 // Fetch and display player2 stats
                 if (game === "pong") {
-					const player2Stats = await fetchPongPlayer2Stats(userData.alias);
+					const player2Stats = await fetchPongPlayerStats(userData.alias);
 					if (player2Stats)
-						updatePongPlayer2StatsDisplay(player2Stats);
+						updatePongPlayerStatsDisplay(player2Stats);
 				} else {
 					const player2Stats = await fetchSnekPlayer2Stats(userData.alias);
 					if (player2Stats)
