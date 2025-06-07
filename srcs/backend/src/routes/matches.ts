@@ -14,14 +14,9 @@ import { errorResponseSchema } from './userdocs.ts';
 
 // Schema for match properties
 const matchProperties = {
-	id: { type: 'number' },
-	p1_uuid: { type: 'string' },
-	p2_uuid: { type: 'string' },
+	p1_uuid: { type: ['string', 'null'] },
+	p2_uuid: { type: ['string', 'null'] },
 	status: { type: 'number' },
-	winner_id: { type: ['number', 'null'] },
-	startTime: { type: 'string' },
-	endTime: { type: ['string', 'null'] },
-	duration: { type: ['number', 'null'] }
 };
 
 // Schema for enhanced match properties (includes aliases)
@@ -75,13 +70,10 @@ const getTotalScoreOptions = {
 const addMatchReqs = [
 	'p1_alias',
 	'p2_alias',
+	'winner_alias',
 	'p1_uuid',
 	'p2_uuid',
 	'status',
-	'winner_id',
-	'start_time?',
-	'end_time',
-	'duration?',
 ]
 
 const addMatchOptions = {
@@ -90,11 +82,11 @@ const addMatchOptions = {
 		tags: ['matches'],
 		body: {
 			type: 'object',
-			// required: addMatchReqs,
+			required: addMatchReqs,
 			properties: enhancedMatchProperties
 		},
 		response: {
-			200: {
+			201: {
 				type: 'object',
 				properties: enhancedMatchProperties
 			},

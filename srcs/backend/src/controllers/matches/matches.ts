@@ -5,6 +5,7 @@ import { or, eq, and } from 'drizzle-orm';
 import Database from 'better-sqlite3';
 // files
 import { matchesTable } from '../../db/schema.ts'
+import { usersTable } from '../../db/schema.ts'
 import { match, createMatch } from '../../models/matches.ts'
 
 export const getAllMatches = async (request: FastifyRequest, reply: FastifyReply) => {
@@ -122,10 +123,6 @@ export const addMatch = async (request: FastifyRequest<{ Body: createMatch }>,
 			p1_uuid: body.p1_uuid,
 			p2_uuid: body.p2_uuid,
 			status: body.status,
-			winner_id: body.winner_id,
-			start_time: body.start_time,
-			end_time: body.end_time,
-			match_duration: body.match_duration
 		};
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);

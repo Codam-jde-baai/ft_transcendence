@@ -8,7 +8,6 @@ export type match = InferSelectModel<typeof matchesTable>;
 export type createMatch = InferInsertModel<typeof matchesTable> & {
 	p1_uuid: string | null;
 	p2_uuid: string | null;
-	winner_id: number;
 	p1_alias: string;
 	p2_alias: string;
 	winner_alias: string;
