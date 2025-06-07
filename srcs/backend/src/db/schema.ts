@@ -34,6 +34,12 @@ export enum matchStatus {
 	P2_WINNER = 2,
 }
 
+export enum eWinner {
+	NOWINNER = 0,
+	PLAYER1 = 1,
+	PLAYER2 = 2
+}
+
 export const matchesTable = sqliteTable("matches", {
 	id: int("id").primaryKey({ autoIncrement: true }),
 	p1_uuid: text("p1_uuid", { length: 264 }).references(() => usersTable.uuid, { onDelete: "set null" }),
