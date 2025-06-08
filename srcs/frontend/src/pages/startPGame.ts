@@ -3,6 +3,13 @@ import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
 
+enum GameType {
+	Pong = "Pong",
+	Snek = "Snek"
+}
+
+let selectedGame: GameType = GameType.Pong;
+
 export function setupStartGame() {
 	const root = document.getElementById('app');
 	if (root) {
@@ -23,15 +30,9 @@ export function setupStartGame() {
 			</label>
 			<div class="contentArea">
 				<h2 class="h2" data-i18n="Game_Header"></h2>
-				<div class="buttons">
-					<button class="btn" data-i18n="QuickPlay"></button>
-				</div>
-				<div class="buttons">
-					<button class="btn" data-i18n="Tournament"></button>
-				</div>
-				<div class="buttons">
-					<button class="btn" data-i18n="MatchMaking"></button>
-				</div>
+				<button class="cbtn" data-i18n="QuickPlay" style="width: 200px;"></button>
+				<button class="cbtn" data-i18n="Tournament" style="width: 200px;"></button>
+				<button class="cbtn" data-i18n="MatchMaking" style="width: 200px;"></button>
 			</div>
 		</div>
 		`);
@@ -40,6 +41,37 @@ export function setupStartGame() {
 		fillTopbar();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		setupNavigation();
+		eventListeners();
 	}
+}
+
+function eventListeners() {
+	const toggleSwitch = document.querySelector('.toggleSwitch input') as HTMLInputElement;
+	const quickPlayButton = document.querySelector('.cbtn[data-i18n="QuickPlay"]') as HTMLButtonElement;
+	const tournamentButton = document.querySelector('.cbtn[data-i18n="Tournament"]') as HTMLButtonElement;
+	const matchMakingButton = document.querySelector('.cbtn[data-i18n="MatchMaking"]') as HTMLButtonElement;
+
+	toggleSwitch.addEventListener('change', () => {
+		selectedGame = toggleSwitch.checked ? GameType.Snek : GameType.Pong;
+		console.log(`Selected game: ${selectedGame}`);
+	});
+
+	quickPlayButton.addEventListener('click', () => {
+		selectedGame === GameType.Pong ? console.log("Pong Quick Play") : console.log("Snek Quick Play");
+		// window.location.href = `/${selectedGame.toLowerCase()}QuickPlay`;
+		// selectedGame === GameType.Pong ? setupQuickPong : setupQuickSnek();
+	});
+
+	tournamentButton.addEventListener('click', () => {
+		selectedGame === GameType.Pong ? console.log("Pong Tournament") : console.log("Snek Tournament");
+		// window.location.href = `/${selectedGame.toLowerCase()}Tournament`;
+		// selectedGame === GameType.Pong ? setupTournamentPong : setupTournamentSnek();
+	});
+
+	matchMakingButton.addEventListener('click', () => {
+		selectedGame === GameType.Pong ? console.log("Pong Match Making") : console.log("Snek Match Making");
+		// window.location.href = `/${selectedGame.toLowerCase()}MatchMaking`;
+		// selectedGame === GameType.Pong ? setupMatchMakingPong : setupMatchMakingSnek();
+	});
 }
 
