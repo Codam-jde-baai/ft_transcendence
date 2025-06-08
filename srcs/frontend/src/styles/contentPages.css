@@ -1,5 +1,6 @@
 :root {
 	--color-btn-bg: #8a3f6c;
+	--color-primary: #8a3f6c;
 	--color-btn-hover-bg: #b86a8a;
 	--color-secondary: #cb3f03;
 	--color-secondary-hover: #ff4d00;
@@ -11,7 +12,7 @@
 }
 
 .middle {
-    @apply flex flex-col overflow-auto py-6 space-y-1;
+    @apply flex flex-col overflow-auto py-6 space-y-1 text-center;
     width: calc(100% - 220px);
     margin-left: 220px;
     margin-top: 120px;
@@ -167,4 +168,40 @@
     @apply px-3 py-2 rounded-md border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-purple-400;
     min-width: 180px;
     background-color: #f5f5f5;
+}
+
+/* toggle switch */
+
+
+.toggleSwitch {
+    @apply inline-flex items-center p-2 rounded-md cursor-pointer;
+    color: var(--color-text);
+}
+
+.toggleSwitch input[type="checkbox"] {
+    @apply hidden;
+}
+
+.toggleSwitch .toggle-option {
+    @apply px-4 py-2;
+    width: 160px;
+    text-align: center;
+}
+
+.toggleSwitch .toggle-option:first-of-type {
+    @apply rounded-l-md;
+    background-color: var(--color-primary);
+}
+
+.toggleSwitch .toggle-option:last-of-type {
+    @apply rounded-r-md;
+    background-color: #2b2f36;
+}
+
+.toggleSwitch input[type="checkbox"]:checked ~ .toggle-option:first-of-type {
+    background-color: #2b2f36;
+}
+
+.toggleSwitch input[type="checkbox"]:checked ~ .toggle-option:last-of-type {
+    background-color: var(--color-primary);
 }
