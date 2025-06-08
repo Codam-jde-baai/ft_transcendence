@@ -2,8 +2,9 @@ import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
+import { setupMatchMaking } from './matchMaking';
 
-enum GameType {
+export enum GameType {
 	Pong = "Pong",
 	Snek = "Snek"
 }
@@ -23,16 +24,16 @@ export function setupStartGame() {
 				<img src="src/Pictures/game-pong.png" style="width: 100px; height: 100px;">
 				<img src="src/Pictures/game-snek.png" style="width: 100px; height: 100px;">
 			</div>
-			<label class="toggleSwitch">
+			<label class="toggleSwitch" id="gameToggle">
 				<input type="checkbox">
 				<span class="toggle-option" data-i18n="btn_PlayPong"></span>
 				<span class="toggle-option" data-i18n="btn_PlaySnek"></span>
 			</label>
 			<div class="contentArea">
 				<h2 class="h2" data-i18n="Game_Header"></h2>
-				<button class="cbtn" data-i18n="QuickPlay" style="width: 200px;"></button>
-				<button class="cbtn" data-i18n="Tournament" style="width: 200px;"></button>
-				<button class="cbtn" data-i18n="MatchMaking" style="width: 200px;"></button>
+				<button class="cbtn" data-i18n="QuickPlay" style="width: 200px;" id="quickPlay"></button>
+				<button class="cbtn" data-i18n="Tournament" style="width: 200px;" id="Tournament"></button>
+				<button class="cbtn" data-i18n="MatchMaking" style="width: 200px;" id="matchMaking"></button>
 			</div>
 		</div>
 		`);
@@ -46,10 +47,10 @@ export function setupStartGame() {
 }
 
 function eventListeners() {
-	const toggleSwitch = document.querySelector('.toggleSwitch input') as HTMLInputElement;
-	const quickPlayButton = document.querySelector('.cbtn[data-i18n="QuickPlay"]') as HTMLButtonElement;
-	const tournamentButton = document.querySelector('.cbtn[data-i18n="Tournament"]') as HTMLButtonElement;
-	const matchMakingButton = document.querySelector('.cbtn[data-i18n="MatchMaking"]') as HTMLButtonElement;
+	const toggleSwitch = document.querySelector('#gameToggle input') as HTMLInputElement; // Select the input inside the label
+	const quickPlayButton = document.querySelector('#quickPlay') as HTMLButtonElement;
+	const tournamentButton = document.querySelector('#Tournament') as HTMLButtonElement;
+	const matchMakingButton = document.querySelector('#matchMaking') as HTMLButtonElement;
 
 	toggleSwitch.addEventListener('change', () => {
 		selectedGame = toggleSwitch.checked ? GameType.Snek : GameType.Pong;
@@ -70,8 +71,8 @@ function eventListeners() {
 
 	matchMakingButton.addEventListener('click', () => {
 		selectedGame === GameType.Pong ? console.log("Pong Match Making") : console.log("Snek Match Making");
-		// window.location.href = `/${selectedGame.toLowerCase()}MatchMaking`;
-		// selectedGame === GameType.Pong ? setupMatchMakingPong : setupMatchMakingSnek();
+		window.location.href = `/matchMaking`;
+		setupMatchMaking(selectedGame);
 	});
 }
 

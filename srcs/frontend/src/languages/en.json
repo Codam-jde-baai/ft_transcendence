@@ -120,6 +120,8 @@
     "WinRate": "Win Rate",
     "HighestScore_": "Highest Score:",
     "WinRate_": "Win Rate:",
+
+    "goBack": "Go back",
     
     "EndOfFile": ""
 }
