@@ -35,7 +35,10 @@
     "SignUp_Header": "Account aanmaken",
     "Setting_Header": "Instellingen",
     "Admin_Header": "Gebruikersinstellingen",
-    "Game_Header": "Kies je Pong spel",
+    "Game_Header": "Kies Je Spel Variatie",
+    "QuickPlay": "Snel spelen",
+    "Tournament": "Toernooi spelen",
+    "MatchMaking": "Vind een tegenstander",
     "Friends_Header": "Jouw vrienden",
     "Request_Header": "Vriendschapsverzoeken",
     "Blocked_Header": "Geblokkeerde Gebruikers",
@@ -70,6 +73,7 @@
     "English": "Engels",
     "German": "Duits",
     "Dutch": "Nederlands",
+    "Game": "Spel",
 
     "Setting_Avatar": "Avatar bewerken",
     "Setting_Name": "Inlognaam bewerken",
@@ -118,6 +122,8 @@
     "HighestScore_": "Hoogste Score:",
     "WinRate_": "Winstpercentage:",
 
+    "goBack": "Terug",
+    
     "SnekP1": "Speler1 (WASD)",
     "SnekM": "Wedstrijden: ",
     "SnekW": "Gewonnen:",

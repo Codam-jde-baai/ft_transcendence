@@ -5,7 +5,7 @@ import { setupUserHome } from './home';
 import { setupSetting } from './setting';
 import { setupFriends } from './friends';
 import { setupMatchHistory } from './history';
-import { setupStartGame } from './startPGame';
+import { setupGameSelect } from './gameSelect';
 import { setupSnekMatchHistory } from './snekHistory';
 import { setupSnek } from './snek';
 import { setupAdmin } from './admin';
@@ -14,6 +14,7 @@ import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { setupStartSGame } from './startSGame';
+import { setupMatchMaking } from './matchMaking';
 import { setupAdminLogIn } from './adminLogin';
 import { setupViewData } from './viewData';
 import { connectFunc, requestBody } from '../script/connections';
@@ -26,6 +27,7 @@ import '../component/adminTopbar'
 import '../component/admin_userTable'
 import '../component/history_table'
 import '../component/snekHistory_table'
+import { setupCssTemplate } from './cssTemplate';
 
 // Track if WebSocket listeners have been initialized
 let webSocketInitialized = false;
@@ -48,18 +50,20 @@ export function renderPage() {
 		'/home': setupUserHome,
 		'/logIn': setupLogIn,
 		'/signUp': setupSignUp,
-		'/startPGame': setupStartGame,
+		'/gameSelect': setupGameSelect,
 		'/setting': setupSetting,
 		'/history': setupMatchHistory,
 		'/friends': setupFriends,
 		'/snek': setupSnek,
 		'/snekHistory': setupSnekMatchHistory,
+		'/matchMaking': setupMatchMaking,
 		'/errorPages': () => setupErrorPages(404, "Not Found"),
 		'/admin': setupAdmin,
 		'/adminUserSetting': () => setupAdminUserSetting(),
 		'/startSGame': setupStartSGame,
 		'/adminLogin': setupAdminLogIn,
 		'/viewData': setupViewData,
+		'/cssTemplate': setupCssTemplate
 	};
 
 	if (root) {

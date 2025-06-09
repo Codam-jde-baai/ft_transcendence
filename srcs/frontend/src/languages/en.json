@@ -35,7 +35,10 @@
     "SignUp_Header": "Create Account",
     "Setting_Header": "Settings",
     "Admin_Header": "User Settings",
-    "Game_Header": "Choose Your Pong Game",
+    "Game_Header": "Choose Your Game Variant",
+    "QuickPlay": "Quick Play",
+    "Tournament": "Tournament Play",
+    "MatchMaking": "Matchmaking",
     "Friends_Header": "Your Friends",
     "Request_Header": "Friend Requests",
     "Blocked_Header": "Blocked users",
@@ -70,6 +73,7 @@
     "English": "English",
     "German": "German",
     "Dutch": "Netherlands",
+    "Game": "Game",
 
     "Setting_Avatar": "Edit your Avatar",
     "Setting_Name": "Edit Login Name",
@@ -118,6 +122,8 @@
     "HighestScore_": "Highest Score:",
     "WinRate_": "Win Rate:",
 
+    "goBack": "Go back",
+    
     "SnekP1": "Player1 (WASD)",
     "SnekM": "Matches: ",
     "SnekW": "Wins:",
