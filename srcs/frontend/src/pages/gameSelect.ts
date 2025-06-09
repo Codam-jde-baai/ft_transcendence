@@ -11,7 +11,7 @@ export enum GameType {
 
 let selectedGame: GameType = GameType.Pong;
 
-export function setupStartGame() {
+export function setupGameSelect() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";

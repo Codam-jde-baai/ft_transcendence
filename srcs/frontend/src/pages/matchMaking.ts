@@ -2,7 +2,7 @@ import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
-import { GameType } from './startPGame';
+import { GameType } from './gameSelect';
 
 let selectedGame;
 
