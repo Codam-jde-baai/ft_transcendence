@@ -62,7 +62,7 @@ async function httpGet(url: string, request: RequestInit): Promise<Response> {
 	try {
 		return await fetch(url, request);
 	} catch (error) {
-		console.error("HTTP Request Error:", error);
+		console.error("HTTPS Request Error:", error);
 		throw error;
 	}
 }

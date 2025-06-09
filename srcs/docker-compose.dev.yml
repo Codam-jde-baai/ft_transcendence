@@ -41,6 +41,7 @@ services:
       - /app/node_modules
       - sqlite_data:/app/data
       - cookie_data:/app/cookie-key
+      - ./frontend/certs:/app/certs
     environment:
       - NODE_ENV=development
     env_file:
