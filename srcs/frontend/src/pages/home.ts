@@ -1,4 +1,4 @@
-import { setupStartGame } from './startPGame';
+import { setupGameSelect } from './gameSelect';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
@@ -129,8 +129,8 @@ export function setupUserHome(refresh: boolean = false) {
 		setupNavigation();
 
 		document.getElementById('StartGame')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/startPGame');
-			setupStartGame();
+			window.history.pushState({}, '', '/gameSelect');
+			setupGameSelect();
 		});
 
 		document.getElementById('Snek')?.addEventListener('click', () => {

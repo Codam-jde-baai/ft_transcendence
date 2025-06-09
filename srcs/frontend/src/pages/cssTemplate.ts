@@ -16,9 +16,11 @@ export function setupCssTemplate() {
 				<button class="btnFullWidth secondary">
 					<span>Full width secondary button</span>
 				</button>
-				<button class="btnFullWidth secondary">
-					<span>Full width secondary button</span>
-				</button>
+				<label class="toggleSwitch">
+    				<input type="checkbox">
+    				<span class="toggle-option">Pong</span>
+    				<span class="toggle-option">Snek</span>
+				</label>
 				<div class="contentArea">
 					<h1 class="h1">This is the H1 font</h1>
 					<h2 class="h2">This is the H2 font</h2>

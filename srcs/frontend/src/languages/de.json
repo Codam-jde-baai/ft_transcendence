@@ -35,7 +35,10 @@
     "SignUp_Header": "Konto erstellen",
     "Setting_Header": "Einstellungen",
     "Admin_Header": "Benutzereinstellungen",
-    "Game_Header": "Wähle dein Pong Spiel",
+    "Game_Header": "Wähle Dein Spiel Varianten",
+    "QuickPlay": "Schnell spielen",
+    "Tournament": "Turnier spielen",
+    "MatchMaking": "Gegner finden",
     "Friends_Header": "Deine Freunde",
     "Request_Header": "Freundschaftsanfragen",
     "Blocked_Header": "Deaktivierter Benutzer",
@@ -70,6 +73,7 @@
     "English": "Englisch",
     "German": "Deutsch",
     "Dutch": "Niederländisch",
+    "Game": "Spiel",
 
     "Setting_Avatar": "Avatar bearbeiten",
     "Setting_Name": "Anmeldename bearbeiten",
@@ -117,6 +121,8 @@
     "WinRate": "Gewinnrate",
     "HighestScore_": "Höchste Punktzahl:",
     "WinRate_": "Gewinnrate:",
+
+    "goBack": "Zurück",
     
     "EndOfFile": ""
 }

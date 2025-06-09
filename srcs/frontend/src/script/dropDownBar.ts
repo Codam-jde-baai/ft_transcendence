@@ -118,5 +118,18 @@ export function dropDownBar(input: string[]) {
 
 			});
 		}
+		if (elem.id === "Game") {
+			// Close both dropdowns when clicking outside
+			elem.addEventListener("click", (event) => {
+				const gameDropdown = document.querySelector('.game-content');
+				const gameBtn = document.querySelector('.game-btn');
+
+				if (gameDropdown && gameBtn) {
+					// Toggle dropdown visibility when clicking the button
+					if (gameBtn.contains(event.target as Node)) 
+						gameDropdown.classList.toggle('showGame');
+				}
+			});
+		}
 	});
 }
