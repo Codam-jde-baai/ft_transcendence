@@ -12,12 +12,15 @@ services:
       - "5173:5173" 
     volumes:
       - /app/node_modules     # Ensures node_modules are not overwritten by the host, allowing container to manage dependencies
-      - frontend:certs/
+      - ./frontend/certs:/app/certs
     env_file:
       - ./.env
     environment:              # Add the .env variabes to the container enviroment as VITE_-variables
       - VITE_PRIVATE_KEY=${PRIVATE_KEY}
       - VITE_BACKEND_PORT=${BACKEND_PORT}
+      - SSL_CRT_FILE=/app/certs/localhost.pem
+      - SSL_KEY_FILE=/app/certs/localhost-key.pem
+      - HTTPS=true
     command: [ "pnpm", "run" ]
   backend:                    # backend written with Fastify and .ts/js          
     build:
@@ -33,6 +36,7 @@ services:
       - /app/node_modules
       - sqlite_data:/app/data
       - cookie_data:/app/cookie-key
+      - ./frontend/certs:/app/certs
     environment:
       - NODE_ENV=production
     env_file:
