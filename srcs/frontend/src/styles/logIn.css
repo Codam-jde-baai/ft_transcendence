@@ -82,7 +82,7 @@ p {
 
 /* Eye Icon for Password */
 .field-icon {
-	@apply cursor-pointer absolute top-[257px] right-[50px];
+	@apply cursor-pointer absolute top-[255px] right-[50px];
 }
 .field-icon img {
 	@apply w-[25px] h-[20px];

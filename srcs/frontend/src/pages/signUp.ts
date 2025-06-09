@@ -78,7 +78,6 @@ export function setupSignUp() {
 			window.location.href = './src/T&C/Terms&Conditions.pdf';
 			// Open in a new tab
 			// window.open('./src/T&C/Terms&Conditions.pdf', '_blank');
-
 		});
 
 		document.getElementById('Home')?.addEventListener('click', () => {

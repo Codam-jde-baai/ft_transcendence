@@ -100,7 +100,7 @@ p {
 	@apply w-[25px] h-[20px];
 }
 .field-iconn {
-	@apply cursor-pointer absolute top-[509px] right-[50px];
+	@apply cursor-pointer absolute top-[508px] right-[50px];
 }
 .field-iconn img {
 	@apply w-[25px] h-[20px];

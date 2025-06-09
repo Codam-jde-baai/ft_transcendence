@@ -97,9 +97,9 @@
 
     "SignUp_error_admin": "Admin-naam niet toegestaan",
     "SignUp_error_password": "Wachtwoorden komen niet overeen",
-    "SignUp_error_user": "Gebruikersnaam moet minimaal 3 tekens lang zijn",
-    "SignUp_error_alias": "Aliasnaam moet minimaal 3 tekens lang zijn",
-    "SignUp_error_userPass": "Wachtwoord moet minimaal 3 tekens lang zijn",
+    "SignUp_error_user": "Gebruikersnaam: 3-17 tekens",
+    "SignUp_error_alias": "Aliasnaam: 3-17 tekens",
+    "SignUp_error_userPass": "Wachtwoord: 6-117 tekens",
     "SignUp_error_user_exist": "Gebruikersnaam bezet. Probeer een andere!",
     "SignUp_error_alias_exist": "Alias bezet. Probeer een andere!",
     "Alphanumeric_error": "Geen alfanumerieke invoer!",
@@ -124,5 +124,24 @@
 
     "goBack": "Terug",
     
+    "SnekP1": "Speler1 (WASD)",
+    "SnekM": "Wedstrijden: ",
+    "SnekW": "Gewonnen:",
+    "SnekL": "Verloren: ",
+    "SnekWR": "Winstpercentage:",
+    "SnekAS": "Gem. Score: ",
+    "SnekHS": "Hoogste Score: ",
+    "SnekP2": "Speler2 (PIJLTJES)",
+    "SnekG": "Gast",
+    "SnekLO": "Inloggen",
+    "SnekLI": "Bevestigen",
+    "SnekC": "Wijzigen",
+    "SnekPlaceholder1": "Gastnaam",
+    "SnekLOut": "Uitloggen",
+    "SnekSG": "Start Spel",
+    "SnekNP": "Nieuwe Spelers",
+    "SnekR": "Revanche!",
+    "SnekGH": "Terug naar home",
+
     "EndOfFile": ""
 }

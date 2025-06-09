@@ -99,7 +99,7 @@
     "SignUp_error_password": "Passwords Don't Match",
     "SignUp_error_user": "Username must be minimum of 3 characters",
     "SignUp_error_alias": "Alias name must be minimum of 3 characters",
-    "SignUp_error_userPass": "Password must be minimum of 3 characters",
+    "SignUp_error_userPass": "Password must be minimum of 6 characters",
     "SignUp_error_user_exist": "Username taken. Try another!",
     "SignUp_error_alias_exist": "Alias taken. Try another!",
     "Alphanumeric_error": "Not alphanumeric input!",
@@ -124,5 +124,24 @@
 
     "goBack": "Go back",
     
+    "SnekP1": "Player1 (WASD)",
+    "SnekM": "Matches: ",
+    "SnekW": "Wins:",
+    "SnekL": "Losses: ",
+    "SnekWR": "Win Rate:",
+    "SnekAS": "Avg Score: ",
+    "SnekHS": "Highest Score: ",
+    "SnekP2" : "Player2 (ARROW)",
+    "SnekG" : "Guest",
+    "SnekLO" : "Login",
+    "SnekLI" : "Lock In",
+    "SnekC" : "Change",
+    "SnekPlaceholder1" : "Guest alias",
+    "SnekLOut" : "Logout",
+    "SnekSG" : "Start Game",
+    "SnekNP" : "New Players",
+    "SnekR" : "Rematch!",
+    "SnekGH" : "Go back to home",
+
     "EndOfFile": ""
 }
