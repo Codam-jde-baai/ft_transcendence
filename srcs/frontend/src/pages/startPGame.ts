@@ -11,10 +11,10 @@ import { dropDownBar } from '../script/dropDownBar.ts';
 import { fillTopbar } from '../script/fillTopbar.ts';
 import { setupNavigation } from '../script/menuNavigation.ts';
 
-interface PlayerStats {
+export interface PlayerStats {
 	alias: string;
-	win: number;
-	loss: number;
+	wins: number;
+	losses: number;
 	win_rate: number;
 }
 
@@ -105,7 +105,7 @@ export function Pong1v1() {
 							<p>Player1 (WASD)</p>
 							<p class="text-center">${playerStats.alias}</p>
 							<div class="bg-red-600 p-2 rounded">
-								<p>Wins: ${playerStats.win} | Losses: ${playerStats.loss}</p>
+								<p>Wins: ${playerStats.wins} | Losses: ${playerStats.losses}</p>
 								<p>Win Rate: ${(playerStats.win_rate)}%</p>
 							</div>
 						</div>
@@ -181,8 +181,8 @@ export function updatePongPlayerStatsDisplay(stats: PlayerStats) {
     const losses = document.getElementById('p2-losses');
     const winrate = document.getElementById('p2-winrate');
 
-    if (wins) wins.textContent = stats.win.toString();
-    if (losses) losses.textContent = stats.loss.toString();
+    if (wins) wins.textContent = stats.wins.toString();
+    if (losses) losses.textContent = stats.losses.toString();
     if (winrate) winrate.textContent = stats.win_rate.toString();
 }
 
