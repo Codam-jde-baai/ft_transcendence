@@ -1,11 +1,8 @@
-import { restartSnek, resetGame } from '../game/snek/main';
-import { Application } from 'pixi.js'
+import "../styles/snek.css"
+
 import { setupErrorPages } from './errorPages';
 import DOMPurify from 'dompurify';
 import { connectFunc, requestBody } from '../script/connections';
-
-import "../styles/snek.css"
-
 import { AuthState } from '../script/gameSetup'
 import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, newPlayersButton } from '../script/gameSetup'
 import { Pong, SceneOptions } from "./babylon.ts";
@@ -163,25 +160,18 @@ export function Pong1v1() {
 			</div>
 		`);
         }
-        // const container = document.getElementById('gameContainer') as HTMLElement;
-        // if (container) {
-            // preGameScreen(container).then((app: Application) => {
-				try {
-                setupGuestAliasLocking(authState);
-                FormToggleListener(authState);
-                setupLoginValidation(authState, "pong");
-                updateStartGameButton(authState);
-                newPlayersButton(authState);
-                startGameListeners();
-            } catch (error) {
-                console.error("Error setting up the game:", error);
-                window.history.pushState({}, '', '/errorPages');
-                setupErrorPages(500, "Error launching game");
-            };
-        // } else {
-        //     console.error("Game container not found");
-        //     return;
-        // }
+		try {
+			setupGuestAliasLocking(authState);
+			FormToggleListener(authState);
+			setupLoginValidation(authState, "pong");
+			updateStartGameButton(authState);
+			newPlayersButton(authState);
+			startGameListeners();
+		} catch (error) {
+			console.error("Error setting up the game:", error);
+			window.history.pushState({}, '', '/errorPages');
+			setupErrorPages(500, "Error launching game");
+		};
     });
 }
 
@@ -262,10 +252,8 @@ async function startGameListeners(): Promise<void> {
     const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
     const restartGameButton = document.getElementById('restartGame');
     const newGameButton = document.getElementById('newGame');
-    // const gameContainer = document.getElementById('gameContainer');
     const replayButtons = document.getElementById('replayButtons');
 
-    // if (!gameContainer || !startGameButton || !restartGameButton || !replayButtons) {
     if (!newGameButton || !startGameButton || !restartGameButton || !replayButtons) {
         console.error("One or more elements not found");
         return;
@@ -287,7 +275,6 @@ async function startGame() {
 				p2_uuid: authState.isAuthenticated ? authState.userUuid! : null,
 				status: 0
 			}
-            // const gameData: gameEndData = await startSnek(app, "player1", player2Name);
 			gamePayload = await startPong(gamePayload);
 			console.log("Game ended with data:", gamePayload);
 
@@ -323,89 +310,3 @@ async function startGame() {
     startGameButton.addEventListener('click', startGame)
     restartGameButton.addEventListener('click', startGame)
 }
-
-    // startGameButton.addEventListener('click', async () => {
-    //     // Start the game with the appropriate player names
-    //     startGameButton.disabled = true;
-    //     startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
-    //     startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-
-	// 	try {
-	// 		options.p2_alias = authState.isAuthenticated ? authState.userAlias : authState.guestAlias
-	// 		let gamePayload:GameEndPayload = {
-	// 			p1_alias: options.p1_alias!,
-	// 			p2_alias: options.p2_alias!,
-	// 			winner_alias: null,
-	// 			p1_uuid: null,
-	// 			p2_uuid: authState.isAuthenticated ? authState.userUuid! : null,
-	// 			status: 0
-	// 		}
-    //         // const gameData: gameEndData = await startSnek(app, "player1", player2Name);
-	// 		gamePayload = await startPong(gamePayload);
-	// 		console.log("Game ended with data:", gamePayload);
-
-	// 		// Add p1.uuid
-    //         // Record Game Results (Unless Played By 2 Guests Or Error Occurred)
-	// 		// if (gamePayload.status == -1 || !(gamePayload.p1_uuid || gamePayload.p2_uuid))
-	// 		if (gamePayload.status == -1)
-	// 			return; // TODO reset Pong
-    //         const recordSuccess = await recordGameResults(gamePayload);
-    //         if (recordSuccess) {
-    //             console.log("Game results recorded successfully");
-    //         } else {
-    //             console.warn("Failed to record game results");
-    //         }
-	// 		// Change4Tournament
-	// 		if (1) {
-	// 			const updatedStats = await fetchPongPlayerStats(gamePayload.p1_alias);
-    //             if (updatedStats) {
-    //                 updatePongPlayerStatsDisplay(updatedStats);
-    //             }
-	// 		}
-    //         // If player2 is authenticated, refresh their stats
-    //         if (authState.isAuthenticated) {
-    //             const updatedStats = await fetchPongPlayerStats(authState.userAlias);
-    //             if (updatedStats) {
-    //                 updatePongPlayerStatsDisplay(updatedStats);
-    //             }
-    //         }
-    //     } catch (error) {
-    //         console.error("Error during game:", error);
-    //     }
-
-    //     replayButtons.classList.remove('hidden');
-    //     replayButtons.classList.add('flex');
-    // });
-
-//     restartGameButton.addEventListener('click', async () => {
-//         // Get the player2 name based on authentication state
-//         const player2Name = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
-//         replayButtons.classList.remove('flex');
-//         replayButtons.classList.add('hidden');
-
-//         try {
-//             const gameData: gameEndData = await restartSnek(app, "player1", player2Name);
-//             console.log("Restarted Game results:", gameData);
-
-//             // Record game results
-//             const recordSuccess = await recordGameResults(gameData);
-//             if (recordSuccess) {
-//                 console.log("Game results recorded successfully");
-//             } else {
-//                 console.warn("Failed to record game results");
-//             }
-
-//             // If player2 is authenticated, refresh their stats
-//             if (authState.isAuthenticated) {
-//                 const updatedStats = await fetchPongPlayerStats(authState.userAlias);
-//                 if (updatedStats) {
-//                     updatePongPlayerStatsDisplay(updatedStats);
-//                 }
-//             }
-//         } catch (error) {
-//             console.error("Error during game restart:", error);
-//         }
-
-//         replayButtons.classList.remove('hidden');
-//         replayButtons.classList.add('flex');
-//     });
