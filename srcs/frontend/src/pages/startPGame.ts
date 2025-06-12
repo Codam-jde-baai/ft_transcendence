@@ -151,56 +151,37 @@ export function Pong1v1() {
 							</div>
 						</div>
 					</div>
+					<!-- Start/Post Game Buttons -->
 					<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startGame" disabled>Start Game</button>
+					<div class="hidden flex-row gap-4" id="replayButtons">
+						<button class="button-primary bg-blue-500 hover:bg-blue-700" id="newGame">New Players</button>
+						<button class="button-primary bg-pink-800 hover:bg-pink-600" id="restartGame">Rematch!</button>
+					</div>
 					<!-- Scroll Buffer -->
 					<button class="button-main py-10 pointer-events-none opacity-0" ></button>
 				</div>
 			</div>
-			<div class="flex flex-col gap-4 items-center bg-black bg-opacity-75 py-20 px-8 rounded">
-				<div id="gameContainer" class="mb-4"></div>
-				<div class="hidden flex-row gap-4" id="replayButtons">
-					<button class="button-primary bg-blue-500 hover:bg-blue-700" id="newGame">New Players</button>
-					<button class="button-primary bg-pink-800 hover:bg-pink-600" id="restartGame">Rematch!</button>
-				</div>
-			</div>
 		`);
         }
-        const container = document.getElementById('gameContainer') as HTMLElement;
-        if (container) {
+        // const container = document.getElementById('gameContainer') as HTMLElement;
+        // if (container) {
             // preGameScreen(container).then((app: Application) => {
 				try {
-				const app = null;
                 setupGuestAliasLocking(authState);
                 FormToggleListener(authState);
                 setupLoginValidation(authState, "pong");
                 updateStartGameButton(authState);
-                startGameListeners(app);
                 newPlayersButton(authState);
-				
-				const changeButton = document.getElementById("changeGuestAlias") as HTMLButtonElement;
-				if (changeButton)
-					changeButton.addEventListener('click', () => {
-						resetGame(app); // Pong Version Needed
-    				});
-				const logoutButton = document.getElementById('logoutButton');
-				if (logoutButton)
-					logoutButton.addEventListener('click', () => {
-						resetGame(app); // Pong Version Needed
-    				});
-				const newGameButton = document.getElementById('newGame');
-				if (newGameButton)
-					newGameButton.addEventListener('click', () => {
-        				resetGame(app); // Pong Version Needed
-    				});
+                startGameListeners();
             } catch (error) {
                 console.error("Error setting up the game:", error);
                 window.history.pushState({}, '', '/errorPages');
                 setupErrorPages(500, "Error launching game");
             };
-        } else {
-            console.error("Game container not found");
-            return;
-        }
+        // } else {
+        //     console.error("Game container not found");
+        //     return;
+        // }
     });
 }
 
@@ -242,7 +223,9 @@ async function startPong(gamePayload:GameEndPayload): Promise<GameEndPayload> {
 		if (!canvas)
 			throw new Error("Canvas element with id 'renderCanvas' not found.");
 		const game = new Pong(canvas, options);
+		canvas.style.display = "block";
 		const winner_id = await game.run();
+		canvas.style.display = "none";
 		gamePayload.status = winner_id
 		gamePayload.winner_alias = winner_id === 1 ? gamePayload.p1_alias : gamePayload.p2_alias
 	} catch (error) {
@@ -275,19 +258,21 @@ async function recordGameResults(gamePayload: GameEndPayload): Promise<boolean> 
 }
 
 // starts the listeners for the game button (for Snek)
-async function startGameListeners(app: Application): Promise<void> {
+async function startGameListeners(): Promise<void> {
     const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
     const restartGameButton = document.getElementById('restartGame');
-    const gameContainer = document.getElementById('gameContainer');
+    const newGameButton = document.getElementById('newGame');
+    // const gameContainer = document.getElementById('gameContainer');
     const replayButtons = document.getElementById('replayButtons');
 
-    if (!gameContainer || !startGameButton || !restartGameButton || !replayButtons) {
+    // if (!gameContainer || !startGameButton || !restartGameButton || !replayButtons) {
+    if (!newGameButton || !startGameButton || !restartGameButton || !replayButtons) {
         console.error("One or more elements not found");
         return;
     }
 
-    startGameButton.addEventListener('click', async () => {
-        // Start the game with the appropriate player names
+async function startGame() {
+	// Start the game with the appropriate player names
         startGameButton.disabled = true;
         startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
         startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
@@ -311,12 +296,7 @@ async function startGameListeners(app: Application): Promise<void> {
 			// if (gamePayload.status == -1 || !(gamePayload.p1_uuid || gamePayload.p2_uuid))
 			if (gamePayload.status == -1)
 				return; // TODO reset Pong
-            const recordSuccess = await recordGameResults(gamePayload);
-            if (recordSuccess) {
-                console.log("Game results recorded successfully");
-            } else {
-                console.warn("Failed to record game results");
-            }
+            await recordGameResults(gamePayload);
 			// Change4Tournament
 			if (1) {
 				const updatedStats = await fetchPongPlayerStats(gamePayload.p1_alias);
@@ -334,10 +314,68 @@ async function startGameListeners(app: Application): Promise<void> {
         } catch (error) {
             console.error("Error during game:", error);
         }
+		if (replayButtons) {
+        	replayButtons.classList.remove('hidden');
+        	replayButtons.classList.add('flex');
+		}
+    };
 
-        replayButtons.classList.remove('hidden');
-        replayButtons.classList.add('flex');
-    });
+    startGameButton.addEventListener('click', startGame)
+    restartGameButton.addEventListener('click', startGame)
+}
+
+    // startGameButton.addEventListener('click', async () => {
+    //     // Start the game with the appropriate player names
+    //     startGameButton.disabled = true;
+    //     startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+    //     startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+
+	// 	try {
+	// 		options.p2_alias = authState.isAuthenticated ? authState.userAlias : authState.guestAlias
+	// 		let gamePayload:GameEndPayload = {
+	// 			p1_alias: options.p1_alias!,
+	// 			p2_alias: options.p2_alias!,
+	// 			winner_alias: null,
+	// 			p1_uuid: null,
+	// 			p2_uuid: authState.isAuthenticated ? authState.userUuid! : null,
+	// 			status: 0
+	// 		}
+    //         // const gameData: gameEndData = await startSnek(app, "player1", player2Name);
+	// 		gamePayload = await startPong(gamePayload);
+	// 		console.log("Game ended with data:", gamePayload);
+
+	// 		// Add p1.uuid
+    //         // Record Game Results (Unless Played By 2 Guests Or Error Occurred)
+	// 		// if (gamePayload.status == -1 || !(gamePayload.p1_uuid || gamePayload.p2_uuid))
+	// 		if (gamePayload.status == -1)
+	// 			return; // TODO reset Pong
+    //         const recordSuccess = await recordGameResults(gamePayload);
+    //         if (recordSuccess) {
+    //             console.log("Game results recorded successfully");
+    //         } else {
+    //             console.warn("Failed to record game results");
+    //         }
+	// 		// Change4Tournament
+	// 		if (1) {
+	// 			const updatedStats = await fetchPongPlayerStats(gamePayload.p1_alias);
+    //             if (updatedStats) {
+    //                 updatePongPlayerStatsDisplay(updatedStats);
+    //             }
+	// 		}
+    //         // If player2 is authenticated, refresh their stats
+    //         if (authState.isAuthenticated) {
+    //             const updatedStats = await fetchPongPlayerStats(authState.userAlias);
+    //             if (updatedStats) {
+    //                 updatePongPlayerStatsDisplay(updatedStats);
+    //             }
+    //         }
+    //     } catch (error) {
+    //         console.error("Error during game:", error);
+    //     }
+
+    //     replayButtons.classList.remove('hidden');
+    //     replayButtons.classList.add('flex');
+    // });
 
 //     restartGameButton.addEventListener('click', async () => {
 //         // Get the player2 name based on authentication state
@@ -371,4 +409,3 @@ async function startGameListeners(app: Application): Promise<void> {
 //         replayButtons.classList.remove('hidden');
 //         replayButtons.classList.add('flex');
 //     });
-}
