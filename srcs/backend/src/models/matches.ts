@@ -13,3 +13,10 @@ export type createMatch = InferInsertModel<typeof matchesTable> & {
 	winner_alias: string;
 	status: number;
 };
+
+export interface PlayerStats {
+	alias: string;
+	wins: number;
+	losses: number;
+	win_rate: number;
+}
