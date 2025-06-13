@@ -12,9 +12,9 @@ import matchesRoutes from './routes/matches.ts';
 import adminRoutes from './routes/admin.ts';
 import snekRoutes from './routes/snek.ts';
 import socketRoutes from './routes/websocket.ts';
-import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
 import { cleanupConnections } from './controllers/websocket/userStatus.ts';
+import fs from 'fs';
 
 const fastify = Fastify({
 	logger: true,
@@ -25,11 +25,15 @@ const fastify = Fastify({
 			coerceTypes: true,
 			allErrors: true
 		}
-	}
+	},
+	https: {
+		key: fs.readFileSync('/app/certs/localhost-key.pem'),
+		cert: fs.readFileSync('/app/certs/localhost.pem'),
+  },
 })
 
 fastify.register(fastifyCors, {
-	origin: 'http://localhost:5173',
+	origin: 'https://localhost:5173',
 	methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
 	credentials: true,
 	allowedHeaders: ['Content-Type', 'x-api-key', 'Origin'],
@@ -116,21 +120,31 @@ fastify.register(adminRoutes);
 fastify.register(snekRoutes);
 fastify.register(socketRoutes);
 
+// const start = async () => {
+// 	try {
+// 		const address = fastify.listen({ port: envConfig.port, host: '0.0.0.0' }, function (err, address) {
+// 			if (err) {
+// 				fastify.log.error(err);
+// 				process.exit(1);
+// 			}
+// 			fastify.log.info(`server listening on ${address}`);
+// 		})
+// 		fastify.log.info(`server listening on ${address}`);
+// 	} catch (error) {
+// 		fastify.log.error(error);
+// 		process.exit(1);
+// 	}
+// }
+
 const start = async () => {
 	try {
-		const address = fastify.listen({ port: envConfig.port, host: '0.0.0.0' }, function (err, address) {
-			if (err) {
-				fastify.log.error(err);
-				process.exit(1);
-			}
-			fastify.log.info(`server listening on ${address}`);
-		})
-		fastify.log.info(`server listening on ${address}`);
-	} catch (error) {
-		fastify.log.error(error);
+		await fastify.listen({ port: 3000, host: '0.0.0.0' });
+		fastify.log.info(`Server running at https://localhost:3000`);
+	} catch (err) {
+		fastify.log.error(err);
 		process.exit(1);
 	}
-}
+};
 
 start()
 
