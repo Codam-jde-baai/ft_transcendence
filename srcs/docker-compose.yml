@@ -21,7 +21,9 @@ services:
       - SSL_CRT_FILE=/app/certs/localhost.pem
       - SSL_KEY_FILE=/app/certs/localhost-key.pem
       - HTTPS=true
-    command: [ "pnpm", "run" ]
+    command: [ "pnpm", "run", "dev" ]
+    networks:
+      - transcendence
   backend:                    # backend written with Fastify and .ts/js          
     build:
       context: ./backend

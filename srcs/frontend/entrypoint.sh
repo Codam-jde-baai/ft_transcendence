@@ -4,8 +4,11 @@ echo "Starting entrypoint..."
 set -e
 
 CERT_PATH=/app/certs
+
+# Comment this out:
+# If ther permission here don't work
 mkdir -p $CERT_PATH
-chmod 700 $CERT_PATH
+chmod 777 $CERT_PATH
 
 # Create certs if they don't exist
 if [ ! -f "$CERT_PATH/localhost.pem" ] || [ ! -s "$CERT_PATH/localhost.pem" ]; then
