@@ -124,7 +124,13 @@ export function setupGuestAliasLocking(authState:AuthState) {
 		console.error("Guest alias input or buttons not found");
 		return;
 	}
-
+	Object.assign(authState, {
+		isAuthenticated: false,
+		isGuestLocked: false,
+		guestAlias: "",
+		userAlias: ""
+	})
+	delete authState.userUuid
 	lockInButton.addEventListener('click', () => {
 		const rawInput = guestInputField.value.trim();
 		const sanitizedInput = rawInput.replace(/[^a-zA-Z0-9]/g, '');
