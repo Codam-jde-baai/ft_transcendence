@@ -12,6 +12,7 @@ import { fillTopbar } from '../script/fillTopbar.ts';
 import { setupNavigation } from '../script/menuNavigation.ts';
 
 export interface PlayerStats {
+	uuid: string,
 	alias: string;
 	wins: number;
 	losses: number;
@@ -33,6 +34,13 @@ const authState: AuthState = {
 	guestAlias: "",
 	userAlias: ""
 };
+
+interface P1 {
+	uuid: string,
+}
+const p1:P1 = {
+	uuid: ""
+}
 
 const options: SceneOptions = {
 }
@@ -74,7 +82,7 @@ export function setupStartGame() {
 }
 
 export function Pong1v1() {
-    const userDataPromise = connectFunc("/user", requestBody("GET", null, "application/json"))
+    const userDataPromise = connectFunc("/matches/record/", requestBody("GET", null, "application/json"))
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -90,9 +98,9 @@ export function Pong1v1() {
             setupErrorPages(500, "Error fetching player stats");
             return;
         });
-
     userDataPromise.then((playerStats: PlayerStats) => {
 		options.p1_alias = playerStats.alias;
+p1.uuid = playerStats.uuid
 		const page = document.getElementById("middle");
         if (page) {
             page.innerHTML = "";
@@ -105,8 +113,8 @@ export function Pong1v1() {
 							<p>Player1 (WASD)</p>
 							<p class="text-center">${playerStats.alias}</p>
 							<div class="bg-red-600 p-2 rounded">
-								<p>Wins: ${playerStats.wins} | Losses: ${playerStats.losses}</p>
-								<p>Win Rate: ${(playerStats.win_rate)}%</p>
+								<p>Wins: <span id="p1-wins">0</span> | Losses: <span id="p1-losses">0</span></p>
+								<p>Win Rate: <span id="p1-winrate">0.0</span>%</p>
 							</div>
 						</div>
 						<div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
@@ -161,6 +169,7 @@ export function Pong1v1() {
 		`);
         }
 		try {
+			updatePongPlayerStatsDisplay("p1", playerStats)
 			setupGuestAliasLocking(authState);
 			FormToggleListener(authState);
 			setupLoginValidation(authState, "pong");
@@ -175,23 +184,23 @@ export function Pong1v1() {
     });
 }
 
-// Function to update player2 stats display (for Pong) // Also needed for p1 for tournament
-export function updatePongPlayerStatsDisplay(stats: PlayerStats) {
-    const wins = document.getElementById('p2-wins');
-    const losses = document.getElementById('p2-losses');
-    const winrate = document.getElementById('p2-winrate');
+// Function to update player stats display (for Pong)
+export function updatePongPlayerStatsDisplay(display:string, stats: PlayerStats) {
+    const wins = document.getElementById(`${display}-wins`);
+    const losses = document.getElementById(`${display}-losses`);
+    const winrate = document.getElementById(`${display}-winrate`);
 
     if (wins) wins.textContent = stats.wins.toString();
     if (losses) losses.textContent = stats.losses.toString();
-    if (winrate) winrate.textContent = stats.win_rate.toString();
+    if (winrate) winrate.textContent = stats.win_rate.toFixed(2).toString();
 }
 
-// Function to fetch player2 stats (for Pong) // Also needed for p1 for tournament
+// Function to fetch player stats (for Pong)
 export async function fetchPongPlayerStats(alias: string): Promise<PlayerStats | null> {
     try {
         const sanitizedAlias = DOMPurify.sanitize(alias);
         const response = await connectFunc(
-            `/useralias/${encodeURIComponent(sanitizedAlias)}`,
+            `/matches/record/${encodeURIComponent(sanitizedAlias)}`,
             requestBody("GET", null, "application/json")
         );
 
@@ -225,7 +234,7 @@ async function startPong(gamePayload:GameEndPayload): Promise<GameEndPayload> {
 	return (gamePayload);
 }
 
-// Record game results (for Snek)
+// Record game results (for Pong)
 async function recordGameResults(gamePayload: GameEndPayload): Promise<boolean> {
     try {
         console.log("Submitting game results:", gamePayload);
@@ -247,7 +256,7 @@ async function recordGameResults(gamePayload: GameEndPayload): Promise<boolean> 
     }
 }
 
-// starts the listeners for the game button (for Snek)
+// starts the listeners for the game button (for Pong)
 async function startGameListeners(): Promise<void> {
     const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
     const restartGameButton = document.getElementById('restartGame');
@@ -260,11 +269,9 @@ async function startGameListeners(): Promise<void> {
     }
 
 async function startGame() {
-	// Start the game with the appropriate player names
         startGameButton.disabled = true;
         startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
         startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-
 		try {
 			options.p2_alias = authState.isAuthenticated ? authState.userAlias : authState.guestAlias
 			let gamePayload:GameEndPayload = {
@@ -272,30 +279,29 @@ async function startGame() {
 				p2_alias: options.p2_alias!,
 				winner_alias: null,
 				p1_uuid: null,
-				p2_uuid: authState.isAuthenticated ? authState.userUuid! : null,
+				p2_uuid: null,
 				status: 0
 			}
+			if (p1.uuid)
+				gamePayload.p1_uuid = p1.uuid
+			if (authState.isAuthenticated)
+				gamePayload.p2_uuid = authState.userUuid!
 			gamePayload = await startPong(gamePayload);
-			console.log("Game ended with data:", gamePayload);
-
-			// Add p1.uuid
             // Record Game Results (Unless Played By 2 Guests Or Error Occurred)
-			// if (gamePayload.status == -1 || !(gamePayload.p1_uuid || gamePayload.p2_uuid))
-			if (gamePayload.status == -1)
-				return; // TODO reset Pong
+			if (gamePayload.status === -1 || !(gamePayload.p1_uuid || gamePayload.p2_uuid))
+				return;
             await recordGameResults(gamePayload);
 			// Change4Tournament
-			if (1) {
-				const updatedStats = await fetchPongPlayerStats(gamePayload.p1_alias);
+			{	const updatedStats = await fetchPongPlayerStats(gamePayload.p1_alias);
                 if (updatedStats) {
-                    updatePongPlayerStatsDisplay(updatedStats);
+                    updatePongPlayerStatsDisplay("p1", updatedStats);
                 }
 			}
-            // If player2 is authenticated, refresh their stats
+            // If Player2 Is A User, Refresh Their Stats
             if (authState.isAuthenticated) {
                 const updatedStats = await fetchPongPlayerStats(authState.userAlias);
                 if (updatedStats) {
-                    updatePongPlayerStatsDisplay(updatedStats);
+                    updatePongPlayerStatsDisplay("p2", updatedStats);
                 }
             }
         } catch (error) {

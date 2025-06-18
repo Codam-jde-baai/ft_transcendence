@@ -196,7 +196,7 @@ export function setupLoginValidation(authState:AuthState, game:string) {
                 if (game === "pong") {
 					const player2Stats = await fetchPongPlayerStats(userData.alias);
 					if (player2Stats)
-						updatePongPlayerStatsDisplay(player2Stats);
+						updatePongPlayerStatsDisplay("p2", player2Stats);
 				} else {
 					const player2Stats = await fetchSnekPlayer2Stats(userData.alias);
 					if (player2Stats)
