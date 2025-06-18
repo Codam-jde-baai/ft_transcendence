@@ -43,7 +43,7 @@ export const getAllRecords = async (request: FastifyRequest, reply: FastifyReply
 			let win_rate = 0;
 			if (wins + losses > 0)
 				win_rate = 100 * wins / (wins + losses);
-			records.push({alias, wins, losses, win_rate})
+			records.push({uuid, alias, wins, losses, win_rate})
 		}
 		return reply.status(200).send(records);
 	}
@@ -56,17 +56,22 @@ export const getAllRecords = async (request: FastifyRequest, reply: FastifyReply
 	}
 }
 
-export const getRecordByAlias = async (request: FastifyRequest<{ Params: { alias: string } }>, reply: FastifyReply) => {
+export const getRecord = async (request: FastifyRequest<{ Params: { alias?: string } }>, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		const alias = request.params.alias
+		let alias:string;
+		if (request.params.alias)	
+			alias = request.params.alias
+		else
+			alias = request.session.alias!
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
 		const user = await db.select().from(usersTable).where(eq(usersTable.alias, alias)).limit(1);
 		if (user.length !== 1)
-			return reply.status(404).send("getRecordByAlias Error: User Not Found");
-		const uuid = user[0].uuid
+			return reply.status(404).send("getRecord Error: User Not Found");
+		const uuid:string = user[0].uuid
 		const stats:PlayerStats = {
+			uuid: uuid,
 			alias: alias,
 			wins: 0,
 			losses: 0,
@@ -76,41 +81,20 @@ export const getRecordByAlias = async (request: FastifyRequest<{ Params: { alias
 		if (Matches.length === 0) {
 			return reply.status(200).send(stats);
 		}
-    	stats.wins = Matches.filter((match) => match.status === (uuid === match.p1_uuid ? 1 : 2)).length;
+		stats.wins = Matches.filter((match) => match.status === (uuid === match.p1_uuid ? 1 : 2)).length;
     	stats.losses = Matches.filter((match) => match.status === (uuid === match.p1_uuid ? 2 : 1)).length;
 		if (stats.wins + stats.losses > 0)
 			stats.win_rate = 100 * stats.wins / (stats.wins + stats.losses);
 		return reply.status(200).send(stats);
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'getRecordByAlias Error';
+		const errorMessage = error instanceof Error ? error.message : 'getRecord Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {
 		if (sqlite) sqlite.close();
 	}
 }
-
-// export const getTotalScore = async (request: FastifyRequest, reply: FastifyReply) => {
-// 	let sqlite = null;
-// 	try {
-// 		sqlite = new Database('./data/data.db', { verbose: console.log })
-// 		const db = drizzle(sqlite);
-// 		const Scores = await db.select({ match_duration: matchesTable.match_duration }).from(matchesTable)
-// 		if (Scores.length === 0) {
-// 			return reply.status(200).send({ score: 0 })
-// 		}
-// 		const score: number = Scores.reduce((sum: number, current) => sum + current.match_duration!, 0)
-// 		return reply.status(200).send({ score: score });
-// 	}
-// 	catch (error) {
-// 		const errorMessage = error instanceof Error ? error.message : 'getTotalScore Error';
-// 		return reply.status(500).send({ error: errorMessage })
-// 	}
-// 	finally {
-// 		if (sqlite) sqlite.close();
-// 	}
-// }
 
 export const getMatchesByUser = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;

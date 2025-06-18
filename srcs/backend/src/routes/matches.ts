@@ -3,11 +3,10 @@ import { authenticatePrivateToken } from './authentication.ts';
 import {
 	addMatch,
 	getAllMatches,
-	// getTotalScore,
 	getMatchesByUser,
 	getMatchesByAlias,
 	getMatchesByPair,
-	getRecordByAlias,
+	getRecord,
 	getAllRecords,
 } from '../controllers/matches/matches.ts';
 import { createMatch } from '../models/matches.ts';
@@ -15,6 +14,7 @@ import { errorResponseSchema } from './userdocs.ts';
 import { PlayerStats } from '../models/matches.ts';
 
 const statProperties = {
+	uuid: { type: 'string' },
 	alias: { type: 'string' },
 	wins: { type: 'number' },
 	losses: { type: 'number' },
@@ -56,25 +56,6 @@ const getMatchesOptions = {
 		}
 	}
 };
-
-// const getTotalScoreOptions = {
-// 	schema: {
-// 		security: [{ apiKey: [] }],
-// 		tags: ['matches'],
-// 		response: {
-// 			200: {
-// 				type: 'object',
-// 				properties: {
-// 					score: { type: 'number' }
-// 				}
-// 			},
-// 			402: errorResponseSchema,
-// 			403: errorResponseSchema,
-// 			404: errorResponseSchema,
-// 			500: errorResponseSchema
-// 		}
-// 	}
-// };
 
 const addMatchReqs = [
 	'p1_alias',
@@ -146,7 +127,7 @@ const getAllRecordsOptions = {
 	}
 };
 
-const getRecordByAliasOptions = {
+const getRecordOptions = {
 	schema: {
 		security: [{ apiKey: [] }],
 		tags: ['matches'],
@@ -233,7 +214,7 @@ function matchesRoutes(fastify: FastifyInstance, options: any, done: () => void)
 	fastify.get<{ Params: { alias: string } }>
 		('/matches/:alias', { preHandler: [authenticatePrivateToken], ...getAliasMatchesOptions}, getMatchesByAlias);
 	fastify.get<{ Params: { alias: string } }>
-		('/matches/record/:alias', { preHandler: [authenticatePrivateToken], ...getRecordByAliasOptions}, getRecordByAlias);
+		('/matches/record/:alias', { preHandler: [authenticatePrivateToken], ...getRecordOptions}, getRecord);
 	fastify.get<{ Params: { p1_alias: string, p2_alias: string } }>
 		('/matches/:p1_alias/:p2_alias', { preHandler: [authenticatePrivateToken], ...getPairMatchesOptions}, getMatchesByPair);
 
