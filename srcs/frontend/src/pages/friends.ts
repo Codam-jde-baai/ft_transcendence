@@ -81,6 +81,7 @@ export function setupFriends() {
 				root.innerHTML = "";
 				root.insertAdjacentHTML("beforeend", /*html*/`
 			<link rel="stylesheet" href="src/styles/friends.css">
+			<link rel="stylesheet" href="src/styles/history.css"> <!-- Link to the CSS file -->
 			<div class="overlay"></div>
 			<dropdown-menu></dropdown-menu>
 			
@@ -94,6 +95,9 @@ export function setupFriends() {
 								</button>
 								<input type="search" id="friendSearch" class="userSearch" data-i18n-placeholder="Friends_placeholder1">
 							</form>
+							<button type="button" id="refreshButton" class="search-btn">
+								<img class="searchIcon" src="src/Pictures/refresh.png"/>
+							</button>
 						</div>
 
 						<div class="search-results" id="searchResults"></div>
@@ -134,6 +138,16 @@ export function setupFriends() {
 				setupNavigation();
 				setupSearchFunctionality();
 				setupUserActionListeners();
+
+				// Add this block to refresh both friends and pending lists
+				const refreshBtn = document.getElementById('refreshButton');
+				if (refreshBtn) {
+					refreshBtn.addEventListener('click', () => {
+						refreshContainer('friends-container');
+						refreshContainer('pending-container');
+						refreshNonFriends();
+					});
+				}
 			}
 		})
 }

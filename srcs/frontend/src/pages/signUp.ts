@@ -7,6 +7,7 @@ import { checkFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
 import { sendPicture } from '../script/sendPic';
+import { websocketManager } from '../script/socket/socketClass';
 
 export function setupSignUp() {
 	const root = document.getElementById('app');
@@ -66,14 +67,17 @@ export function setupSignUp() {
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		eyeIcon_Button(["show-password", "show-password_confirm", "avatar"]);
-		
+
 		document.getElementById('LogIn')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/logIn');
 			setupLogIn();
-		});	
+		});
 
 		document.getElementById('T&C')?.addEventListener('click', () => {
-			console.log("Terms and Conditions clicked");
+			// Open in current tab
+			window.location.href = './src/T&C/Terms&Conditions.pdf';
+			// Open in a new tab
+			// window.open('./src/T&C/Terms&Conditions.pdf', '_blank');
 		});
 
 		document.getElementById('Home')?.addEventListener('click', () => {
@@ -84,40 +88,36 @@ export function setupSignUp() {
 			const body = requestBody("POST", inputToContent(["username", "alias", "password"]), "application/json")
 			connectFunc("/user/new", body)
 				.then((response) => {
-				if (response.ok) {
-					response.json().then(() => {
-
-						// Add Profile Pic
-						sendPicture();
-
-						window.history.pushState({}, '', '/home');
-						setupUserHome(true);
-					});
-
-				} else {
-					response.json().then((data) => {
-						if (data.error === "UNIQUE constraint failed: users_table.username")
-						{	
-							// Username already exist in database
-							const elem = document.getElementById("username") as HTMLInputElement
-							const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
-							errorDisplay(elem, errorMsg, "SignUp_error_user_exist");
-						} 
-						else if (data.error === "UNIQUE constraint failed: users_table.alias")
-						{
-							// Alias already exist in database
-							const elem = document.getElementById("alias") as HTMLInputElement
-							const errorMsg = document.getElementById("alias-name") as HTMLParagraphElement;
-							errorDisplay(elem, errorMsg, "SignUp_error_alias_exist");
-						}
-						else {
-							// Network or server error
-							window.history.pushState({}, '', '/errorPages');
-							setupErrorPages(response.status,  response.statusText);
-						}
-					})
-				}
-			})
+					if (response.ok) {
+						response.json().then(async () => {
+							sendPicture();
+							await new Promise(resolve => setTimeout(resolve, 200));
+							websocketManager.connect().catch(console.error);
+							window.history.pushState({}, '', '/home');
+							setupUserHome(true);
+						});
+					} else {
+						response.json().then((data) => {
+							if (data.error === "UNIQUE constraint failed: users_table.username") {
+								// Username already exist in database
+								const elem = document.getElementById("username") as HTMLInputElement
+								const errorMsg = document.getElementById("login-name") as HTMLParagraphElement;
+								errorDisplay(elem, errorMsg, "SignUp_error_user_exist");
+							}
+							else if (data.error === "UNIQUE constraint failed: users_table.alias") {
+								// Alias already exist in database
+								const elem = document.getElementById("alias") as HTMLInputElement
+								const errorMsg = document.getElementById("alias-name") as HTMLParagraphElement;
+								errorDisplay(elem, errorMsg, "SignUp_error_alias_exist");
+							}
+							else {
+								// Network or server error
+								window.history.pushState({}, '', '/errorPages');
+								setupErrorPages(response.status, response.statusText);
+							}
+						})
+					}
+				})
 		});
 	}
 }

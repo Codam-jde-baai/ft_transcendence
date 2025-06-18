@@ -6,6 +6,7 @@
  * - 'process.env' does NOT work in Vite because it runs in the browser.
  */
 const envConfig = {
+    backendURL: 'localhost:' + String(import.meta.env.VITE_BACKEND_PORT),
     privateKey: import.meta.env.VITE_PRIVATE_KEY,
 };
 

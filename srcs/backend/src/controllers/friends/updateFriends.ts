@@ -5,6 +5,8 @@ import { eq, or, and } from 'drizzle-orm';
 import Database from 'better-sqlite3';
 //files
 import { friendsTable, friendStatus } from '../../db/schema.ts'
+import { sendMessageToUser } from '../websocket/userStatus.ts';
+import { createNotificationMessage } from '../websocket/messageTypes.ts';
 
 export const AcceptFriendReq = async (request: FastifyRequest<{ Params: { friendId: string } }>, reply: FastifyReply) => {
 	let sqlite = null;
@@ -15,6 +17,7 @@ export const AcceptFriendReq = async (request: FastifyRequest<{ Params: { friend
 			return reply.status(400).send({ error: "id is not a number" })
 		}
 		const uuid = request.session.get('uuid') as string;
+		const accepterAlias = request.session.get('alias') as string;
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite)
 
@@ -30,10 +33,11 @@ export const AcceptFriendReq = async (request: FastifyRequest<{ Params: { friend
 		const result = await db.update(friendsTable)
 			.set({ status: friendStatus.ACCEPTED })
 			.where(eq(friendsTable.id, id))
-			.execute();
-		if (result.changes === 0) {
+			.returning();
+		if (result.length === 0) {
 			return reply.status(400).send({ error: 'could not update friends table' })
 		}
+		sendMessageToUser(result[0].reqUUid, createNotificationMessage(accepterAlias, "accepted your friend request"));
 		return reply.status(200).send()
 
 	} catch (error) {

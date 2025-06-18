@@ -1,0 +1,209 @@
+:root {
+	--color-btn-bg: #8a3f6c;
+	--color-primary: #8a3f6c;
+	--color-btn-hover-bg: #b86a8a;
+	--color-secondary: #cb3f03;
+	--color-secondary-hover: #ff4d00;
+	--color-btn-accept-bg: #4CAF50;
+	--color-btn-decline-bg: #fc1f1f;
+	--color-bg: rgba(0,0,0,0.8);
+	--color-box-border: #902063;
+	--color-text: #fff;
+}
+
+.middle {
+    @apply flex flex-col overflow-auto py-6 space-y-1 text-center;
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    margin-top: 120px;
+}
+
+@media (min-width: 1320px) {
+	.middle {
+	  margin-left: 220px;
+	  margin-right: 220px;
+	  width: calc(100% - 440px);
+	  position: relative;
+	}
+  }
+
+/** * content area
+* optionally add a min height to fill up the screen vertically 
+*/
+.contentArea {
+	@apply w-full h-full flex flex-col p-6 space-y-4 items-center justify-items-stretch rounded-lg;
+	background-color: var(--color-bg);
+}
+
+.itemsCenter {
+	@apply flex flex-row gap-2 items-center;
+}
+
+
+/* content box - used for content inside the content area */
+
+.split-1-3 {
+	@apply flex w-full;
+}
+.split-1-3 > *:first-child {
+	width: 25%;
+}
+.split-1-3 > *:last-child {
+	width: 75%;
+}
+
+.split-1-1 {
+	@apply flex w-full;
+}
+.split-1-1 > * {
+	width: 50%;
+}
+
+.split-2-1 {
+	@apply flex w-full;
+}
+.split-2-1 > *:first-child {
+	width: 66.666667%;
+}
+.split-2-1 > *:last-child {
+	width: 33.333333%;
+}
+
+.contentBox {
+	@apply w-full p-3 flex flex-col space-y-2 rounded-lg;
+	background-color: var(--color-bg);
+	border: 2px solid var(--color-box-border);
+}
+
+.contentBox.row {
+	@apply flex-row h-full p-3 space-x-2 rounded-lg;
+}
+
+
+/* buttons */
+
+.btnFullWidth {
+	@apply w-full p-3 border-none rounded-md;
+	background-color: var(--color-btn-bg);
+	color: var(--color-text);
+	cursor: pointer;
+}
+.btnFullWidth:hover {
+	background-color: var(--color-btn-hover-bg);
+}
+
+.btnFullWidth.secondary {
+    @apply w-full p-3 border-none rounded-md;
+    background-color: var(--color-secondary); /* <-- Use the secondary color */
+    color: var(--color-text);
+    cursor: pointer;
+}
+.btnFullWidth.secondary:hover {
+    background-color: var(--color-secondary-hover); /* <-- Use the secondary hover color */
+}
+
+/**
+ * default button - currently using c in front of class so it doesnt conflict. once applied everywhere remove c
+ * grows with size
+ */
+.cbtn {
+	@apply p-3 border-none rounded-md;
+	background-color: var(--color-btn-bg);
+	color: var(--color-text);
+	cursor: pointer;
+}
+.cbtn:hover {
+	background-color: var(--color-btn-hover-bg);
+}
+
+.cbtn.accept {
+	background-color: var(--color-btn-accept-bg);
+}
+
+.cbtn.decline {
+	background-color: var(--color-btn-decline-bg);
+}
+
+.cbtn:hover {
+	background-color: var(--color-btn-hover-bg);
+}
+
+.cbtn.secondary {
+	background-color: var(--color-secondary);
+}
+.cbtn.secondary:hover {
+	background-color: var(--color-secondary-hover);
+}
+
+.small-btn {
+	@apply px-4 py-2 rounded-md font-semibold cursor-pointer border-none;
+	background-color: var(--color-btn-bg);
+	color: var(--color-text);
+}
+.small-btn:hover {
+	background-color: var(--color-btn-hover-bg);
+}
+
+/* fonts */
+.p1 {
+	@apply text-base font-normal leading-relaxed text-white;
+}
+.p2 {
+	@apply text-sm font-normal leading-relaxed text-white;
+}
+.p3 {
+	@apply text-xs font-normal leading-relaxed text-white;
+}
+.h1 {
+	@apply mb-5 w-full text-center pt-5 font-bold text-[55px] font-sans text-[#dcdbdb] drop-shadow-[5px_5px_7px_#902063];
+}
+.h2 {
+	@apply text-2xl font-semibold leading-snug text-white;
+}
+.h3 {
+	@apply text-xl font-medium leading-snug text-white;
+}
+
+
+/* input fields */
+.alias-input {
+    @apply px-3 py-2 rounded-md border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-purple-400;
+    min-width: 180px;
+    background-color: #f5f5f5;
+}
+
+/* toggle switch */
+
+
+.toggleSwitch {
+    @apply inline-flex items-center p-2 rounded-md cursor-pointer;
+    color: var(--color-text);
+}
+
+.toggleSwitch input[type="checkbox"] {
+    @apply hidden;
+}
+
+.toggleSwitch .toggle-option {
+    @apply px-4 py-2;
+    width: 160px;
+    text-align: center;
+}
+
+.toggleSwitch .toggle-option:first-of-type {
+    @apply rounded-l-md;
+    background-color: var(--color-primary);
+}
+
+.toggleSwitch .toggle-option:last-of-type {
+    @apply rounded-r-md;
+    background-color: #2b2f36;
+}
+
+.toggleSwitch input[type="checkbox"]:checked ~ .toggle-option:first-of-type {
+    background-color: #2b2f36;
+}
+
+.toggleSwitch input[type="checkbox"]:checked ~ .toggle-option:last-of-type {
+    background-color: var(--color-primary);
+}

@@ -70,7 +70,7 @@
     @apply w-[700px] p-2.5 mb-4 rounded text-[15px] font-sans ml-[43px] relative;
 }
 .search-container {
-    @apply w-full items-center w-fit fixed left-[240px] top-[230px];
+    @apply w-full items-center fixed left-[240px] top-[230px];
 }
 .search-btn {
     @apply bg-white border-none cursor-pointer flex items-center justify-center absolute rounded h-[40px] w-[40px];

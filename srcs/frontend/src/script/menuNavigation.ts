@@ -3,6 +3,7 @@ import { setupUserHome } from '../pages/home';
 import { setupSetting } from '../pages/setting';
 import { setupFriends } from '../pages/friends';
 import { setupMatchHistory } from '../pages/history';
+import { setupGameSelect } from '../pages/gameSelect';
 
 
 export function setupNavigation() {
@@ -14,14 +15,12 @@ export function setupNavigation() {
 		{ id: 'Friends', path: '/friends', action: setupFriends },
 		{ id: 'History', path: '/history', action: setupMatchHistory },
 		{ id: 'LogOut', path: '/index', action: setupLogOut },
+		{ id: 'Game', path: '/gameSelect', action: setupGameSelect }
 	];
 
 	document.getElementById('TC')?.addEventListener('click', () => {
 		// Open in a new tab
 		window.open('./src/T&C/Terms&Conditions.pdf', '_blank');
-
-		// // Open in a new tab
-		// window.location.href = './src/T&C/Terms&Conditions.pdf';
 	});
 
 	navItems.forEach(({ id, path, action }) => {

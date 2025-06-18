@@ -4,14 +4,17 @@ import swaggerUi from '@fastify/swagger-ui';
 import multipart from '@fastify/multipart';
 import fastifyCors from '@fastify/cors'
 import secureSession from '@fastify/secure-session';
+import rateLimit from '@fastify/rate-limit';
+import websocketPlugin from '@fastify/websocket';
 import userRoutes from './routes/users.ts';
 import friendsRoutes from './routes/friends.ts';
 import matchesRoutes from './routes/matches.ts';
 import adminRoutes from './routes/admin.ts';
 import snekRoutes from './routes/snek.ts';
+import socketRoutes from './routes/websocket.ts';
 import envConfig from './config/env.ts';
 import sessionKey from './config/session-key.ts';
-import rateLimit from '@fastify/rate-limit';
+import { cleanupConnections } from './controllers/websocket/userStatus.ts';
 
 const fastify = Fastify({
 	logger: true,
@@ -100,12 +103,18 @@ fastify.register(swaggerUi, {
 	routePrefix: '/docs'
 });
 
+fastify.register(websocketPlugin, {
+	options: {
+		maxPayload: 1048576
+	}
+});
 
 fastify.register(userRoutes);
 fastify.register(friendsRoutes);
 fastify.register(matchesRoutes);
 fastify.register(adminRoutes);
 fastify.register(snekRoutes);
+fastify.register(socketRoutes);
 
 const start = async () => {
 	try {
@@ -124,3 +133,17 @@ const start = async () => {
 }
 
 start()
+
+process.on('SIGTERM', async () => {
+	console.log('SIGTERM received, shutting down gracefully');
+	cleanupConnections();
+	await fastify.close();
+	process.exit(0);
+});
+
+process.on('SIGINT', async () => {
+	console.log('SIGINT received, shutting down gracefully');
+	cleanupConnections();
+	await fastify.close();
+	process.exit(0);
+});

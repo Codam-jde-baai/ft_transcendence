@@ -33,6 +33,7 @@ class DropdownMenu extends HTMLElement {
 						</div>
 					</div>
 					<div class="dropdown-item ${currentPage === '/home' || currentPage === '/snek' ? 'currentPage' : ''}" id="Home" data-i18n="Home" onclick="window.location.pathname = (window.location.pathname === '/snek' ? '/snek' : '/home')"></div>
+					<div class="dropdown-item ${currentPage === '/gameSelect' ? 'currentPage' : ''}" id="Game" data-i18n="Game" onclick="window.location.pathname = '/gameSelect'"></div>
 					<div class="dropdown-item ${currentPage === '/setting' ? 'currentPage' : ''}" id="Settings" data-i18n="Settings"></div>
 					<div class="dropdown-item ${currentPage === '/friends' ? 'currentPage' : ''}" id="Friends" data-i18n="Friends"></div>
 					<div class="dropdown-item ${currentPage === '/history' || currentPage === '/snekHistory' ? 'currentPage' : ''}" id="History" data-i18n="History" onclick="window.location.pathname = (window.location.pathname === '/snekHistory' ? '/snekHistory' : '/history')"></div>
@@ -41,6 +42,14 @@ class DropdownMenu extends HTMLElement {
 				</div>
 			</div>
 			<div class="topBarFrame">
+				<div class="notification-area">
+					<div class="notification-field">
+						<span id="notification-alias" class="notification-alias"></span>
+					</div>
+					<div class="notification-field">
+						<span id="notification-message" class="notification-message"></span>
+					</div>
+				</div>
 				<div class="aliasName" id="aliasName"></div>
 				<div class="profile-picture">
 					<img id="profile-picture" src="src/Pictures/defaultPP.png" alt="Profile Picture">
@@ -51,4 +60,3 @@ class DropdownMenu extends HTMLElement {
 }
 
 customElements.define('dropdown-menu', DropdownMenu);
-
