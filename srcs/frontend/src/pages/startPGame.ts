@@ -1,7 +1,6 @@
 import "../styles/snek.css"
 
 import { setupErrorPages } from './errorPages';
-import DOMPurify from 'dompurify';
 import { connectFunc, requestBody } from '../script/connections';
 import { AuthState } from '../script/gameSetup'
 import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, newPlayersButton } from '../script/gameSetup'
@@ -198,9 +197,8 @@ export function updatePongPlayerStatsDisplay(display:string, stats: PlayerStats)
 // Function to fetch player stats (for Pong)
 export async function fetchPongPlayerStats(alias: string): Promise<PlayerStats | null> {
     try {
-        const sanitizedAlias = DOMPurify.sanitize(alias);
         const response = await connectFunc(
-            `/matches/record/${encodeURIComponent(sanitizedAlias)}`,
+            `/matches/record/${encodeURIComponent(alias)}`,
             requestBody("GET", null, "application/json")
         );
 
