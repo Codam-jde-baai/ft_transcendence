@@ -45,7 +45,7 @@ const p1:P1 = {
 const options: SceneOptions = {
 }
 
-export function setupStartGame() {
+export function setupPong() {
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
