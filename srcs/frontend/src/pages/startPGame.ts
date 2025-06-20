@@ -36,11 +36,6 @@ function createAuthState(): AuthState {
 	};
 }
 
-const authStates: Record<string, AuthState> = {};
-
-const options: SceneOptions = {
-}
-
 export function setupPong() {
 	const root = document.getElementById('app');
 	if (root) {
@@ -75,7 +70,7 @@ export function setupPong() {
 		});
 		const btnTournament = document.getElementById("btn_Tournament");
 		btnTournament?.addEventListener("click", () => {
-			PongGame(3); // To Be Modified With A UserInput Number
+			PongGame(5); // To Be Modified With A UserInput Number
 		});
 	}
 }
@@ -200,6 +195,7 @@ export function PongGame(playerCount:number) {
             return;
         });
     userDataPromise.then((playerStats: PlayerStats) => {
+		const authStates: AuthState[] = []
 		authStates[0] = createAuthState()
 		authStates[0].isAuthenticated = true
 		authStates[0].userAlias = playerStats.alias
@@ -266,7 +262,8 @@ export function PongGame(playerCount:number) {
 			html += /*html*/ `
 					</div>
 					<!-- Start/Post Game Buttons -->
-					<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startGame" disabled>Start Game</button>
+					<button class="button-main bg-gray-500 cursor-not-allowed opacity-50 hidden" id="startGame" disabled>Start Game</button>
+					<button class="button-main bg-gray-500 cursor-not-allowed opacity-50 hidden" id="startTournament" disabled>Start Game</button>
 					<div class="hidden flex-row gap-4" id="replayButtons">
 						<!-- <button class="button-primary bg-blue-500 hover:bg-blue-700" id="newGame">New Players</button> -->
 						<button class="button-primary bg-pink-800 hover:bg-pink-600" id="restartGame">Rematch!</button>
@@ -279,6 +276,13 @@ export function PongGame(playerCount:number) {
         	page.insertAdjacentHTML("beforeend", html);
         }
 		try {
+			if (playerCount === 2) {
+    			const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
+				startGameButton.classList.remove('hidden')
+			} else {
+				const startTournamentButton = document.getElementById('startTournament') as HTMLButtonElement;
+				startTournamentButton.classList.remove('hidden')
+			}
 			updatePongPlayerStatsDisplay("p1", playerStats);
 			for (let playerNum:number = 2; playerNum <= playerCount; playerNum++) {
 				const playerId:string = `p${playerNum}`;
@@ -287,9 +291,24 @@ export function PongGame(playerCount:number) {
 				FormToggleListener(authStates[playerNum -1], playerId);
 				setupLoginValidation(authStates[playerNum -1], "pong", playerId);
 				updateStartGameButton(authStates[playerNum -1], playerId);
+				seedPlayerListener(authStates[playerNum -1], playerId);
 				// newPlayersButton(authStates[playerNum -1]);
 			}
-			startGameListeners(1, 2);
+			if (playerCount === 2)
+				startGameListeners(authStates, 1, 2);
+			else {
+				const startTournamentButton = document.getElementById("startTournament") as HTMLButtonElement;
+				if (startTournamentButton) {
+					startTournamentButton.addEventListener("click", () => {
+						startTournamentButton.disabled = true;
+        				startTournamentButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+        				startTournamentButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+						startTournament(authStates, playerCount);
+					});
+				} else {
+					console.error("startTournament Button Not Found");
+				}
+			}
 		} catch (error) {
 			console.error("Error setting up the game:", error);
 			window.history.pushState({}, '', '/errorPages');
@@ -329,7 +348,7 @@ export async function fetchPongPlayerStats(alias: string): Promise<PlayerStats |
     }
 }
 
-async function startPong(gamePayload:GameEndPayload): Promise<GameEndPayload> {
+async function startPong(gamePayload:GameEndPayload, options:SceneOptions): Promise<GameEndPayload> {
 	const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
 	try {
 		if (!canvas)
@@ -370,7 +389,7 @@ async function recordGameResults(gamePayload: GameEndPayload): Promise<boolean> 
 }
 
 // starts the listeners for the game button (for Pong)
-async function startGameListeners(player1Number:number, player2Number:number): Promise<void> {
+async function startGameListeners(authStates:AuthState[], player1Number:number, player2Number:number, winnerStates?:AuthState[]): Promise<void> {
     const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
     const restartGameButton = document.getElementById('restartGame');
     const replayButtons = document.getElementById('replayButtons');
@@ -385,6 +404,7 @@ async function startGame() {
         startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
         startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 		try {
+			const options:SceneOptions = {}
 			options.p1_alias = authStates[player1Number -1].isAuthenticated ? authStates[player1Number -1].userAlias : authStates[player1Number -1].guestAlias
 			options.p2_alias = authStates[player2Number -1].isAuthenticated ? authStates[player2Number -1].userAlias : authStates[player2Number -1].guestAlias
 			let gamePayload:GameEndPayload = {
@@ -399,8 +419,19 @@ async function startGame() {
 				gamePayload.p1_uuid = authStates[player1Number -1].userUuid!
 			if (authStates[player2Number -1].isAuthenticated)
 				gamePayload.p2_uuid = authStates[player2Number -1].userUuid!
-			gamePayload = await startPong(gamePayload);
-            // Record Game Results (Unless Played By 2 Guests Or Error Occurred)
+			gamePayload = await startPong(gamePayload, options);
+            // In Case Of Tournament, Update The Array Of Winners
+			if (winnerStates)
+			{
+				const matchIndex = player1Number //Because Seeding --> Player 1 Index === Matches Index
+				if (gamePayload.status === 1 || gamePayload.status === 2)
+					winnerStates[matchIndex -1] = gamePayload.status === 1 ? authStates[player1Number -1] : authStates[player2Number -1]
+				else {
+					console.log("Error During The Tournament, No Winner")
+					// Some Proper Handling
+				}
+			}
+			// Record Game Results (Unless Played By 2 Guests Or Error Occurred)
 			if (gamePayload.status !== -1 && (gamePayload.p1_uuid || gamePayload.p2_uuid)) {
 				await recordGameResults(gamePayload);
 				// If Player Is A User, Refresh Their Stats
@@ -420,7 +451,10 @@ async function startGame() {
         } catch (error) {
             console.error("Error during game:", error);
         }
-		if (replayButtons) {
+		if (winnerStates) {
+
+		}
+		else if (replayButtons) {
         	replayButtons.classList.remove('hidden');
         	replayButtons.classList.add('flex');
 		}
@@ -428,4 +462,45 @@ async function startGame() {
 
     startGameButton.addEventListener('click', startGame)
     restartGameButton.addEventListener('click', startGame)
+}
+
+async function startTournament(authStates:AuthState[], playerCount:number) {
+	try {
+		let playerStates:AuthState[] = authStates
+		for (let playerNum:number = 1; playerNum <= playerCount; playerNum++) {
+			const seedInput = document.getElementById(`p${playerNum}-seed`) as HTMLInputElement;
+			if (seedInput)
+				playerStates[playerNum -1].seed = Number(seedInput.value)
+			else {
+				console.log("Error Seeding The Tournament")
+				// Some Proper Handling
+			}
+		}
+		playerStates.sort((a:AuthState, b:AuthState) => a.seed! - b.seed!)
+		while (playerStates && playerStates.length !== 1)
+			playerStates = await startTournamentRound(playerStates, playerStates.length)
+		// Some kind of tournament end shit
+	} catch (error) {
+		console.error("Error Setting Up The Tournament:", error);
+			// Some Proper Handling
+
+	}
+}
+async function startTournamentRound(playerStates:AuthState[], playerCount:number) : Promise<AuthState[]> {
+	try {
+		const winnerStates:AuthState[] = []
+		let matchIndex:number = 1
+		if (playerCount % 2) {
+			await startGameListeners(playerStates, playerCount - 1, playerCount, playerStates)
+			playerCount--;
+		}
+		while (matchIndex !== playerCount - matchIndex) {
+			await startGameListeners(playerStates, matchIndex, playerCount +1 - matchIndex, winnerStates)
+		}
+		return (winnerStates)
+	} catch (error) {
+		console.error("Error Setting Up The Tournament:", error);
+		// Some Proper Handling
+	}
+	return [];
 }
