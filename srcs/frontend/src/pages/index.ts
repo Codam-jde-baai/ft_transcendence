@@ -8,6 +8,7 @@ import { setupMatchHistory } from './history';
 import { setupGameSelect } from './gameSelect';
 import { setupSnekMatchHistory } from './snekHistory';
 import { setupSnek } from './snek';
+import { setupPong } from './startPGame';
 import { setupAdmin } from './admin';
 import { setupAdminUserSetting } from './adminUserSetting';
 import { setupErrorPages } from './errorPages';
@@ -61,6 +62,7 @@ export function renderPage() {
 		'/admin': setupAdmin,
 		'/adminUserSetting': () => setupAdminUserSetting(),
 		'/startSGame': setupStartSGame,
+		'/startPGame': setupPong,
 		'/adminLogin': setupAdminLogIn,
 		'/viewData': setupViewData,
 		'/cssTemplate': setupCssTemplate
