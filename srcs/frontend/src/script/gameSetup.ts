@@ -9,6 +9,7 @@ export interface AuthState {
 	guestAlias: string;
 	userAlias: string;
 	userUuid?: string; // Added UUID for authenticated users
+	seed?: number;
 }
 
 export interface UserData {
