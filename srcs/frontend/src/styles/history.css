@@ -61,7 +61,7 @@
 
 /* Game Button - Full Width */
 .game-btn-full {
-	@apply fixed left-[220px] top-[130px] bg-[#902063] w-[75%] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
+	@apply fixed left-[220px] top-[130px] bg-[#902063] w-[75%] p-2 transition duration-1000 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
 }
 
 .game-btn-full:hover {
@@ -69,12 +69,12 @@
 }
 
 .game-btn-full img {
-	@apply w-[25px] h-[25px] ml-2;
+	@apply w-[25px] h-[25px] ml-2 transition duration-1000;
 }
 
 /* My History Button */
 .my-history-btn {
-	@apply fixed left-[220px] top-[180px] bg-[#902063] w-[75%] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
+	@apply fixed left-[220px] top-[180px] bg-[#902063] w-[75%] p-2 text-white transition duration-1000 cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
 }
 
 .my-history-btn:hover {
@@ -99,7 +99,7 @@
 }
 
 .find-btn {
-	@apply bg-[#902063] px-6 py-2.5 text-white cursor-pointer text-[15px] font-sans border-none rounded;
+	@apply bg-[#902063] px-6 py-2.5 text-white cursor-pointer text-[15px] font-sans border-none rounded transition duration-1000;
 }
 
 .find-btn:hover {
@@ -113,7 +113,7 @@
 
 /* Old game button (keeping for compatibility) */
 .game-btn {
-	@apply absolute left-[230px] top-[153px] bg-[#902063] w-[16vh] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
+	@apply absolute left-[230px] top-[153px] bg-[#902063] w-[16vh] p-2 transition duration-1000 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
 }
 
 .game-btn:hover {
@@ -121,5 +121,5 @@
 }
 
 .game-btn img {
-	@apply w-[25px] h-[25px];
+	@apply w-[25px] h-[25px] transition duration-1000;
 }

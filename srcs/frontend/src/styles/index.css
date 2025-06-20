@@ -33,18 +33,18 @@ p {
 	@apply flex flex-col justify-center items-center;
 }
 .btn {
-	@apply w-[400px] py-3 text-lg text-white bg-[#902063] rounded-[7px] cursor-pointer mt-5 transition-all box-border font-sans;
+	@apply w-[400px] py-3 text-lg text-white bg-[#902063] rounded-[7px] cursor-pointer mt-5 transition duration-1000 box-border font-sans;
 }
 .btn:hover {
 	@apply bg-[#b86a8a];
 }
 .btn-container {
-	@apply fixed flex items-center justify-end top-5 right-5 z-10;
+	@apply fixed flex items-center justify-end top-5 right-5 z-10 transition duration-1000;
 }
 
 /* Language Button */
 .language-btn {
-	@apply bg-[#902063] w-[220px] py-3 pr-3 cursor-pointer rounded-lg text-white border border-gray-300 text-center text-lg font-sans;
+	@apply bg-[#902063] w-[220px] py-3 pr-3 cursor-pointer rounded-lg text-white border border-gray-300 text-center text-lg font-sans transition duration-1000;
 }
 .language-btn:hover {
 	@apply bg-[#b86a8a];
@@ -68,5 +68,5 @@ p {
 	@apply py-2 cursor-pointer text-white text-center text-lg font-sans;
 }
 .language-btn img {
-	@apply w-[25px] h-[15px] ml-40 mt-[-20px];
+	@apply w-[25px] h-[15px] ml-40 mt-[-20px] transition duration-1000;
 }

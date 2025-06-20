@@ -44,7 +44,7 @@
 }
 
 .statusProfile {
-    @apply flex flex-row items-center justify-items-start relative
+    @apply flex flex-row items-center justify-items-start relative;
 }
 
 .profile-content {
@@ -53,16 +53,16 @@
 
 /* Buttons */
 .btn {
-    @apply w-[200px] px-3 py-2 rounded cursor-pointer text-[14px] ml-1 bg-[#8a3f6c] text-white;
+    @apply w-[200px] px-3 py-2 rounded cursor-pointer text-[14px] ml-1 bg-[#8a3f6c] text-white transition duration-1000;
 }
 .btn.accept {
-    @apply bg-[#4CAF50];
+    @apply bg-[#4CAF50] transition duration-1000;
 }
 .btn.decline {
-    @apply bg-[#f44336];
+    @apply bg-[#f44336] transition duration-1000;
 }
 .btn:hover {
-    @apply bg-[#b86a8a];
+    @apply bg-[#b86a8a] transition duration-1000;
 }
 
 /* Search Bar Styling */

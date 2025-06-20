@@ -33,10 +33,10 @@ p {
 
 /* Button styling */
 .buttons {
-	@apply flex gap-2 justify-center;
+	@apply flex gap-2 justify-center transition duration-1000;
 }
 .btn {
-	@apply mb-2.5 w-[400px] py-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-[5px] cursor-pointer mt-2.5 transition duration-300 box-border font-sans;
+	@apply mb-2.5 w-[400px] py-3 text-[1.1rem] text-white transition duration-1000 bg-[#902063] border-none rounded-[5px] cursor-pointer mt-2.5 transition duration-1000 box-border font-sans;
 }
 .btn:hover {
 	@apply bg-[#b86a8a];

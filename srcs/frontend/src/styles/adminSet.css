@@ -43,10 +43,10 @@
 
 /* Button styling */
 .ubuttons {
-	@apply flex gap-2 justify-center;
+	@apply flex gap-2 justify-center transition duration-1000;
 }
 .ubtn {
-	@apply w-full py-3 text-lg text-white bg-[#902063] rounded cursor-pointer mt-2 transition duration-300 font-sans;
+	@apply w-full py-3 text-lg text-white bg-[#902063] rounded cursor-pointer mt-2 transition duration-1000 font-sans;
 }
 .ubtn:hover {
 	@apply bg-[#b86a8a];

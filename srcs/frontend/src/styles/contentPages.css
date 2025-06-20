@@ -111,6 +111,7 @@
 	background-color: var(--color-btn-bg);
 	color: var(--color-text);
 	cursor: pointer;
+	transition: background-color 0.3s;
 }
 .cbtn:hover {
 	background-color: var(--color-btn-hover-bg);
@@ -118,10 +119,12 @@
 
 .cbtn.accept {
 	background-color: var(--color-btn-accept-bg);
+	transition: background-color 0.3s;
 }
 
 .cbtn.decline {
 	background-color: var(--color-btn-decline-bg);
+	transition: background-color 0.3s;
 }
 
 .cbtn:hover {
@@ -130,6 +133,7 @@
 
 .cbtn.secondary {
 	background-color: var(--color-secondary);
+	
 }
 .cbtn.secondary:hover {
 	background-color: var(--color-secondary-hover);

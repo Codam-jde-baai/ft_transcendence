@@ -45,7 +45,7 @@
 }
 
 .button-main {
-      @apply w-96 py-3 text-lg text-white bg-pink-800 border-none rounded-md cursor-pointer mt-5 transition duration-300 box-border font-sans;
+      @apply w-96 py-3 text-lg text-white bg-pink-800 border-none rounded-md cursor-pointer mt-5 transition duration-1000 box-border font-sans;
 }
 .button-main:hover {
       @apply bg-pink-400;
