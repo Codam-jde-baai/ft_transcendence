@@ -44,7 +44,9 @@ services:
     env_file:
       - ./.env
     entrypoint: [ "/app/docker-entrypoint/generateDb.sh" ]
-    command: [ "pnpm", "run" ]
+    command: [ "pnpm", "run", "dev" ]
+    networks:
+      - transcendence
 
 networks:
   transcendence:
