@@ -29,8 +29,9 @@ export const usersTable = sqliteTable("users_table", {
 });
 
 export enum matchStatus {
-	COMPLETED = 0,
-	INTERRUPTED = 1
+	INTERRUPTED = 0,
+	P1_WINNER = 1,
+	P2_WINNER = 2,
 }
 
 export enum eWinner {
@@ -41,16 +42,13 @@ export enum eWinner {
 
 export const matchesTable = sqliteTable("matches", {
 	id: int("id").primaryKey({ autoIncrement: true }),
+	p1_uuid: text("p1_uuid", { length: 264 }).references(() => usersTable.uuid, { onDelete: "set null" }),
+	p2_uuid: text("p2_uuid", { length: 264 }).references(() => usersTable.uuid, { onDelete: "set null" }),
 	p1_alias: text("p1_alias", { length: 264 }).notNull(),
 	p2_alias: text("p2_alias", { length: 264 }).notNull(),
 	winner_alias: text("winner_alias", { length: 264 }),
-	p1_uuid: text("p1_uuid", { length: 264 }).references(() => usersTable.uuid, { onDelete: "set null" }),
-	p2_uuid: text("p2_uuid", { length: 264 }).references(() => usersTable.uuid, { onDelete: "set null" }),
 	status: int("status").$type<matchStatus>().notNull(),
-	winner_id: int("winner").$type<eWinner>().default(eWinner.NOWINNER),
-	start_time: text("start_time", { length: 264 }).default(sql`(current_timestamp)`),
-	end_time: text("end_time", { length: 264 }).default(sql`(current_timestamp)`),
-	match_duration: int("match_duration").default(0)
+	date: text("date", { length: 264 }).default(sql`(date('now'))`)
 });
 
 export enum friendStatus {

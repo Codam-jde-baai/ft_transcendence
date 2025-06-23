@@ -18,6 +18,8 @@
 	},
 	"dependencies": {
 		"@tailwindcss/vite": "^4.1.8",
+		"@babylonjs/core": "8.10.0",
+		"@babylonjs/gui": "8.10.0",
 		"i18next": "^24.2.3",
 		"dompurify": "^2.5.8",
 		"pixi.js": "^8.9.1"

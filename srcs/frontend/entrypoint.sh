@@ -5,8 +5,6 @@ set -e
 
 CERT_PATH=/app/certs
 
-# Comment this out:
-# If ther permission here don't work
 mkdir -p $CERT_PATH
 chmod 777 $CERT_PATH
 

@@ -5,7 +5,9 @@ import { or, eq, and } from 'drizzle-orm';
 import Database from 'better-sqlite3';
 // files
 import { matchesTable } from '../../db/schema.ts'
+import { usersTable } from '../../db/schema.ts'
 import { match, createMatch } from '../../models/matches.ts'
+import { PlayerStats } from '../../models/matches.ts';
 
 export const getAllMatches = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
@@ -24,20 +26,69 @@ export const getAllMatches = async (request: FastifyRequest, reply: FastifyReply
 	}
 }
 
-export const getTotalScore = async (request: FastifyRequest, reply: FastifyReply) => {
+export const getAllRecords = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
 		sqlite = new Database('./data/data.db', { verbose: console.log })
 		const db = drizzle(sqlite);
-		const Scores = await db.select({ match_duration: matchesTable.match_duration }).from(matchesTable)
-		if (Scores.length === 0) {
-			return reply.status(200).send({ score: 0 })
+		const users = await db.select().from(usersTable)
+		const records:PlayerStats[] = []
+		
+		for (const user of users) {
+			const uuid = user.uuid
+			const alias = user.alias
+			const Matches = await db.select().from(matchesTable).where(or(eq(matchesTable.p1_uuid, uuid), eq(matchesTable.p2_uuid, uuid)))
+			const wins = Matches.filter((match) => match.status === (uuid === match.p1_uuid ? 1 : 2)).length;
+    		const losses = Matches.filter((match) => match.status === (uuid === match.p1_uuid ? 2 : 1)).length;
+			let win_rate = 0;
+			if (wins + losses > 0)
+				win_rate = 100 * wins / (wins + losses);
+			records.push({uuid, alias, wins, losses, win_rate})
 		}
-		const score: number = Scores.reduce((sum: number, current) => sum + current.match_duration!, 0)
-		return reply.status(200).send({ score: score });
+		return reply.status(200).send(records);
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'getTotalScore Error';
+		const errorMessage = error instanceof Error ? error.message : 'getAllRecords Error';
+		return reply.status(500).send({ error: errorMessage })
+	}
+	finally {
+		if (sqlite) sqlite.close();
+	}
+}
+
+export const getRecord = async (request: FastifyRequest<{ Params: { alias?: string } }>, reply: FastifyReply) => {
+	let sqlite = null;
+	try {
+		let alias:string;
+		if (request.params.alias)	
+			alias = request.params.alias
+		else
+			alias = request.session.alias!
+		sqlite = new Database('./data/data.db', { verbose: console.log })
+		const db = drizzle(sqlite);
+		const user = await db.select().from(usersTable).where(eq(usersTable.alias, alias)).limit(1);
+		if (user.length !== 1)
+			return reply.status(404).send("getRecord Error: User Not Found");
+		const uuid:string = user[0].uuid
+		const stats:PlayerStats = {
+			uuid: uuid,
+			alias: alias,
+			wins: 0,
+			losses: 0,
+			win_rate: 0
+		}
+		const Matches = await db.select().from(matchesTable).where(or(eq(matchesTable.p1_uuid, uuid), eq(matchesTable.p2_uuid, uuid)))
+		if (Matches.length === 0) {
+			return reply.status(200).send(stats);
+		}
+		stats.wins = Matches.filter((match) => match.status === (uuid === match.p1_uuid ? 1 : 2)).length;
+    	stats.losses = Matches.filter((match) => match.status === (uuid === match.p1_uuid ? 2 : 1)).length;
+		if (stats.wins + stats.losses > 0)
+			stats.win_rate = 100 * stats.wins / (stats.wins + stats.losses);
+		return reply.status(200).send(stats);
+	}
+	catch (error) {
+		const errorMessage = error instanceof Error ? error.message : 'getRecord Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {
@@ -58,7 +109,7 @@ export const getMatchesByUser = async (request: FastifyRequest, reply: FastifyRe
 		return reply.status(200).send(Matches);
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'GetMatchesByUser Error';
+		const errorMessage = error instanceof Error ? error.message : 'getMatchesByUser Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {
@@ -79,7 +130,7 @@ export const getMatchesByAlias = async (request: FastifyRequest<{ Params: { alia
 		return reply.status(200).send(Matches);
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'GetMatchesByAlias Error';
+		const errorMessage = error instanceof Error ? error.message : 'getMatchesByAlias Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {
@@ -102,7 +153,7 @@ export const getMatchesByPair = async (request: FastifyRequest<{ Params: { p1_al
 		return reply.status(200).send(Matches);
 	}
 	catch (error) {
-		const errorMessage = error instanceof Error ? error.message : 'GetMatchesByPair Error';
+		const errorMessage = error instanceof Error ? error.message : 'getMatchesByPair Error';
 		return reply.status(500).send({ error: errorMessage })
 	}
 	finally {
@@ -122,10 +173,6 @@ export const addMatch = async (request: FastifyRequest<{ Body: createMatch }>,
 			p1_uuid: body.p1_uuid,
 			p2_uuid: body.p2_uuid,
 			status: body.status,
-			winner_id: body.winner_id,
-			start_time: body.start_time,
-			end_time: body.end_time,
-			match_duration: body.match_duration
 		};
 		sqlite = new Database('./data/data.db', { verbose: console.log });
 		const db = drizzle(sqlite);

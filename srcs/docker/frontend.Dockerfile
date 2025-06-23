@@ -10,10 +10,6 @@ RUN npm install -g pnpm
 
 COPY . .
 
-# # Create certs folder
-# RUN mkdir -p certs
-# RUN chmod 777 certs
-
 # Install dependencies
 RUN pnpm install --force
 RUN pnpm install tailwindcss @tailwindcss/vite
