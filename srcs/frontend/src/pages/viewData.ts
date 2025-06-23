@@ -24,7 +24,7 @@ export function setupViewData() {
 					<input class="bg-gray-300 w-full p-2 mb-2 rounded" type="password" id="password">
 				</form>
 				<div class="buttons mt-[-10px]">
-					<button class="mb-2.5 w-[364px] py-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-[5px] cursor-pointer mt-2.5 transition duration-300 box-border font-sans" id="PWSave" data-i18n="btn_Save"></button>
+					<button class="mb-2.5 w-[364px] py-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-[5px] cursor-pointer mt-2.5 transition duration-300 box-border font-sans" id="PWSave" data-i18n="btn_Conf"></button>
 				</div>
 			</div>
 		</div>
