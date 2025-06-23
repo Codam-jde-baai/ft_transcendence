@@ -120,22 +120,6 @@ fastify.register(adminRoutes);
 fastify.register(snekRoutes);
 fastify.register(socketRoutes);
 
-// const start = async () => {
-// 	try {
-// 		const address = fastify.listen({ port: envConfig.port, host: '0.0.0.0' }, function (err, address) {
-// 			if (err) {
-// 				fastify.log.error(err);
-// 				process.exit(1);
-// 			}
-// 			fastify.log.info(`server listening on ${address}`);
-// 		})
-// 		fastify.log.info(`server listening on ${address}`);
-// 	} catch (error) {
-// 		fastify.log.error(error);
-// 		process.exit(1);
-// 	}
-// }
-
 const start = async () => {
 	try {
 		await fastify.listen({ port: 3000, host: '0.0.0.0' });

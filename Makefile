@@ -63,8 +63,6 @@ clean-db:
 
 clean:
 	$(DOCKER_COMPOSE_DEV) down
-	rm -rf srcs/frontend/certs
-	rm -rf srcs/backend/certs
 	docker system prune -af
 
 # Installation commands
