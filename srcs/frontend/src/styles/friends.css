@@ -7,7 +7,8 @@
 
 /* All for the Middle */
 .fmiddle {
-    @apply min-h-fit fixed top-[200px] left-[220px] rounded-[15px] w-[75%] h-[70%] z-[1];
+    @apply min-h-fit fixed top-[200px] rounded-[15px] w-[85%] h-[70%] z-[1] space-y-4 items-center justify-items-stretch;
+    transform: translateX(-40%)
 }
 
 /* Headers */
@@ -17,7 +18,7 @@
 
 /* Wrapper */
 .big-wrapper {
-    @apply max-h-[115%] overflow-y-auto;
+    @apply max-w-[80%] max-h-[115%] overflow-y-auto;
 }
 .friends-list-wrapper {
     @apply w-full max-h-[220px] overflow-y-auto rounded-[15px] border-[3px] border-[#902063];
@@ -67,13 +68,15 @@
 
 /* Search Bar Styling */
 .userSearch {
-    @apply w-[700px] p-2.5 mb-4 rounded text-[15px] font-sans ml-[43px] relative;
+    @apply min-h-fit w-[700px] p-2.5 mb-4 rounded text-[15px] font-sans ml-[43px] relative;
 }
 .search-container {
-    @apply w-full items-center fixed left-[240px] top-[230px];
+    @apply w-full left-[240px] top-[230px];
 }
+
 .search-btn {
     @apply bg-white border-none cursor-pointer flex items-center justify-center absolute rounded h-[40px] w-[40px];
+    /* transform: translateX(-40%) */
 }
 .searchIcon {
     @apply h-[40px] w-[40px] rounded z-[1];

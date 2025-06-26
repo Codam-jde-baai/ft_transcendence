@@ -9,8 +9,11 @@
 .container {
 	@apply bg-[rgba(0,0,0,0.8)] p-[40px] rounded-[15px] w-[400px] h-[400px] relative z-[1] box-border items-start;
 }
-.middle {
-	@apply flex items-center justify-center min-h-screen;
+
+.middle  {
+	@apply w-full p-3 flex flex-col space-y-2 rounded-lg;
+	background-color: var(--color-bg);
+	border: 2px solid var(--color-box-border);
 }
 
 /* Header */
@@ -38,16 +41,16 @@ p {
 
 /* Button styling */
 .buttons {
-	@apply flex gap-[10px] justify-center;
+	@apply flex flex-col justify-center items-center;
 }
 .btn {
-	@apply w-[400px] h-[50px] py-[12px] text-[1.1rem] text-white bg-[#902063] rounded-[7px] cursor-pointer mt-[10px] transition-all box-border font-sans;
+	@apply w-[400px] py-3 text-lg text-white bg-[#902063] rounded-[7px] cursor-pointer mt-5 transition-all box-border font-sans;
 }
 .btn:hover {
 	@apply bg-[#b86a8a];
 }
 .btn-container {
-	@apply fixed flex items-center justify-end top-[20px] right-[20px] z-[1];
+	@apply fixed flex items-center justify-end top-5 right-5 z-10;
 }
 
 /* Language Button */

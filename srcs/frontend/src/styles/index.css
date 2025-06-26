@@ -9,8 +9,10 @@
 .container {
 	@apply bg-black bg-opacity-80 p-20 rounded-lg w-[690px] h-[310px] z-[1] flex flex-col justify-center items-center min-w-fit relative;
 }
-.middle {
-	@apply flex items-center justify-center min-h-screen;
+.middle  {
+	@apply w-full p-3 flex flex-col space-y-2 rounded-lg;
+	background-color: var(--color-bg);
+	border: 2px solid var(--color-box-border);
 }
 
 /* Header */

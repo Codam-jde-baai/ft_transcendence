@@ -129,6 +129,10 @@ export function setupFriends() {
 							</div>
 						</div>
 					</div>
+					<!-- Extra transparent boxes to enlarge the wrapper visually -->
+					<div class="extra-boxes-wrapper" style="margin-top: 32px; justify-content: center;">
+						<div class="extra-box" style="width: 120px; height: 50px; background: rgba(255,255,255,0.05); rgba(0,0,0,0.03);"></div>
+					</div>
 				</div>
 			</div>
 			`);

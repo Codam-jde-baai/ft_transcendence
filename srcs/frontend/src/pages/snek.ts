@@ -1,4 +1,4 @@
-import { setupStartSGame } from './startSGame'; // REPLACE WITH CORRECT PATH FOR SNEK GAME
+import { setupStartSGame } from './startSGame';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillSnek } from '../script/fillSnek';
@@ -16,8 +16,8 @@ export function setupSnek() {
 		<dropdown-menu></dropdown-menu>
 		
 		<div class="hmiddle">
-			<div class="line"></div>
 			<h1 class="heder" data-i18n="Header_Snek"></h1>
+			<div class="line"></div>
 
 			<div class="hcontainer">
 				<div class="user-stats">
@@ -53,13 +53,13 @@ export function setupSnek() {
 						</div>
 					</div>
 
-					<div class="buttons">
+					<div class="hbuttons">
 						<button class="btn" id="StartSnek" data-i18n="btn_PlaySnek"></button>
+						<!-- Switching between games -->
+						<button class="game-btn" id="Pong">
+							<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-pong.png">
+						</button>
 					</div>
-					<!-- Switching between games -->
-					<button class="game-btn" id="Pong">
-						<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-pong.png">
-					</button>
 				</div>
 				
 				<div class="leaderboard">

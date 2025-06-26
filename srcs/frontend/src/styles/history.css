@@ -1,9 +1,5 @@
 /* history.css */
 
-/* Container for forms */
-.hcontainer {
-	@apply p-1 rounded-[15px] w-full;
-}
 
 /* All for the Middle */
 .imiddle {

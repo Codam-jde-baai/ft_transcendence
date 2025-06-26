@@ -2,13 +2,15 @@
 
 /* Container for forms */
 .scontainer {
-	@apply absolute top-[610px] pl-7 left-1/2 transform -translate-x-1/2 -translate-y-1/2 p-[20px] w-[450px] h-[820px] z-[1];
+    @apply flex flex-col py-8 text-center bg-[rgba(0,0,0,0.8)] rounded-[15px] p-[65px];
+    margin-left: 220px;
+    margin-top: 120px;
 }
 
 /* All for the Middle */
-.smiddle {
+/* .smiddle {
 	@apply absolute top-[610px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1] w-[550px] h-[75%] p-5 rounded-[15px] bg-[rgba(0,0,0,0.8)];
-}
+} */
 .box {
 	@apply pl-[40px] pr-[35px] pb-[20px] ml-[-45px] mt-4 mb-4 w-[120%] rounded-[15px] border-[2px] border-[#902063] flex flex-col items-center justify-center;
 }
@@ -55,19 +57,19 @@ p {
 
 /* Eye icon for password */
 .field-icon {
-	@apply cursor-pointer absolute top-[296px] right-[30px];
+	@apply relative cursor-pointer top-[-30px] right-[-365px];
 }
 .field-icon img {
 	@apply w-[25px] h-[20px];
 }
 .field-iconn {
-	@apply cursor-pointer absolute top-[572px] right-[30px];
+	@apply relative cursor-pointer top-[-30px] right-[-43%];
 }
 .field-iconn img {
 	@apply w-[25px] h-[20px];
 }
 .field-iconnn {
-	@apply cursor-pointer absolute top-[658px] right-[30px];
+	@apply relative cursor-pointer top-[-30px] right-[-43%];
 }
 .field-iconnn img {
 	@apply w-[25px] h-[20px];

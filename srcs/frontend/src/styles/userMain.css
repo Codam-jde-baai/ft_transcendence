@@ -11,7 +11,7 @@
 
 /* Top Bar */
 .topBar {
-	@apply fixed w-full h-[120px] flex items-center px-7 bg-[#902063] top-0 left-0;
+	@apply fixed w-full h-[120px] flex items-center px-7 bg-[#902063] top-0 left-0 z-30;
 }
 .topBarFrame {
 	@apply absolute flex items-center h-[90px] right-[90px] top-1/2 transform -translate-y-1/2 bg-[#902063];

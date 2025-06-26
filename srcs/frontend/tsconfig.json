@@ -27,7 +27,7 @@
 	"include": [
 		"src/**/*.ts",
 		"src/**/*.tsx",
-		"tailwind.config.ts"	],
+		"tailwind.config.ts", "CSS_Tamplate/cssTemplate.ts"	],
 	"references": [
 		{
 			"path": "./tsconfig.node.json"
