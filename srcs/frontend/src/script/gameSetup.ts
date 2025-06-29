@@ -366,3 +366,25 @@ export function newPlayersButton(authState:AuthState, playerId?:string) {
         console.log("New players button clicked");
     });
 }
+
+export function lockAuthForm (playerCount:number) {
+	for (let playerNum = 2; playerNum <= playerCount; playerNum++) {
+		const logoutButton = document.getElementById(`p${playerNum}-logoutButton`) as HTMLButtonElement | null;
+		const changeButton = document.getElementById(`p${playerNum}-changeGuestAlias`) as HTMLButtonElement | null;
+		if (logoutButton) 
+			logoutButton.disabled = true;
+		if (changeButton)
+			changeButton.disabled = true;
+	}
+}
+
+export function unlockAuthForm (playerCount:number) {
+	for (let playerNum = 2; playerNum <= playerCount; playerNum++) {
+		const logoutButton = document.getElementById(`p${playerNum}-logoutButton`) as HTMLButtonElement | null;
+		const changeButton = document.getElementById(`p${playerNum}-changeGuestAlias`) as HTMLButtonElement | null;
+		if (logoutButton) 
+			logoutButton.disabled = false;
+		if (changeButton)
+			changeButton.disabled = false;
+	}
+}

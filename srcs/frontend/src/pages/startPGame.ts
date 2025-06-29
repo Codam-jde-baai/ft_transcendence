@@ -3,7 +3,7 @@ import "../styles/snek.css"
 import { setupErrorPages } from './errorPages';
 import { connectFunc, requestBody } from '../script/connections';
 import { AuthState } from '../script/gameSetup'
-import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation } from '../script/gameSetup'
+import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, lockAuthForm, unlockAuthForm } from '../script/gameSetup'
 import { Pong, SceneOptions } from "./babylon.ts";
 import { getLanguage } from '../script/language.ts';
 import { dropDownBar } from '../script/dropDownBar.ts';
@@ -34,6 +34,12 @@ function createAuthState(): AuthState {
 		guestAlias: "",
 		userAlias: ""
 	};
+}
+
+interface Round {
+	playerStates: AuthState[]
+	playerCount: number
+	bracketSize: number
 }
 
 export function setupPong() {
@@ -69,7 +75,7 @@ export function setupPong() {
 		});
 		const btnTournament = document.getElementById("btn_Tournament");
 		btnTournament?.addEventListener("click", () => {
-			pongTournament(5); // To Be Modified With A UserInput Number
+			pongTournament(2); // To Be Modified With A UserInput Number
 		});
 	}
 }
@@ -176,6 +182,87 @@ export function pong1v1() {
 		});
 }
 
+// starts the listeners for the game button (for Pong)
+async function startGameListeners(authStates:AuthState[], player1Number:number, player2Number:number): Promise<void> {
+    const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
+    if (!startGameButton) {
+        console.error("startGameButton Not Found");
+        return;
+    }
+
+	async function startGame() {
+        startGameButton.disabled = true;
+        startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+        startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+		try {
+			const options:SceneOptions = {}
+			options.p1_alias = authStates[player1Number -1].isAuthenticated ? authStates[player1Number -1].userAlias : authStates[player1Number -1].guestAlias
+			options.p2_alias = authStates[player2Number -1].isAuthenticated ? authStates[player2Number -1].userAlias : authStates[player2Number -1].guestAlias
+			let gamePayload:GameEndPayload = {
+				p1_alias: options.p1_alias!,
+				p2_alias: options.p2_alias!,
+				winner_alias: null,
+				p1_uuid: null,
+				p2_uuid: null,
+				status: 0
+			}
+			if (authStates[player1Number -1].isAuthenticated)
+				gamePayload.p1_uuid = authStates[player1Number -1].userUuid!
+			if (authStates[player2Number -1].isAuthenticated)
+				gamePayload.p2_uuid = authStates[player2Number -1].userUuid!
+			gamePayload = await startPong(gamePayload, options);
+            // In Case Of Tournament, Update The Array Of Winners
+			// Record Game Results (Unless Played By 2 Guests Or Error Occurred)
+			if (gamePayload.status !== -1 && (gamePayload.p1_uuid || gamePayload.p2_uuid)) {
+				await recordGameResults(gamePayload);
+				// If Player Is A User, Refresh Their Stats
+				if (authStates[player1Number -1].isAuthenticated){	
+					const updatedStats = await fetchPongPlayerStats(gamePayload.p1_alias);
+					if (updatedStats) {
+						updatePongPlayerStatsDisplay(`p${player1Number}`, updatedStats);
+					}
+				}
+				if (authStates[player2Number -1].isAuthenticated) {
+					const updatedStats = await fetchPongPlayerStats(authStates[player2Number -1].userAlias);
+					if (updatedStats) {
+						updatePongPlayerStatsDisplay(`p${player2Number}`, updatedStats);
+					}
+				}
+			}
+        } catch (error) {
+            console.error("Error during game:", error);
+        }
+			startGameButton.disabled = false;
+			startGameButton.classList.remove('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+			startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+    };
+    startGameButton.addEventListener('click', startGame)
+}
+
+function tournamentHTML(playerStates:AuthState[], bracketSize:number, roundNum:number) {
+	const page = document.getElementById("middle");
+	if (page) {
+		let html = /*html*/ `
+			<div class="fixed top-[120px] left-[620px] right-0 rounded h-[100vh] flex justify-center items-start">
+				<div class="border border-gray-300 rounded-md px-4 py-2 min-w-[150px] text-center bg-white shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer select-none"> <p><span data-i18n="Champion"></span></p> </div>`
+		for (let playersPerRound:number = 2;roundNum > 0; roundNum--) {
+			html += /*html*/ `
+				<div class="border border-gray-300 rounded-md px-4 py-2 min-w-[150px] text-center bg-white shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer select-none">`;
+			for (let playerFields = playersPerRound ;playerFields > 0; playerFields--)	{
+				html += /*html*/ `
+					<p><span data-i18n="Player"></span></p> `
+			}
+			html += /*html*/ `
+				</div>`
+			playersPerRound *= 2;	
+		}
+		html += `
+			</div> `
+		page.insertAdjacentHTML("beforeend", html);	
+	}
+	getLanguage();
+} // add proper bracketing
+
 export function pongTournament(playerCount:number) {
     connectFunc("/matches/record/", requestBody("GET", null, "application/json"))
         .then(response => {
@@ -195,7 +282,7 @@ export function pongTournament(playerCount:number) {
 					page.innerHTML = "";
 					let html = /*html*/ `
 					<canvas id="renderCanvas" style="pointer-events:none; position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block; z-index: 42;"></canvas> <!-- Edit Canvas -->
-					<div class="fixed top-[120px] left-[220px] bg-black bg-opacity-75 py-10 px-8 rounded w-[500px] h-[100vh]">
+					<div class="fixed top-[120px] left-[220px] bg-black bg-opacity-75 py-10 px-8 rounded w-[400px] h-[100vh]">
 						<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full">
 							<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
 								<div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
@@ -252,12 +339,8 @@ export function pongTournament(playerCount:number) {
 					html += /*html*/ `
 							</div>
 							<!-- Start/Post Game Buttons -->
+							<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startTournament" disabled>Start Tournament</button>
 							<button class="button-main bg-gray-500 cursor-not-allowed opacity-50 hidden" id="startGame" disabled>Start Game</button>
-							<button class="button-main bg-gray-500 cursor-not-allowed opacity-50 hidden" id="startTournament" disabled>Start Tournament</button>
-							<div class="hidden flex-row gap-4" id="replayButtons">
-								<!-- <button class="button-primary bg-blue-500 hover:bg-blue-700" id="newGame">New Players</button> -->
-								<button class="button-primary bg-pink-800 hover:bg-pink-600" id="restartGame">Rematch!</button>
-							</div>
 							<!-- Scroll Buffer -->
 							<button class="button-main py-10 pointer-events-none opacity-0" ></button>
 						</div>
@@ -266,13 +349,6 @@ export function pongTournament(playerCount:number) {
 					page.insertAdjacentHTML("beforeend", html);
 				}
 				try {
-					if (playerCount === 2) {
-						const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
-						startGameButton.classList.remove('hidden')
-					} else {
-						const startTournamentButton = document.getElementById('startTournament') as HTMLButtonElement;
-						startTournamentButton.classList.remove('hidden')
-					}
 					updatePongPlayerStatsDisplay("p1", playerStats);
 					seedPlayerListener(authStates[0], "p1");
 					for (let playerNum:number = 2; playerNum <= playerCount; playerNum++) {
@@ -281,26 +357,11 @@ export function pongTournament(playerCount:number) {
 						setupGuestAliasLocking(authStates[playerNum -1], playerId);
 						FormToggleListener(authStates[playerNum -1], playerId);
 						setupLoginValidation(authStates[playerNum -1], "pong", playerId);
-						updateStartGameButton(authStates[playerNum -1], playerId);
+						isTournamentReadyListeners(authStates, playerId);
 						seedPlayerListener(authStates[playerNum -1], playerId);
-						// newPlayersButton(authStates[playerNum -1]);
 					}
-					if (playerCount === 2)
-						startGameListeners(authStates, 1, 2);
-					else {
-						const startTournamentButton = document.getElementById("startTournament") as HTMLButtonElement;
-			startTournamentButton.disabled = false; //CHANGE
-						if (startTournamentButton) {
-							startTournamentButton.addEventListener("click", () => {
-								startTournamentButton.disabled = true;
-								startTournamentButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
-								startTournamentButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-								startTournament(authStates, playerCount);
-							});
-						} else {
-							console.error("startTournament Button Not Found");
-						}
-					}
+					startTournamentListener(authStates);
+					getLanguage();
 				} catch (error:any) {
 					console.error("Error setting up the game:", error);
 					window.history.pushState({}, '', '/errorPages');
@@ -322,17 +383,240 @@ async function seedPlayerListener(authState:AuthState, playerId:string) {
 	if (!seed)
 		{}; //some error
 	seed.textContent = "(#" + playerId.slice(1) + " Seed)";
+	seed.value = playerId.slice(1);
 }
 
-// Function to update player stats display (for Pong)
-export function updatePongPlayerStatsDisplay(display:string, stats: PlayerStats) {
-    const wins = document.getElementById(`${display}-wins`);
-    const losses = document.getElementById(`${display}-losses`);
-    const winrate = document.getElementById(`${display}-winrate`);
+function isTournamentReadyListeners(authStates: AuthState[], playerID: string) {
+	const loginButton = document.getElementById(`${playerID}-loginButton`) as HTMLButtonElement;
+	const logoutButton = document.getElementById(`${playerID}-logoutButton`) as HTMLButtonElement;
+	const lockInButton = document.getElementById(`${playerID}-lockInGuest`) as HTMLButtonElement;
+	const changeButton = document.getElementById(`${playerID}-changeGuestAlias`) as HTMLButtonElement;
 
-    if (wins) wins.textContent = stats.wins.toString();
-    if (losses) losses.textContent = stats.losses.toString();
-    if (winrate) winrate.textContent = stats.win_rate.toFixed(2).toString();
+	if (loginButton && logoutButton && lockInButton && changeButton) {
+		const update = () => updateStartTournamentButton(authStates);
+		const delayedUpdate = () => {
+			setTimeout(() => { updateStartTournamentButton(authStates) }, 500);
+		}
+		if (loginButton)
+				loginButton.addEventListener('click', delayedUpdate);
+		[logoutButton, lockInButton, changeButton].forEach(button => {
+			if (button) {
+				button.addEventListener('click', update);
+			}
+		});
+	} else {
+		console.error(`One or more buttons are missing for player: ${playerID}`);
+	}
+}
+
+export function updateStartTournamentButton(authStates:AuthState[]) {
+	const startTournamentButton = document.getElementById(`startTournament`) as HTMLButtonElement;
+
+	if (!startTournamentButton) {
+		console.error("startTournament Button Not Found");
+		return;
+	}
+	const playerCount = authStates.length
+	for (let playerNum:number = 1; playerNum < playerCount; playerNum++) {
+		console.log(authStates, playerCount);
+		if (!(authStates[playerNum].isAuthenticated || authStates[playerNum].isGuestLocked)) {
+			startTournamentButton.disabled = true;
+			startTournamentButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+			startTournamentButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+			return ;
+		}
+	}
+	startTournamentButton.disabled = false;
+	startTournamentButton.classList.remove('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+	startTournamentButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+}
+
+function startTournamentListener(authStates:AuthState[]) {
+	const startTournamentButton = document.getElementById("startTournament") as HTMLButtonElement;
+	if (startTournamentButton) {
+		startTournamentButton.addEventListener("click", () => {
+			const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
+			if (startGameButton)
+				startGameButton.classList.remove('hidden')
+			startTournamentButton.disabled = true;
+			startTournamentButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+			startTournamentButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+			lockAuthForm(authStates.length);
+			startTournament(authStates);
+		});
+	} else {
+		console.error("startTournament Button Not Found");
+	}
+}
+
+async function startTournament(authStates:AuthState[]) {
+	try {
+		const playerCount = authStates.length
+		const rounds:Round[] = [];
+		rounds[0] = {
+			playerStates: authStates,
+			playerCount: playerCount,
+			bracketSize: playerCount
+		}
+		let totalNumberOfRounds:number = 1;
+		for (let bracketSize:number = 2; bracketSize <= playerCount; bracketSize *= 2) {
+			rounds[0].bracketSize = bracketSize;
+			totalNumberOfRounds++;
+		}
+		rounds[0].bracketSize *= 2
+		for (let playerNum:number = 1; playerNum <= playerCount; playerNum++) {
+			const seedInput = document.getElementById(`p${playerNum}-seed`) as HTMLInputElement;
+			if (seedInput) {
+				rounds[0].playerStates[playerNum -1].seed = Number(seedInput.value)
+			} else {
+				console.log("Error Seeding The Tournament")
+				// Some Proper Handling
+			}
+		}
+		tournamentHTML(authStates, rounds[0].bracketSize, totalNumberOfRounds);
+		let winnerStates:AuthState[]
+		for (let i:number = 0; i < totalNumberOfRounds; i++) {
+			console.log(rounds[i])
+			winnerStates = await startTournamentRound(rounds[i])
+			if (winnerStates.length > 1) {			
+				rounds[i+1] = {
+					playerStates: winnerStates,
+					playerCount: winnerStates.length,
+					bracketSize: winnerStates.length
+				}
+			} else {
+				const winnerAlias = winnerStates[0].isAuthenticated ? winnerStates[0].userAlias : winnerStates[0].guestAlias
+				alert(`The Champion Of This ${playerCount}-Person Tournament IS: ${winnerAlias}`)
+			}
+		}
+		// Some kind of tournament end shit
+		const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
+		if (startGameButton)
+			startGameButton.classList.add('hidden')
+		const startTournamentButton = document.getElementById("startTournament") as HTMLButtonElement;
+		if (startTournamentButton) {
+			startTournamentButton.disabled = false;
+			startTournamentButton.classList.remove('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+			startTournamentButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+		}
+		unlockAuthForm(playerCount)
+	} catch (error) {
+		console.error("Error Setting Up The Tournament:", error);
+			// Some Proper Handling
+
+	}
+}
+
+async function startTournamentRound(round:Round) : Promise<AuthState[]> {
+	try {
+		round.playerStates.sort((a:AuthState, b:AuthState) => a.seed! - b.seed!)
+		const winnerStates:(AuthState)[] = []
+		const playerCount = round.playerCount;
+		const bracketSize = round.bracketSize;
+		let matchIndex:number = 0
+		for (const byeCount = bracketSize - playerCount; matchIndex < byeCount; matchIndex++)
+			winnerStates[matchIndex] = round.playerStates[matchIndex]
+		for (const winnersCount = bracketSize / 2; matchIndex !== winnersCount; matchIndex++)
+			winnerStates[matchIndex] = await startTournamentGameListeners(round.playerStates, matchIndex +1, bracketSize - matchIndex)
+		console.log(winnerStates);
+		return (winnerStates)
+	} catch (error) {
+		console.error("Error Setting Up The Tournament:", error);
+		// Some Proper Handling
+		return [];
+	}
+}
+
+// starts the listeners for the game button (for Pong)
+async function startTournamentGameListeners(authStates:AuthState[], player1Number:number, player2Number:number): Promise<AuthState> {
+    const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
+    if (!startGameButton) {
+        console.error("startGameButton Not Found");
+        throw new Error("startGameButton Not Found");
+    }
+
+	return new Promise((resolve, reject) => { async function startTournamentGame() {
+    	startGameButton.removeEventListener('click', startTournamentGame);
+		startGameButton.disabled = true;
+        startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+        startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+		try {
+			const options:SceneOptions = {}
+			options.p1_alias = authStates[player1Number -1].isAuthenticated ? authStates[player1Number -1].userAlias : authStates[player1Number -1].guestAlias
+			options.p2_alias = authStates[player2Number -1].isAuthenticated ? authStates[player2Number -1].userAlias : authStates[player2Number -1].guestAlias
+			let gamePayload:GameEndPayload = {
+				p1_alias: options.p1_alias!,
+				p2_alias: options.p2_alias!,
+				winner_alias: null,
+				p1_uuid: null,
+				p2_uuid: null,
+				status: 0
+			}
+			if (authStates[player1Number -1].isAuthenticated)
+				gamePayload.p1_uuid = authStates[player1Number -1].userUuid!
+			if (authStates[player2Number -1].isAuthenticated)
+				gamePayload.p2_uuid = authStates[player2Number -1].userUuid!
+			gamePayload = await startPong(gamePayload, options);
+			// Record Game Results (Unless Played By 2 Guests Or Error Occurred)
+			if (gamePayload.status !== -1 && (gamePayload.p1_uuid || gamePayload.p2_uuid)) {
+				await recordGameResults(gamePayload);
+				// If Player Is A User, Refresh Their Stats
+				if (authStates[player1Number -1].isAuthenticated){	
+					const updatedStats = await fetchPongPlayerStats(gamePayload.p1_alias);
+					if (updatedStats) {
+						updatePongPlayerStatsDisplay(`p${player1Number}`, updatedStats);
+					}
+				}
+				if (authStates[player2Number -1].isAuthenticated) {
+					const updatedStats = await fetchPongPlayerStats(authStates[player2Number -1].userAlias);
+					if (updatedStats) {
+						updatePongPlayerStatsDisplay(`p${player2Number}`, updatedStats);
+					}
+				}
+			}
+			// Update The Array Of Winners
+			if (gamePayload.status === 1 || gamePayload.status === 2) {
+				const winnerState = gamePayload.status === 1 ? authStates[player1Number -1] : authStates[player2Number -1]
+				winnerState.seed = Math.min(authStates[player1Number -1].seed!, authStates[player2Number -1].seed!)
+				resolve(winnerState)
+			}
+			else {
+				console.error("Error During The Tournament, No Winner")
+				reject(new Error("Error During The Tournament, No Winner"))
+			}
+        } catch (error) {
+            console.error("Error during game:", error);
+			reject(error);
+        } finally {
+			startGameButton.disabled = false;
+			startGameButton.classList.remove('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+			startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+		}
+	};
+    startGameButton.addEventListener('click', startTournamentGame);
+	})
+}
+
+// Set up the tourney html
+// Fill the bracket with user info
+// 
+
+async function startPong(gamePayload:GameEndPayload, options:SceneOptions): Promise<GameEndPayload> {
+	const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
+	try {
+		if (!canvas)
+			throw new Error("Canvas Element With Id 'renderCanvas' Not Found.");
+		const game = new Pong(canvas, options);
+		canvas.style.display = "block";
+		const winner_id = await game.run();
+		canvas.style.display = "none";
+		gamePayload.status = winner_id
+		gamePayload.winner_alias = winner_id === 1 ? gamePayload.p1_alias : gamePayload.p2_alias
+	} catch (error) {
+    	console.error("Error Starting Pong:", error);
+		gamePayload.status = -1;
+	}
+	return (gamePayload);
 }
 
 // Function to fetch player stats (for Pong)
@@ -355,22 +639,15 @@ export async function fetchPongPlayerStats(alias: string): Promise<PlayerStats |
     }
 }
 
-async function startPong(gamePayload:GameEndPayload, options:SceneOptions): Promise<GameEndPayload> {
-	const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
-	try {
-		if (!canvas)
-			throw new Error("Canvas Element With Id 'renderCanvas' Not Found.");
-		const game = new Pong(canvas, options);
-		canvas.style.display = "block";
-		const winner_id = await game.run();
-		canvas.style.display = "none";
-		gamePayload.status = winner_id
-		gamePayload.winner_alias = winner_id === 1 ? gamePayload.p1_alias : gamePayload.p2_alias
-	} catch (error) {
-    	console.error("Error Starting Pong:", error);
-		gamePayload.status = -1;
-	}
-	return (gamePayload);
+// Function to update player stats display (for Pong)
+export function updatePongPlayerStatsDisplay(display:string, stats: PlayerStats) {
+    const wins = document.getElementById(`${display}-wins`);
+    const losses = document.getElementById(`${display}-losses`);
+    const winrate = document.getElementById(`${display}-winrate`);
+
+    if (wins) wins.textContent = stats.wins.toString();
+    if (losses) losses.textContent = stats.losses.toString();
+    if (winrate) winrate.textContent = stats.win_rate.toFixed(2).toString();
 }
 
 // Record game results (for Pong)
@@ -394,139 +671,3 @@ async function recordGameResults(gamePayload: GameEndPayload): Promise<boolean> 
         return false;
     }
 }
-
-// starts the listeners for the game button (for Pong)
-async function startGameListeners(authStates:AuthState[], player1Number:number, player2Number:number, winnerStates?:AuthState[]): Promise<void> {
-    const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
-    if (!startGameButton) {
-        console.error("startGameButton Not Found");
-        return;
-    }
-
-	async function startGame() {
-        startGameButton.disabled = true;
-        startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
-        startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-		try {
-			const options:SceneOptions = {}
-			options.p1_alias = authStates[player1Number -1].isAuthenticated ? authStates[player1Number -1].userAlias : authStates[player1Number -1].guestAlias
-			options.p2_alias = authStates[player2Number -1].isAuthenticated ? authStates[player2Number -1].userAlias : authStates[player2Number -1].guestAlias
-			let gamePayload:GameEndPayload = {
-				p1_alias: options.p1_alias!,
-				p2_alias: options.p2_alias!,
-				winner_alias: null,
-				p1_uuid: null,
-				p2_uuid: null,
-				status: 0
-			}
-			if (authStates[player1Number -1].isAuthenticated)
-				gamePayload.p1_uuid = authStates[player1Number -1].userUuid!
-			if (authStates[player2Number -1].isAuthenticated)
-				gamePayload.p2_uuid = authStates[player2Number -1].userUuid!
-			gamePayload = await startPong(gamePayload, options);
-            // In Case Of Tournament, Update The Array Of Winners
-			if (winnerStates)
-			{
-				const matchIndex = player1Number //Because Seeding --> Player 1 Index === Matches Index
-				if (gamePayload.status === 1 || gamePayload.status === 2)
-					winnerStates[matchIndex -1] = gamePayload.status === 1 ? authStates[player1Number -1] : authStates[player2Number -1]
-				else {
-					console.log("Error During The Tournament, No Winner")
-					// Some Proper Handling
-				}
-			}
-			// Record Game Results (Unless Played By 2 Guests Or Error Occurred)
-			if (gamePayload.status !== -1 && (gamePayload.p1_uuid || gamePayload.p2_uuid)) {
-				await recordGameResults(gamePayload);
-				// If Player Is A User, Refresh Their Stats
-				if (authStates[player1Number -1].isAuthenticated){	
-					const updatedStats = await fetchPongPlayerStats(gamePayload.p1_alias);
-					if (updatedStats) {
-						updatePongPlayerStatsDisplay(`p${player1Number}`, updatedStats);
-					}
-				}
-				if (authStates[player2Number -1].isAuthenticated) {
-					const updatedStats = await fetchPongPlayerStats(authStates[player2Number -1].userAlias);
-					if (updatedStats) {
-						updatePongPlayerStatsDisplay(`p${player2Number}`, updatedStats);
-					}
-				}
-			}
-        } catch (error) {
-            console.error("Error during game:", error);
-        }
-		if (winnerStates) {
-
-		}
-		else {
-			startGameButton.disabled = false;
-			startGameButton.classList.remove('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
-			startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-		}
-    };
-    startGameButton.addEventListener('click', startGame)
-}
-
-async function startTournament(authStates:AuthState[], playerCount:number) {
-	// Lock All Players, Disable/Hide Tournament Button
-	tournamentHTML();
-	try {
-		let playerStates:AuthState[] = authStates
-		for (let playerNum:number = 1; playerNum <= playerCount; playerNum++) {
-			const seedInput = document.getElementById(`p${playerNum}-seed`) as HTMLInputElement;
-			if (seedInput)
-				playerStates[playerNum -1].seed = Number(seedInput.value)
-			else {
-				console.log("Error Seeding The Tournament")
-				// Some Proper Handling
-			}
-		}
-		playerStates.sort((a:AuthState, b:AuthState) => a.seed! - b.seed!)
-		while (playerStates && playerStates.length !== 1)
-			playerStates = await startTournamentRound(playerStates, playerStates.length)
-		// Some kind of tournament end shit
-	} catch (error) {
-		console.error("Error Setting Up The Tournament:", error);
-			// Some Proper Handling
-
-	}
-}
-
-function tournamentHTML() {
-	const page = document.getElementById("middle");
-	if (page) {
-            page.innerHTML = "";
-			page.insertAdjacentHTML("beforeend", /*html*/ `
-			<div class="fixed top-[120px] left-[720px] bg-black bg-opacity-75 py-10 px-8 rounded w-[500px] h-[100vh]">
-				<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full">
-				<button> FAT Tournament Button </button>
-				</div>
-			</div>
-			`)}
-}
-
-async function startTournamentRound(playerStates:AuthState[], playerCount:number) : Promise<AuthState[]> {
-	try {
-		const winnerStates:AuthState[] = []
-		let matchIndex:number = 1
-		if (playerCount % 2) {
-			await startGameListeners(playerStates, playerCount - 1, playerCount, playerStates)
-			playerCount--;
-		}
-		while (matchIndex !== playerCount - matchIndex) {
-			await startGameListeners(playerStates, matchIndex, playerCount +1 - matchIndex, winnerStates)
-			matchIndex++
-		}
-		console.log(winnerStates);
-		return (winnerStates)
-	} catch (error) {
-		console.error("Error Setting Up The Tournament:", error);
-		// Some Proper Handling
-	}
-	return [];
-}
-
-// Fuck with the buttons
-// Set up the tourney html
-// Fill the bracket with user info
-// 
