@@ -25,6 +25,8 @@ services:
       - SSL_KEY_FILE=/app/certs/localhost-key.pem
       - HTTPS=true
     command: [ "pnpm", "run", "dev" ] # Hot-reload mode for frontend
+    networks:
+      - transcendence
   # backend written with Fastify and .ts/js
   backend:
     build:
@@ -48,6 +50,8 @@ services:
       - ./.env
     entrypoint: [ "/app/docker-entrypoint/generateDb.sh" ]
     command: [ "pnpm", "run", "dev" ]
+    networks:
+      - transcendence
 
 networks:
   transcendence:
