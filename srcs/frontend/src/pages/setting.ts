@@ -35,7 +35,7 @@ export function setupSetting() {
 			<input type="file" id="avatar" accept="image/*" style="display: none;">
 
 			<p class="p1" id="current-password" data-i18n="CurrentPassword"></p>
-			<input type="password" required minlength="6" maxlength="117" id="current_password" class="input-field" data-i18n-placeholder="CurrentP_placeholder1">
+			<input type="password" required minlength="6" maxlength="117" id="current_password" class="input-field mb-[-15px]" data-i18n-placeholder="CurrentP_placeholder1">
 			<span id="show-current_password" class="field-icon">
 				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_current">
 			</span>
@@ -48,13 +48,13 @@ export function setupSetting() {
 
 			<div class="box">
 				<p class="p1" id="userPass" data-i18n="Change_Password"></p>
-				<input type="password" required minlength="6" maxlength="117" id="password" class="input-field">
+				<input type="password" required minlength="6" maxlength="117" id="password" class="input-field mb-[-15px]">
 				<span id="show-password" class="field-iconn">
 					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
 				</span>
 
 				<p class="p1" id="password-match" data-i18n="ConfirmPassword"></p>
-				<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field">
+				<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field mb-[-15px]">
 				<span id="show-password_confirm" class="field-iconnn">
 					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
 				</span>	

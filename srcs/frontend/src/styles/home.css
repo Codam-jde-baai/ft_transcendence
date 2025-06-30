@@ -32,10 +32,10 @@
 	@apply rounded-md p-2.5 flex items-center gap-2.5;
 }
 .score-text, .best-score-text, .score-number {
-	@apply font-bold text-[#dcdbdb];
+	@apply font-bold text-[#dcdbdb] mt-[-20px];
 }
 .score-text {
-	@apply text-[19px];
+	@apply text-[19px] mb-3;
 }
 .best-score-text {
 	@apply text-[26px] font-bold;
@@ -47,10 +47,10 @@
 	@apply w-[270px] h-[270px] object-cover rounded-full mt-[-120px] mb-[-60px];
 }
 .Sbest-score img {
-	@apply w-[220px] h-[175px] object-cover mt-[-50px] mb-[-90px];
+	@apply w-[220px] h-[175px] object-cover mt-[-110px] mb-[-90px];
 }
 .win-losse img {
-	@apply absolute flex w-[35px] h-[35px] mt-[-30px] ml-[-25px] object-cover rounded-full;
+	@apply absolute flex w-[35px] h-[35px] mt-[-33px] ml-[-30px] object-cover rounded-full;
 }
 
 /* Section for leaderboard (Right) */

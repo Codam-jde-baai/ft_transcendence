@@ -25,7 +25,7 @@ p {
 	@apply  w-full text-base my-1 ml-8 box-border font-sans text-white text-center;
 }
 .p1 {
-	@apply  w-full text-base mb-0.5 mt-5 box-border font-sans text-white text-left;
+	@apply  w-full text-base mb-0.5 mt-4 box-border font-sans text-white text-left;
 }
 
 /* Input fields */
@@ -57,19 +57,19 @@ p {
 
 /* Eye icon for password */
 .field-icon {
-	@apply relative cursor-pointer top-[-30px] right-[-365px];
+	@apply relative cursor-pointer top-[-15px] right-[-365px];
 }
 .field-icon img {
 	@apply w-[25px] h-[20px];
 }
 .field-iconn {
-	@apply relative cursor-pointer top-[-30px] right-[-43%];
+	@apply relative cursor-pointer top-[-15px] right-[-43%];
 }
 .field-iconn img {
 	@apply w-[25px] h-[20px];
 }
 .field-iconnn {
-	@apply relative cursor-pointer top-[-30px] right-[-43%];
+	@apply relative cursor-pointer top-[-15px] right-[-43%];
 }
 .field-iconnn img {
 	@apply w-[25px] h-[20px];

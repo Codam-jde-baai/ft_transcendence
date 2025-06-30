@@ -1,4 +1,4 @@
-import { setupGameSelect } from './gameSelect';
+// import { setupGameSelect } from './gameSelect';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
@@ -99,11 +99,11 @@ export function setupUserHome(refresh: boolean = false) {
 							</div>
 						</div>
 					</div>
-					<div class="leaderboard-entry">
+					<div class="leaderboard-entry mr-6">
 						<div class="img-container">
 							<img src="src/Pictures/3.jpg">
 						</div>
-						<div class="test-container pr-[40px]">
+						<div class="test-container">
 							<div class="position" data-i18n="3"></div>
 							<div id="aliasName3" class="text"></div>
 							<div class="number">

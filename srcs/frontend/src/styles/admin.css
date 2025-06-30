@@ -7,12 +7,14 @@
 
 /* All for the Middle */
 .amiddle {
-	@apply bg-black bg-opacity-80 fixed p-2 top-[200px] left-[220px] rounded-[15px] w-[80%] min-h-[20%] z-[1];
+    @apply bg-black bg-opacity-80 rounded-[15px] w-[80%] min-h-[20%] flex flex-col text-center;
+    margin-left: 220px;
+    margin-top: 120px;
 }
 
 /* Table Styling */
 .userTable {
-	@apply border-collapse bg-white table-fixed w-full;
+	@apply border-collapse bg-white table-fixed w-full mr-[-2px];
 }
 .userTable td {
 	@apply text-center text-black border-b border-gray-300 text-[15px] font-sans;

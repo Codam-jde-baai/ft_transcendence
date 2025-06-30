@@ -19,6 +19,7 @@
     "btn_T&C": "Terms & Conditions",
     "btn_ViewData": "View my Data",
     "btn_Conf" : "Confirm",
+    "btn_adminL" : "Admin",
 
     "Password": "Password",
     "ConfirmPassword": "Confirm Password",
@@ -54,7 +55,8 @@
     "History_P": "Of",
     "Admin_P": "Of",
     "T&C_P": " I agree to the ",
-    "Pop_setting_P": "This is your current data",    
+    "Pop_setting_P": "This is your current data", 
+    "LogIn_PA": "Login as ", 
 
     "LogIn_placeholder1": "Intra Name",
     "SignUp_placeholder1": "Only used for Log In (Intra-Name)",
