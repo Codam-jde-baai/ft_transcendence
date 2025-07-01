@@ -9,7 +9,6 @@ import { getLanguage } from '../script/language.ts';
 import { dropDownBar } from '../script/dropDownBar.ts';
 import { fillTopbar } from '../script/fillTopbar.ts';
 import { setupNavigation } from '../script/menuNavigation.ts';
-import { initialize } from "esbuild";
 
 export interface PlayerStats {
 	uuid: string,
