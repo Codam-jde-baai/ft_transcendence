@@ -9,6 +9,7 @@ import { getLanguage } from '../script/language.ts';
 import { dropDownBar } from '../script/dropDownBar.ts';
 import { fillTopbar } from '../script/fillTopbar.ts';
 import { setupNavigation } from '../script/menuNavigation.ts';
+import { initialize } from "esbuild";
 
 export interface PlayerStats {
 	uuid: string,
@@ -75,7 +76,7 @@ export function setupPong() {
 		});
 		const btnTournament = document.getElementById("btn_Tournament");
 		btnTournament?.addEventListener("click", () => {
-			pongTournament(2); // To Be Modified With A UserInput Number
+			pongTournament(5); // To Be Modified With A UserInput Number
 		});
 	}
 }
@@ -103,7 +104,7 @@ export function pong1v1() {
 						<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full">
 							<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
 								<div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
-									<p>Player1 <span id="p1-seed" class="px-3 text-sm"></span></p>
+									<p>Player1 </p>
 									<p class="text-center">${playerStats.alias}</p>
 									<div class="bg-red-600 p-2 rounded">
 										<p>Wins: <span id="p1-wins">0</span> | Losses: <span id="p1-losses">0</span></p>
@@ -111,7 +112,7 @@ export function pong1v1() {
 									</div>
 								</div>
 								<div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
-									<p>Player2 <span id="p2-seed" class="px-3 text-sm"></span></p>
+									<p>Player2 </span></p>
 									<div class="flex items-center gap-4">
 										<label class="flex items-center cursor-pointer">
 											<span class="mr-2">Guest</span>
@@ -239,29 +240,41 @@ async function startGameListeners(authStates:AuthState[], player1Number:number, 
     startGameButton.addEventListener('click', startGame)
 }
 
-function tournamentHTML(playerStates:AuthState[], bracketSize:number, roundNum:number) {
+function tournamentHTML(playerStates: AuthState[], bracketSize: number, totalNumberOfRounds: number) {
 	const page = document.getElementById("middle");
-	if (page) {
-		let html = /*html*/ `
-			<div class="fixed top-[120px] left-[620px] right-0 rounded h-[100vh] flex justify-center items-start">
-				<div class="border border-gray-300 rounded-md px-4 py-2 min-w-[150px] text-center bg-white shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer select-none"> <p><span data-i18n="Champion"></span></p> </div>`
-		for (let playersPerRound:number = 2;roundNum > 0; roundNum--) {
-			html += /*html*/ `
-				<div class="border border-gray-300 rounded-md px-4 py-2 min-w-[150px] text-center bg-white shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer select-none">`;
-			for (let playerFields = playersPerRound ;playerFields > 0; playerFields--)	{
-				html += /*html*/ `
-					<p><span data-i18n="Player"></span></p> `
-			}
-			html += /*html*/ `
-				</div>`
-			playersPerRound *= 2;	
-		}
-		html += `
-			</div> `
-		page.insertAdjacentHTML("beforeend", html);	
+	console.log(playerStates, "BracketSize = " + bracketSize, "RoundNum = " + totalNumberOfRounds)
+	if (!page) {
+		console.error("Could Not Load The Tournament Display");
+		return ;
 	}
+	const boxWidth = 150;
+	const boxSpacing = 30;
+	const fullWidth = bracketSize * (boxWidth + boxSpacing);
+	let html = /*html*/ `
+	<div class="fixed top-[120px] left-[620px] right-0 bottom-0 overflow-x-auto overflow-y-auto flex justify-center items-start">
+		<div class=" flex flex-col items-center space-y-10 mt-10" style="width:${fullWidth}px;">`;
+	for (let round = 0; round <= totalNumberOfRounds; round++) {
+		const playersInRound = Math.pow(2, round);
+		const spacingUnit = fullWidth / playersInRound;
+		html += /*html*/  `
+			<div class="flex justify-center relative w-full h-[70px]">`;
+		for (let playerBox = 1; playerBox <= playersInRound; playerBox++) {
+			const label = round === 0 ? "Champion" : "Awaiting Winner";
+			const leftOffset = spacingUnit * (playerBox - 1) + (spacingUnit - boxWidth) / 2;
+			html += /*html*/ `
+				<div id="r${round}-b${playerBox}" class="rounded-md px-4 py-2 text-center bg-white absolute" style="left:${leftOffset}px; width:${boxWidth}px;">
+					<span data-i18n="${label}">${label}</span>
+				</div>`;
+		}
+		html += /*html*/ `
+			</div>`;
+	}
+	html += /*html*/ `
+		</div>
+	</div>`;
+	page.insertAdjacentHTML("beforeend", html);
 	getLanguage();
-} // add proper bracketing
+}
 
 export function pongTournament(playerCount:number) {
     connectFunc("/matches/record/", requestBody("GET", null, "application/json"))
@@ -283,7 +296,7 @@ export function pongTournament(playerCount:number) {
 					let html = /*html*/ `
 					<canvas id="renderCanvas" style="pointer-events:none; position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block; z-index: 42;"></canvas> <!-- Edit Canvas -->
 					<div class="fixed top-[120px] left-[220px] bg-black bg-opacity-75 py-10 px-8 rounded w-[400px] h-[100vh]">
-						<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full">
+						<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full overflow-x-hidden">
 							<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
 								<div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
 									<p>Player1 <span id="p1-seed" class="px-3 text-sm"></span></p>
@@ -418,7 +431,6 @@ export function updateStartTournamentButton(authStates:AuthState[]) {
 	}
 	const playerCount = authStates.length
 	for (let playerNum:number = 1; playerNum < playerCount; playerNum++) {
-		console.log(authStates, playerCount);
 		if (!(authStates[playerNum].isAuthenticated || authStates[playerNum].isGuestLocked)) {
 			startTournamentButton.disabled = true;
 			startTournamentButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
@@ -459,7 +471,7 @@ async function startTournament(authStates:AuthState[]) {
 			bracketSize: playerCount
 		}
 		let totalNumberOfRounds:number = 1;
-		for (let bracketSize:number = 2; bracketSize <= playerCount; bracketSize *= 2) {
+		for (let bracketSize:number = 2; bracketSize < playerCount; bracketSize *= 2) {
 			rounds[0].bracketSize = bracketSize;
 			totalNumberOfRounds++;
 		}
@@ -469,15 +481,25 @@ async function startTournament(authStates:AuthState[]) {
 			if (seedInput) {
 				rounds[0].playerStates[playerNum -1].seed = Number(seedInput.value)
 			} else {
-				console.log("Error Seeding The Tournament")
+				console.error("Error Seeding The Tournament")
 				// Some Proper Handling
 			}
 		}
 		tournamentHTML(authStates, rounds[0].bracketSize, totalNumberOfRounds);
+		authStates.sort((a:AuthState, b:AuthState) => a.seed! - b.seed!)
+		const playerOrder = generateBracketMatchups(rounds[0].bracketSize)
+		console.log(playerOrder);
+		for (let position:number = 0; position < rounds[0].bracketSize ; position++) {
+			if (playerOrder[position] <= playerCount)
+				authStates[playerOrder[position]-1].position = position +1
+		}
+		for (let playerIndex = 0; playerIndex < playerCount; playerIndex++) {
+			initializeBracket(totalNumberOfRounds, authStates[playerIndex].isAuthenticated ? authStates[playerIndex].userAlias : authStates[playerIndex].guestAlias, authStates[playerIndex].position!)
+		}
 		let winnerStates:AuthState[]
 		for (let i:number = 0; i < totalNumberOfRounds; i++) {
 			console.log(rounds[i])
-			winnerStates = await startTournamentRound(rounds[i])
+			winnerStates = await startTournamentRound(rounds[i], totalNumberOfRounds - i)
 			if (winnerStates.length > 1) {			
 				rounds[i+1] = {
 					playerStates: winnerStates,
@@ -507,17 +529,33 @@ async function startTournament(authStates:AuthState[]) {
 	}
 }
 
-async function startTournamentRound(round:Round) : Promise<AuthState[]> {
+function generateBracketMatchups(n: number): number[] {
+	if (n === 2) return [1, 2];
+	const prev = generateBracketMatchups(n / 2);
+	const seedTotal = n + 1;
+	const result:number[] = []
+	for (const element of prev) {
+		result.push(element);
+		result.push(seedTotal - element);
+	}
+	return result;
+}
+
+async function startTournamentRound(round:Round, roundNumber:number) : Promise<AuthState[]> {
 	try {
-		round.playerStates.sort((a:AuthState, b:AuthState) => a.seed! - b.seed!)
-		const winnerStates:(AuthState)[] = []
+		const winnerStates:(AuthState)[] = [];
 		const playerCount = round.playerCount;
 		const bracketSize = round.bracketSize;
-		let matchIndex:number = 0
-		for (const byeCount = bracketSize - playerCount; matchIndex < byeCount; matchIndex++)
-			winnerStates[matchIndex] = round.playerStates[matchIndex]
-		for (const winnersCount = bracketSize / 2; matchIndex !== winnersCount; matchIndex++)
-			winnerStates[matchIndex] = await startTournamentGameListeners(round.playerStates, matchIndex +1, bracketSize - matchIndex)
+		let matchIndex:number = 0;
+		for (const byeCount = bracketSize - playerCount; matchIndex < byeCount; matchIndex++) {
+			winnerStates[matchIndex] = round.playerStates[matchIndex];
+			const winnerAlias = winnerStates[matchIndex].isAuthenticated ? winnerStates[matchIndex].userAlias : winnerStates[matchIndex].guestAlias
+			updateBracket(roundNumber, winnerAlias, winnerStates[matchIndex].position!, "Bye", winnerStates[matchIndex].position! + 1);
+			winnerStates[matchIndex].position! = (winnerStates[matchIndex].position! + 1) / 2
+		}
+		for (const winnersCount = bracketSize / 2; matchIndex !== winnersCount; matchIndex++) {
+			winnerStates[matchIndex] = await startTournamentGameListeners(round.playerStates, matchIndex +1, bracketSize - matchIndex, roundNumber)
+		}
 		console.log(winnerStates);
 		return (winnerStates)
 	} catch (error) {
@@ -528,7 +566,7 @@ async function startTournamentRound(round:Round) : Promise<AuthState[]> {
 }
 
 // starts the listeners for the game button (for Pong)
-async function startTournamentGameListeners(authStates:AuthState[], player1Number:number, player2Number:number): Promise<AuthState> {
+async function startTournamentGameListeners(authStates:AuthState[], player1Number:number, player2Number:number, round:number): Promise<AuthState> {
     const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
     if (!startGameButton) {
         console.error("startGameButton Not Found");
@@ -574,10 +612,17 @@ async function startTournamentGameListeners(authStates:AuthState[], player1Numbe
 					}
 				}
 			}
-			// Update The Array Of Winners
+			// Update The Array Of Winners And The Bracket
 			if (gamePayload.status === 1 || gamePayload.status === 2) {
 				const winnerState = gamePayload.status === 1 ? authStates[player1Number -1] : authStates[player2Number -1]
-				winnerState.seed = Math.min(authStates[player1Number -1].seed!, authStates[player2Number -1].seed!)
+				const loserState = gamePayload.status === 2 ? authStates[player1Number -1] : authStates[player2Number -1]
+				const doublePostion = authStates[player2Number -1].position!
+				winnerState.position = doublePostion / 2
+				const winnerAlias:string = winnerState.isAuthenticated ? winnerState.userAlias : winnerState.guestAlias
+				const winnerBox:number = gamePayload.status === 2 ? doublePostion : doublePostion - 1;
+				const loserAlias:string = loserState.isAuthenticated ? loserState.userAlias : loserState.guestAlias
+				const loserBox:number = gamePayload.status === 1 ? doublePostion : doublePostion - 1;
+				updateBracket(round, winnerAlias, winnerBox, loserAlias, loserBox)
 				resolve(winnerState)
 			}
 			else {
@@ -597,9 +642,37 @@ async function startTournamentGameListeners(authStates:AuthState[], player1Numbe
 	})
 }
 
-// Set up the tourney html
-// Fill the bracket with user info
-// 
+function initializeBracket(round:number, alias:string, position:number) {
+	const id:string = `r${round}-b${position}`;
+	const box = document.getElementById(id) as HTMLElement;
+	if (!box) {
+		console.error("Could Not Initialize Tournament Bracket");
+		return ;
+	}
+	box.textContent = alias;
+}
+
+function updateBracket(round:number, winnerAlias:string, boxWinner:number, loserAlias:string, boxLoser:number): void {
+	const idWinner:string = `r${round}-b${boxWinner}`;
+	const idLoser:string = `r${round}-b${boxLoser}`;
+	const boxNextRound:number = (boxWinner > boxLoser ? boxWinner / 2 : boxLoser / 2)
+	const idNextRound:string = `r${round-1}-b${boxNextRound}`;
+
+	const winner = document.getElementById(idWinner) as HTMLElement;
+	const loser = document.getElementById(idLoser) as HTMLElement;
+	const nextRound = document.getElementById(idNextRound) as HTMLElement;
+
+	if (!winner || !loser || !nextRound) {
+		console.error("Could Not Update Tournament Bracket");
+		console.log(idWinner, idLoser, idNextRound)
+		return ;
+	}
+	winner.textContent = "Winner: "+ winnerAlias + "!";
+	loser.textContent = "Loser: " + loserAlias + "..";
+	nextRound.textContent = winnerAlias;
+	if (round - 1 === 0)
+		nextRound.textContent = "Champion: " + winnerAlias + "!!";
+}
 
 async function startPong(gamePayload:GameEndPayload, options:SceneOptions): Promise<GameEndPayload> {
 	const canvas = document.getElementById("renderCanvas") as HTMLCanvasElement;
