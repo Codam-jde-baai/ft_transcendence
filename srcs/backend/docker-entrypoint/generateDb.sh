@@ -8,7 +8,7 @@ COOKIE_KEY="/app/cookie-key/secret-key"
 if [ ! -f "$DB_FILE" ]; then
     echo "Database file not found. Generating new database..."
     pnpm db:generate
-    pnpm db:push --name=origin
+    pnpm db:push
     echo "Database setup complete."
 else
     echo "Database file found at $DB_FILE.\nPLEASE CHECK FOR MIGRATIONS, IT WORKS ON MY COMPUTER"

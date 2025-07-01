@@ -3,6 +3,7 @@
 
 # ignore .env in any dir
 **/.env
+**/certs
 
 # installed dependencies etc
 **/.pnpm-store

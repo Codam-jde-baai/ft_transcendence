@@ -10,7 +10,7 @@ export const errorResponseSchema = {
 // Security schema for swagger
 export const securitySchemes = {
 	apiKey: {
-		type: 'http',
+		type: 'https',
 		scheme: 'bearer'
 	}
 };

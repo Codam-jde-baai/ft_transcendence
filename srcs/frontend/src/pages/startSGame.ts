@@ -8,6 +8,8 @@ import { connectFunc, requestBody } from '../script/connections';
 import { setupSnek } from './snek';
 import { AuthState } from '../script/gameSetup'
 import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, newPlayersButton } from '../script/gameSetup'
+import { AuthState } from '../script/gameSetup'
+import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, newPlayersButton } from '../script/gameSetup'
 
 import "../styles/snek.css"
 
