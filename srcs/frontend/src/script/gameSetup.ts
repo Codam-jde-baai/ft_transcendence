@@ -10,6 +10,7 @@ export interface AuthState {
 	userAlias: string;
 	userUuid?: string; // Added UUID for authenticated users
 	seed?: number;
+	position?: number
 }
 
 export interface UserData {
