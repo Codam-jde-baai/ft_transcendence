@@ -100,36 +100,5 @@ export function dropDownBar(input: string[]) {
 				}
 			});
 		}
-		if (elem.id === "game-content") {
-			elem.addEventListener('click', (event) => {
-				const pong = document.getElementById('pong');
-				const snek = document.getElementById('snek');
-				
-				if (pong) {
-					console.log("p");
-					// if (pong.contains(event.target as Node))
-					// 	switchGame("pong");
-				}
-				if (snek) {
-					console.log("s");
-					// if (snek.contains(event.target as Node))
-					// 	switchGame("snek");
-				}
-
-			});
-		}
-		if (elem.id === "Game") {
-			// Close both dropdowns when clicking outside
-			elem.addEventListener("click", (event) => {
-				const gameDropdown = document.querySelector('.game-content');
-				const gameBtn = document.querySelector('.game-btn');
-
-				if (gameDropdown && gameBtn) {
-					// Toggle dropdown visibility when clicking the button
-					if (gameBtn.contains(event.target as Node)) 
-						gameDropdown.classList.toggle('showGame');
-				}
-			});
-		}
 	});
 }

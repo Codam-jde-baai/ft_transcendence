@@ -1,4 +1,4 @@
-import { setupStartSGame } from './startSGame'; // REPLACE WITH CORRECT PATH FOR SNEK GAME
+import { setupStartSGame } from './startSGame';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillSnek } from '../script/fillSnek';
@@ -15,21 +15,21 @@ export function setupSnek() {
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		
-		<div class="hmiddle">
-			<div class="line"></div>
+		<div class="hmiddle h-[770px] p-[50px]">
 			<h1 class="heder" data-i18n="Header_Snek"></h1>
+			<div class="line"></div>
 
-			<div class="hcontainer">
-				<div class="user-stats">
-					<div class="stat-box">
+			<div class="hcontainer gap-[70px]">
+				<div class="user-stats p-0 mt-[90px]">
+					<div class="stat-box space-y-1">
 						<div class="Sbest-score">
 							<img src="src/Pictures/SnekS.png">
 						</div>
-						<div class="text-container">
-							<div class="best-score-text" data-i18n="HighestScore"></div>
-							<div id="hScore" class="score-number"> </div>
-							<div class="best-score-text text-[18px] mt-4" data-i18n="WinRate"></div>
-							<div id="winRate" class="score-number text-[15px]"></div>
+						<div class="text-container mt-2">
+							<div class="best-score-text mt-[40px] mb-[-10px]" data-i18n="HighestScore"></div>
+							<div id="hScore" class="score-number mt-[5px]"> </div>
+							<div class="best-score-text text-[18px] mt-[2px] mb-4" data-i18n="WinRate"></div>
+							<div id="winRate" class="score-number text-[15px] mb-[-6px]"></div>
 						</div>
 					</div>
 					<div class="smoll-stat-container">
@@ -43,7 +43,7 @@ export function setupSnek() {
 							</div>
 						</div>
 						<div class="smoll-stat-box">
-							<div class="win-losse">
+							<div class="win-losse ml-4">
 								<img src="src/Pictures/losses.png">
 							</div>
 							<div class="text-container">
@@ -53,16 +53,16 @@ export function setupSnek() {
 						</div>
 					</div>
 
-					<div class="buttons">
-						<button class="btn" id="StartSnek" data-i18n="btn_PlaySnek"></button>
+					<div class="hbuttons">
+						<button class="btn mt-[20px]" id="StartSnek" data-i18n="btn_PlaySnek"></button>
+						<!-- Switching between games -->
+						<button class="game-btn mb-8" id="Pong">
+							<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-pong.png">
+						</button>
 					</div>
-					<!-- Switching between games -->
-					<button class="game-btn" id="Pong">
-						<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-pong.png">
-					</button>
 				</div>
 				
-				<div class="leaderboard">
+				<div class="leaderboard mb-[110px] max-h-[500px] min-h-[500px]">
 					<h2 class="lboard" data-i18n="LeaderBoard"></h2>
 					<div class="leaderboard-entry">
 						<div class="img-container">

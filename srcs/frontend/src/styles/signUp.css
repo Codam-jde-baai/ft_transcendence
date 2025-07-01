@@ -39,16 +39,16 @@ p {
 
 /* Button styling */
 .buttons {
-	@apply flex gap-[10px] justify-center;
+	@apply flex flex-col justify-center items-center;
 }
 .btn {
-	@apply w-[400px] h-[50px] py-[12px] text-[1.1rem] text-white bg-[#902063] rounded-[7px] cursor-pointer mt-[10px] transition-all box-border font-sans;
+	@apply w-[400px] py-3 text-lg text-white bg-[#902063] rounded-[7px] cursor-pointer mt-5 transition-all box-border font-sans;
 }
 .btn:hover {
 	@apply bg-[#b86a8a];
 }
 .btn-container {
-	@apply fixed flex items-center justify-end top-[20px] right-[20px] z-[1];
+	@apply fixed flex items-center justify-end top-5 right-5 z-10;
 }
 
 /* Edit Picture */
@@ -90,7 +90,6 @@ p {
 .language-btn img {
 	@apply w-[25px] h-[15px] ml-40 mt-[-20px];
 }
-
 
 /* Eye Icon for Password */
 .field-icon {

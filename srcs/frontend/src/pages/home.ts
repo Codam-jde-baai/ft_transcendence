@@ -1,4 +1,4 @@
-import { setupGameSelect } from './gameSelect';
+// import { setupGameSelect } from './gameSelect';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
@@ -17,18 +17,18 @@ export function setupUserHome(refresh: boolean = false) {
 		<dropdown-menu></dropdown-menu>
 		
 		<div class="hmiddle">
-			<div class="line"></div>
 			<h1 class="heder" data-i18n="Header_Pong"></h1>
+			<div class="line"></div>
 
 			<div class="hcontainer">
 				<div class="user-stats">
-					<div class="stat-box">
+					<div class="stat-box mb-[20px">
 						<div class="best-score">
 							<img src="src/Pictures/bestScore.png">
 						</div>
-						<div class="text-container">
-							<div class="best-score-text" data-i18n="WinRate"></div>
-							<div id="best-score" class="score-number"></div>
+						<div class="text-container mt-[20px]">
+							<div class="best-score-text mb-[20px]" data-i18n="WinRate"></div>
+							<div id="best-score" class="score-number mb-[20px]"></div>
 						</div>
 					</div>
 					<div class="smoll-stat-container">
@@ -42,7 +42,7 @@ export function setupUserHome(refresh: boolean = false) {
 							</div>
 						</div>
 						<div class="smoll-stat-box">
-							<div class="win-losse">
+							<div class="win-losse ml-4">
 								<img src="src/Pictures/losses.png">
 							</div>
 							<div class="text-container">
@@ -51,13 +51,13 @@ export function setupUserHome(refresh: boolean = false) {
 							</div>
 						</div>
 					</div>
-					<div class="buttons">
+					<div class="hbuttons">
 						<button class="btn" id="StartGame" data-i18n="btn_PlayPong"></button>
+						<!-- Switching between games -->
+						<button class="game-btn" id="Snek">
+							<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
+						</button>
 					</div>
-					<!-- Switching between games -->
-					<button class="game-btn" id="Snek">
-						<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
-					</button>
 
 				</div>
 				
@@ -99,7 +99,7 @@ export function setupUserHome(refresh: boolean = false) {
 							</div>
 						</div>
 					</div>
-					<div class="leaderboard-entry">
+					<div class="leaderboard-entry mr-6">
 						<div class="img-container">
 							<img src="src/Pictures/3.jpg">
 						</div>

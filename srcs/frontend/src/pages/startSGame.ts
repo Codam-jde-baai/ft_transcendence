@@ -103,7 +103,7 @@ export function setupStartSGame() {
                         </form>
 
                         <!-- Login Form -->
-                <form id="p2-LoginForm" class="form-fields text-black hidden flex flex-col">
+                <form id="p2-LoginForm" class="form-fields text-black hidden flex-col">
                     <input type="text" id="p2-loginUsername" class="form-input" data-i18n-placeholder="Username" />
                     <input type="password" id="p2-loginPassword" class="form-input" data-i18n-placeholder="Password" />
                     <div class="form-row flex">

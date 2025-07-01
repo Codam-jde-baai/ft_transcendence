@@ -1,7 +1,7 @@
-import { getLanguage } from '../script/language';
-import { dropDownBar } from '../script/dropDownBar';
-import { fillTopbar } from '../script/fillTopbar';
-import { setupNavigation } from '../script/menuNavigation';
+import { getLanguage } from '../src/script/language';
+import { dropDownBar } from '../src/script/dropDownBar';
+import { fillTopbar } from '../src/script/fillTopbar';
+import { setupNavigation } from '../src/script/menuNavigation';
 
 
 export function setupCssTemplate() {

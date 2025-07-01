@@ -19,6 +19,7 @@
     "btn_T&C": "Allgemeine Geschäftsbedingungen",
     "btn_ViewData": "Meine Daten anzeigen",
     "btn_Conf" : "bestätigen",
+    "LogIn_PA": "Anmelden als ",
 
     "Password": "Passwort",
     "ConfirmPassword": "Passwort bestätigen",
@@ -55,6 +56,7 @@
     "Admin_P": "Von",
     "T&C_P": " ",
     "Pop_setting_P": "Dies sind Ihre aktuellen Daten",
+    "btn_adminL": "Administrator",
 
     "LogIn_placeholder1": "Intra-Name",
     "SignUp_placeholder1": "Nur für die Anmeldung verwendet (Intra-Name)",

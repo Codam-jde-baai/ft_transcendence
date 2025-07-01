@@ -28,7 +28,7 @@ import '../component/adminTopbar'
 import '../component/admin_userTable'
 import '../component/history_table'
 import '../component/snekHistory_table'
-import { setupCssTemplate } from './cssTemplate';
+import { setupCssTemplate } from '../../CSS_Tamplate/cssTemplate';
 
 // Track if WebSocket listeners have been initialized
 let webSocketInitialized = false;

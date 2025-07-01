@@ -16,15 +16,15 @@ export function setupViewData() {
 		<div class="scontainer">
 			
 			<!-- Popup PW check -->
-			<div class="w-full bg-white p-5 rounded-[8px] w-[441px] relative;">
-				<span id="PWClose" class="absolute top-6 right-7 text-[24px] cursor-pointer">&times;</span>
+			<div class="bg-white p-5 rounded-[8px] w-[441px] relative;">
+				<span id="PWClose" class="mt-[-100px] mr-[-380px] text-[24px] cursor-pointer">&times;</span>
 				<h2 class="text-[20px] mt-6 text-center" data-i18n="UserPW_Header"></h2>
 				<form>
 					<p class="w-full text-black text-left m-0 mt-4" id="PWCheck" data-i18n="Password"></p>
 					<input class="bg-gray-300 w-full p-2 mb-2 rounded" type="password" id="password">
 				</form>
 				<div class="buttons mt-[-10px]">
-					<button class="mb-2.5 w-[364px] py-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-[5px] cursor-pointer mt-2.5 transition duration-300 box-border font-sans" id="PWSave" data-i18n="btn_Conf"></button>
+					<button class="mb-2.5 w-[399px] py-3 text-[1.1rem] text-white bg-[#902063] border-none rounded-[5px] cursor-pointer mt-2.5 transition duration-300 box-border font-sans" id="PWSave" data-i18n="btn_Conf"></button>
 				</div>
 			</div>
 		</div>
@@ -59,10 +59,9 @@ export function setupViewData() {
 							if (settingsPopup === null) {
 								root.insertAdjacentHTML("beforeend", /*html*/`
 									<div class="smiddle"></div>
-									<div class="scontainer">
 									
 										<!-- Popup for viewing user data -->
-										<div id="settingsPopup" class="fixed top-0 items-start left-[-20px] w-[500px] h-full bg-[rgba(0,0,0,0.8)] flex justify-center items-center z-40">
+										<div id="settingsPopup" class="fixed top-0 left-[-20px] w-[500px] h-full bg-[rgba(0,0,0,0.8)] flex justify-center items-center z-40">
 											<div class="bg-white p-5 mt-5 items-start rounded-[8px] w-[400px] min-h-[200px] fixed top-0">
 												<span id="Close" class="absolute top-2 right-2 text-[24px] cursor-pointer">&times;</span>
 												<div class="text-center">
@@ -78,7 +77,6 @@ export function setupViewData() {
 												</form>
 											</div>
 										</div>
-									</div>
 									`);
 
 								getLanguage();

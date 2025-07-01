@@ -19,6 +19,7 @@
     "btn_T&C": "Algemene voorwaarden",
     "btn_ViewData": "Mijn gegevens bekijken",
     "btn_Conf" : "Bevestig",
+    "LogIn_PA": "Inloggen als ",
 
     "Password": "Wachtwoord",
     "ConfirmPassword": "Bevestig wachtwoord",
@@ -55,6 +56,7 @@
     "Admin_P": "Van",
     "T&C_P": "Ik ga akkoord met de ",
     "Pop_setting_P": "Dit zijn uw huidige gegevens",
+    "btn_adminL": "Beheerder",
 
     "LogIn_placeholder1": "Intra-naam",
     "SignUp_placeholder1": "Alleen gebruikt voor inloggen (Intra-naam)",
