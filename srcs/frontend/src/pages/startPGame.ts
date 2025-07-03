@@ -583,15 +583,16 @@ async function startTournamentGameListeners(authStates:AuthState[], player1Numbe
         throw new Error("startGameButton Not Found");
     }
 
+	const options:SceneOptions = {}
+	options.p1_alias = authStates[player1Number -1].isAuthenticated ? authStates[player1Number -1].userAlias : authStates[player1Number -1].guestAlias
+	options.p2_alias = authStates[player2Number -1].isAuthenticated ? authStates[player2Number -1].userAlias : authStates[player2Number -1].guestAlias
 	return new Promise((resolve, reject) => { async function startTournamentGame() {
     	startGameButton.removeEventListener('click', startTournamentGame);
 		startGameButton.disabled = true;
         startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
         startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 		try {
-			const options:SceneOptions = {}
-			options.p1_alias = authStates[player1Number -1].isAuthenticated ? authStates[player1Number -1].userAlias : authStates[player1Number -1].guestAlias
-			options.p2_alias = authStates[player2Number -1].isAuthenticated ? authStates[player2Number -1].userAlias : authStates[player2Number -1].guestAlias
+
 			let gamePayload:GameEndPayload = {
 				p1_alias: options.p1_alias!,
 				p2_alias: options.p2_alias!,
@@ -648,6 +649,7 @@ async function startTournamentGameListeners(authStates:AuthState[], player1Numbe
 			startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 		}
 	};
+	setTimeout(() => { alert(`The Upcoming Match Is:\n${options.p1_alias} VS ${options.p2_alias}`) }, 100);
     startGameButton.addEventListener('click', startTournamentGame);
 	})
 }
