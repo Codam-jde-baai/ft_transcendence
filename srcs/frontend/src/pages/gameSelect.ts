@@ -76,7 +76,9 @@ function eventListeners(selectedGame:string) {
 	tournamentButton.addEventListener('click', () => {
 		selectedGame === GameType.Pong ? console.log("Pong Tournament") : console.log("Snek Tournament");
 		window.history.pushState({}, '', `/${selectedGame.toLowerCase()}Tournament`);
-		selectedGame === GameType.Pong ? setupTournamentPong(5) : setupTournamentSnek();
+		const playerCount: number | null = playerCountPopUp()
+		if (playerCount)
+			selectedGame === GameType.Pong ? setupTournamentPong(playerCount) : setupTournamentSnek();
 	});
 
 	matchMakingButton.addEventListener('click', () => {
@@ -86,3 +88,18 @@ function eventListeners(selectedGame:string) {
 	});
 }
 
+function playerCountPopUp(): number | null{
+	let playerCount:number = 4;
+	for(let valid:boolean = false; valid !== true;) {
+		const response = prompt("Pong Tournament: Enter Number Of Players. (From 3 To 42)", "4")
+		if (response === null)
+			return null;
+		if (Number(response) >= 3 && Number(response) <= 42) {
+			valid = true;
+			playerCount = Number(response);
+		} else {
+			alert("Pong Tournament: Please Enter A Valid Number Of Players. (From 3 To 42)")
+		}
+	}
+	return (playerCount);
+}
