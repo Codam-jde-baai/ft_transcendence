@@ -8,7 +8,6 @@ import { setupMatchHistory } from './history';
 import { setupGameSelect } from './gameSelect';
 import { setupSnekMatchHistory } from './snekHistory';
 import { setupSnek } from './snek';
-// import { setupPong, setupQuickPong } from './startPGame';
 import { setupPong } from './startPGame';
 import { setupAdmin } from './admin';
 import { setupAdminUserSetting } from './adminUserSetting';
