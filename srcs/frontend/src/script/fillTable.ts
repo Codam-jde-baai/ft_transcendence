@@ -47,9 +47,8 @@ export async function fillHistoryTable(aliasName: string): Promise<{ date: strin
 		const formattedData = data.map((entry: any) => ({
 			date: entry.date,
 			player1: entry.p1_alias,
-			player2: entry.player2,
-			winner: entry.winner,
-			score: entry.score
+			player2: entry.p2_alias,
+			winner: entry.winner_alias
 		}));
 		return formattedData;
 	} else {

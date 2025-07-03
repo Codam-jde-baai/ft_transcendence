@@ -24,7 +24,7 @@ class HistoryTable extends HTMLElement {
 			}
 		}).then(() => {
 			if (aliasName) {
-				fillHistoryTable(aliasName).then((entryData: { date: string; player1: string; player2: string; winner: string; score: string }[] | null) => {
+				fillHistoryTable(aliasName).then((entryData: { date: string; player1: string; player2: string; winner: string }[] | null) => {
 					if (entryData) {
 						
 						let rowsHtml = "";
@@ -35,7 +35,6 @@ class HistoryTable extends HTMLElement {
 									<td>${entry.date}</td>
 									<td>${entry.player1} vs ${entry.player2}</td>
 									<td>${entry.winner}</td>
-									<td>${entry.score}</td>
 								</tr>
 							`;
 						});
@@ -49,7 +48,6 @@ class HistoryTable extends HTMLElement {
 										<th data-i18n="Date"></th>
 										<th data-i18n="1v1_Game"></th>
 										<th data-i18n="Winner"></th>
-										<th data-i18n="WinRate"></th>
 									</tr>
 								</thead>
 								<tbody>
