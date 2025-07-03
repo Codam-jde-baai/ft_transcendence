@@ -1,7 +1,8 @@
 {
     "btn_LogIn": "Inloggen",
     "btn_SignUp": "Registreren",
-    "btn_PlayPong": "Spel Pong",
+    "btn_Play": "Spelen",
+    "btn_PlayPong": "Pong spelen",
     "btn_PlaySnek": "Snek spelen",
     "btn_Save": "Opslaan",
     "btn_Remove": "Verwijderen",
