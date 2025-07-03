@@ -91,7 +91,7 @@ function eventListeners(selectedGame:string) {
 function playerCountPopUp(): number | null{
 	let playerCount:number = 4;
 	for(let valid:boolean = false; valid !== true;) {
-		const response = prompt("Pong Tournament: Enter Number Of Players. (From 3 To 42)", "4")
+		const response = prompt("Pong Tournament: Enter Number Of Players. (From 3 To 42)", "3")
 		if (response === null)
 			return null;
 		if (Number(response) >= 3 && Number(response) <= 42) {

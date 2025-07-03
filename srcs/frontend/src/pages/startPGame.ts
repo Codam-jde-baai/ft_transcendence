@@ -63,7 +63,7 @@ export function setupPong() {
 }
 
 export function setupQuickPong() {
-    connectFunc("/matches/record/", requestBody("GET", null, "application/json"))
+	connectFunc("/matches/record/", requestBody("GET", null, "application/json"))
         .then(response => {
 			if (!response.ok) {
 				window.history.pushState({}, '', '/errorPages');
@@ -83,6 +83,9 @@ export function setupQuickPong() {
 					return ;
 				}
 				page.innerHTML = "";
+				page.style.position = "static";
+				page.style.background = "transparent";
+				page.style.border = "none";
 				page.insertAdjacentHTML("beforeend", /*html*/ `
 				<canvas id="renderCanvas" style="pointer-events:none; position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block; z-index: 42;"></canvas> <!-- Edit Canvas -->
 				<div class="fixed top-[120px] left-[220px] bg-black bg-opacity-75 py-10 px-8 rounded w-[500px] h-[100vh]">
@@ -144,7 +147,6 @@ export function setupQuickPong() {
 				`);
 				try {
 					updatePongPlayerStatsDisplay("p1", playerStats);
-					seedPlayerListener(authStates[0], "p1");
 					authStates[1] = createAuthState()
 					setupGuestAliasLocking(authStates[1]);
 					FormToggleListener(authStates[1]);
@@ -239,76 +241,82 @@ export function setupTournamentPong(playerCount:number) {
 				authStates[0].userAlias = playerStats.alias
 				authStates[0].userUuid = playerStats.uuid
 				const page = document.getElementById("middle");
-				if (page) {
-					page.innerHTML = "";
-					let html = /*html*/ `
-					<canvas id="renderCanvas" style="pointer-events:none; position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block; z-index: 42;"></canvas> <!-- Edit Canvas -->
-					<div class="fixed top-[120px] left-[220px] bg-black bg-opacity-75 py-10 px-8 rounded w-[400px] h-[100vh]">
-						<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full overflow-x-hidden">
-							<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
-								<div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
-									<p>Player1 <span id="p1-seed" class="px-3 text-sm"></span></p>
-									<p class="text-center">${playerStats.alias}</p>
-									<div class="bg-red-600 p-2 rounded">
-										<p>Wins: <span id="p1-wins">0</span> | Losses: <span id="p1-losses">0</span></p>
-										<p>Win Rate: <span id="p1-winrate">0.0</span>%</p>
+				if (!page) {
+				window.history.pushState({}, '', '/errorPages');
+                setupErrorPages(500, "Could Not Load The Content Area Of Tournament Pong");
+					return ;
+				}
+				page.innerHTML = "";
+				page.style.position = "static";
+				page.style.background = "transparent";
+				page.style.border = "none";
+				let html = /*html*/ `
+				<canvas id="renderCanvas" style="pointer-events:none; position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block; z-index: 42;"></canvas> <!-- Edit Canvas -->
+				<div class="fixed top-[120px] left-[220px] bg-black bg-opacity-75 py-10 px-8 rounded w-[400px] h-[100vh]">
+					<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full overflow-x-hidden">
+						<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
+							<div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
+								<p>Player1 <span id="p1-seed" class="px-3 text-sm"></span></p>
+								<p class="text-center">${playerStats.alias}</p>
+								<div class="bg-red-600 p-2 rounded">
+									<p>Wins: <span id="p1-wins">0</span> | Losses: <span id="p1-losses">0</span></p>
+									<p>Win Rate: <span id="p1-winrate">0.0</span>%</p>
+								</div>
+							</div>
+				`;
+				for (let playerNum:number = 2; playerNum <= playerCount; playerNum++) {
+					html += /*html*/ `
+								<div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
+									<p>Player${playerNum} <span id="p${playerNum}-seed" class="px-3 text-sm"></span></p>
+									<div class="flex items-center gap-4">
+										<label class="flex items-center cursor-pointer">
+											<span class="mr-2">Guest</span>
+												<div class="relative inline-block w-16 h-8">
+													<input type="checkbox" id="p${playerNum}-authToggle" class="absolute w-0 h-0 opacity-0">
+													<div class="absolute inset-0 bg-gray-300 rounded-full transition-colors duration-300" id="p${playerNum}-toggleBackground"></div>
+													<div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-300" id="p${playerNum}-toggleCircle"></div>
+												</div>
+											<span class="ml-2">Login</span>
+										</label>
+									</div>
+										<!-- Guest Form -->
+									<form id="p${playerNum}-GuestAliasform" class="flex flex-col gap-2 text-black">
+										<input type="text" id="p${playerNum}-guestAliasInput" class="p-2 rounded" placeholder="Guest alias" required minlength="3" maxlength="117" />
+										<div class="flex gap-2">
+											<button id="p${playerNum}-lockInGuest" type="button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Lock In</button>
+											<button id="p${playerNum}-changeGuestAlias" type="button" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hidden">Change</button>
+										</div>
+									</form>
+										<!-- Login Form -->
+									<form id="p${playerNum}-LoginForm" class="form-fields text-black hidden flex flex-col">
+										<input type="text" id="p${playerNum}-loginUsername" class="form-input" placeholder="Username" />
+										<input type="password" id="p${playerNum}-loginPassword" class="form-input" placeholder="Password" />
+										<div class="form-row flex">
+											<button type="button" id="p${playerNum}-loginButton" class="button-primary bg-purple-500 hover:bg-purple-700">Login</button>
+											<button type="button" id="p${playerNum}-logoutButton" class="button-primary bg-red-500 hover:bg-red-700 hidden">Logout</button>
+										</div>
+										<p id="p${playerNum}-loginStatus" class="text-white text-center mt-2 hidden"></p>
+									</form>
+									<p class="text-center player2-info"></p>
+									<!-- PlayerX Stats Container (initially hidden) -->
+									<div id="p${playerNum}-StatsContainer" class="bg-green-600 p-2 rounded hidden">
+										<p>Wins: <span id="p${playerNum}-wins">0</span> | Losses: <span id="p${playerNum}-losses">0</span></p>
+										<p>Win Rate: <span id="p${playerNum}-winrate">0.0</span>%</p>
 									</div>
 								</div>
 					`;
-					for (let playerNum:number = 2; playerNum <= playerCount; playerNum++) {
-						html += /*html*/ `
-									<div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
-										<p>Player${playerNum} <span id="p${playerNum}-seed" class="px-3 text-sm"></span></p>
-										<div class="flex items-center gap-4">
-											<label class="flex items-center cursor-pointer">
-												<span class="mr-2">Guest</span>
-													<div class="relative inline-block w-16 h-8">
-														<input type="checkbox" id="p${playerNum}-authToggle" class="absolute w-0 h-0 opacity-0">
-														<div class="absolute inset-0 bg-gray-300 rounded-full transition-colors duration-300" id="p${playerNum}-toggleBackground"></div>
-														<div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-300" id="p${playerNum}-toggleCircle"></div>
-													</div>
-												<span class="ml-2">Login</span>
-											</label>
-										</div>
-											<!-- Guest Form -->
-										<form id="p${playerNum}-GuestAliasform" class="flex flex-col gap-2 text-black">
-											<input type="text" id="p${playerNum}-guestAliasInput" class="p-2 rounded" placeholder="Guest alias" required minlength="3" maxlength="117" />
-											<div class="flex gap-2">
-												<button id="p${playerNum}-lockInGuest" type="button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Lock In</button>
-												<button id="p${playerNum}-changeGuestAlias" type="button" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hidden">Change</button>
-											</div>
-										</form>
-											<!-- Login Form -->
-										<form id="p${playerNum}-LoginForm" class="form-fields text-black hidden flex flex-col">
-											<input type="text" id="p${playerNum}-loginUsername" class="form-input" placeholder="Username" />
-											<input type="password" id="p${playerNum}-loginPassword" class="form-input" placeholder="Password" />
-											<div class="form-row flex">
-												<button type="button" id="p${playerNum}-loginButton" class="button-primary bg-purple-500 hover:bg-purple-700">Login</button>
-												<button type="button" id="p${playerNum}-logoutButton" class="button-primary bg-red-500 hover:bg-red-700 hidden">Logout</button>
-											</div>
-											<p id="p${playerNum}-loginStatus" class="text-white text-center mt-2 hidden"></p>
-										</form>
-										<p class="text-center player2-info"></p>
-										<!-- PlayerX Stats Container (initially hidden) -->
-										<div id="p${playerNum}-StatsContainer" class="bg-green-600 p-2 rounded hidden">
-											<p>Wins: <span id="p${playerNum}-wins">0</span> | Losses: <span id="p${playerNum}-losses">0</span></p>
-											<p>Win Rate: <span id="p${playerNum}-winrate">0.0</span>%</p>
-										</div>
-									</div>
-						`;
-					}
-					html += /*html*/ `
-							</div>
-							<!-- Start/Post Game Buttons -->
-							<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startTournament" disabled>Start Tournament</button>
-							<button class="button-main bg-gray-500 cursor-not-allowed opacity-50 hidden" id="startGame" disabled>Start Game</button>
-							<!-- Scroll Buffer -->
-							<button class="button-main py-10 pointer-events-none opacity-0" ></button>
-						</div>
-					</div>
-					`;
-					page.insertAdjacentHTML("beforeend", html);
 				}
+				html += /*html*/ `
+						</div>
+						<!-- Start/Post Game Buttons -->
+						<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startTournament" disabled>Start Tournament</button>
+						<button class="button-main bg-gray-500 cursor-not-allowed opacity-50 hidden" id="startGame" disabled>Start Game</button>
+						<!-- Scroll Buffer -->
+						<button class="button-main py-10 pointer-events-none opacity-0" ></button>
+					</div>
+				</div>
+				`;
+				page.insertAdjacentHTML("beforeend", html);
 				try {
 					updatePongPlayerStatsDisplay("p1", playerStats);
 					seedPlayerListener(authStates[0], "p1");
@@ -341,8 +349,9 @@ export function setupTournamentPong(playerCount:number) {
 
 async function seedPlayerListener(authState:AuthState, playerId:string) {
 	const seed = document.getElementById(`${playerId}-seed`) as HTMLInputElement
-	if (!seed)
-		{}; //some error
+	if (!seed) {
+		return ;
+	}; //some error
 	seed.textContent = "(#" + playerId.slice(1) + " Seed)";
 	seed.value = playerId.slice(1);
 }
@@ -411,6 +420,7 @@ function startTournamentListener(authStates:AuthState[]) {
 
 async function startTournament(authStates:AuthState[]) {
 	try {
+		tournamentHTML(authStates);
 		const playerCount = authStates.length
 		const rounds:Round[] = [];
 		rounds[0] = {
@@ -433,7 +443,6 @@ async function startTournament(authStates:AuthState[]) {
 				// Some Proper Handling
 			}
 		}
-		tournamentHTML(authStates, rounds[0].bracketSize, totalNumberOfRounds);
 		authStates.sort((a:AuthState, b:AuthState) => a.seed! - b.seed!)
 		const playerOrder = generateBracketMatchups(rounds[0].bracketSize)
 		console.log(playerOrder);
@@ -477,36 +486,53 @@ async function startTournament(authStates:AuthState[]) {
 	}
 }
 
-function tournamentHTML(playerStates: AuthState[], bracketSize: number, totalNumberOfRounds: number) {
+function tournamentHTML(playerStates: AuthState[]) {
 	const page = document.getElementById("middle");
-	console.log(playerStates, "BracketSize = " + bracketSize, "RoundNum = " + totalNumberOfRounds)
 	if (!page) {
 		console.error("Could Not Load The Tournament Display");
 		return ;
+	}
+	const tournament = document.getElementById("tournament");
+	if (tournament)
+		tournament.innerHTML = "";
+	const playerCount = playerStates.length
+	let totalNumberOfRounds:number = 1;
+	let bracketSize:number;
+	for (bracketSize = 2; bracketSize < playerCount; bracketSize *= 2) {
+		totalNumberOfRounds++;
 	}
 	const boxWidth = 150;
 	const boxSpacing = 30;
 	const fullWidth = bracketSize * (boxWidth + boxSpacing);
 	let html = /*html*/ `
-	<div class="fixed top-[120px] left-[620px] right-0 bottom-0 overflow-x-auto overflow-y-auto flex justify-center items-start">
-		<div class=" flex flex-col items-center space-y-10 mt-10" style="width:${fullWidth}px;">`;
-	for (let round = 0; round <= totalNumberOfRounds; round++) {
-		const playersInRound = Math.pow(2, round);
-		const spacingUnit = fullWidth / playersInRound;
-		html += /*html*/  `
-			<div class="flex justify-center relative w-full h-[70px]">`;
-		for (let playerBox = 1; playerBox <= playersInRound; playerBox++) {
-			const label = round === 0 ? "Champion" : "Awaiting Winner";
-			const leftOffset = spacingUnit * (playerBox - 1) + (spacingUnit - boxWidth) / 2;
+	<div id="tournament">
+		<div class="fixed top-[120px] left-[620px] right-0 bottom-0 overflow-x-auto overflow-y-auto flex justify-center items-start">
+			<div class=" flex flex-col items-center space-y-10 mt-10" style="width:${fullWidth}px;">`;
+		for (let round = 0; round <= totalNumberOfRounds; round++) {
+			const playersInRound = Math.pow(2, round);
+			const spacingUnit = fullWidth / playersInRound;
+			html += /*html*/  `
+				<div class="flex justify-center relative w-full h-[70px]">`;
+			if (round === 0) {
+				const leftOffset = (spacingUnit - boxWidth) / 2;
+				html += /*html*/ `
+				<div id="r0-b1" class="rounded-md px-4 py-2 text-center bg-white absolute" style="left:${leftOffset}px; width:${boxWidth}px;">
+					<span data-i18n="Champion">Champion</span>
+				</div>`;
+			} else 
+			for (let playerBox = 1; playerBox <= playersInRound; playerBox++) {
+				const label = round === totalNumberOfRounds ? "Bye" : "Awaiting Winner";
+				const leftOffset = spacingUnit * (playerBox - 1) + (spacingUnit - boxWidth) / 2;
+				html += /*html*/ `
+					<div id="r${round}-b${playerBox}" class="rounded-md px-4 py-2 text-center bg-white absolute" style="left:${leftOffset}px; width:${boxWidth}px;">
+						<span data-i18n="${label}">${label}</span>
+					</div>`;
+			}
 			html += /*html*/ `
-				<div id="r${round}-b${playerBox}" class="rounded-md px-4 py-2 text-center bg-white absolute" style="left:${leftOffset}px; width:${boxWidth}px;">
-					<span data-i18n="${label}">${label}</span>
 				</div>`;
 		}
 		html += /*html*/ `
-			</div>`;
-	}
-	html += /*html*/ `
+			</div>
 		</div>
 	</div>`;
 	page.insertAdjacentHTML("beforeend", html);
@@ -533,7 +559,8 @@ async function startTournamentRound(round:Round, roundNumber:number) : Promise<A
 		for (const byeCount = bracketSize - playerCount; matchIndex < byeCount; matchIndex++) {
 			winnerStates[matchIndex] = round.playerStates[matchIndex];
 			const winnerAlias = winnerStates[matchIndex].isAuthenticated ? winnerStates[matchIndex].userAlias : winnerStates[matchIndex].guestAlias
-			updateBracket(roundNumber, winnerAlias, winnerStates[matchIndex].position!, "Bye", winnerStates[matchIndex].position! + 1);
+			// updateBracket(roundNumber, winnerAlias, winnerStates[matchIndex].position!, "Bye", winnerStates[matchIndex].position! + 1);
+			initializeBracket(roundNumber - 1, winnerAlias, winnerStates[matchIndex].position!)
 			winnerStates[matchIndex].position! = (winnerStates[matchIndex].position! + 1) / 2
 		}
 		for (const winnersCount = bracketSize / 2; matchIndex !== winnersCount; matchIndex++) {
