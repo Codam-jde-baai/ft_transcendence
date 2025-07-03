@@ -31,10 +31,6 @@ export function setupAdminLogIn() {
 				<div class="buttons">
 					<button class="btn" id="Admin" data-i18n="btn_LogIn"></button>
 				</div>
-				<p>
-					<span data-i18n="SignUp_P"></span>
-					<a id="LogIn" class="cursor-pointer text-pink-600 underline" data-i18n="btn_LogIn"></a>
-				</p>
 			</div>
 		</div>
 		`);

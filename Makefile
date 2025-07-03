@@ -38,10 +38,10 @@ dev:
 		echo "Creating volume directory $(VOLUME_DIR)"; \
 		mkdir -p $(VOLUME_DIR); \
 	fi
-	$(DOCKER_COMPOSE_DEV) up -d
+	$(DOCKER_COMPOSE_DEV) up --build -d
 
 dev-build:
-	$(DOCKER_COMPOSE_DEV) build
+	$(DOCKER_COMPOSE_DEV) --build
 
 dev-down:
 	$(DOCKER_COMPOSE_DEV) down
@@ -53,7 +53,7 @@ dev-rebuild:
 	make dev
 
 build:
-	$(DOCKER_COMPOSE) build
+	$(DOCKER_COMPOSE) --build
 
 logs:
 	$(DOCKER_COMPOSE_DEV) logs
@@ -76,7 +76,7 @@ prod:
 		echo "Creating volume directory $(VOLUME_DIR)"; \
 		mkdir -p $(VOLUME_DIR); \
 	fi
-	$(DOCKER_COMPOSE) up -d
+	$(DOCKER_COMPOSE) up --build -d
 
 prod-down:
 	$(DOCKER_COMPOSE) down
@@ -111,6 +111,9 @@ deepclean: clean
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || true
 	@echo "Removing networks..."
 	@docker network rm $$(docker network ls -q) 2>/dev/null || true
+	@echo "Removing certificates"
+	@rm -rf srcs/frontend/certs
+	@rm -rf srcs/backendend/certs
 	@echo "$(GREEN)All Docker resources have been cleaned.$(RESET)"
 
 .PHONY: help dev dev-build down build dev-rebuild logs clean install prod prod-down volume clean-volume copy-env studio deepclean

@@ -6,7 +6,7 @@ import { emptyFields, errorDisplay } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
 import { websocketManager } from '../script/socket/socketClass';
-import { setupAdminLogIn} from './adminLogin';
+// import { setupAdminLogIn} from './adminLogin';
 
 export function setupLogIn() {
 	const root = document.getElementById('app');
@@ -38,10 +38,11 @@ export function setupLogIn() {
 					<span data-i18n="LogIn_P"></span>
 					<a id="SignUp" class="cursor-pointer text-pink-600 underline" data-i18n="btn_SignUp"></a>
 				</p>
-				<p class="text-[10px] mb-[-40px]">
+				<!--For Chrome, because it can't find /adminLogin -->
+				<!-- <p class="text-[10px] mb-[-40px]">
 					<span data-i18n="LogIn_PA"></span>
 					<a id="AdminL" class="cursor-pointer text-pink-600 underline" data-i18n="btn_adminL"></a>
-				</p>
+				</p> -->
 			</div>
 		</div>
 		`);
@@ -50,10 +51,11 @@ export function setupLogIn() {
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		eyeIcon_Button(["show-password"]);
 
-		document.getElementById('AdminL')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/adminLogin');
-			setupAdminLogIn();
-		});
+		// For Chrome -> don't remove
+		// document.getElementById('AdminL')?.addEventListener('click', () => {
+		// 	window.history.pushState({}, '', '/adminLogin');
+		// 	setupAdminLogIn();
+		// });
 
 		document.getElementById('SignUp')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/signUp');
