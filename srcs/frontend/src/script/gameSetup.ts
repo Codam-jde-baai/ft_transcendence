@@ -9,6 +9,8 @@ export interface AuthState {
 	guestAlias: string;
 	userAlias: string;
 	userUuid?: string; // Added UUID for authenticated users
+	seed?: number;
+	position?: number
 }
 
 export interface UserData {
@@ -17,8 +19,9 @@ export interface UserData {
 }
 
 // Prevents the toggle from being used if user is logged in / guest is locked in
-export function FormToggleListener(authState:AuthState) {
-	const toggle = document.getElementById("authToggle") as HTMLInputElement;
+export function FormToggleListener(authState:AuthState, playerId?:string) {
+	const player = playerId ? playerId : "p2";
+	const toggle = document.getElementById(`${player}-authToggle`) as HTMLInputElement;
 	if (!toggle) {
 		console.error("Auth toggle not found");
 		return;
@@ -29,17 +32,18 @@ export function FormToggleListener(authState:AuthState) {
 			toggle.checked = !toggle.checked;
 			return;
 		}
-		updateFormToggle();
+		updateFormToggle(player);
 	});
 }
 
 // updates the state of the form toggle
-export function updateFormToggle() {
-	const toggle = document.getElementById("authToggle") as HTMLInputElement;
-	const toggleBackground = document.getElementById("toggleBackground");
-	const toggleCircle = document.getElementById("toggleCircle");
-	const guestForm = document.getElementById("GuestAliasform") as HTMLFormElement;
-	const loginForm = document.getElementById("LoginForm") as HTMLFormElement;
+export function updateFormToggle(playerId?:string) {
+	const player = playerId ? playerId : "p2";
+	const toggle = document.getElementById(`${player}-authToggle`) as HTMLInputElement;
+	const toggleBackground = document.getElementById(`${player}-toggleBackground`);
+	const toggleCircle = document.getElementById(`${player}-toggleCircle`);
+	const guestForm = document.getElementById(`${player}-GuestAliasform`) as HTMLFormElement;
+	const loginForm = document.getElementById(`${player}-LoginForm`) as HTMLFormElement;
 
 	if (!toggle || !toggleBackground || !toggleCircle || !guestForm || !loginForm) {
 		console.error("Form toggle not found");
@@ -62,20 +66,21 @@ export function updateFormToggle() {
 		guestForm.classList.remove('hidden');
 		guestForm.classList.add('flex');
 
-		const loginStatus = document.getElementById('loginStatus');
+		const loginStatus = document.getElementById(`${player}-loginStatus`);
 		if (loginStatus) {
 			loginStatus.classList.add('hidden');
 		}
-		(document.getElementById('loginUsername') as HTMLInputElement).value = '';
-		(document.getElementById('loginPassword') as HTMLInputElement).value = '';
+		(document.getElementById(`${player}-loginUsername`) as HTMLInputElement).value = '';
+		(document.getElementById(`${player}-loginPassword`) as HTMLInputElement).value = '';
 	}
 }
 
 // enables the start game button and displays the player2 alias
-export function updateStartGameButton(authState:AuthState) {
-	const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
-	const player2InfoElements = document.querySelectorAll('.player2-info');
-	const player2StatsContainer = document.getElementById('player2StatsContainer');
+export function updateStartGameButton(authState:AuthState, playerId?:string) {
+	const player = playerId ? playerId : "p2";
+	const startGameButton = document.getElementById(`startGame`) as HTMLButtonElement;
+	const playerInfoElements = document.querySelectorAll(`.${player}-info`);
+	const StatsContainer = document.getElementById(`${player}-StatsContainer`);
 
 	if (!startGameButton) {
 		console.error("Start game button not found");
@@ -87,44 +92,51 @@ export function updateStartGameButton(authState:AuthState) {
 		startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 
 		const displayName = authState.isAuthenticated ? authState.userAlias : authState.guestAlias;
-		player2InfoElements.forEach(element => {
+		playerInfoElements.forEach(element => {
 			element.textContent = displayName;
 		});
 
 		// Show player2 stats if authenticated
-		if (player2StatsContainer) {
+		if (StatsContainer) {
 			if (authState.isAuthenticated) {
-				player2StatsContainer.classList.remove('hidden');
+				StatsContainer.classList.remove('hidden');
 			} else {
-				player2StatsContainer.classList.add('hidden');
+				StatsContainer.classList.add('hidden');
 			}
 		}
 	} else {
 		startGameButton.disabled = true;
 		startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
 		startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
-		player2InfoElements.forEach(element => {
+		playerInfoElements.forEach(element => {
 			element.textContent = "";
 		});
 
 		// Hide player2 stats
-		if (player2StatsContainer) {
-			player2StatsContainer.classList.add('hidden');
+		if (StatsContainer) {
+			StatsContainer.classList.add('hidden');
 		}
 	}
 }
 
 // validates and locks/unlocks the guest alias
-export function setupGuestAliasLocking(authState:AuthState) {
-	const guestInputField = document.getElementById("guestAliasInput") as HTMLInputElement;
-	const lockInButton = document.getElementById("lockInGuest") as HTMLButtonElement;
-	const changeButton = document.getElementById("changeGuestAlias") as HTMLButtonElement;
+export function setupGuestAliasLocking(authState:AuthState, playerId?:string) {
+	const player = playerId ? playerId : "p2";
+	const guestInputField = document.getElementById(`${player}-guestAliasInput`) as HTMLInputElement;
+	const lockInButton = document.getElementById(`${player}-lockInGuest`) as HTMLButtonElement;
+	const changeButton = document.getElementById(`${player}-changeGuestAlias`) as HTMLButtonElement;
 
 	if (!guestInputField || !lockInButton || !changeButton) {
 		console.error("Guest alias input or buttons not found");
 		return;
 	}
-
+	Object.assign(authState, {
+		isAuthenticated: false,
+		isGuestLocked: false,
+		guestAlias: "",
+		userAlias: ""
+	})
+	delete authState.userUuid
 	lockInButton.addEventListener('click', () => {
 		const rawInput = guestInputField.value.trim();
 		const sanitizedInput = rawInput.replace(/[^a-zA-Z0-9]/g, '');
@@ -140,7 +152,7 @@ export function setupGuestAliasLocking(authState:AuthState) {
 
 		authState.isGuestLocked = true;
 		authState.guestAlias = "(guest) " + guestInput;
-		updateStartGameButton(authState);
+		updateStartGameButton(authState, player);
 	});
 
 	changeButton.addEventListener('click', () => {
@@ -148,18 +160,24 @@ export function setupGuestAliasLocking(authState:AuthState) {
 		changeButton.classList.add('hidden');
 		lockInButton.classList.remove('hidden');
 		authState.isGuestLocked = false;
-		updateStartGameButton(authState);
+		const replayButtons = document.getElementById(`replayButtons`);
+        if (replayButtons) {
+            replayButtons.classList.add('hidden');
+            replayButtons.classList.remove('flex');
+        }
+		updateStartGameButton(authState, player);
 	});
 }
 
 
 // logs the user in
-export function setupLoginValidation(authState:AuthState, game:string) {
-	const loginButton = document.getElementById('loginButton');
-	const logoutButton = document.getElementById('logoutButton');
-	const usernameInput = document.getElementById('loginUsername') as HTMLInputElement;
-	const passwordInput = document.getElementById('loginPassword') as HTMLInputElement;
-	const loginStatus = document.getElementById('loginStatus');
+export function setupLoginValidation(authState:AuthState, game:string, playerId?:string) {
+	const player = playerId ? playerId : "p2";
+	const loginButton = document.getElementById(`${player}-loginButton`);
+	const logoutButton = document.getElementById(`${player}-logoutButton`);
+	const usernameInput = document.getElementById(`${player}-loginUsername`) as HTMLInputElement;
+	const passwordInput = document.getElementById(`${player}-loginPassword`) as HTMLInputElement;
+	const loginStatus = document.getElementById(`${player}-loginStatus`);
 
 	if (!loginButton || !logoutButton || !usernameInput || !passwordInput || !loginStatus) {
 		console.error("Login elements not found");
@@ -196,27 +214,27 @@ export function setupLoginValidation(authState:AuthState, game:string) {
                 if (game === "pong") {
 					const player2Stats = await fetchPongPlayerStats(userData.alias);
 					if (player2Stats)
-						updatePongPlayerStatsDisplay("p2", player2Stats);
+						updatePongPlayerStatsDisplay(player, player2Stats);
 				} else {
 					const player2Stats = await fetchSnekPlayer2Stats(userData.alias);
 					if (player2Stats)
 						updateSnekPlayer2StatsDisplay(player2Stats);
 				}
 
-				updateStartGameButton(authState);
-				updateFormToggle();
+				updateStartGameButton(authState, player);
+				updateFormToggle(player);
 			} else {
 				showLoginStatus(loginStatus, "Invalid username or password", false);
 				authState.isAuthenticated = false;
-				updateStartGameButton(authState);
-				updateFormToggle();
+				updateStartGameButton(authState, player);
+				updateFormToggle(player);
 			}
 		} catch (error) {
 			showLoginStatus(loginStatus, "Error during login. Please try again.", false);
 			console.error("Login error:", error);
 			authState.isAuthenticated = false;
-			updateStartGameButton(authState);
-			updateFormToggle();
+			updateStartGameButton(authState, player);
+			updateFormToggle(player);
 		}
 	});
 
@@ -232,10 +250,13 @@ export function setupLoginValidation(authState:AuthState, game:string) {
 		loginButton.classList.remove('hidden');
 		logoutButton.classList.add('hidden');
 		loginStatus.classList.add('hidden');
-
-		// resetGame(app);
-		updateStartGameButton(authState);
-		updateFormToggle();
+		const replayButtons = document.getElementById(`replayButtons`);
+        if (replayButtons) {
+            replayButtons.classList.add('hidden');
+            replayButtons.classList.remove('flex');
+        }
+		updateStartGameButton(authState, player);
+		updateFormToggle(player);
 	});
 }
 
@@ -270,7 +291,8 @@ export async function validateLogin(username: string, password: string): Promise
 }
 
 // logic for resetting the game ( newplayer button )
-export function newPlayersButton(authState:AuthState) {
+export function newPlayersButton(authState:AuthState, playerId?:string) {
+	const player = playerId ? playerId : "p2";
     const newGameButton = document.getElementById('newGame');
     if (!newGameButton) {
         console.error("New game button not found");
@@ -286,9 +308,9 @@ export function newPlayersButton(authState:AuthState) {
         authState.userUuid = undefined;
 
         // Reset guest form
-        const guestInput = document.getElementById("guestAliasInput") as HTMLInputElement;
-        const lockInButton = document.getElementById("lockInGuest") as HTMLButtonElement;
-        const changeButton = document.getElementById("changeGuestAlias") as HTMLButtonElement;
+        const guestInput = document.getElementById(`${player}-guestAliasInput`) as HTMLInputElement;
+        const lockInButton = document.getElementById(`${player}-lockInGuest`) as HTMLButtonElement;
+        const changeButton = document.getElementById(`${player}-changeGuestAlias`) as HTMLButtonElement;
 
         if (guestInput && lockInButton && changeButton) {
             guestInput.value = "";
@@ -298,11 +320,11 @@ export function newPlayersButton(authState:AuthState) {
         }
 
         // Reset login form
-        const usernameInput = document.getElementById("loginUsername") as HTMLInputElement;
-        const passwordInput = document.getElementById("loginPassword") as HTMLInputElement;
-        const loginButton = document.getElementById("loginButton") as HTMLButtonElement;
-        const logoutButton = document.getElementById("logoutButton") as HTMLButtonElement;
-        const loginStatus = document.getElementById("loginStatus");
+        const usernameInput = document.getElementById(`${player}-loginUsername`) as HTMLInputElement;
+        const passwordInput = document.getElementById(`${player}-loginPassword`) as HTMLInputElement;
+        const loginButton = document.getElementById(`${player}-loginButton`) as HTMLButtonElement;
+        const logoutButton = document.getElementById(`${player}-logoutButton`) as HTMLButtonElement;
+        const loginStatus = document.getElementById(`${player}-loginStatus`);
 
         if (usernameInput && passwordInput && loginStatus) {
             usernameInput.value = "";
@@ -319,20 +341,20 @@ export function newPlayersButton(authState:AuthState) {
         }
 
         // Reset toggle to guest mode
-        const toggle = document.getElementById("authToggle") as HTMLInputElement;
+        const toggle = document.getElementById(`${player}-authToggle`) as HTMLInputElement;
         if (toggle) {
             toggle.checked = false;
-            updateFormToggle();
+            updateFormToggle(player);
         }
 
         // Hide player2 stats
-        const player2StatsContainer = document.getElementById('player2StatsContainer');
-        if (player2StatsContainer) {
-            player2StatsContainer.classList.add('hidden');
+        const StatsContainer = document.getElementById(`${player}-StatsContainer`);
+        if (StatsContainer) {
+            StatsContainer.classList.add('hidden');
         }
 
         // Hide replay buttons
-        const replayButtons = document.getElementById('replayButtons');
+        const replayButtons = document.getElementById(`replayButtons`);
         if (replayButtons) {
             replayButtons.classList.add('hidden');
             replayButtons.classList.remove('flex');
@@ -340,8 +362,30 @@ export function newPlayersButton(authState:AuthState) {
 
         // Update start game button state
         // resetGame(app);
-        updateStartGameButton(authState);
+        updateStartGameButton(authState, player);
 
         console.log("New players button clicked");
     });
+}
+
+export function lockAuthForm (playerCount:number) {
+	for (let playerNum = 2; playerNum <= playerCount; playerNum++) {
+		const logoutButton = document.getElementById(`p${playerNum}-logoutButton`) as HTMLButtonElement | null;
+		const changeButton = document.getElementById(`p${playerNum}-changeGuestAlias`) as HTMLButtonElement | null;
+		if (logoutButton) 
+			logoutButton.disabled = true;
+		if (changeButton)
+			changeButton.disabled = true;
+	}
+}
+
+export function unlockAuthForm (playerCount:number) {
+	for (let playerNum = 2; playerNum <= playerCount; playerNum++) {
+		const logoutButton = document.getElementById(`p${playerNum}-logoutButton`) as HTMLButtonElement | null;
+		const changeButton = document.getElementById(`p${playerNum}-changeGuestAlias`) as HTMLButtonElement | null;
+		if (logoutButton) 
+			logoutButton.disabled = false;
+		if (changeButton)
+			changeButton.disabled = false;
+	}
 }

@@ -33,7 +33,8 @@ const enhancedMatchProperties = {
 	...matchProperties,
 	p1_alias: { type: 'string' },
 	p2_alias: { type: 'string' },
-	winner_alias: { type: ['string', 'null'] }
+	winner_alias: { type: ['string', 'null'] },
+	date: { type: 'string' }
 };
 
 // Schema for matches response

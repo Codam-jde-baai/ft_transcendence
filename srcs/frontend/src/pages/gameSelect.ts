@@ -3,6 +3,8 @@ import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
 import { setupMatchMaking } from './matchMaking';
+import { setupQuickPong, setupTournamentPong } from './startPGame';
+import { setupQuickSnek } from './startSGame';
 
 export enum GameType {
 	Pong = "Pong",
@@ -11,7 +13,9 @@ export enum GameType {
 
 let selectedGame: GameType = GameType.Pong;
 
-export function setupGameSelect() {
+export function setupGameSelect(gameInput?:string) {
+	if (gameInput)
+		selectedGame = gameInput === "Pong" ? GameType.Pong : GameType.Snek
 	const root = document.getElementById('app');
 	if (root) {
 		root.innerHTML = "";
@@ -19,7 +23,7 @@ export function setupGameSelect() {
 		<link rel="stylesheet" href="src/styles/contentPages.css"> 
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
-		<div class="middle">
+		<div class="middle" id="middle">
 			<div class="flex flex-row space-x-6">
 				<img src="src/Pictures/game-pong.png" style="width: 100px; height: 100px;">
 				<img src="src/Pictures/game-snek.png" style="width: 100px; height: 100px;">
@@ -42,31 +46,39 @@ export function setupGameSelect() {
 		fillTopbar();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		setupNavigation();
-		eventListeners();
+		eventListeners(selectedGame);
 	}
 }
 
-function eventListeners() {
+function eventListeners(selectedGame:string) {
 	const toggleSwitch = document.querySelector('#gameToggle input') as HTMLInputElement; // Select the input inside the label
 	const quickPlayButton = document.querySelector('#quickPlay') as HTMLButtonElement;
 	const tournamentButton = document.querySelector('#Tournament') as HTMLButtonElement;
 	const matchMakingButton = document.querySelector('#matchMaking') as HTMLButtonElement;
 
+	if (selectedGame === GameType.Snek) {
+		toggleSwitch.checked = true;
+		tournamentButton.classList.add('hidden')
+	}
+
 	toggleSwitch.addEventListener('change', () => {
 		selectedGame = toggleSwitch.checked ? GameType.Snek : GameType.Pong;
+		toggleSwitch.checked ? tournamentButton.classList.add('hidden') : tournamentButton.classList.remove('hidden')
 		console.log(`Selected game: ${selectedGame}`);
 	});
 
 	quickPlayButton.addEventListener('click', () => {
 		selectedGame === GameType.Pong ? console.log("Pong Quick Play") : console.log("Snek Quick Play");
-		// window.location.href = `/${selectedGame.toLowerCase()}QuickPlay`;
-		// selectedGame === GameType.Pong ? setupQuickPong : setupQuickSnek();
+		window.history.pushState({}, '', `/${selectedGame.toLowerCase()}QuickPlay`);
+		selectedGame === GameType.Pong ? setupQuickPong() : setupQuickSnek();
 	});
 
 	tournamentButton.addEventListener('click', () => {
 		selectedGame === GameType.Pong ? console.log("Pong Tournament") : console.log("Snek Tournament");
-		// window.location.href = `/${selectedGame.toLowerCase()}Tournament`;
-		// selectedGame === GameType.Pong ? setupTournamentPong : setupTournamentSnek();
+		window.history.pushState({}, '', `/${selectedGame.toLowerCase()}Tournament`);
+		const playerCount: number | null = playerCountPopUp()
+		if (playerCount)
+			selectedGame === GameType.Pong ? setupTournamentPong(playerCount) : setupTournamentSnek();
 	});
 
 	matchMakingButton.addEventListener('click', () => {
@@ -76,3 +88,18 @@ function eventListeners() {
 	});
 }
 
+function playerCountPopUp(): number | null{
+	let playerCount:number = 4;
+	for(let valid:boolean = false; valid !== true;) {
+		const response = prompt("Pong Tournament: Enter Number Of Players. (From 3 To 42)", "3")
+		if (response === null)
+			return null;
+		if (Number(response) >= 3 && Number(response) <= 42) {
+			valid = true;
+			playerCount = Number(response);
+		} else {
+			alert("Pong Tournament: Please Enter A Valid Number Of Players. (From 3 To 42)")
+		}
+	}
+	return (playerCount);
+}

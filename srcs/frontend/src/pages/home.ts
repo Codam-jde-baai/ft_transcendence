@@ -4,7 +4,7 @@ import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
-import { setupPong } from '../pages/startPGame';
+// import { setupPong } from '../pages/startPGame';
 import { setupSnek } from '../pages/snek';
 
 export function setupUserHome(refresh: boolean = false) {
@@ -130,18 +130,16 @@ export function setupUserHome(refresh: boolean = false) {
 		setupNavigation();
 
 		document.getElementById('StartGame')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/startPGame');
-			setupPong();
-			// window.history.pushState({}, '', '/gameSelect');
-			// setupGameSelect();
-
+			// window.history.pushState({}, '', '/startPGame');
+			// setupPong();
+			window.history.pushState({}, '', '/gameSelect');
+			setupGameSelect("Pong");
 		});
 
 		document.getElementById('Snek')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/snek');
 			setupSnek();
 		});
-
 	}
 }
 

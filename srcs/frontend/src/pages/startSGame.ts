@@ -36,7 +36,9 @@ const authState: AuthState = {
 	userAlias: ""
 };
 
-export function setupStartSGame() {
+let player1Name:string;
+
+export function setupQuickSnek() {
     const userDataPromise = connectFunc("/snek/stats/me", requestBody("GET", null, "application/json"))
         .then(response => {
             if (response.ok) {
@@ -56,6 +58,7 @@ export function setupStartSGame() {
 
     userDataPromise.then((playerStats: PlayerStats) => {
         const root = document.getElementById('app');
+		player1Name = playerStats.alias
         if (root) {
             root.innerHTML = "";
             root.insertAdjacentHTML("beforeend", /*html*/ `
@@ -72,8 +75,8 @@ export function setupStartSGame() {
                             <p data-i18n="SnekM">${playerStats.matches}</p>
                             <p><span data-i18n="SnekW"></span> ${playerStats.wins} | <span data-i18n="SnekL"></span> ${playerStats.losses}</p>
                             <p><span data-i18n="SnekWR"></span> ${(playerStats.winrate)} <span>%</span></p>
-                            <p data-i18n="SnekAG">${playerStats.avg_score}</p>
-                            <p data-i18n="SnekHS">${playerStats.highest_score}</p>
+                            <p><span data-i18n="SnekAS"></span>${playerStats.avg_score}</p>
+                            <p><span data-i18n="SnekHS"></span>${playerStats.highest_score}</p>
                         </div>
                     </div>
                     <div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
@@ -82,41 +85,41 @@ export function setupStartSGame() {
                             <label class="flex items-center cursor-pointer">
                                 <span class="mr-2" data-i18n="SnekG"></span>
                                 <div class="relative inline-block w-16 h-8">
-                                    <input type="checkbox" id="authToggle" class="absolute w-0 h-0 opacity-0">
-                                    <div class="absolute inset-0 bg-gray-300 rounded-full transition-colors duration-300" id="toggleBackground"></div>
-                                    <div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-300" id="toggleCircle"></div>
+                                    <input type="checkbox" id="p2-authToggle" class="absolute w-0 h-0 opacity-0">
+                                    <div class="absolute inset-0 bg-gray-300 rounded-full transition-colors duration-300" id="p2-toggleBackground"></div>
+                                    <div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-300" id="p2-toggleCircle"></div>
                                     </div>
                                 <span class="ml-2" data-i18n="SnekLO"></span>
                                 </label>
                         </div>
 
                         <!-- Guest Form -->
-                        <form id="GuestAliasform" class="flex flex-col gap-2 text-black">
-                            <input type="text" id="guestAliasInput" class="p-2 rounded" data-i18n-placeholder="SnekPlaceholder1" required minlength="3" maxlength="117" />
+                        <form id="p2-GuestAliasform" class="flex flex-col gap-2 text-black">
+                            <input type="text" id="p2-guestAliasInput" class="p-2 rounded" data-i18n-placeholder="SnekPlaceholder1" required minlength="3" maxlength="117" />
                             <div class="flex gap-2">
-                                <button id="lockInGuest" type="button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" data-i18n="SnekLI"></button>
-                                <button id="changeGuestAlias" type="button" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hidden" data-i18n="SnekC"></button>
+                                <button id="p2-lockInGuest" type="button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" data-i18n="SnekLI"></button>
+                                <button id="p2-changeGuestAlias" type="button" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hidden" data-i18n="SnekC"></button>
                             </div>
                         </form>
 
                         <!-- Login Form -->
-                <form id="LoginForm" class="form-fields text-black hidden flex-col">
-                    <input type="text" id="loginUsername" class="form-input" data-i18n-placeholder="Username" />
-                    <input type="password" id="loginPassword" class="form-input" data-i18n-placeholder="Password" />
+                <form id="p2-LoginForm" class="form-fields text-black hidden flex-col">
+                    <input type="text" id="p2-loginUsername" class="form-input" data-i18n-placeholder="Username" />
+                    <input type="password" id="p2-loginPassword" class="form-input" data-i18n-placeholder="Password" />
                     <div class="form-row flex">
-                        <button type="button" id="loginButton" class="button-primary bg-purple-500 hover:bg-purple-700" data-i18n="SnekLI"></button>
-                        <button type="button" id="logoutButton" class="button-primary bg-red-500 hover:bg-red-700 hidden" data-i18n="SnekLOut"></button>
+                        <button type="button" id="p2-loginButton" class="button-primary bg-purple-500 hover:bg-purple-700" data-i18n="SnekLI"></button>
+                        <button type="button" id="p2-logoutButton" class="button-primary bg-red-500 hover:bg-red-700 hidden" data-i18n="SnekLOut"></button>
                     </div>
-                    <p id="loginStatus" class="text-white text-center mt-2 hidden"></p>
+                    <p id="p2-loginStatus" class="text-white text-center mt-2 hidden"></p>
                 </form>
-                <p class="text-center player2-info"></p>
+                <p class="text-center p2-info"></p>
                 <!-- Player2 Stats Container (initially hidden) -->
-                <div id="player2StatsContainer" class="bg-green-600 p-2 rounded hidden">
+                <div id="p2-StatsContainer" class="bg-green-600 p-2 rounded hidden">
                     <p data-i18n="SnekM"><span id="p2-matches"></span></p>
                     <p><span data-i18n="SnekW"></span> <span id="p2-wins"></span> | <span data-i18n="SnekL"></span> <span id="p2-losses"></span></p>
                     <p><span data-i18n="SnekWR"></span> <span id="p2-winrate"></span><span>%</span></p>
-                    <p data-i18n="SnekAG"><span id="p2-avg-score"></span></p>
-                    <p data-i18n="SnekHS"><span id="p2-highest-score"></span></p>
+                    <p><span data-i18n="SnekAS"></span><span id="p2-avg-score"></span></p>
+                    <p><span data-i18n="SnekHS"></span><span id="p2-highest-score"></span></p>
                 </div>
             </div>
         </div>
@@ -148,12 +151,12 @@ export function setupStartSGame() {
                 startGameListeners(app);
                 newPlayersButton(authState);
 
-				const changeButton = document.getElementById("changeGuestAlias") as HTMLButtonElement;
+				const changeButton = document.getElementById("p2-changeGuestAlias") as HTMLButtonElement;
 				if (changeButton)
 					changeButton.addEventListener('click', () => {
 						resetGame(app);
     				});
-				const logoutButton = document.getElementById('logoutButton');
+				const logoutButton = document.getElementById('p2-logoutButton');
 				if (logoutButton)
 					logoutButton.addEventListener('click', () => {
 						resetGame(app);
@@ -273,7 +276,7 @@ async function startGameListeners(app: Application): Promise<void> {
         startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 
         try {
-            const gameData: gameEndData = await startSnek(app, "player1", player2Name);
+            const gameData: gameEndData = await startSnek(app, player1Name, player2Name);
             console.log("Game ended with data:", gameData);
 
             // Record game results
@@ -306,7 +309,7 @@ async function startGameListeners(app: Application): Promise<void> {
         replayButtons.classList.add('hidden');
 
         try {
-            const gameData: gameEndData = await restartSnek(app, "player1", player2Name);
+            const gameData: gameEndData = await restartSnek(app, player1Name, player2Name);
             console.log("Restarted Game results:", gameData);
 
             // Record game results
