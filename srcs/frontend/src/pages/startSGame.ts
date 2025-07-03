@@ -8,7 +8,6 @@ import { connectFunc, requestBody } from '../script/connections';
 import { setupSnek } from './snek';
 import { AuthState } from '../script/gameSetup'
 import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, newPlayersButton } from '../script/gameSetup'
-
 import "../styles/snek.css"
 
 interface PlayerStats {
@@ -78,6 +77,7 @@ export function setupQuickSnek() {
                             <p><span data-i18n="SnekAS"></span>${playerStats.avg_score}</p>
                             <p><span data-i18n="SnekHS"></span>${playerStats.highest_score}</p>
                         </div>
+                        
                     </div>
                     <div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
                         <p data-i18n="SnekP2"></p>

@@ -1,4 +1,3 @@
-// import { setupQuickSnek } from './startSGame';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillSnek } from '../script/fillSnek';
@@ -130,9 +129,7 @@ export function setupSnek() {
 		fillTopbar();
 		setupNavigation();
 
-		document.getElementById('StartSnek')?.addEventListener('click', () => {
-			// window.history.pushState({}, '', '/setupQuickSnek');
-			// setupQuickSnek();			
+		document.getElementById('StartSnek')?.addEventListener('click', () => {			
 			window.history.pushState({}, '', '/gameSelect');
 			setupGameSelect("Snek");
 		});
