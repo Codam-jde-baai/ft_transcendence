@@ -1,10 +1,11 @@
-import { setupStartSGame } from './startSGame';
+// import { setupQuickSnek } from './startSGame';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillSnek } from '../script/fillSnek';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
 import { setupUserHome } from '../pages/home';
+import { setupGameSelect } from './gameSelect';
 
 export function setupSnek() {
 	const root = document.getElementById('app');
@@ -130,8 +131,10 @@ export function setupSnek() {
 		setupNavigation();
 
 		document.getElementById('StartSnek')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/startSGame');
-			setupStartSGame();
+			// window.history.pushState({}, '', '/setupQuickSnek');
+			// setupQuickSnek();			
+			window.history.pushState({}, '', '/gameSelect');
+			setupGameSelect("Snek");
 		});
 
 		document.getElementById('Pong')?.addEventListener('click', () => {

@@ -38,7 +38,7 @@ const authState: AuthState = {
 
 let player1Name:string;
 
-export function setupStartSGame() {
+export function setupQuickSnek() {
     const userDataPromise = connectFunc("/snek/stats/me", requestBody("GET", null, "application/json"))
         .then(response => {
             if (response.ok) {

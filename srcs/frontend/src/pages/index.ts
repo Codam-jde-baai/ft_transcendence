@@ -8,13 +8,14 @@ import { setupMatchHistory } from './history';
 import { setupGameSelect } from './gameSelect';
 import { setupSnekMatchHistory } from './snekHistory';
 import { setupSnek } from './snek';
+// import { setupPong, setupQuickPong } from './startPGame';
 import { setupPong } from './startPGame';
 import { setupAdmin } from './admin';
 import { setupAdminUserSetting } from './adminUserSetting';
 import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
-import { setupStartSGame } from './startSGame';
+import { setupQuickSnek } from './startSGame';
 import { setupMatchMaking } from './matchMaking';
 import { setupAdminLogIn } from './adminLogin';
 import { setupViewData } from './viewData';
@@ -61,11 +62,12 @@ export function renderPage() {
 		'/errorPages': () => setupErrorPages(404, "Not Found"),
 		'/admin': setupAdmin,
 		'/adminUserSetting': () => setupAdminUserSetting(),
-		'/startSGame': setupStartSGame,
-		'/startPGame': setupPong,
+		'/snekQuickPlay': setupQuickSnek,
+		'/pongQuickPlay': setupPong,
+		'/pongTournament': () => setupGameSelect("Pong"),
 		'/adminLogin': setupAdminLogIn,
 		'/viewData': setupViewData,
-		'/cssTemplate': setupCssTemplate
+		'/cssTemplate': setupCssTemplate // ToDo: Remove?
 	};
 
 	if (root) {

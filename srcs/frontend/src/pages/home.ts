@@ -4,7 +4,7 @@ import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
-import { setupPong } from '../pages/startPGame';
+// import { setupPong } from '../pages/startPGame';
 import { setupSnek } from '../pages/snek';
 
 export function setupUserHome(refresh: boolean = false) {
@@ -52,11 +52,11 @@ export function setupUserHome(refresh: boolean = false) {
 						</div>
 					</div>
 					<div class="hbuttons">
-						<button class="btn" id="StartGame" data-i18n="btn_Play"></button>
-						<!-- Switching between games
+						<button class="btn" id="StartGame" data-i18n="btn_PlayPong"></button>
+						<!-- Switching between games -->
 						<button class="game-btn" id="Snek">
 							<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
-						</button> -->
+						</button>
 					</div>
 
 				</div>
@@ -133,15 +133,13 @@ export function setupUserHome(refresh: boolean = false) {
 			// window.history.pushState({}, '', '/startPGame');
 			// setupPong();
 			window.history.pushState({}, '', '/gameSelect');
-			setupGameSelect();
-
+			setupGameSelect("Pong");
 		});
 
-		// document.getElementById('Snek')?.addEventListener('click', () => {
-		// 	window.history.pushState({}, '', '/snek');
-		// 	setupSnek();
-		// });
-
+		document.getElementById('Snek')?.addEventListener('click', () => {
+			window.history.pushState({}, '', '/snek');
+			setupSnek();
+		});
 	}
 }
 
