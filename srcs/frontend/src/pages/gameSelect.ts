@@ -50,7 +50,7 @@ export function setupGameSelect(gameInput?:string) {
 	}
 }
 
-function eventListeners(selectedGame:string) {
+function eventListeners(selectedGame:GameType) {
 	const toggleSwitch = document.querySelector('#gameToggle input') as HTMLInputElement; // Select the input inside the label
 	const quickPlayButton = document.querySelector('#quickPlay') as HTMLButtonElement;
 	const tournamentButton = document.querySelector('#Tournament') as HTMLButtonElement;

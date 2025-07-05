@@ -162,14 +162,12 @@ export function setupQuickPong() {
 		})
 		.catch(error => {
 			console.error("Error fetching player stats:", error);
-			// Return default stats object if fetch fails
 			window.history.pushState({}, '', '/errorPages');
 			setupErrorPages(500, error);
 			return ;
 		});
 }
 
-// starts the listeners for the game button (for Pong)
 async function startGameListeners(authStates:AuthState[], player1Number:number, player2Number:number): Promise<void> {
     const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
     if (!startGameButton) {
@@ -198,7 +196,6 @@ async function startGameListeners(authStates:AuthState[], player1Number:number, 
 			if (authStates[player2Number -1].isAuthenticated)
 				gamePayload.p2_uuid = authStates[player2Number -1].userUuid!
 			gamePayload = await startPong(gamePayload, options);
-            // In Case Of Tournament, Update The Array Of Winners
 			// Record Game Results (Unless Played By 2 Guests Or Error Occurred)
 			if (gamePayload.status !== -1 && (gamePayload.p1_uuid || gamePayload.p2_uuid)) {
 				await recordGameResults(gamePayload);
@@ -340,7 +337,6 @@ export function setupTournamentPong(playerCount:number) {
 		})
 		.catch(error => {
 			console.error("Error fetching player stats:", error);
-			// Return default stats object if fetch fails
 			window.history.pushState({}, '', '/errorPages');
 			setupErrorPages(500, error);
 			return ;
@@ -468,7 +464,6 @@ async function startTournament(authStates:AuthState[]) {
 				alert(`The Champion Of This ${playerCount}-Person Tournament IS: ${winnerAlias}`)
 			}
 		}
-		// Some kind of tournament end shit
 		const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
 		if (startGameButton)
 			startGameButton.classList.add('hidden')
@@ -559,7 +554,6 @@ async function startTournamentRound(round:Round, roundNumber:number) : Promise<A
 		for (const byeCount = bracketSize - playerCount; matchIndex < byeCount; matchIndex++) {
 			winnerStates[matchIndex] = round.playerStates[matchIndex];
 			const winnerAlias = winnerStates[matchIndex].isAuthenticated ? winnerStates[matchIndex].userAlias : winnerStates[matchIndex].guestAlias
-			// updateBracket(roundNumber, winnerAlias, winnerStates[matchIndex].position!, "Bye", winnerStates[matchIndex].position! + 1);
 			initializeBracket(roundNumber - 1, winnerAlias, winnerStates[matchIndex].position!)
 			winnerStates[matchIndex].position! = (winnerStates[matchIndex].position! + 1) / 2
 		}
@@ -575,7 +569,6 @@ async function startTournamentRound(round:Round, roundNumber:number) : Promise<A
 	}
 }
 
-// starts the listeners for the game button (for Pong)
 async function startTournamentGameListeners(authStates:AuthState[], player1Number:number, player2Number:number, round:number): Promise<AuthState> {
     const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
     if (!startGameButton) {
@@ -679,11 +672,13 @@ function updateBracket(round:number, winnerAlias:string, boxWinner:number, loser
 		console.log(idWinner, idLoser, idNextRound)
 		return ;
 	}
-	winner.textContent = "Winner: "+ winnerAlias + "!";
-	loser.textContent = "Loser: " + loserAlias + "..";
-	nextRound.textContent = winnerAlias;
-	if (round - 1 === 0)
-		nextRound.textContent = "Champion: " + winnerAlias + "!!";
+	winner.textContent = "W: '"+ winnerAlias + "'!";
+	loser.textContent = "L: '" + loserAlias + "'..";
+	if (round - 1 === 0) {
+		nextRound.textContent += "'" + winnerAlias + "'";
+	}
+	else
+		nextRound.textContent = winnerAlias;
 }
 
 async function startPong(gamePayload:GameEndPayload, options:SceneOptions): Promise<GameEndPayload> {
@@ -704,7 +699,6 @@ async function startPong(gamePayload:GameEndPayload, options:SceneOptions): Prom
 	return (gamePayload);
 }
 
-// Function to fetch player stats (for Pong)
 export async function fetchPongPlayerStats(alias: string): Promise<PlayerStats | null> {
     try {
         const response = await connectFunc(
@@ -724,7 +718,6 @@ export async function fetchPongPlayerStats(alias: string): Promise<PlayerStats |
     }
 }
 
-// Function to update player stats display (for Pong)
 export function updatePongPlayerStatsDisplay(display:string, stats: PlayerStats) {
     const wins = document.getElementById(`${display}-wins`);
     const losses = document.getElementById(`${display}-losses`);
@@ -735,11 +728,9 @@ export function updatePongPlayerStatsDisplay(display:string, stats: PlayerStats)
     if (winrate) winrate.textContent = stats.win_rate.toFixed(2).toString();
 }
 
-// Record game results (for Pong)
 async function recordGameResults(gamePayload: GameEndPayload): Promise<boolean> {
     try {
         console.log("Submitting game results:", gamePayload);
-        // Make the API call
         const response = await connectFunc(
             "/matches/new",
             requestBody("POST", JSON.stringify(gamePayload), "application/json")
