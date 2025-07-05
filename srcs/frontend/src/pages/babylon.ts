@@ -88,7 +88,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 4, 15, BABYLON.Vector3.Zero(), scene);
     camera.attachControl(canvas, true);
     camera.inputs.removeByType("ArcRotateCameraKeyboardMoveInput");
-    camera.lowerBetaLimit = 0.2;
+    camera.lowerBetaLimit = 1;
     camera.upperBetaLimit = Math.PI / 2;
     camera.lowerRadiusLimit = 12;
     camera.upperRadiusLimit = 18;
@@ -156,11 +156,9 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
         // Pause Game
         if (paused >= 0)
         {
-            // Add Paused Logic
-            // Draw
+			if (paused) {
             // Surrender
-            // End Match
-            // Change To Fixed (Topdownp) Camera Angle
+			}
             return ;
         }
 
@@ -248,6 +246,8 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
             case "ArrowDown":
                 paddle2Direction = -1;
                 break;
+			case "t":
+            	changeCameraAngle();
         }
     });
 
@@ -301,6 +301,21 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     // Add Camera Angle Change
     // Add Button Hints (Hide With h)
 
+	function changeCameraAngle() {
+		if (paused < 0)
+			return ;
+		if (camera.lowerBetaLimit) {
+			camera.lowerBetaLimit = 0;
+    		camera.upperBetaLimit = 0;
+    		camera.lowerRadiusLimit = 12;
+    		camera.upperRadiusLimit = 18;
+		} else {
+			camera.lowerBetaLimit = 1;
+    		camera.upperBetaLimit = Math.PI / 2;
+    		camera.lowerRadiusLimit = 12;
+    		camera.upperRadiusLimit = 18;
+		}
+	}
     return scene;
 };
 
