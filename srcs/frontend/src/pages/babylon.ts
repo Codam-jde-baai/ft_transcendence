@@ -4,6 +4,7 @@ import * as GUI from '@babylonjs/gui'
 export interface SceneOptions {
 	p1_alias?: string;
 	p2_alias?: string;
+	scoreToWinString?: string;
 	// User Options
 	scoreToWin?: number;
 	// Ball Speed
@@ -70,9 +71,10 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     const ballColour        = new BABYLON.Color3(1, 1, 1);
     const goalColour        = new BABYLON.Color3(0, 1, 0);
     // User Variables
-	const player1Alias		= options.p1_alias ?? "Player 1";
-	const player2Alias		= options.p2_alias ?? "Player 2";
+	const player1Alias		= options.p1_alias ?? "P1";
+	const player2Alias		= options.p2_alias ?? "P2";
     const scoreToWin        = options.scoreToWin ?? 2;
+	const scoreToWinString	= options.scoreToWinString ?? "Score To Win"
     // Loop Variables
     let ballSpeed           = ballBaseSpeed;
     let paddle1Direction    = 0;
@@ -266,7 +268,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     const gui = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
     //Score UI
     const scoreToWinText = new GUI.TextBlock();
-    scoreToWinText.text = `Score To Win: ${scoreToWin}`;
+    scoreToWinText.text = `${scoreToWinString}: ${scoreToWin}`;
     scoreToWinText.color = "white";
     scoreToWinText.fontSize = 24;
     scoreToWinText.top = "10px";
