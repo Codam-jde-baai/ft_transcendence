@@ -260,8 +260,10 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
                 break;
 			case "t":
             	changeCameraTopDown();
+				break;
 			case "enter":
 				setWinner(winner_id);
+				break;
         }
     });
 
