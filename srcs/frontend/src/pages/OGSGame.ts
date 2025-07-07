@@ -5,6 +5,7 @@ import { setupErrorPages } from './errorPages';
 import DOMPurify from 'dompurify';
 import { connectFunc, requestBody } from '../script/connections';
 import { setupSnek } from './snek';
+import { getLanguage } from '../script/language';
 
 import "../styles/snek.css"
 
@@ -144,7 +145,7 @@ export function setupStartSGame() {
                 setupSnek();
             });
 
-            // getLanguage();
+            getLanguage();
             // setupNavigation();
 
         }
@@ -168,7 +169,6 @@ export function setupStartSGame() {
             return;
         }
     });
-
 }
 
 // Prevents the toggle from being used if user is logged in / guest is locked in
