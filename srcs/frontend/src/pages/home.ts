@@ -1,4 +1,4 @@
-import { setupGameSelect } from './gameSelect';
+// import { setupGameSelect } from './gameSelect';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillHome } from '../script/fillHome';
