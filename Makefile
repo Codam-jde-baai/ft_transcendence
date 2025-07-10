@@ -41,7 +41,7 @@ dev:
 	$(DOCKER_COMPOSE_DEV) up --build -d
 
 dev-build:
-	$(DOCKER_COMPOSE_DEV) --build
+	$(DOCKER_COMPOSE_DEV) build
 
 dev-down:
 	$(DOCKER_COMPOSE_DEV) down
@@ -53,7 +53,7 @@ dev-rebuild:
 	make dev
 
 build:
-	$(DOCKER_COMPOSE) --build
+	$(DOCKER_COMPOSE) build
 
 logs:
 	$(DOCKER_COMPOSE_DEV) logs

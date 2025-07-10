@@ -68,16 +68,16 @@ export function setupSnekMatchHistory() {
 			
 			<!-- My History Button -->
 			<button class="my-history-btn" id="MyHistoryBtn">
-				<span data-i18n="MyHistory">My History</span>
+				<span data-i18n="MyHistory"></span>
 			</button>
 			
 			<!-- Search Section -->
 			<div class="search-section">
 				<div class="search-fields">
-					<input type="text" id="alias1Input" class="alias-input" placeholder="Player 1 Alias">
-					<input type="text" id="alias2Input" class="alias-input" placeholder="Player 2 Alias (optional)">
+					<input type="text" id="alias1Input" class="alias-input" data-i18n-placeholder="P1Alias">
+					<input type="text" id="alias2Input" class="alias-input" data-i18n-placeholder="P2Alias">
 					<button class="find-btn" id="FindBtn">
-						<span data-i18n="Find">Find</span>
+						<span data-i18n="btn_find"></span>
 					</button>
 				</div>
 			</div>
@@ -87,8 +87,8 @@ export function setupSnekMatchHistory() {
 					<h1 class="Pongheader" data-i18n="Snek"></h1>
 					<h1 class="header" data-i18n="History"></h1>
 					<p class="p1">${displayedAlias}</p>
-					<p class="p1 text-red-600" ${matches === 0 ? '' : 'hidden'}>No matches found</p>
-					<snek-table></snek-table>
+					<p class="p1 text-red-600" ${matches === 0 ? '' : 'hidden'}><span data-i18n="ErrorMSG_Matches"></span></p>
+					${matches === 0 ? '' : '<snek-table></snek-table>'}
 					
 				</div>
 			</div>

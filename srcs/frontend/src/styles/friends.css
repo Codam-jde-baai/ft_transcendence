@@ -85,7 +85,7 @@
     @apply bg-[#902063];
 }
 .search-results {
-    @apply flex flex-col w-[697px] mt-[-10px] ml-[45px] fixed left-[240px] top-[282px];
+    @apply flex flex-col w-[697px] mt-[-15px] ml-[-20px] mb-[-35px];
 }
 
 /* Status icon */

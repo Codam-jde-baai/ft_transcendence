@@ -21,6 +21,7 @@
     "btn_ViewData": "View my Data",
     "btn_Conf" : "Confirm",
     "btn_adminL" : "Admin",
+    "btn_find" : "Find",
 
     "Password": "Password",
     "ConfirmPassword": "Confirm Password",
@@ -65,6 +66,9 @@
     "Admin_placeholder1": "Search users...",
     "Friends_placeholder1": "Search for friends...",
     "CurrentP_placeholder1": "This field is always required",
+    "P1Alias" : "Player 1 Alias",
+    "P2Alias" : "Player 2 Alias (optional)",
+    "ErrorMSG_Matches" : "No matches found",
 
     "Language": "Language",
     "Home": "Home",
@@ -77,6 +81,7 @@
     "German": "German",
     "Dutch": "Netherlands",
     "Game": "Game",
+    "MyHistory" : "My History",
 
     "Setting_Avatar": "Edit your Avatar",
     "Setting_Name": "Edit Login Name",
@@ -128,9 +133,10 @@
     "goBack": "Go back",
     
     "SnekP1": "Player1 (WASD)",
+    "SnekPlayer": "Player",
     "SnekM": "Matches: ",
     "SnekW": "Wins:",
-    "SnekL": "Losses: ",
+    "SnekL": " Losses: ",
     "SnekWR": "Win Rate:",
     "SnekAS": "Avg Score: ",
     "SnekHS": "Highest Score: ",
@@ -145,6 +151,7 @@
     "SnekNP" : "New Players",
     "SnekR" : "Rematch!",
     "SnekGH" : "Go back to home",
+    "SnekST" : "Start Tournament",
 
     "EndOfFile": ""
 }
