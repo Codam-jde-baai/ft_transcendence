@@ -154,7 +154,15 @@
     "SnekST": "Toernooi starten",
     "Champion": "Kampioen",
     "Bye": "Bye",
-    "Awaiting Winner": "Winnaar Afwachten",
+    "Awaiting_Winner": "Winnaar Afwachten",
+
+	"Upcoming_Match": "The Upcoming Match Is: (NL)",
+	"Tournament_Players": "Tournament: Enter Number Of Players. (From 3 To 42) (NL)",
+	"Tournament_Players_Warning": "Tournament: Please Enter A Valid Number Of Players. (From 3 To 42) (NL)",
+	"Champion_Announcement": "-Person Tournament\nThe Champion Of IS:  (NL)",
+	"Alias_Warning": "Please enter at least one alias (NL)",
+	"Deletion_Failed": "Failed to delete the account. Please try again. (NL)",
+	"Alias_Length_Warning": "Guest alias must be at least 3 characters long. (NL)",
 
     "EndOfFile": ""
 }

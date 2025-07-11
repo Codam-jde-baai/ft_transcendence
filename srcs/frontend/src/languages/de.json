@@ -154,7 +154,15 @@
     "SnekST": "Turnier starten",
     "Champion": "Turniermeister",
     "Bye": "Freilos",
-    "Awaiting Winner": "Wartet auf Sieger",
+    "Awaiting_Winner": "Wartet auf Sieger",
+
+	"Upcoming_Match": "The Upcoming Match Is: (DE)",
+	"Tournament_Players": "Tournament: Enter Number Of Players. (From 3 To 42) (DE)",
+	"Tournament_Players_Warning": "Tournament: Please Enter A Valid Number Of Players. (From 3 To 42) (DE)",
+	"Champion_Announcement": "-Person Tournament\nThe Champion Of IS:  (DE)",
+	"Alias_Warning": "Please enter at least one alias (DE)",
+	"Deletion_Failed": "Failed to delete the account. Please try again. (DE)",
+	"Alias_Length_Warning": "Guest alias must be at least 3 characters long. (DE)",
 
     "EndOfFile": ""
 }
