@@ -2,6 +2,7 @@ import DOMPurify from 'dompurify';
 import { connectFunc, requestBody } from './connections';
 import { updateSnekPlayer2StatsDisplay, fetchSnekPlayer2Stats } from '../pages/startSGame'
 import { updatePongPlayerStatsDisplay, fetchPongPlayerStats } from '../pages/startPGame'
+import { getTranslation } from './language';
 
 export interface AuthState {
 	isAuthenticated: boolean;
@@ -143,7 +144,8 @@ export function setupGuestAliasLocking(authState:AuthState, playerId?:string) {
 		const guestInput = DOMPurify.sanitize(sanitizedInput);
 
 		if (guestInput.length < 3) {
-			alert("Guest alias must be at least 3 characters long."); // add languages
+			const message = getTranslation("Alias_Length_Warning")
+			alert(message);
 			return;
 		}
 		guestInputField.disabled = true;

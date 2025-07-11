@@ -5,7 +5,7 @@ import { connectFunc, requestBody } from '../script/connections';
 import { AuthState } from '../script/gameSetup'
 import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, lockAuthForm, unlockAuthForm } from '../script/gameSetup'
 import { Pong, SceneOptions } from "./babylon.ts";
-import { getLanguage } from '../script/language.ts';
+import { getLanguage, getTranslation } from '../script/language.ts';
 import { dropDownBar } from '../script/dropDownBar.ts';
 import { fillTopbar } from '../script/fillTopbar.ts';
 import { setupNavigation } from '../script/menuNavigation.ts';
@@ -466,7 +466,8 @@ async function startTournament(authStates:AuthState[]) {
 				}
 			} else {
 				const winnerAlias = winnerStates[0].isAuthenticated ? winnerStates[0].userAlias : winnerStates[0].guestAlias
-				alert(`The Champion Of This ${playerCount}-Person Tournament IS: ${winnerAlias}`) // add languages
+				const message = getTranslation("Champion_Announcement");
+				alert(`${playerCount}${message}${winnerAlias}`);
 			}
 		}
 		// Some kind of tournament end shit
@@ -522,7 +523,7 @@ function tournamentHTML(playerStates: AuthState[]) {
 				</div>`;
 			} else 
 			for (let playerBox = 1; playerBox <= playersInRound; playerBox++) {
-				const label = round === totalNumberOfRounds ? "Bye" : "Awaiting Winner";
+				const label = round === totalNumberOfRounds ? "Bye" : "Awaiting_Winner";
 				const leftOffset = spacingUnit * (playerBox - 1) + (spacingUnit - boxWidth) / 2;
 				html += /*html*/ `
 					<div id="r${round}-b${playerBox}" class="rounded-md px-4 py-2 text-center bg-white absolute" style="left:${leftOffset}px; width:${boxWidth}px;">
@@ -652,7 +653,8 @@ async function startTournamentGameListeners(authStates:AuthState[], player1Numbe
 			startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 		}
 	};
-	setTimeout(() => { alert(`The Upcoming Match Is:\n${options.p1_alias} VS ${options.p2_alias}`) }, 100); // add languages
+	const message = getTranslation("Upcoming_Match")
+	setTimeout(() => { alert(`${message}\n${options.p1_alias} VS ${options.p2_alias}`) }, 100);
     startGameButton.addEventListener('click', startTournamentGame);
 	})
 }

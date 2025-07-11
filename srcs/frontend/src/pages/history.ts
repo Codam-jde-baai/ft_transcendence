@@ -1,4 +1,4 @@
-import { getLanguage } from '../script/language';
+import { getLanguage, getTranslation } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
@@ -141,7 +141,8 @@ function setupMatchSearchFunctionality() {
 		const alias2 = DOMPurify.sanitize(alias2Input.value.trim());
 
 		if (!alias1) {
-			alert('Please enter at least one alias'); // add languages
+			const message = getTranslation("Alias_Warning")
+			alert(message);
 			return;
 		}
 
