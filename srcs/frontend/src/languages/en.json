@@ -152,6 +152,9 @@
     "SnekR" : "Rematch!",
     "SnekGH" : "Go back to home",
     "SnekST" : "Start Tournament",
+	"Champion": "Champion",
+    "Bye": "Bye",
+    "Awaiting Winner": "Awaiting Winner",
 
     "EndOfFile": ""
 }

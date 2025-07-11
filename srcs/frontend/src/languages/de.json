@@ -91,7 +91,7 @@
     "Action": "Aktionen",
     "Date": "Datum",
     "1v1_Game": "1v1 Spiel",
-    "Winner": "Gewinner",
+    "Winner": "Sieger",
     "Score": "Punktestand",
     "Wins": "Siege",
     "Losses": "Niederlagen",
@@ -152,6 +152,9 @@
     "SnekR": "Revanche!",
     "SnekGH": "Zurück zur Startseite",
     "SnekST": "Turnier starten",
+    "Champion": "Turniermeister",
+    "Bye": "Freilos",
+    "Awaiting Winner": "Wartet auf Sieger",
 
     "EndOfFile": ""
 }

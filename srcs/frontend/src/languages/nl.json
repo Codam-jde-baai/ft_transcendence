@@ -152,6 +152,9 @@
     "SnekR": "Revanche!",
     "SnekGH": "Terug naar home",
     "SnekST": "Toernooi starten",
+    "Champion": "Kampioen",
+    "Bye": "Bye",
+    "Awaiting Winner": "Winnaar Afwachten",
 
     "EndOfFile": ""
 }
