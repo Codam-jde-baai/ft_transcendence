@@ -140,7 +140,7 @@ function setupSnekSearchFunctionality() {
 		const alias2 = DOMPurify.sanitize(alias2Input.value.trim());
 
 		if (!alias1) {
-			alert('Please enter at least one alias');
+			alert('Please enter at least one alias'); // add languages
 			return;
 		}
 

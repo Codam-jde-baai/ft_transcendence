@@ -98,7 +98,7 @@ function playerCountPopUp(): number | null{
 			valid = true;
 			playerCount = Number(response);
 		} else {
-			alert("Pong Tournament: Please Enter A Valid Number Of Players. (From 3 To 42)")
+			alert("Pong Tournament: Please Enter A Valid Number Of Players. (From 3 To 42)") // add languages
 		}
 	}
 	return (playerCount);

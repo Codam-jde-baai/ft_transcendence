@@ -119,7 +119,7 @@ export function setupSetting() {
 							window.history.pushState({}, '', '/index');
 							renderPage();
 						} else {
-							alert("Failed to delete the account. Please try again.");
+							alert("Failed to delete the account. Please try again."); // add languages
 						}
 					});
 				} else {

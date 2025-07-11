@@ -466,7 +466,7 @@ async function startTournament(authStates:AuthState[]) {
 				}
 			} else {
 				const winnerAlias = winnerStates[0].isAuthenticated ? winnerStates[0].userAlias : winnerStates[0].guestAlias
-				alert(`The Champion Of This ${playerCount}-Person Tournament IS: ${winnerAlias}`)
+				alert(`The Champion Of This ${playerCount}-Person Tournament IS: ${winnerAlias}`) // add languages
 			}
 		}
 		// Some kind of tournament end shit
@@ -518,7 +518,7 @@ function tournamentHTML(playerStates: AuthState[]) {
 				const leftOffset = (spacingUnit - boxWidth) / 2;
 				html += /*html*/ `
 				<div id="r0-b1" class="rounded-md px-4 py-2 text-center bg-white absolute" style="left:${leftOffset}px; width:${boxWidth}px;">
-					<span data-i18n="Champion">Champion</span>
+					<span data-i18n="Champion"></span>
 				</div>`;
 			} else 
 			for (let playerBox = 1; playerBox <= playersInRound; playerBox++) {
@@ -526,7 +526,7 @@ function tournamentHTML(playerStates: AuthState[]) {
 				const leftOffset = spacingUnit * (playerBox - 1) + (spacingUnit - boxWidth) / 2;
 				html += /*html*/ `
 					<div id="r${round}-b${playerBox}" class="rounded-md px-4 py-2 text-center bg-white absolute" style="left:${leftOffset}px; width:${boxWidth}px;">
-						<span data-i18n="${label}">${label}</span>
+						<span  data-i18n="${label}"></span>
 					</div>`;
 			}
 			html += /*html*/ `
@@ -537,6 +537,8 @@ function tournamentHTML(playerStates: AuthState[]) {
 		</div>
 	</div>`;
 	page.insertAdjacentHTML("beforeend", html);
+					getLanguage();
+
 }
 
 function generateBracketMatchups(n: number): number[] {
@@ -650,7 +652,7 @@ async function startTournamentGameListeners(authStates:AuthState[], player1Numbe
 			startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 		}
 	};
-	setTimeout(() => { alert(`The Upcoming Match Is:\n${options.p1_alias} VS ${options.p2_alias}`) }, 100);
+	setTimeout(() => { alert(`The Upcoming Match Is:\n${options.p1_alias} VS ${options.p2_alias}`) }, 100); // add languages
     startGameButton.addEventListener('click', startTournamentGame);
 	})
 }
