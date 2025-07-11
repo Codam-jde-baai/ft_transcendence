@@ -65,6 +65,7 @@ export const getMyStats = async (req: FastifyRequest, reply: FastifyReply) => {
 			return reply.code(200).send(emptyStats);
 		}
 		const myStats: PlayerStats[] = calculatePlayerStats(snek);
+		myStats[0].alias = alias;
 		return reply.send(myStats[0]);
 	}
 	catch (error) {
