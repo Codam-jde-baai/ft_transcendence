@@ -129,7 +129,7 @@ export function setupSnek() {
 		fillTopbar();
 		setupNavigation();
 
-		document.getElementById('StartSnek')?.addEventListener('click', () => {			
+		document.getElementById('StartSnek')?.addEventListener('click', () => {
 			window.history.pushState({}, '', '/gameSelect');
 			setupGameSelect("Snek");
 		});
