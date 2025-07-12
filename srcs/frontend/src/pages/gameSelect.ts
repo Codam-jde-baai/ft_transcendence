@@ -24,11 +24,12 @@ export function setupGameSelect(gameInput?:string) {
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		<div class="middle" id="middle">
-			<div class="flex flex-row space-x-6">
+			<div class="flex flex-row space-x-6 justify-center">
 				<img src="src/Pictures/game-pong.png" style="width: 100px; height: 100px;">
 				<img src="src/Pictures/game-snek.png" style="width: 100px; height: 100px;">
 			</div>
-			<label class="toggleSwitch" id="gameToggle">
+			
+			<label class="toggleSwitch justify-center" id="gameToggle">
 				<input type="checkbox">
 				<span class="toggle-option" data-i18n="btn_PlayPong"></span>
 				<span class="toggle-option" data-i18n="btn_PlaySnek"></span>

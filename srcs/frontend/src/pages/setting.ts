@@ -17,28 +17,32 @@ export function setupSetting() {
 		root.innerHTML = "";
 		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/setting.css"> <!-- Link to the CSS file -->
+		<link rel="stylesheet" href="src/styles/contentPages.css">
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		
-		<div class="smiddle"></div>
-		<div class="scontainer">
+		<div class="middle">
+		<div class="contentArea">
 			<h1 class="header" data-i18n="Setting_Header"></h1>
 			
 			<p class="text-left mt-2 mb-[-15px]">
 				<a id="viewData" target="_blank" class="cursor-pointer text-pink-600 underline" data-i18n="btn_ViewData"></a>
 			</p>
 				
+			<div class="contentBox border-none">
 			<p class="p1" data-i18n="Setting_Avatar"></p>
 			<button class="edit-picture" onclick="document.getElementById('avatar').click()">
 				<img id="profilePic" src="src/Pictures/defaultPP.png">
 			</button>
 			<input type="file" id="avatar" accept="image/*" style="display: none;">
-
+		</div>
 			<p class="p1" id="current-password" data-i18n="CurrentPassword"></p>
-			<input type="password" required minlength="6" maxlength="117" id="current_password" class="input-field mb-[-15px]" data-i18n-placeholder="CurrentP_placeholder1">
-			<span id="show-current_password" class="field-icon">
-				<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_current">
-			</span>
+			<div class="relative w-full">
+				<input type="password" required minlength="6" maxlength="117" id="current_password" class="input-field mb-[-15px]" data-i18n-placeholder="CurrentP_placeholder1">
+				<span id="show-current_password" class="field-icon absolute inset-y-0 right-2 flex items-center">
+					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_current">
+				</span>
+			</div>
 
 			<p class="p1" id="user-name" data-i18n="Setting_Name"></p>
 			<input type="username" required minlength="3" maxlength= "17" id="username" class="input-field">
@@ -46,18 +50,22 @@ export function setupSetting() {
 			<p class="p1" id="alias-name" data-i18n="Setting_Alias"></p>
 			<input type="Alias_Name" required minlength="3" maxlength= "17" id="alias" class="input-field">
 
-			<div class="box">
+			<div class="contentBox">
 				<p class="p1" id="userPass" data-i18n="Change_Password"></p>
-				<input type="password" required minlength="6" maxlength="117" id="password" class="input-field mb-[-15px]">
-				<span id="show-password" class="field-iconn">
-					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
-				</span>
+				<div class="relative w-full">
+					<input type="password" required minlength="6" maxlength="117" id="password" class="input-field mb-[-15px]">
+					<span id="show-password" class="field-icon absolute inset-y-0 right-2 flex items-center">
+						<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon">
+					</span>
+				</div>
 
 				<p class="p1" id="password-match" data-i18n="ConfirmPassword"></p>
-				<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field mb-[-15px]">
-				<span id="show-password_confirm" class="field-iconnn">
-					<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
-				</span>	
+				<div class="relative w-full">
+					<input type="password" required minlength="6" maxlength="117" id="password_confirm" class="input-field mb-[-15px]">
+					<span id="show-password_confirm" class="field-icon absolute inset-y-0 right-2 flex items-center">
+						<img src="src/Pictures/eyeIcon.png" alt="Show Password" id="eye-icon_confirm">
+					</span>
+				</div>
 			</div>
 				
 			<div class="buttons">

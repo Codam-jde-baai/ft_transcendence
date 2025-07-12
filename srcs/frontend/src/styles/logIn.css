@@ -1,20 +1,21 @@
 /* logIn.css */
 
-/* Overlay for background */
-.overlay {
-	@apply fixed inset-0 w-full h-screen bg-[rgba(0,0,0,0.4)] z-[-1];
+.middle {
+    @apply fixed top-1/2 left-1/2;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+
 
 /* Container for forms */
 .container {
-	@apply bg-[rgba(0,0,0,0.8)] p-[40px] rounded-[15px] w-[400px] h-[400px] relative z-[1] box-border items-start;
+	@apply bg-[rgba(0,0,0,0.8)] p-[40px] rounded-[15px] w-[400px] h-[400px] relative z-[1] box-border justify-center;
 }
 
-.middle  {
-	@apply w-full p-3 flex flex-col space-y-2 rounded-lg;
-	background-color: var(--color-bg);
-	border: 2px solid var(--color-box-border);
-}
 
 /* Header */
 .header {

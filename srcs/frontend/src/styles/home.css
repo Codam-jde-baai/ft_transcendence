@@ -7,7 +7,7 @@
 
 /* All for the Middle */
 .hmiddle {
-	@apply flex p-2.5 rounded-xl mt-[200px] w-full h-full z-10 flex-col p-6 space-y-4 items-center justify-items-stretch bg-black/80;
+	@apply flex rounded-xl w-full h-full z-10 flex-col p-6 space-y-4 items-center justify-items-stretch bg-black/80;
 }
 
 /* Header */

@@ -37,6 +37,7 @@ type FriendRelations = {
 };
 
 let publicUsers: PubUserSchema[] = [];
+let searchTimeout: number | null = null;
 
 export function setupFriends() {
 	const root = document.getElementById('app');
@@ -81,57 +82,65 @@ export function setupFriends() {
 				root.innerHTML = "";
 				root.insertAdjacentHTML("beforeend", /*html*/`
 			<link rel="stylesheet" href="src/styles/friends.css">
-			<link rel="stylesheet" href="src/styles/history.css"> <!-- Link to the CSS file -->
+			<link rel="stylesheet" href="src/styles/history.css">
+			<link rel="stylesheet" href="src/styles/contentPages.css"> 
 			<div class="overlay"></div>
 			<dropdown-menu></dropdown-menu>
 			
-			<div class="fmiddle">
-				<div class="big-wrapper">
-					<div class="container">
-						<div class="search-container">
-							<form id="searchForm">
-								<button type="button" id="searchButton" class="search-btn">
-									<img class="searchIcon" src="src/Pictures/searchIcon.png"/>
+			<div class="middle">
+				<div class="contentArea">
+					<!-- NEW FLOATING SEARCH BAR -->
+					<div class="search-overlay" id="searchOverlay"></div>
+					<div class="search-container">
+						<div class="search-input-wrapper">
+							<input 
+								type="text" 
+								id="friendSearch" 
+								class="userSearch" 
+								data-i18n-placeholder="Friends_placeholder1"
+								placeholder="Search for friends..."
+								autocomplete="off"
+								spellcheck="false"
+							>
+							<div class="search-actions">
+								<button type="button" id="refreshButton" class="search-btn" title="Refresh">
+									<img class="searchIcon" src="src/Pictures/refresh.png" alt="Refresh"/>
 								</button>
-								<input type="search" id="friendSearch" class="userSearch" data-i18n-placeholder="Friends_placeholder1">
-							</form>
-							<button type="button" id="refreshButton" class="search-btn">
-								<img class="searchIcon" src="src/Pictures/refresh.png"/>
-							</button>
+								<button type="button" id="clearSearch" class="search-btn" title="Clear" style="display: none;">
+									<svg class="searchIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+									</svg>
+								</button>
+							</div>
 						</div>
-
 						<div class="search-results" id="searchResults"></div>
+					</div>
 
-						<h1 class="header" style="margin-top: 130px;" data-i18n="Friends_Header"></h1>
-						<div class="your-friends-list-wrapper">
-							<div class="friends-list" id="friends-container">
-								${friendRelations.friends.map((element: friendSchema) => `
+					<h1 class="header" data-i18n="Friends_Header">Friends</h1>
+					<div class="your-friends-list-wrapper">
+						<div class="friends-list" id="friends-container">
+							${friendRelations.friends.map((element: friendSchema) => `
                                 <public-user type="friend" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType} status="${element.friend.status}"></public-user>
                                 `).join('')}
-							</div>
-						</div>
-
-						<h1 class="header" data-i18n="Request_Header"></h1>
-						<div class="friends-list-wrapper">
-							<div class="friends-list" id="requests-container">
-								${friendRelations.receivedRequests.map((element: friendSchema) => `
-								<public-user type="friend-request" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-								`).join('')}
-							</div>
-						</div>
-
-						<h1 class="header" data-i18n="Pending_Requests_Header"></h1>
-						<div class="friends-list-wrapper">
-							<div class="friends-list" id="pending-container">
-								${friendRelations.sentRequests.map((element: friendSchema) => `
-								<public-user type="pendingRequests" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
-								`).join('')}
-							</div>
 						</div>
 					</div>
-					<!-- Extra transparent boxes to enlarge the wrapper visually -->
-					<div class="extra-boxes-wrapper" style="margin-top: 32px; justify-content: center;">
-						<div class="extra-box" style="width: 120px; height: 50px; background: rgba(255,255,255,0.05); rgba(0,0,0,0.03);"></div>
+
+					<h1 class="header" data-i18n="Request_Header">Friend Requests</h1>
+					<div class="friends-list-wrapper">
+						<div class="friends-list" id="requests-container">
+							${friendRelations.receivedRequests.map((element: friendSchema) => `
+							<public-user type="friend-request" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+							`).join('')}
+						</div>
+					</div>
+
+					<h1 class="header" data-i18n="Pending_Requests_Header">Pending Requests</h1>
+					<div class="friends-list-wrapper">
+						<div class="friends-list" id="pending-container">
+							${friendRelations.sentRequests.map((element: friendSchema) => `
+							<public-user type="pendingRequests" alias=${element.friend.alias} friendid=${element.friendid} profilePicData=${element.friend.profile_pic.data} profilePicMimeType=${element.friend.profile_pic.mimeType}></public-user>
+							`).join('')}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -140,7 +149,7 @@ export function setupFriends() {
 				dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 				fillTopbar();
 				setupNavigation();
-				setupSearchFunctionality();
+				setupFloatingSearch();
 				setupUserActionListeners();
 
 				// Add this block to refresh both friends and pending lists
@@ -156,53 +165,121 @@ export function setupFriends() {
 		})
 }
 
-function setupSearchFunctionality() {
-	function performSearch() {
-		const searchElement = document.getElementById('friendSearch') as HTMLInputElement;
-		const query = DOMPurify.sanitize(searchElement.value);
-		const resultsContainer = document.getElementById('searchResults');
-		if (resultsContainer) {
-			resultsContainer.innerHTML = '';
+function setupFloatingSearch() {
+	const searchInput = document.getElementById('friendSearch') as HTMLInputElement;
+	const searchResults = document.getElementById('searchResults') as HTMLElement;
+	const searchOverlay = document.getElementById('searchOverlay') as HTMLElement;
+	const clearButton = document.getElementById('clearSearch') as HTMLButtonElement;
+	
+	if (!searchInput || !searchResults || !searchOverlay) return;
+
+	// Show/hide clear button based on input
+	searchInput.addEventListener('input', () => {
+		const hasValue = searchInput.value.trim().length > 0;
+		clearButton.style.display = hasValue ? 'block' : 'none';
+		
+		if (hasValue) {
+			performDelayedSearch();
+		} else {
+			hideSearchResults();
 		}
-		if (!query)
+	});
+
+	// Clear search functionality
+	clearButton.addEventListener('click', () => {
+		searchInput.value = '';
+		clearButton.style.display = 'none';
+		hideSearchResults();
+		searchInput.focus();
+	});
+
+	// Show results when input is focused and has content
+	searchInput.addEventListener('focus', () => {
+		if (searchInput.value.trim().length > 0) {
+			showSearchResults();
+		}
+	});
+
+	// Hide results when clicking outside
+	searchOverlay.addEventListener('click', hideSearchResults);
+
+	// Handle keyboard navigation
+	searchInput.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') {
+			hideSearchResults();
+			searchInput.blur();
+		} else if (e.key === 'Enter') {
+			e.preventDefault();
+			performSearch();
+		}
+	});
+
+	function performDelayedSearch() {
+		if (searchTimeout) {
+			clearTimeout(searchTimeout);
+		}
+		searchTimeout = setTimeout(performSearch, 300);
+	}
+
+	function performSearch() {
+		const query = DOMPurify.sanitize(searchInput.value.trim());
+		
+		if (!query) {
+			hideSearchResults();
 			return;
-		let matches: number = 0;
-		for (const user of publicUsers) {
-			if (user.alias.includes(query)) {
-				matches += 1;
-				let userElement = document.createElement('public-user');
-				userElement.setAttribute('type', 'unfriend');
-				userElement.setAttribute('alias', user.alias);
-				userElement.setAttribute('profilePicData', user.profile_pic.data);
-				userElement.setAttribute('profilePicMimeType', user.profile_pic.mimeType);
-				resultsContainer?.appendChild(userElement);
-			}
 		}
 
-		if (matches === 0) {
-			let userElement = document.createElement('public-user');
-			userElement.setAttribute('alias', 'no results');
-			resultsContainer?.appendChild(userElement);
-			console.log("no matches found");
+		const matches = publicUsers.filter(user => 
+			user.alias.toLowerCase().includes(query.toLowerCase())
+		);
+
+		displaySearchResults(matches);
+		showSearchResults();
+	}
+
+	function displaySearchResults(matches: PubUserSchema[]) {
+		if (matches.length === 0) {
+			searchResults.innerHTML = '<div class="search-no-results">No users found</div>';
+			return;
 		}
+
+		searchResults.innerHTML = matches.map(user => `
+			<div class="search-result-item" data-alias="${user.alias}">
+				<public-user 
+					type="unfriend" 
+					alias="${user.alias}" 
+					profilePicData="${user.profile_pic.data}" 
+					profilePicMimeType="${user.profile_pic.mimeType}">
+				</public-user>
+			</div>
+		`).join('');
+
+		// Add click handlers for search result items
+		searchResults.querySelectorAll('.search-result-item').forEach(item => {
+			item.addEventListener('click', (e) => {
+				e.stopPropagation();
+				// The public-user component will handle the actual action
+				// We might want to close the search results after action
+				setTimeout(() => {
+					hideSearchResults();
+					searchInput.value = '';
+					clearButton.style.display = 'none';
+				}, 100);
+			});
+		});
+
 		getLanguage();
 	}
-	function delayFunc(func: Function, delay: number) {
-		let timeoutId: number;
-		return function (...args: any[]) {
-			clearTimeout(timeoutId);
-			timeoutId = setTimeout(() => func(...args), delay);
-		};
-	}
-	const delaySearch = delayFunc(performSearch, 100);
-	document.getElementById('friendSearch')?.addEventListener('input', () => {
-		delaySearch();
-	});
 
-	document.getElementById('searchButton')?.addEventListener('click', () => {
-		performSearch();
-		//getLanguage();
-	});
+	function showSearchResults() {
+		searchResults.classList.add('show');
+		searchOverlay.classList.add('active');
+	}
+
+	function hideSearchResults() {
+		searchResults.classList.remove('show');
+		searchOverlay.classList.remove('active');
+	}
 }
 
 function refreshNonFriends() {
@@ -218,12 +295,20 @@ function refreshNonFriends() {
 		.then(data => {
 			if (data)
 				publicUsers = data;
-			const searchBar = document.getElementById("friendSearch") as HTMLInputElement;
-			if (searchBar?.value) {
-				searchBar.dispatchEvent(new Event("input")); // trigger search
+			
+			// Re-trigger search if there's an active search
+			const searchInput = document.getElementById("friendSearch") as HTMLInputElement;
+			if (searchInput?.value.trim()) {
+				// Clear timeout and perform immediate search
+				if (searchTimeout) {
+					clearTimeout(searchTimeout);
+				}
+				setTimeout(() => {
+					const event = new Event('input', { bubbles: true });
+					searchInput.dispatchEvent(event);
+				}, 100);
 			}
-		}
-		)
+		});
 }
 
 // Function to refresh a specific container with fresh data from the server

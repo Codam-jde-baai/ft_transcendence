@@ -14,7 +14,7 @@ export function setupLogIn() {
 		root.innerHTML = "";
 		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/logIn.css"> <!-- Link to the CSS file -->
-		<div class="overlay"></div>
+		<!-- <div class="overlay"></div> -->
 		<language-menu></language-menu>
 
 		<div class="middle">
@@ -44,7 +44,7 @@ export function setupLogIn() {
 					<a id="AdminL" class="cursor-pointer text-pink-600 underline" data-i18n="btn_adminL"></a>
 				</p> -->
 			</div>
-		</div>
+		<!-- </div> -->
 		`);
 
 		getLanguage();

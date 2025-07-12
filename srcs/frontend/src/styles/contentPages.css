@@ -15,7 +15,7 @@
     @apply flex flex-col overflow-auto py-6 space-y-1 text-center;
     width: calc(100% - 220px);
     margin-left: 220px;
-    margin-top: 120px;
+    margin-top: 140px;
 }
 
 @media (min-width: 1320px) {
@@ -70,7 +70,7 @@
 }
 
 .contentBox {
-	@apply w-full p-3 flex flex-col space-y-2 rounded-lg;
+	@apply w-full p-3 mt-4 mb-4 flex flex-col space-y-2 rounded-lg;
 	background-color: var(--color-bg);
 	border: 2px solid var(--color-box-border);
 }

@@ -3,8 +3,7 @@
 /* Container for forms */
 .scontainer {
     @apply flex flex-col py-8 text-center bg-[rgba(0,0,0,0.8)] rounded-[15px] p-[65px];
-    margin-left: 220px;
-    margin-top: 120px;
+    /* margin-left: 220px; */
 }
 
 /* All for the Middle */
@@ -46,7 +45,7 @@ p {
 
 /* Edit picture */
 .edit-picture {
-	@apply flex bg-none border-none cursor-pointer ml-[150px];
+	@apply flex justify-center;
 }
 .edit-picture img {
 	@apply w-[110px] h-[110px] rounded-full object-cover border-[3px] border-white;
@@ -57,24 +56,11 @@ p {
 
 /* Eye icon for password */
 .field-icon {
-	@apply relative cursor-pointer top-[-15px] right-[-365px];
+	@apply relative cursor-pointer right-[-15px];
 }
 .field-icon img {
 	@apply w-[25px] h-[20px];
 }
-.field-iconn {
-	@apply relative cursor-pointer top-[-15px] right-[-43%];
-}
-.field-iconn img {
-	@apply w-[25px] h-[20px];
-}
-.field-iconnn {
-	@apply relative cursor-pointer top-[-15px] right-[-43%];
-}
-.field-iconnn img {
-	@apply w-[25px] h-[20px];
-}
-
 /* Error Messages */
 .input-error {
 	@apply border-[3px] border-red-500;

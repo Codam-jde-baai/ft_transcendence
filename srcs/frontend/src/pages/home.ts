@@ -12,9 +12,11 @@ export function setupUserHome(refresh: boolean = false) {
 		root.innerHTML = "";
 		root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/home.css"> <!-- Link to the CSS file -->
+		<link rel="stylesheet" href="src/styles/contentPages.css"> 
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		
+		<div class="middle">
 		<div class="hmiddle">
 			<h1 class="heder" data-i18n="Header_Pong"></h1>
 			<div class="line"></div>
@@ -120,6 +122,7 @@ export function setupUserHome(refresh: boolean = false) {
 
 			</div>
 		</div>
+					</div>
 		`);
 
 		getLanguage();
