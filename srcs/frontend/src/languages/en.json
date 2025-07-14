@@ -164,5 +164,8 @@
 	"Deletion_Failed": "Failed to delete the account. Please try again.",
 	"Alias_Length_Warning": "Guest alias must be at least 3 characters long.",
 
+	"Victory_Message": "Wins!\n(Press 'Enter' To Continue)",
+	"Score_To_Win": "Score To Win",
+
     "EndOfFile": ""
 }

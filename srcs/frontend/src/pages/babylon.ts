@@ -1,5 +1,6 @@
 import * as BABYLON from '@babylonjs/core'
 import * as GUI from '@babylonjs/gui'
+import { getTranslation } from '../script/language';
 
 export interface SceneOptions {
 	p1_alias?: string;
@@ -24,6 +25,8 @@ export class Pong {
         window.addEventListener('resize', () => {
             this.engine.resize();
         });
+		options.scoreToWinString = getTranslation("Score_To_Win")
+		options.victoryMessage = getTranslation("Victory_Message")
         this.scene = createScene(this.engine, this.canvas, options, (winner_id:number) => {
 			this.winner_id = winner_id
 			if (this._onGameEndCallback)

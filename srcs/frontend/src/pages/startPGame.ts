@@ -92,7 +92,7 @@ export function setupQuickPong() {
 					<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full">
 						<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
 							<div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
-								<p data-i18n="SnekP1"> </p>
+								<p><span data-i18n="SnekPlayer"></span>1</p>
 								<p class="text-center">${playerStats.alias}</p>
 								<div class="bg-red-600 p-2 rounded">
 									<p><span data-i18n="SnekW"></span> <span id="p1-wins">0</span> |<span data-i18n="SnekL"></span> <span id="p1-losses">0</span></p>
@@ -100,7 +100,7 @@ export function setupQuickPong() {
 								</div>
 							</div>
 							<div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
-								<p data-i18n="SnekP2"></p>
+								<p><span data-i18n="SnekPlayer"></span>2</p>
 								<div class="flex items-center gap-4">
 									<label class="flex items-center cursor-pointer">
 										<span class="mr-2"data-i18n="SnekG"></span>
