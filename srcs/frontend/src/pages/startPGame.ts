@@ -349,6 +349,7 @@ export function setupTournamentPong(playerCount:number) {
 }
 
 async function seedPlayerListener(authState:AuthState, playerId:string) {
+	void(authState);
 	const seed = document.getElementById(`${playerId}-seed`) as HTMLInputElement
 	if (!seed) {
 		return ;
