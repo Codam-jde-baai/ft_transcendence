@@ -87,7 +87,7 @@ export function setupQuickPong() {
 				page.style.background = "transparent";
 				page.style.border = "none";
 				page.insertAdjacentHTML("beforeend", /*html*/ `
-				<canvas id="renderCanvas" style="pointer-events:none; position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block; z-index: 42;"></canvas> <!-- Edit Canvas -->
+				<canvas id="renderCanvas" style="pointer-events:none; position:absolute; top:120px; left:220px; height: calc(100vh - 120px); width: calc(100vw - 220px); display: block; z-index: 42;"></canvas>
 				<div class="fixed top-[120px] left-[220px] bg-black bg-opacity-75 py-10 px-8 rounded w-[500px] h-[100vh]">
 					<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full">
 						<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
@@ -145,6 +145,7 @@ export function setupQuickPong() {
 					</div>
 				</div>
 				`);
+				initCanvas()
 				getLanguage();
 				try {
 					updatePongPlayerStatsDisplay("p1", playerStats);
@@ -167,6 +168,30 @@ export function setupQuickPong() {
 			setupErrorPages(500, error);
 			return ;
 		});
+}
+
+function initCanvas() {
+	try {
+		const canvas = document.getElementById('renderCanvas') as HTMLCanvasElement;
+		if (!canvas) {
+				throw new Error("Canvas Element With Id 'renderCanvas' Not Found.");
+		}
+		function resizeCanvas() {
+			const width = window.innerWidth - 220;
+			const height = window.innerHeight - 120;
+
+			canvas.width = width;
+			canvas.height = height;
+		}
+		window.addEventListener('resize', resizeCanvas);
+		window.addEventListener('DOMContentLoaded', resizeCanvas);
+	}
+	catch (error:any) {
+    	console.error("Error Initializing Canvas:", error);
+		window.history.pushState({}, '', '/errorPages');
+		setupErrorPages(500, error);
+		return ;
+	}
 }
 
 async function startGameListeners(authStates:AuthState[], player1Number:number, player2Number:number): Promise<void> {
@@ -249,7 +274,7 @@ export function setupTournamentPong(playerCount:number) {
 				page.style.background = "transparent";
 				page.style.border = "none";
 				let html = /*html*/ `
-				<canvas id="renderCanvas" style="pointer-events:none; position:absolute; width: 80vw; top:120px; left:220px; height: 80vh; display: block; z-index: 42;"></canvas> <!-- Edit Canvas -->
+				<canvas id="renderCanvas" style="pointer-events:none; position:absolute; top:120px; left:220px; height: calc(100vh - 120px); width: calc(100vw - 220px); display: block; z-index: 42;"></canvas>
 				<div class="fixed top-[120px] left-[220px] bg-black bg-opacity-75 py-10 px-8 rounded w-[400px] h-[100vh]">
 					<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full overflow-x-hidden">
 						<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
@@ -315,6 +340,8 @@ export function setupTournamentPong(playerCount:number) {
 				</div>
 				`;
 				page.insertAdjacentHTML("beforeend", html);
+				initCanvas();
+				getLanguage();
 				try {
 					updatePongPlayerStatsDisplay("p1", playerStats);
 					seedPlayerListener(authStates[0], "p1");
@@ -328,7 +355,6 @@ export function setupTournamentPong(playerCount:number) {
 						seedPlayerListener(authStates[playerNum -1], playerId);
 					}
 					startTournamentListener(authStates);
-					getLanguage();
 				} catch (error:any) {
 					console.error("Error setting up the game:", error);
 					window.history.pushState({}, '', '/errorPages');

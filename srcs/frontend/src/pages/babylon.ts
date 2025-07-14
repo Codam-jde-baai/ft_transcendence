@@ -9,9 +9,8 @@ export interface SceneOptions {
 	victoryMessage?: string;
 	// User Options
 	scoreToWin?: number;
-	// Ball Speed
-	// Ball Acceleration
-	// Ball Speed
+	// Ball Acceleration?
+	// Ball Speed?
 }
 
 export class Pong {
@@ -55,22 +54,19 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     const scene = new BABYLON.Scene(engine);
 
     // Adjustable Variables
-    const groundWidth       = 10;
-    const groundHeight      = 7;
+    const groundWidth       = 20;
+    const groundHeight      = 10;
     const paddleWidth       = 0.5;
     const paddleHeight      = 2;
-    const paddleDepth       = 1.5;
-    const paddleSpeed       = 0.3;
+    const paddleDepth       = 2;
+    const paddleSpeed       = 0.4;
     const ballSize          = 0.4;
     const ballMaxAngle      = Math.PI / 4;
-    const ballBaseSpeed     = 0.10
+    const ballBaseSpeed     = 0.2
     const ballAcceleration  = 1.05;
-    const ballMaxSpeed      = 0.3;
+    const ballMaxSpeed      = 0.4;
     const ballStartAngle    = Math.PI / 6;
 	const ballDropSpeed		= 0.2
-	let   ballDropped		= false;
-	let   ballVector		= new BABYLON.Vector3(0,0,0);
-    // let ballVector = new BABYLON.Vector3(0.01, 0, 0);
     // Colours
     const paddle1Colour     = new BABYLON.Color3(0, 0, 1);
     const paddle2Colour     = new BABYLON.Color3(1, 0, 0);
@@ -83,6 +79,8 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 	const victoryMessage	= options.victoryMessage ?? "Wins!\n(Press 'Enter' To Continue)"
     const scoreToWin        = options.scoreToWin ?? 2;
     // Loop Variables
+	let	ballDropped			= false;
+	let	ballVector			= new BABYLON.Vector3(0,0,0);
     let ballSpeed           = ballBaseSpeed;
     let paddle1Direction    = 0;
     let paddle2Direction    = 0;
@@ -100,7 +98,12 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     camera.upperBetaLimit = Math.PI / 2;
     camera.lowerRadiusLimit = 12;
     camera.upperRadiusLimit = 18;
-
+// engine.onResizeObservable.add(() => {
+//   if (camera instanceof BABYLON.FreeCamera || camera instanceof BABYLON.ArcRotateCamera) {
+//     camera.aspectRatio = engine.getRenderingCanvasClientRect().width / engine.getRenderingCanvasClientRect().height;
+//     camera.getProjectionMatrix(true); // force recalculation
+//   }
+// });
     // light
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
@@ -236,7 +239,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 				ball.position.set(0, 3, 0);
 				ballDropped = false;
 				ballSpeed = ballBaseSpeed;
-				// ballVector = new BABYLON.Vector3(0.01, 0, 0);
 				ballVector = BABYLON.Vector3.Zero();
 			}
         }
@@ -285,6 +287,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     });
 
     // GUI Setup
+	// TODO, Update GUI Based On resize
     const gui = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
     //Score UI
     const scoreToWinText = new GUI.TextBlock();
