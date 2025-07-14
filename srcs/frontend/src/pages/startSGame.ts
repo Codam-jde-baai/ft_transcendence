@@ -9,6 +9,9 @@ import { setupSnek } from './snek';
 import { AuthState } from '../script/gameSetup'
 import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, newPlayersButton } from '../script/gameSetup'
 import "../styles/snek.css"
+import { dropDownBar } from '../script/dropDownBar';
+import { fillTopbar } from '../script/fillTopbar';
+import { setupNavigation } from '../script/menuNavigation';
 
 interface PlayerStats {
 	alias: string;
@@ -61,11 +64,8 @@ export function setupQuickSnek() {
         if (root) {
             root.innerHTML = "";
             root.insertAdjacentHTML("beforeend", /*html*/ `
-            
-            <div class="flex flex-col gap-4 items-center bg-black bg-opacity-75 py-20 px-8 rounded">
-
-            <button class="fixed top-4 left-4 w-[190px] py-3 text-lg text-white bg-green-600 rounded-[7px] cursor-pointer mt-5 transition-all box-border font-sans hover:bg-green-500" id="SnekHome" data-i18n="SnekGH"></button>
-
+            <dropdown-menu></dropdown-menu>
+            <div class="flex flex-col gap-4 items-center bg-black bg-opacity-75 py-30 px-8 pt-10 pb-5 rounded mt-[50px]">
                 <div class="flex flex-row w-full gap-20 bg-pink-500 text-white py-2 px-4 rounded justify-center">
                 <div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
                         <p data-i18n="SnekP1"></p>
@@ -138,6 +138,9 @@ export function setupQuickSnek() {
             });
 
             getLanguage();
+            dropDownBar(["dropdown-btn", "language-btn", "language-content", "game-btn", "game-content"]);
+            fillTopbar();
+            setupNavigation();
 
         }
         const container = document.getElementById('gameContainer') as HTMLElement;
