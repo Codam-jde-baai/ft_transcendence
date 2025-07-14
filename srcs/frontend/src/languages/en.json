@@ -166,5 +166,8 @@
     "Snek_Wins1": "Congratulations! ",
     "Snek_Wins2": " Won the game!",
 
+	"Victory_Message": "Wins!\n(Press 'Enter' To Continue)",
+	"Score_To_Win": "Score To Win",
+
     "EndOfFile": ""
 }

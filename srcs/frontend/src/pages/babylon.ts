@@ -5,11 +5,12 @@ import { getTranslation } from '../script/language';
 export interface SceneOptions {
 	p1_alias?: string;
 	p2_alias?: string;
+	scoreToWinString?: string;
+	victoryMessage?: string;
 	// User Options
 	scoreToWin?: number;
-	// Ball Speed
-	// Ball Acceleration
-	// Ball Speed
+	// Ball Acceleration?
+	// Ball Speed?
 }
 
 export class Pong {
@@ -23,6 +24,8 @@ export class Pong {
         window.addEventListener('resize', () => {
             this.engine.resize();
         });
+		options.scoreToWinString = getTranslation("Score_To_Win")
+		options.victoryMessage = getTranslation("Victory_Message")
         this.scene = createScene(this.engine, this.canvas, options, (winner_id:number) => {
 			this.winner_id = winner_id
 			if (this._onGameEndCallback)
@@ -51,52 +54,58 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     const scene = new BABYLON.Scene(engine);
 
     // Adjustable Variables
-    const groundWidth       = 10;
-    const groundHeight      = 7;
+    const groundWidth       = 20;
+    const groundHeight      = 10;
     const paddleWidth       = 0.5;
     const paddleHeight      = 2;
-    const paddleDepth       = 1.5;
-    const paddleSpeed       = 0.3;
+    const paddleDepth       = 2;
+    const paddleSpeed       = 0.4;
     const ballSize          = 0.4;
     const ballMaxAngle      = Math.PI / 4;
-    const ballBaseSpeed     = 0.10
+    const ballBaseSpeed     = 0.2
     const ballAcceleration  = 1.05;
-    const ballMaxSpeed      = 0.3;
+    const ballMaxSpeed      = 0.4;
     const ballStartAngle    = Math.PI / 6;
-    let   ballVector        = new BABYLON.Vector3((Math.random() > 0.5 ? 1 : -1) * ballBaseSpeed * Math.cos(ballStartAngle), 0, (Math.random() > 0.5 ? 1 : -1) * ballBaseSpeed * Math.sin(ballStartAngle));
-    // let ballVector = new BABYLON.Vector3(0.01, 0, 0);
+	const ballDropSpeed		= 0.2
     // Colours
     const paddle1Colour     = new BABYLON.Color3(0, 0, 1);
     const paddle2Colour     = new BABYLON.Color3(1, 0, 0);
     const ballColour        = new BABYLON.Color3(1, 1, 1);
     const goalColour        = new BABYLON.Color3(0, 1, 0);
     // User Variables
-	const player1Alias		= options.p1_alias ?? "Player 1";
-	const player2Alias		= options.p2_alias ?? "Player 2";
+	const player1Alias		= options.p1_alias ?? "P1";
+	const player2Alias		= options.p2_alias ?? "P2";
+	const scoreToWinString	= options.scoreToWinString ?? "Score To Win"
+	const victoryMessage	= options.victoryMessage ?? "Wins!\n(Press 'Enter' To Continue)"
     const scoreToWin        = options.scoreToWin ?? 2;
     // Loop Variables
+	let	ballDropped			= false;
+	let	ballVector			= new BABYLON.Vector3(0,0,0);
     let ballSpeed           = ballBaseSpeed;
     let paddle1Direction    = 0;
     let paddle2Direction    = 0;
     let paused              = -1;
     let player1Score        = 0;
     let player2Score        = 0;
+	let winner_id			= 0;
 
 
     // Camera: ArcRotate to get a good view of the pong field
     const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 4, 15, BABYLON.Vector3.Zero(), scene);
     camera.attachControl(canvas, true);
     camera.inputs.removeByType("ArcRotateCameraKeyboardMoveInput");
-    camera.lowerBetaLimit = 0.2;
+    camera.lowerBetaLimit = 1;
     camera.upperBetaLimit = Math.PI / 2;
     camera.lowerRadiusLimit = 12;
     camera.upperRadiusLimit = 18;
-
+// engine.onResizeObservable.add(() => {
+//   if (camera instanceof BABYLON.FreeCamera || camera instanceof BABYLON.ArcRotateCamera) {
+//     camera.aspectRatio = engine.getRenderingCanvasClientRect().width / engine.getRenderingCanvasClientRect().height;
+//     camera.getProjectionMatrix(true); // force recalculation
+//   }
+// });
     // light
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-	let StopComplaining = light;
-	StopComplaining = "";
-
 
     // Ground, Playing Field
     const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: groundWidth, height: groundHeight}, scene);
@@ -145,7 +154,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 
     // Generate Ball
     const ball = BABYLON.MeshBuilder.CreateSphere("ball", {diameter: ballSize}, scene);
-    ball.position = new BABYLON.Vector3(0, 0, 0);
+    ball.position.set(0, 5, 0)
     const ballMat = new BABYLON.StandardMaterial("ballMat", scene);
     ballMat.diffuseColor = ballColour;
     ball.material = ballMat;
@@ -155,11 +164,9 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
         // Pause Game
         if (paused >= 0)
         {
-            // Add Paused Logic
-            // Draw
+			if (paused) {
             // Surrender
-            // End Match
-            // Change To Fixed (Topdownp) Camera Angle
+			}
             return ;
         }
 
@@ -171,7 +178,17 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
         paddle2.position.z = Math.min(Math.max(paddle2.position.z, -1 * (groundHeight / 2) + paddleDepth / 2), 1 * (groundHeight / 2) - paddleDepth / 2);
 
         // Move Ball
-        ball.position.addInPlace(ballVector);
+		if (!ballDropped) {
+			if (ball.position.y > 0) {
+				ball.position.y -= ballDropSpeed;
+			} else {
+				ball.position.y = 0;
+				ballDropped = true;
+            	ballVector.set((Math.random() > 0.5 ? 1 : -1) * ballBaseSpeed * Math.cos(ballStartAngle), 0, (Math.random() > 0.5 ? 1 : -1) * ballBaseSpeed * Math.sin(ballStartAngle));
+			}
+		} else {
+			ball.position.addInPlace(ballVector);
+		}
         // Ball Boundaries
         if (ball.position.z > 1 * (groundHeight / 2) - .5 || ball.position.z < -1 * (groundHeight / 2) + .5) {
             ballVector.z = -ballVector.z;
@@ -213,27 +230,24 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
             if (player1Score == scoreToWin || player2Score == scoreToWin)
             {
                 paused = 0;
+                winner_id = player1Score === scoreToWin ? 1 : 2;
                 const winner:string = player1Score === scoreToWin ? `${player1Alias}` : `${player2Alias}`;
-                const winner_id:number = player1Score === scoreToWin ? 1 : 2;
-				setWinner(winner_id);
-                const message1 = getTranslation("Snek_Wins1");
-                const message2 = getTranslation("Snek_Wins2");
-				alert(`${message1}${winner}${message2}`);
-                // Exit Game
-            }
-            // Reset Game
-            paddle1.position.z = 0;
-            paddle2.position.z = 0;
-            ball.position = BABYLON.Vector3.Zero();
-            ballSpeed = ballBaseSpeed;
-            // ballVector = new BABYLON.Vector3(0.01, 0, 0);
-            ballVector = new BABYLON.Vector3((Math.random() > 0.5 ? 1 : -1) * ballBaseSpeed * Math.cos(ballStartAngle), 0, (Math.random() > 0.5 ? 1 : -1) * ballBaseSpeed * Math.sin(ballStartAngle));
+				declareWinner(winner);
+            } else { // Reset Game
+				paddle1.position.z = 0;
+				paddle2.position.z = 0;
+				ball.position.set(0, 3, 0);
+				ballDropped = false;
+				ballSpeed = ballBaseSpeed;
+				ballVector = BABYLON.Vector3.Zero();
+			}
         }
     });
 
     // Controls
     window.addEventListener("keydown", (evt) => {
-        switch(evt.key) {
+        const key = evt.key.toLowerCase();
+		switch(key) {
             case "p":
                 paused *= -1;
                 break;
@@ -243,37 +257,44 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
             case "s":
                 paddle1Direction = -1;
                 break;
-            case "ArrowUp":
+            case "arrowup":
                 paddle2Direction = 1;
                 break;
-            case "ArrowDown":
+            case "arrowdown":
                 paddle2Direction = -1;
                 break;
+			case "t":
+            	changeCameraTopDown();
+				break;
+			case "enter":
+				setWinner(winner_id);
+				break;
         }
     });
 
     window.addEventListener("keyup", (evt) => {
-        switch(evt.key) {
+        const key = evt.key.toLowerCase();
+		switch(key) {
             case "w":
             case "s":
                 paddle1Direction = 0;
                 break;
-            case "ArrowUp":
-            case "ArrowDown":
+            case "arrowup":
+            case "arrowdown":
                 paddle2Direction = 0;
                 break;
         }
     });
 
     // GUI Setup
+	// TODO, Update GUI Based On resize
     const gui = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
     //Score UI
     const scoreToWinText = new GUI.TextBlock();
-    scoreToWinText.text = `Score To Win: ${scoreToWin}`;
+    scoreToWinText.text = `${scoreToWinString}: ${scoreToWin}`;
     scoreToWinText.color = "white";
     scoreToWinText.fontSize = 24;
     scoreToWinText.top = "10px";
-    scoreToWinText.left = "10px";
     scoreToWinText.textHorizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
     scoreToWinText.textVerticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
     gui.addControl(scoreToWinText);
@@ -295,13 +316,44 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     player2Text.textHorizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
     player2Text.textVerticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
     gui.addControl(player2Text);
+	const winnerText = new GUI.TextBlock();
+	winnerText.text = "";
+	winnerText.color = "yellow";
+	winnerText.fontSize = 48;
+	winnerText.fontStyle = "bold";
+    winnerText.top = "50px";
+	winnerText.textHorizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+	winnerText.textVerticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
+	winnerText.isVisible = false;
+	gui.addControl(winnerText);
 
     // Optional:
     // Add POV Change
-    // Add Ball Drop
-    // Add Camera Angle Change
     // Add Button Hints (Hide With h)
 
+	function changeCameraTopDown() {
+		if (paused < 0)
+			return ;
+		if (camera.lowerBetaLimit) {
+			camera.lowerBetaLimit = 0;
+    		camera.upperBetaLimit = 0;
+    		camera.lowerRadiusLimit = 12;
+    		camera.upperRadiusLimit = 18;
+		} else {
+			camera.lowerBetaLimit = 1;
+    		camera.upperBetaLimit = Math.PI / 2;
+    		camera.lowerRadiusLimit = 12;
+    		camera.upperRadiusLimit = 18;
+		}
+	}
+
+	function declareWinner(name: string) {
+		winnerText.text = `${name} ${victoryMessage}`;
+		winnerText.isVisible = true;
+		// setTimeout(() => {
+			// winnerText.isVisible = false;
+		// }, 4000);
+	}
     return scene;
 };
 
