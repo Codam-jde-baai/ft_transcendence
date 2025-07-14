@@ -167,8 +167,8 @@
     "Snek_Wins1": "Gefeliciteerd! ",
     "Snek_Wins2": " heeft het spel gewonnen!",
 
-	"Victory_Message": "Wins!\n(Press 'Enter' To Continue) (NL)",
-	"Score_To_Win": "Score To Win (NL)",
+    "Victory_Message": "Wint!\n(Druk op 'Enter' om door te gaan)",
+    "Score_To_Win": "Score om te winnen",
 
     "EndOfFile": ""
 }

@@ -166,8 +166,8 @@
     "Snek_Wins1": "Herzlichen Glückwunsch! ",
     "Snek_Wins2": " hat das Spiel gewonnen!",
 
-	"Victory_Message": "Wins!\n(Press 'Enter' To Continue) (DE)",
-	"Score_To_Win": "Score To Win (DE)",
+    "Victory_Message": "Gewonnen!\n(Drücke 'Enter', um fortzufahren)",
+    "Score_To_Win": "Punktzahl zum Sieg",
 
     "EndOfFile": ""
 }
