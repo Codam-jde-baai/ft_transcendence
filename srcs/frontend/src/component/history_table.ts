@@ -24,6 +24,7 @@ class HistoryTable extends HTMLElement {
 			}
 		}).then(() => {
 			if (aliasName) {
+				// PROBLEM IS HERE
 				fillHistoryTable(aliasName).then((entryData: { date: string; player1: string; player2: string; winner: string }[] | null) => {
 					if (entryData) {
 						

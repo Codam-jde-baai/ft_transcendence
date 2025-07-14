@@ -30,7 +30,8 @@ export async function fillUserTable(): Promise<any[] | null> {
 	}
 }
 
-// Fill in for the Match History (PONG)
+
+// Fill in for the Match History (PONG) -> debug this function in history_table.ts
 export async function fillHistoryTable(aliasName: string): Promise<{ date: string; player1: string; player2: string; winner: string; score: string }[] | null> {
 
 	const table = document.querySelector('#userTable');
@@ -58,30 +59,31 @@ export async function fillHistoryTable(aliasName: string): Promise<{ date: strin
 	}
 }
 
-// Fill in for the Match History (SNEK)
-export async function fillSnekHistoryTable(aliasName: string): Promise<{ player1: string; player2: string; OpScore: string; MyScore: string }[] | null> {
+// I DON"T NEED THIS
+// // Fill in for the Match History (SNEK)
+// export async function fillSnekHistoryTable(aliasName: string): Promise<{ player1: string; player2: string; OpScore: string; MyScore: string }[] | null> {
 
-	const table = document.querySelector('#userTable');
+// 	const table = document.querySelector('#userTable');
 
-	const response = await connectFunc(`/snekHistory/${aliasName}`, requestBody("GET", null, "application/json"));
-	const data = await response.json();
+// 	const response = await connectFunc(`/snekHistory/${aliasName}`, requestBody("GET", null, "application/json"));
+// 	const data = await response.json();
 
-	if (data.error === "nothing to see here") {
-		if (table) {
-			table.innerHTML = ``;
-		}
-		return null;
-	} else if (response.ok) {
-		const formattedData = data.map((entry: any) => ({
-			player1: entry.p1_alias,
-			player2: entry.p2_alias,
-			OpScore: entry.p2_score,
-			MyScore: entry.p1_score,
-		}));
-		return formattedData;
-	} else {
-		window.history.pushState({}, '', '/errorPages');
-		setupErrorPages(response.status, response.statusText);
-		return null;
-	}
-}
+// 	if (data.error === "nothing to see here") {
+// 		if (table) {
+// 			table.innerHTML = ``;
+// 		}
+// 		return null;
+// 	} else if (response.ok) {
+// 		const formattedData = data.map((entry: any) => ({
+// 			player1: entry.p1_alias,
+// 			player2: entry.p2_alias,
+// 			OpScore: entry.p2_score,
+// 			MyScore: entry.p1_score,
+// 		}));
+// 		return formattedData;
+// 	} else {
+// 		window.history.pushState({}, '', '/errorPages');
+// 		setupErrorPages(response.status, response.statusText);
+// 		return null;
+// 	}
+// }

@@ -4,6 +4,7 @@ import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
 import { connectFunc, requestBody } from '../script/connections';
 import { setupErrorPages } from './errorPages';
+import { setupMatchHistory } from '../pages/history';
 import DOMPurify from 'dompurify';
 
 interface snekMatchHistory {
@@ -55,41 +56,41 @@ export function setupSnekMatchHistory() {
 			if (root) {
 				root.innerHTML = "";
 				root.insertAdjacentHTML("beforeend", /*html*/`
-		<link rel="stylesheet" href="src/styles/history.css"> <!-- Link to the CSS file -->
-		<div class="overlay"></div>
-		<dropdown-menu></dropdown-menu>
-		
-			<!-- Switching between games -->
-			<button class="game-btn-full" id="PongHistory">
-				<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-pong.png">
-			</button>
-			
-			<!-- My History Button -->
-			<button class="my-history-btn" id="MyHistoryBtn">
-				<span data-i18n="MyHistory"></span>
-			</button>
-			
-			<!-- Search Section -->
-			<div class="search-section">
-				<div class="search-fields">
-					<input type="text" id="alias1Input" class="alias-input" data-i18n-placeholder="P1Alias">
-					<button class="find-btn" id="FindBtn">
-						<span data-i18n="btn_find"></span>
-					</button>
-				</div>
-			</div>
-			
-			<div class="imiddle">
-				<div class="hcontainer">
-					<h1 class="Pongheader" data-i18n="Snek"></h1>
-					<h1 class="header" data-i18n="History"></h1>
-					<p class="p1">${displayedAlias}</p>
-					<p class="p1 text-red-600" ${matches === 0 ? '' : 'hidden'}><span data-i18n="ErrorMSG_Matches"></span></p>
-					${matches === 0 ? '' : '<snek-table></snek-table>'}
+					<link rel="stylesheet" href="src/styles/history.css"> <!-- Link to the CSS file -->
+					<div class="overlay"></div>
+					<dropdown-menu></dropdown-menu>
 					
-				</div>
-			</div>
-		`);
+						<!-- Switching between games -->
+						<button class="game-btn-full" id="PongHistory">
+							<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-pong.png">
+						</button>
+						
+						<!-- My History Button -->
+						<button class="my-history-btn" id="MyHistoryBtn">
+							<span data-i18n="MyHistory"></span>
+						</button>
+						
+						<!-- Search Section -->
+						<div class="search-section">
+							<div class="search-fields">
+								<input type="text" id="alias1Input" class="alias-input" data-i18n-placeholder="P1Alias">
+								<button class="find-btn" id="FindBtn">
+									<span data-i18n="btn_find"></span>
+								</button>
+							</div>
+						</div>
+						
+						<div class="imiddle">
+							<div class="hcontainer">
+								<h1 class="Pongheader" data-i18n="Snek"></h1>
+								<h1 class="header" data-i18n="History"></h1>
+								<p class="p1">${displayedAlias}</p>
+								<p class="p1 text-red-600" ${matches === 0 ? '' : 'hidden'}><span data-i18n="ErrorMSG_Matches"></span></p>
+								${matches === 0 ? '' : '<snek-table></snek-table>'}
+								
+							</div>
+						</div>
+					`);
 
 				getLanguage();
 				dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
@@ -101,7 +102,7 @@ export function setupSnekMatchHistory() {
 					const url = new URL(window.location.href);
 					const searchParams = url.search;
 					window.location.href = `/history${searchParams}`;
-					setupSnekMatchHistory();
+					setupMatchHistory();
 				});
 
 				document.getElementById('MyHistoryBtn')?.addEventListener('click', () => {
@@ -129,6 +130,7 @@ export function setupSnekMatchHistory() {
 }
 
 function setupSnekSearchFunctionality() {
+
 	document.getElementById('FindBtn')?.addEventListener('click', () => {
 		const alias1Input = document.getElementById('alias1Input') as HTMLInputElement;
 		const alias1 = DOMPurify.sanitize(alias1Input.value.trim());
