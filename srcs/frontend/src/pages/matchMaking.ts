@@ -41,7 +41,7 @@ export function setupMatchMaking(game: GameType = GameType.Pong) {
             toggleSwitch.checked = true;
             toggleSwitch.dispatchEvent(new Event('change'));
         }
-        console.log('Page load selected game is: ', game);
+
     }
 }
 
@@ -51,7 +51,6 @@ function eventListeners() {
 
     toggleSwitch.addEventListener('change', () => {
         selectedGame = toggleSwitch.checked ? GameType.Snek : GameType.Pong;
-        console.log(`Selected game: ${selectedGame}`);
     });
 
     goBackButton.addEventListener('click', () => {

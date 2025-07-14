@@ -20,7 +20,6 @@ export function setupSnekMatchHistory() {
 	const root = document.getElementById('app');
 	const storedAlias = localStorage.getItem('myAlias');
 	if (!storedAlias) {
-		console.error("Can't find user alias");
 		fillTopbar(true);
 		window.location.reload();
 		return;
@@ -53,7 +52,6 @@ export function setupSnekMatchHistory() {
 	})
 		.then((snekMatchHistory: snekMatchHistory[]) => {
 			let matches: number = snekMatchHistory.length;
-			console.log(snekMatchHistory); // use this data in the table
 			if (root) {
 				root.innerHTML = "";
 				root.insertAdjacentHTML("beforeend", /*html*/`

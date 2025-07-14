@@ -23,7 +23,7 @@ export const loginUser = async (request: FastifyRequest, reply: FastifyReply) =>
 		let storedHash = '$argon2id$v=19$m=65536,t=3,p=4$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
 
 
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 		const userArray = await db.select().from(usersTable).where(eq(usersTable.username, username));
 
@@ -62,7 +62,7 @@ export const loginUserGame = async (request: FastifyRequest, reply: FastifyReply
 		let userFound = false;
 		let user = null;
 		let storedHash = '$argon2id$v=19$m=65536,t=3,p=4$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 		const userArray = await db.select().from(usersTable).where(eq(usersTable.username, username));
 		if (userArray.length > 0) {

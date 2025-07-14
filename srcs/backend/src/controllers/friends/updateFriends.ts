@@ -18,7 +18,7 @@ export const AcceptFriendReq = async (request: FastifyRequest<{ Params: { friend
 		}
 		const uuid = request.session.get('uuid') as string;
 		const accepterAlias = request.session.get('alias') as string;
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite)
 
 		const friendRelationArray = await db.select({ recUUid: friendsTable.recUUid }).from(friendsTable).where(eq(friendsTable.id, id))
@@ -59,7 +59,7 @@ export const RemoveFriendRelation = async (request: FastifyRequest<{ Params: { f
 		}
 		const uuid = request.session.get('uuid') as string;
 
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite)
 
 		const relation = await db.select().from(friendsTable).where(and(

@@ -19,7 +19,7 @@ export const addSnekMatch = async (req: FastifyRequest<{ Body: createSnek }>, re
             p1_score: req.body.p1_score,
             p2_score: req.body.p2_score,
         };
-        sqlite = new Database('./data/data.db', { verbose: console.log })
+        sqlite = new Database('./data/data.db' )
         const db = drizzle(sqlite);
         const match: readSnek[] = await db.insert(snekTable).values(matchData).returning();
         if (match.length === 0) {

@@ -17,7 +17,7 @@ export const deleteUser = async (
 		let user = null;
 		let storedHash = '$argon2id$v=19$m=65536,t=3,p=4$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
 
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 		const userArray = await db.select().from(usersTable).where(eq(usersTable.uuid, uuid));
 
@@ -56,7 +56,7 @@ export const deleteProfilePic = async (
 	let sqlite = null;
 	try {
 		const uuid = request.session.get('uuid') as string;
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 		const result = await db.update(usersTable)
 			.set({ profile_pic: null })

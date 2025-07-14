@@ -127,10 +127,10 @@ class SnekTable extends HTMLElement {
 							<table class="userTable">
 							<thead>
 								<tr>
-									<th data-i18n="SPl1">Player 1</th>
-									<th data-i18n="SMy-score">My Score</th>
-									<th data-i18n="SPl2">Player 2</th>
-									<th data-i18n="SOpp-score">Opponent Score</th>
+									<th data-i18n="SPl1"></th>
+									<th data-i18n="SMy-score"></th>
+									<th data-i18n="SPl2"></th>
+									<th data-i18n="SOpp-score"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -143,8 +143,7 @@ class SnekTable extends HTMLElement {
 						getLanguage();
 					});
 				}
-			}).catch(error => {
-				console.error('Error rendering snek table:', error);
+			}).catch(() => {
 				this.innerHTML = `<div class="error">Failed to load match history</div>`;
 			});
 	}

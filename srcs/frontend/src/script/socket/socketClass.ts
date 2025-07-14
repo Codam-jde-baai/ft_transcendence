@@ -34,7 +34,6 @@ class WebSocketManager {
             // Ensure we have the correct WebSocket URL format
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
             const wsUrl = `${protocol}//${envConfig.backendURL}/ws/connect?apiKey=${envConfig.privateKey}`;
-            console.log('Attempting WebSocket connection to:', wsUrl);
 
             try {
                 this.socket = new WebSocket(wsUrl);
@@ -47,7 +46,6 @@ class WebSocketManager {
 
             const timeout = setTimeout(() => {
                 if (this.socket?.readyState === WebSocket.CONNECTING) {
-                    console.log('WebSocket connection timeout');
                     this.socket.close();
                     this.connectionPromise = null;
                     reject(new Error('Connection timeout'));
@@ -56,7 +54,6 @@ class WebSocketManager {
 
             this.socket.onopen = () => {
                 clearTimeout(timeout);
-                console.log('WebSocket connected successfully');
                 this.reconnectAttempts = 0;
                 this.reconnectDelay = 1000;
                 this.lastServerMessage = Date.now();
@@ -68,7 +65,6 @@ class WebSocketManager {
                 this.lastServerMessage = Date.now();
                 try {
                     const rawData = JSON.parse(event.data);
-                    console.log('WebSocket message received:', rawData);
 
                     // Type-safe message handling
                     if (!isClientReceiveMessage(rawData)) {
@@ -85,13 +81,11 @@ class WebSocketManager {
                     }
 
                     if (data.type === 'pong') {
-                        console.log('Received pong from server');
                         return;
                     }
 
                     // Handle system messages
                     if (data.type === 'system') {
-                        console.log('System message:', data.message);
                         const handler = this.messageHandlers.get('system');
                         handler?.(data);
                         return;
@@ -110,7 +104,7 @@ class WebSocketManager {
                     if (handler) {
                         handler(data);
                     } else {
-                        console.log('No handler for message type:', data.type);
+                        console.error('No handler for message type:', data.type);
                     }
 
                 } catch (error) {
@@ -119,7 +113,6 @@ class WebSocketManager {
             };
 
             this.socket.onclose = (event) => {
-                console.log('WebSocket disconnected', event.code, event.reason);
                 clearTimeout(timeout);
                 this.socket = null;
                 this.connectionPromise = null;
@@ -151,11 +144,9 @@ class WebSocketManager {
 
     private async reconnect() {
         this.reconnectAttempts++;
-        console.log(`Reconnecting... (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
 
         try {
             await this.connect();
-            console.log('Reconnection successful');
         } catch (error) {
             console.error('Reconnection failed:', error);
             this.reconnectDelay = Math.min(this.reconnectDelay * 2, 30000);
@@ -223,13 +214,9 @@ class WebSocketManager {
                 messageEl.textContent = '';
             }, 5000);
         }
-
-        // Also log to console for debugging
-        console.log(`Notification: ${alias} ${message}`);
     }
 
     disconnect() {
-        console.log('Manually disconnecting WebSocket');
         this.isManuallyDisconnected = true;
         this.reconnectAttempts = this.maxReconnectAttempts; // Prevent reconnection
 
@@ -255,14 +242,12 @@ export const websocketManager = new WebSocketManager();
 // Set up system message handler
 websocketManager.on('system', (data) => {
     if (data.type === 'system') {
-        console.log('System message received:', data.message);
     }
 });
 
 // Set up notification handler
 websocketManager.on('notification', (data) => {
     if (data.type === 'notification') {
-        console.log(`Friend notification: ${data.alias} ${data.message}`);
     }
 });
 

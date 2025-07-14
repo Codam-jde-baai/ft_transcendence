@@ -12,7 +12,7 @@ import { toPublicUser, getMimeType } from '../../models/users.ts';
 export const getAllUsers = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 
 		const userArray = await db.select().from(usersTable);
@@ -38,7 +38,7 @@ export const getUser = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
 		const uuid = request.session.get('uuid') as string;
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 
 		const userArray = await db.select().from(usersTable).where(eq(usersTable.uuid, uuid));
@@ -66,7 +66,7 @@ export const getUserAlias = async (
 	try {
 		const alias = request.params.alias;
 
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 
 		const userArray = await db.select().from(usersTable).where(eq(usersTable.alias, alias));
@@ -94,7 +94,7 @@ export const getUserImage = async (request: FastifyRequest, reply: FastifyReply)
 	let sqlite = null;
 	try {
 		const uuid = request.session.get('uuid') as string;
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 
 		const userArray = await db.select().from(usersTable).where(eq(usersTable.uuid, uuid));
@@ -127,7 +127,7 @@ export const getUserImageByAlias = async (
 	try {
 		const alias = request.params.alias;
 
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 
 		const userArray = await db.select().from(usersTable).where(eq(usersTable.alias, alias));

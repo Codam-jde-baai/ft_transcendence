@@ -133,14 +133,12 @@ const start = async () => {
 start()
 
 process.on('SIGTERM', async () => {
-	console.log('SIGTERM received, shutting down gracefully');
 	cleanupConnections();
 	await fastify.close();
 	process.exit(0);
 });
 
 process.on('SIGINT', async () => {
-	console.log('SIGINT received, shutting down gracefully');
 	cleanupConnections();
 	await fastify.close();
 	process.exit(0);

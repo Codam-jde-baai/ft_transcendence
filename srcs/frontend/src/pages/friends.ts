@@ -54,11 +54,11 @@ export function setupFriends() {
 					return response.json();
 				} else {
 					if (response.status === 400) {
-						console.log("User not found");
+						console.error("User not found");
 					} else if (response.status === 404) {
-						console.log("No friends found for this user");
+						console.error("No friends found for this user");
 					} else {
-						console.log(`Unexpected error: ${response.status}`);
+						console.error(`Unexpected error: ${response.status}`);
 					}
 					return friendRelations;
 				}
@@ -69,7 +69,6 @@ export function setupFriends() {
 				if (response.ok) {
 					return response.json();
 				} else {
-					console.log({ msg: "error with /public/users call", status: response.status, message: response.body });
 					return [];
 				}
 			})
@@ -183,7 +182,6 @@ function setupSearchFunctionality() {
 			let userElement = document.createElement('public-user');
 			userElement.setAttribute('alias', 'no results');
 			resultsContainer?.appendChild(userElement);
-			console.log("no matches found");
 		}
 		getLanguage();
 	}
@@ -201,7 +199,6 @@ function setupSearchFunctionality() {
 
 	document.getElementById('searchButton')?.addEventListener('click', () => {
 		performSearch();
-		//getLanguage();
 	});
 }
 
@@ -211,7 +208,6 @@ function refreshNonFriends() {
 			if (response.ok) {
 				return response.json();
 			} else {
-				console.log({ msg: "error with /public/users call", status: response.status, message: response.body });
 				return [];
 			}
 		})
@@ -338,7 +334,6 @@ function setupUserActionListeners() {
 	function viewOurHistory(alias: string) {
 		const storedAlias = localStorage.getItem('myAlias');
 		if (!storedAlias) {
-			console.error("Can't find user alias");
 			fillTopbar(true);
 			window.location.reload();
 			return;
@@ -374,7 +369,6 @@ function setupUserActionListeners() {
 		connectFunc(`/friends/${friendid}/delete`, requestBody("DELETE"))
 			.then(response => {
 				if (response.ok) {
-					console.log(`Request canceled`);
 					refreshContainer('pending-container');
 					refreshNonFriends();
 				} else {

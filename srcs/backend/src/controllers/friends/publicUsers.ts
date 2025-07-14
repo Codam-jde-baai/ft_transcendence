@@ -11,7 +11,7 @@ export const getNonFriends = async (request: FastifyRequest, reply: FastifyReply
 	try {
 		const uuid = request.session.get('uuid') as string;
 
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 
 		const friendUUid = await db.select({
