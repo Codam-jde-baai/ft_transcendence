@@ -1,4 +1,4 @@
-import { getLanguage } from '../script/language';
+import { getLanguage, getTranslation } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
@@ -91,14 +91,16 @@ function eventListeners(selectedGame:GameType) {
 function playerCountPopUp(): number | null{
 	let playerCount:number = 4;
 	for(let valid:boolean = false; valid !== true;) {
-		const response = prompt("Pong Tournament: Enter Number Of Players. (From 3 To 42)", "3")
+		const message = getTranslation("Tournament_Players");
+		const response = prompt(`Pong ${message}`, "3")
 		if (response === null)
 			return null;
 		if (Number(response) >= 3 && Number(response) <= 42) {
 			valid = true;
 			playerCount = Number(response);
 		} else {
-			alert("Pong Tournament: Please Enter A Valid Number Of Players. (From 3 To 42)")
+			const message = getTranslation("Tournament_Players_Warning");
+			alert(`Pong ${message}`)
 		}
 	}
 	return (playerCount);

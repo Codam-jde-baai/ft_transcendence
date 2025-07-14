@@ -21,6 +21,7 @@
     "btn_ViewData": "Mijn gegevens bekijken",
     "btn_Conf" : "Bevestig",
     "LogIn_PA": "Inloggen als ",
+    "btn_find": "Zoeken",
 
     "Password": "Wachtwoord",
     "ConfirmPassword": "Bevestig wachtwoord",
@@ -29,6 +30,7 @@
     "SignUp_Avatar": "Voeg je avatar toe",
     "SignUp_Alias": "Aliasnaam",
     "Admin": "Admin",
+    "ErrorMSG_Matches": "Geen overeenkomsten gevonden",
 
     "Index_Header": "Welkom bij Transcendence",
     "Header_Pong": "Welkom bij Pong",
@@ -65,6 +67,8 @@
     "Admin_placeholder1": "Zoek gebruikers...",
     "Friends_placeholder1": "Zoek naar vrienden...",
     "CurrentP_placeholder1": "Dit veld is altijd verplicht",
+    "P1Alias": "Speler 1 Alias",
+    "P2Alias": "Speler 2 Alias (optioneel)",
 
     "Language": "Taal",
     "Home": "Home",
@@ -77,6 +81,7 @@
     "German": "Duits",
     "Dutch": "Nederlands",
     "Game": "Spel",
+    "MyHistory": "Mijn geschiedenis",
 
     "Setting_Avatar": "Avatar bewerken",
     "Setting_Name": "Inlognaam bewerken",
@@ -128,9 +133,10 @@
     "goBack": "Terug",
     
     "SnekP1": "Speler1 (WASD)",
+     "SnekPlayer": "Speler",
     "SnekM": "Wedstrijden: ",
     "SnekW": "Gewonnen:",
-    "SnekL": "Verloren: ",
+    "SnekL": " Verloren: ",
     "SnekWR": "Winstpercentage:",
     "SnekAS": "Gem. Score: ",
     "SnekHS": "Hoogste Score: ",
@@ -145,6 +151,18 @@
     "SnekNP": "Nieuwe Spelers",
     "SnekR": "Revanche!",
     "SnekGH": "Terug naar home",
+    "SnekST": "Toernooi starten",
+    "Champion": "Kampioen",
+    "Bye": "Bye",
+    "Awaiting_Winner": "Winnaar Afwachten",
+
+	"Upcoming_Match": "The Upcoming Match Is: (NL)",
+	"Tournament_Players": "Tournament: Enter Number Of Players. (From 3 To 42) (NL)",
+	"Tournament_Players_Warning": "Tournament: Please Enter A Valid Number Of Players. (From 3 To 42) (NL)",
+	"Champion_Announcement": "-Person Tournament\nThe Champion Of IS:  (NL)",
+	"Alias_Warning": "Please enter at least one alias (NL)",
+	"Deletion_Failed": "Failed to delete the account. Please try again. (NL)",
+	"Alias_Length_Warning": "Guest alias must be at least 3 characters long. (NL)",
 
     "EndOfFile": ""
 }

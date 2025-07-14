@@ -1,4 +1,4 @@
-import { getLanguage } from '../script/language';
+import { getLanguage, getTranslation } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillTopbar } from '../script/fillTopbar';
 import { setupNavigation } from '../script/menuNavigation';
@@ -69,16 +69,16 @@ export function setupMatchHistory() {
 		
 		<!-- My History Button -->
 		<button class="my-history-btn" id="MyHistoryBtn">
-			<span data-i18n="MyHistory">My History</span>
+			<span data-i18n="MyHistory"></span>
 		</button>
 		
 		<!-- Search Section -->
 		<div class="search-section">
 			<div class="search-fields">
-				<input type="text" id="alias1Input" class="alias-input" placeholder="Player 1 Alias">
-				<input type="text" id="alias2Input" class="alias-input" placeholder="Player 2 Alias (optional)">
+				<input type="text" id="alias1Input" class="alias-input" data-i18n-placeholder="P1Alias">
+				<input type="text" id="alias2Input" class="alias-input" data-i18n-placeholder="P2Alias">
 				<button class="find-btn" id="FindBtn">
-					<span data-i18n="Find">Find</span>
+					<span data-i18n="btn_find"></span>
 				</button>
 			</div>
 		</div>
@@ -87,10 +87,9 @@ export function setupMatchHistory() {
 			<div class="hcontainer">
 				<h1 class="Pongheader" data-i18n="Pong"></h1>
 				<h1 class="header" data-i18n="History"></h1>
-				<!-- <p class="p1" data-i18n="History_P"></p> -->
 				<p class="p1">${displayedAlias}</p>
-				<p class="p1 text-red-600" ${matches === 0 ? '' : 'hidden'}>No matches found</p>
-				<history-table></history-table>
+				<p class="p1 text-red-600" ${matches === 0 ? '' : 'hidden'}><span data-i18n="ErrorMSG_Matches"></span></p>
+				${matches === 0 ? '' : '<history-table></history-table>'}
 
 			</div>
 		</div>
@@ -142,7 +141,8 @@ function setupMatchSearchFunctionality() {
 		const alias2 = DOMPurify.sanitize(alias2Input.value.trim());
 
 		if (!alias1) {
-			alert('Please enter at least one alias');
+			const message = getTranslation("Alias_Warning")
+			alert(message);
 			return;
 		}
 

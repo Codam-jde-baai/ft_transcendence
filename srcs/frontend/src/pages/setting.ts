@@ -1,5 +1,5 @@
 import { setupUserHome } from './home';
-import { getLanguage } from '../script/language';
+import { getLanguage, getTranslation } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { eyeIcon_Button } from '../script/buttonHandling';
 import { updateUserSettings } from '../script/doSettings';
@@ -119,7 +119,8 @@ export function setupSetting() {
 							window.history.pushState({}, '', '/index');
 							renderPage();
 						} else {
-							alert("Failed to delete the account. Please try again.");
+							const message = getTranslation("Deletion_Failed")
+							alert(message);
 						}
 					});
 				} else {

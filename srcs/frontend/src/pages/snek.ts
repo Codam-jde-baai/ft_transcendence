@@ -1,4 +1,3 @@
-// import { setupQuickSnek } from './startSGame';
 import { getLanguage } from '../script/language';
 import { dropDownBar } from '../script/dropDownBar';
 import { fillSnek } from '../script/fillSnek';
@@ -63,7 +62,7 @@ export function setupSnek() {
 					</div>
 				</div>
 				
-				<div class="leaderboard mb-[110px] max-h-[500px] min-h-[500px]">
+				<div class="leaderboard mb-[110px] max-h-[515px] min-h-[515px]">
 					<h2 class="lboard" data-i18n="LeaderBoard"></h2>
 					<div class="leaderboard-entry">
 						<div class="img-container">
@@ -131,8 +130,6 @@ export function setupSnek() {
 		setupNavigation();
 
 		document.getElementById('StartSnek')?.addEventListener('click', () => {
-			// window.history.pushState({}, '', '/setupQuickSnek');
-			// setupQuickSnek();			
 			window.history.pushState({}, '', '/gameSelect');
 			setupGameSelect("Snek");
 		});

@@ -41,7 +41,7 @@ dev:
 	$(DOCKER_COMPOSE_DEV) up --build -d
 
 dev-build:
-	$(DOCKER_COMPOSE_DEV) --build
+	$(DOCKER_COMPOSE_DEV) build
 
 dev-down:
 	$(DOCKER_COMPOSE_DEV) down
@@ -53,7 +53,7 @@ dev-rebuild:
 	make dev
 
 build:
-	$(DOCKER_COMPOSE) --build
+	$(DOCKER_COMPOSE) build
 
 logs:
 	$(DOCKER_COMPOSE_DEV) logs
@@ -111,7 +111,7 @@ deepclean: clean
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || true
 	@echo "Removing networks..."
 	@docker network rm $$(docker network ls -q) 2>/dev/null || true
-	@echo "Removing certificates"
+	@echo "Removing certificates..."
 	@rm -rf srcs/frontend/certs
 	@rm -rf srcs/backendend/certs
 	@echo "$(GREEN)All Docker resources have been cleaned.$(RESET)"

@@ -5,7 +5,7 @@ import { connectFunc, requestBody } from '../script/connections';
 import { AuthState } from '../script/gameSetup'
 import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, lockAuthForm, unlockAuthForm } from '../script/gameSetup'
 import { Pong, SceneOptions } from "./babylon.ts";
-import { getLanguage } from '../script/language.ts';
+import { getLanguage, getTranslation } from '../script/language.ts';
 import { dropDownBar } from '../script/dropDownBar.ts';
 import { fillTopbar } from '../script/fillTopbar.ts';
 import { setupNavigation } from '../script/menuNavigation.ts';
@@ -92,59 +92,60 @@ export function setupQuickPong() {
 					<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full">
 						<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
 							<div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
-								<p>Player1 </p>
+								<p data-i18n="SnekP1"> </p>
 								<p class="text-center">${playerStats.alias}</p>
 								<div class="bg-red-600 p-2 rounded">
-									<p>Wins: <span id="p1-wins">0</span> | Losses: <span id="p1-losses">0</span></p>
-									<p>Win Rate: <span id="p1-winrate">0.0</span>%</p>
+									<p><span data-i18n="SnekW"></span> <span id="p1-wins">0</span> |<span data-i18n="SnekL"></span> <span id="p1-losses">0</span></p>
+									<p><span data-i18n="SnekWR"></span> <span id="p1-winrate">0.0</span><span>%</span></p>
 								</div>
 							</div>
 							<div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
-								<p>Player2 </span></p>
+								<p data-i18n="SnekP2"></p>
 								<div class="flex items-center gap-4">
 									<label class="flex items-center cursor-pointer">
-										<span class="mr-2">Guest</span>
+										<span class="mr-2"data-i18n="SnekG"></span>
 											<div class="relative inline-block w-16 h-8">
 												<input type="checkbox" id="p2-authToggle" class="absolute w-0 h-0 opacity-0">
 												<div class="absolute inset-0 bg-gray-300 rounded-full transition-colors duration-300" id="p2-toggleBackground"></div>
 												<div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-300" id="p2-toggleCircle"></div>
 											</div>
-										<span class="ml-2">Login</span>
+										<span class="ml-2" data-i18n="SnekLO"></span>
 									</label>
 								</div>
 									<!-- Guest Form -->
 								<form id="p2-GuestAliasform" class="flex flex-col gap-2 text-black">
-									<input type="text" id="p2-guestAliasInput" class="p-2 rounded" placeholder="Guest alias" required minlength="3" maxlength="117" />
+									<input type="text" id="p2-guestAliasInput" class="p-2 rounded" data-i18n-placeholder="SnekPlaceholder1" required minlength="3" maxlength="117" />
 									<div class="flex gap-2">
-										<button id="p2-lockInGuest" type="button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Lock In</button>
-										<button id="p2-changeGuestAlias" type="button" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hidden">Change</button>
+										<button id="p2-lockInGuest" type="button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" data-i18n="SnekLI"></button>
+										<button id="p2-changeGuestAlias" type="button" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hidden" data-i18n="SnekC"></button>
 									</div>
 								</form>
 									<!-- Login Form -->
 								<form id="p2-LoginForm" class="form-fields text-black hidden flex-col">
-									<input type="text" id="p2-loginUsername" class="form-input" placeholder="Username" />
-									<input type="password" id="p2-loginPassword" class="form-input" placeholder="Password" />
+									<input type="text" id="p2-loginUsername" class="form-input" data-i18n-placeholder="Username" />
+									<input type="password" id="p2-loginPassword" class="form-input"data-i18n-placeholder="Password" />
 									<div class="form-row flex">
-										<button type="button" id="p2-loginButton" class="button-primary bg-purple-500 hover:bg-purple-700">Login</button>
-										<button type="button" id="p2-logoutButton" class="button-primary bg-red-500 hover:bg-red-700 hidden">Logout</button>
+										<button type="button" id="p2-loginButton" class="button-primary bg-purple-500 hover:bg-purple-700" data-i18n="SnekLI"></button>
+										<button type="button" id="p2-logoutButton" class="button-primary bg-red-500 hover:bg-red-700 hidden" data-i18n="SnekLOut"></button>
 									</div>
 									<p id="p2-loginStatus" class="text-white text-center mt-2 hidden"></p>
 								</form>
 								<p class="text-center player2-info"></p>
 								<!-- PlayerX Stats Container (initially hidden) -->
 								<div id="p2-StatsContainer" class="bg-green-600 p-2 rounded hidden">
-									<p>Wins: <span id="p2-wins">0</span> | Losses: <span id="p2-losses">0</span></p>
-									<p>Win Rate: <span id="p2-winrate">0.0</span>%</p>
+									<p><span data-i18n="SnekW"></span> <span id="p2-wins">0</span> | <span data-i18n="SnekL"></span> <span id="p2-losses">0</span></p>
+									<p><span data-i18n="SnekWR"></span> <span id="p2-winrate">0.0</span><span>%</span></p>
 								</div>
 							</div>
 						</div>
 						<!-- Start Game Buttons -->
-						<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startGame" disabled>Start Game</button>
+						<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startGame" disabled data-i18n="SnekSG"></button>
 						<!-- Scroll Buffer -->
 						<button class="button-main py-10 pointer-events-none opacity-0" ></button>
 					</div>
 				</div>
 				`);
+				getLanguage();
 				try {
 					updatePongPlayerStatsDisplay("p1", playerStats);
 					authStates[1] = createAuthState()
@@ -253,35 +254,35 @@ export function setupTournamentPong(playerCount:number) {
 					<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full overflow-x-hidden">
 						<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
 							<div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
-								<p>Player1 <span id="p1-seed" class="px-3 text-sm"></span></p>
+								<p><span data-i18n="SnekPlayer"></span>1<span id="p1-seed" class="px-3 text-sm"></span></p>
 								<p class="text-center">${playerStats.alias}</p>
 								<div class="bg-red-600 p-2 rounded">
-									<p>Wins: <span id="p1-wins">0</span> | Losses: <span id="p1-losses">0</span></p>
-									<p>Win Rate: <span id="p1-winrate">0.0</span>%</p>
+									<p><span data-i18n="SnekW"></span> <span id="p1-wins">0</span> | <span data-i18n="SnekL"></span> <span id="p1-losses">0</span></p>
+									<p><span data-i18n="SnekWR"> <span id="p1-winrate">0.0</span><span>%</span></p>
 								</div>
 							</div>
 				`;
 				for (let playerNum:number = 2; playerNum <= playerCount; playerNum++) {
 					html += /*html*/ `
 								<div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
-									<p>Player${playerNum} <span id="p${playerNum}-seed" class="px-3 text-sm"></span></p>
+									<p><span data-i18n="SnekPlayer"></span>${playerNum} <span id="p${playerNum}-seed" class="px-3 text-sm"></span></p>
 									<div class="flex items-center gap-4">
 										<label class="flex items-center cursor-pointer">
-											<span class="mr-2">Guest</span>
+											<span class="mr-2"  data-i18n="SnekG"></span>
 												<div class="relative inline-block w-16 h-8">
 													<input type="checkbox" id="p${playerNum}-authToggle" class="absolute w-0 h-0 opacity-0">
 													<div class="absolute inset-0 bg-gray-300 rounded-full transition-colors duration-300" id="p${playerNum}-toggleBackground"></div>
 													<div class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all duration-300" id="p${playerNum}-toggleCircle"></div>
 												</div>
-											<span class="ml-2">Login</span>
+											<span class="ml-2" data-i18n="SnekLO"></span>
 										</label>
 									</div>
 										<!-- Guest Form -->
 									<form id="p${playerNum}-GuestAliasform" class="flex flex-col gap-2 text-black">
-										<input type="text" id="p${playerNum}-guestAliasInput" class="p-2 rounded" placeholder="Guest alias" required minlength="3" maxlength="117" />
+										<input type="text" id="p${playerNum}-guestAliasInput" class="p-2 rounded" data-i18n-placeholder="SnekPlaceholder1" required minlength="3" maxlength="117" />
 										<div class="flex gap-2">
-											<button id="p${playerNum}-lockInGuest" type="button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Lock In</button>
-											<button id="p${playerNum}-changeGuestAlias" type="button" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hidden">Change</button>
+											<button id="p${playerNum}-lockInGuest" type="button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" data-i18n="SnekLI"></button>
+											<button id="p${playerNum}-changeGuestAlias" type="button" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded hidden" data-i18n="SnekC"></button>
 										</div>
 									</form>
 										<!-- Login Form -->
@@ -289,16 +290,16 @@ export function setupTournamentPong(playerCount:number) {
 										<input type="text" id="p${playerNum}-loginUsername" class="form-input" placeholder="Username" />
 										<input type="password" id="p${playerNum}-loginPassword" class="form-input" placeholder="Password" />
 										<div class="form-row flex">
-											<button type="button" id="p${playerNum}-loginButton" class="button-primary bg-purple-500 hover:bg-purple-700">Login</button>
-											<button type="button" id="p${playerNum}-logoutButton" class="button-primary bg-red-500 hover:bg-red-700 hidden">Logout</button>
+											<button type="button" id="p${playerNum}-loginButton" class="button-primary bg-purple-500 hover:bg-purple-700" data-i18n="SnekLI"></button>
+											<button type="button" id="p${playerNum}-logoutButton" class="button-primary bg-red-500 hover:bg-red-700 hidden" data-i18n="SnekLOut"></button>
 										</div>
 										<p id="p${playerNum}-loginStatus" class="text-white text-center mt-2 hidden"></p>
 									</form>
 									<p class="text-center player2-info"></p>
 									<!-- PlayerX Stats Container (initially hidden) -->
 									<div id="p${playerNum}-StatsContainer" class="bg-green-600 p-2 rounded hidden">
-										<p>Wins: <span id="p${playerNum}-wins">0</span> | Losses: <span id="p${playerNum}-losses">0</span></p>
-										<p>Win Rate: <span id="p${playerNum}-winrate">0.0</span>%</p>
+										<p><span data-i18n="SnekW"></span> <span id="p${playerNum}-wins">0</span> | <span data-i18n="SnekL"></span> <span id="p${playerNum}-losses">0</span></p>
+										<p><span data-i18n="SnekWR"></span> <span id="p${playerNum}-winrate">0.0</span><span>%</span></p>
 									</div>
 								</div>
 					`;
@@ -306,8 +307,8 @@ export function setupTournamentPong(playerCount:number) {
 				html += /*html*/ `
 						</div>
 						<!-- Start/Post Game Buttons -->
-						<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startTournament" disabled>Start Tournament</button>
-						<button class="button-main bg-gray-500 cursor-not-allowed opacity-50 hidden" id="startGame" disabled>Start Game</button>
+						<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startTournament" disabled data-i18n="SnekST"></button>
+						<button class="button-main bg-gray-500 cursor-not-allowed opacity-50 hidden" id="startGame" disabled data-i18n="SnekSG"></button>
 						<!-- Scroll Buffer -->
 						<button class="button-main py-10 pointer-events-none opacity-0" ></button>
 					</div>
@@ -344,6 +345,7 @@ export function setupTournamentPong(playerCount:number) {
 }
 
 async function seedPlayerListener(authState:AuthState, playerId:string) {
+	void(authState);
 	const seed = document.getElementById(`${playerId}-seed`) as HTMLInputElement
 	if (!seed) {
 		return ;
@@ -461,7 +463,8 @@ async function startTournament(authStates:AuthState[]) {
 				}
 			} else {
 				const winnerAlias = winnerStates[0].isAuthenticated ? winnerStates[0].userAlias : winnerStates[0].guestAlias
-				alert(`The Champion Of This ${playerCount}-Person Tournament IS: ${winnerAlias}`)
+				const message = getTranslation("Champion_Announcement");
+				alert(`${playerCount}${message}${winnerAlias}`);
 			}
 		}
 		const startGameButton = document.getElementById('startGame') as HTMLButtonElement;
@@ -512,15 +515,15 @@ function tournamentHTML(playerStates: AuthState[]) {
 				const leftOffset = (spacingUnit - boxWidth) / 2;
 				html += /*html*/ `
 				<div id="r0-b1" class="rounded-md px-4 py-2 text-center bg-white absolute" style="left:${leftOffset}px; width:${boxWidth}px;">
-					<span data-i18n="Champion">Champion</span>
+					<span data-i18n="Champion"></span>
 				</div>`;
 			} else 
 			for (let playerBox = 1; playerBox <= playersInRound; playerBox++) {
-				const label = round === totalNumberOfRounds ? "Bye" : "Awaiting Winner";
+				const label = round === totalNumberOfRounds ? "Bye" : "Awaiting_Winner";
 				const leftOffset = spacingUnit * (playerBox - 1) + (spacingUnit - boxWidth) / 2;
 				html += /*html*/ `
 					<div id="r${round}-b${playerBox}" class="rounded-md px-4 py-2 text-center bg-white absolute" style="left:${leftOffset}px; width:${boxWidth}px;">
-						<span data-i18n="${label}">${label}</span>
+						<span  data-i18n="${label}"></span>
 					</div>`;
 			}
 			html += /*html*/ `
@@ -531,6 +534,8 @@ function tournamentHTML(playerStates: AuthState[]) {
 		</div>
 	</div>`;
 	page.insertAdjacentHTML("beforeend", html);
+					getLanguage();
+
 }
 
 function generateBracketMatchups(n: number): number[] {
@@ -642,7 +647,8 @@ async function startTournamentGameListeners(authStates:AuthState[], player1Numbe
 			startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 		}
 	};
-	setTimeout(() => { alert(`The Upcoming Match Is:\n${options.p1_alias} VS ${options.p2_alias}`) }, 100);
+	const message = getTranslation("Upcoming_Match")
+	setTimeout(() => { alert(`${message}\n${options.p1_alias} VS ${options.p2_alias}`) }, 100);
     startGameButton.addEventListener('click', startTournamentGame);
 	})
 }

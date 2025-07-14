@@ -8,7 +8,6 @@ import { connectFunc, requestBody } from '../script/connections';
 import { setupSnek } from './snek';
 import { AuthState } from '../script/gameSetup'
 import { FormToggleListener, updateStartGameButton, setupGuestAliasLocking, setupLoginValidation, newPlayersButton } from '../script/gameSetup'
-
 import "../styles/snek.css"
 
 interface PlayerStats {
@@ -70,7 +69,7 @@ export function setupQuickSnek() {
                 <div class="flex flex-row w-full gap-20 bg-pink-500 text-white py-2 px-4 rounded justify-center">
                 <div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
                         <p data-i18n="SnekP1"></p>
-                        <p class="text-center">${playerStats.alias}</p>
+                        <p class="text-center">${player1Name}</p>
                         <div class="bg-red-600 p-2 rounded">
                             <p data-i18n="SnekM">${playerStats.matches}</p>
                             <p><span data-i18n="SnekW"></span> ${playerStats.wins} | <span data-i18n="SnekL"></span> ${playerStats.losses}</p>
@@ -78,6 +77,7 @@ export function setupQuickSnek() {
                             <p><span data-i18n="SnekAS"></span>${playerStats.avg_score}</p>
                             <p><span data-i18n="SnekHS"></span>${playerStats.highest_score}</p>
                         </div>
+                        
                     </div>
                     <div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
                         <p data-i18n="SnekP2"></p>
