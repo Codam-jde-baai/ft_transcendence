@@ -111,7 +111,7 @@ deepclean: clean
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || true
 	@echo "Removing networks..."
 	@docker network rm $$(docker network ls -q) 2>/dev/null || true
-	@echo "Removing certificates"
+	@echo "Removing certificates..."
 	@rm -rf srcs/frontend/certs
 	@rm -rf srcs/backendend/certs
 	@echo "$(GREEN)All Docker resources have been cleaned.$(RESET)"
