@@ -90,7 +90,7 @@ export function setupSetting() {
 			else {
 				const errorBox = document.getElementById("settings-error");
 				if (errorBox) {
-					errorBox.textContent = "Failed to update settings. Please try again later.";
+					errorBox.textContent = getTranslation("Settings_Error");
 					errorBox.classList.remove("hidden");
 				}
 			}

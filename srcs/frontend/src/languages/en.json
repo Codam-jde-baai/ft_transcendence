@@ -163,6 +163,9 @@
 	"Alias_Warning": "Please enter at least one alias",
 	"Deletion_Failed": "Failed to delete the account. Please try again.",
 	"Alias_Length_Warning": "Guest alias must be at least 3 characters long.",
+    "Settings_Error" : "Failed to update settings. Please try again later.",
+    "Snek_Wins1": "Congratulations! ",
+    "Snek_Wins2": " Won the game!",
 
     "EndOfFile": ""
 }

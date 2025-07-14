@@ -156,13 +156,16 @@
     "Bye": "Freilos",
     "Awaiting_Winner": "Wartet auf Sieger",
 
-	"Upcoming_Match": "The Upcoming Match Is: (DE)",
-	"Tournament_Players": "Tournament: Enter Number Of Players. (From 3 To 42) (DE)",
-	"Tournament_Players_Warning": "Tournament: Please Enter A Valid Number Of Players. (From 3 To 42) (DE)",
-	"Champion_Announcement": "-Person Tournament\nThe Champion Of IS:  (DE)",
-	"Alias_Warning": "Please enter at least one alias (DE)",
-	"Deletion_Failed": "Failed to delete the account. Please try again. (DE)",
-	"Alias_Length_Warning": "Guest alias must be at least 3 characters long. (DE)",
+    "Upcoming_Match": "Das nächste Spiel ist:",
+    "Tournament_Players": "Turnier: Geben Sie die Anzahl der Spieler ein. (Von 3 bis 42)",
+    "Tournament_Players_Warning": "Turnier: Bitte geben Sie eine gültige Spieleranzahl ein. (Von 3 bis 42)",
+    "Champion_Announcement": "-Personen-Turnier\nDer Champion ist:",
+    "Alias_Warning": "Bitte geben Sie mindestens einen Alias ein",
+    "Deletion_Failed": "Konto konnte nicht gelöscht werden. Bitte versuchen Sie es erneut.",
+    "Alias_Length_Warning": "Gast-Alias muss mindestens 3 Zeichen lang sein.",
+    "Settings_Error" : "Einstellungen konnten nicht aktualisiert werden.",
+    "Snek_Wins1": "Herzlichen Glückwunsch! ",
+    "Snek_Wins2": " hat das Spiel gewonnen!",
 
     "EndOfFile": ""
 }

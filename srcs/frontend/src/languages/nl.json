@@ -156,13 +156,16 @@
     "Bye": "Bye",
     "Awaiting_Winner": "Winnaar Afwachten",
 
-	"Upcoming_Match": "The Upcoming Match Is: (NL)",
-	"Tournament_Players": "Tournament: Enter Number Of Players. (From 3 To 42) (NL)",
-	"Tournament_Players_Warning": "Tournament: Please Enter A Valid Number Of Players. (From 3 To 42) (NL)",
-	"Champion_Announcement": "-Person Tournament\nThe Champion Of IS:  (NL)",
-	"Alias_Warning": "Please enter at least one alias (NL)",
-	"Deletion_Failed": "Failed to delete the account. Please try again. (NL)",
-	"Alias_Length_Warning": "Guest alias must be at least 3 characters long. (NL)",
+    "Upcoming_Match": "De aankomende wedstrijd is:",
+    "Tournament_Players": "Toernooi: Voer het aantal spelers in. (Van 3 tot 42)",
+    "Tournament_Players_Warning": "Toernooi: Voer een geldig aantal spelers in. (Van 3 tot 42)",
+    "Champion_Announcement": "-Persoonstoernooi\nDe kampioen is:",
+    "Alias_Warning": "Voer ten minste één alias in",
+    "Deletion_Failed": "Het verwijderen van het account is mislukt. Probeer het opnieuw.",
+    "Alias_Length_Warning": "Gastalias moet minimaal 3 tekens lang zijn.",
+    "Settings_Error" : "Het bijwerken van de instellingen is mislukt.",
+    "Snek_Wins1": "Gefeliciteerd! ",
+    "Snek_Wins2": " heeft het spel gewonnen!",
 
     "EndOfFile": ""
 }

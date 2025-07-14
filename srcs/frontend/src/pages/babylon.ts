@@ -1,5 +1,6 @@
 import * as BABYLON from '@babylonjs/core'
 import * as GUI from '@babylonjs/gui'
+import { getTranslation } from '../script/language';
 
 export interface SceneOptions {
 	p1_alias?: string;
@@ -215,7 +216,9 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
                 const winner:string = player1Score === scoreToWin ? `${player1Alias}` : `${player2Alias}`;
                 const winner_id:number = player1Score === scoreToWin ? 1 : 2;
 				setWinner(winner_id);
-				alert(`${winner} WINS!`); // Better Alert?
+                const message1 = getTranslation("Snek_Wins1");
+                const message2 = getTranslation("Snek_Wins2");
+				alert(`${message1}${winner}${message2}`);
                 // Exit Game
             }
             // Reset Game

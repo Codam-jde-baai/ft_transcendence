@@ -1,4 +1,4 @@
-import { getLanguage } from '../script/language';
+import { getLanguage, getTranslation } from '../script/language';
 import { setupAdmin } from './admin';
 import { adminPasswordFields } from '../script/errorFunctions';
 import { eyeIcon_Button } from '../script/buttonHandling';
@@ -83,7 +83,7 @@ export function setupAdminUserSetting() {
 					} else {
 						const errorBox = document.getElementById("settings-error");
 						if (errorBox) {
-							errorBox.textContent = "Failed to update settings. Please try again later.";
+							errorBox.textContent = getTranslation("Settings_Error");
 							errorBox.classList.remove("hidden");
 						}
 					}

@@ -1,5 +1,5 @@
 import { fillUserTable } from '../script/fillTable';
-import { getLanguage } from '../script/language';
+import { getLanguage, getTranslation } from '../script/language';
 import { setupAdminUserSetting } from '../pages/adminUserSetting';
 import { connectFunc, requestBody } from "../script/connections";
 import { setupErrorPages } from '../pages/errorPages';
@@ -95,7 +95,8 @@ class UserTable extends HTMLElement {
 											window.history.pushState({}, '', '/admin');
 											setupAdmin();
 										} else {
-											alert("Failed to delete the account. Please try again.");
+											const message = getTranslation("Deletion_Failed")
+											alert(message);
 										}
 									});
 							}
