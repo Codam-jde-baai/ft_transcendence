@@ -345,7 +345,6 @@ export function setupTournamentPong(playerCount:number) {
 }
 
 async function seedPlayerListener(authState:AuthState, playerId:string) {
-	void(authState);
 	const seed = document.getElementById(`${playerId}-seed`) as HTMLInputElement
 	if (!seed) {
 		return ;
@@ -534,8 +533,7 @@ function tournamentHTML(playerStates: AuthState[]) {
 		</div>
 	</div>`;
 	page.insertAdjacentHTML("beforeend", html);
-					getLanguage();
-
+	getLanguage();
 }
 
 function generateBracketMatchups(n: number): number[] {
