@@ -75,7 +75,6 @@ export function setupSnekMatchHistory() {
 			<div class="search-section">
 				<div class="search-fields">
 					<input type="text" id="alias1Input" class="alias-input" data-i18n-placeholder="P1Alias">
-					<input type="text" id="alias2Input" class="alias-input" data-i18n-placeholder="P2Alias">
 					<button class="find-btn" id="FindBtn">
 						<span data-i18n="btn_find"></span>
 					</button>
@@ -134,10 +133,7 @@ export function setupSnekMatchHistory() {
 function setupSnekSearchFunctionality() {
 	document.getElementById('FindBtn')?.addEventListener('click', () => {
 		const alias1Input = document.getElementById('alias1Input') as HTMLInputElement;
-		const alias2Input = document.getElementById('alias2Input') as HTMLInputElement;
-
 		const alias1 = DOMPurify.sanitize(alias1Input.value.trim());
-		const alias2 = DOMPurify.sanitize(alias2Input.value.trim());
 
 		if (!alias1) {
 			const message = getTranslation("Alias_Warning")
@@ -146,12 +142,7 @@ function setupSnekSearchFunctionality() {
 		}
 
 		let url: string;
-		if (alias2) {
-			url = `/snekHistory?alias1=${encodeURIComponent(alias1)}&alias2=${encodeURIComponent(alias2)}`;
-		} else {
-			url = `/snekHistory?alias=${encodeURIComponent(alias1)}`;
-		}
-
+		url = `/snekHistory?alias=${encodeURIComponent(alias1)}`;
 		window.location.href = url;
 	});
 
@@ -163,5 +154,4 @@ function setupSnekSearchFunctionality() {
 	};
 
 	document.getElementById('alias1Input')?.addEventListener('keypress', handleEnterKey);
-	document.getElementById('alias2Input')?.addEventListener('keypress', handleEnterKey);
 }

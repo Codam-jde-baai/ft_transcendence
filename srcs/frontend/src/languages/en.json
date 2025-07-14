@@ -66,8 +66,7 @@
     "Admin_placeholder1": "Search users...",
     "Friends_placeholder1": "Search for friends...",
     "CurrentP_placeholder1": "This field is always required",
-    "P1Alias" : "Player 1 Alias",
-    "P2Alias" : "Player 2 Alias (optional)",
+    "P1Alias" : "Player Alias",
     "ErrorMSG_Matches" : "No matches found",
 
     "Language": "Language",
