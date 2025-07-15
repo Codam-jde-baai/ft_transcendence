@@ -58,21 +58,23 @@ export function setupSnekMatchHistory() {
 				root.innerHTML = "";
 				root.insertAdjacentHTML("beforeend", /*html*/`
 		<link rel="stylesheet" href="src/styles/history.css"> <!-- Link to the CSS file -->
+		<link rel="stylesheet" href="src/styles/contentPages.css"> 
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
+		<div class="middle">
 		
 			<!-- Switching between games -->
-			<button class="game-btn-full" id="PongHistory">
+			<button class="btnFullWidth" id="PongHistory">
 				<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-pong.png">
 			</button>
 			
 			<!-- My History Button -->
-			<button class="my-history-btn" id="MyHistoryBtn">
+			<button class="btnFullWidth" id="MyHistoryBtn">
 				<span data-i18n="MyHistory">My History</span>
 			</button>
 			
 			<!-- Search Section -->
-			<div class="search-section">
+			<div class="contentArea">
 				<div class="search-fields">
 					<input type="text" id="alias1Input" class="alias-input" placeholder="Player 1 Alias">
 					<input type="text" id="alias2Input" class="alias-input" placeholder="Player 2 Alias (optional)">
@@ -82,7 +84,7 @@ export function setupSnekMatchHistory() {
 				</div>
 			</div>
 			
-			<div class="imiddle">
+			<div class="contentArea">
 				<div class="hcontainer">
 					<h1 class="Pongheader" data-i18n="Snek"></h1>
 					<h1 class="header" data-i18n="History"></h1>
@@ -92,6 +94,7 @@ export function setupSnekMatchHistory() {
 					
 				</div>
 			</div>
+				</div>
 		`);
 
 				getLanguage();

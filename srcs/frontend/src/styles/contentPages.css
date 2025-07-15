@@ -83,13 +83,17 @@
 /* buttons */
 
 .btnFullWidth {
-	@apply w-full p-3 border-none rounded-md;
+	@apply w-full p-3 border-none rounded-md text-center flex justify-center;
 	background-color: var(--color-btn-bg);
 	color: var(--color-text);
 	cursor: pointer;
 }
 .btnFullWidth:hover {
 	background-color: var(--color-btn-hover-bg);
+}
+
+.btnFullWidth img {
+	@apply w-[25px] h-[25px] ml-2;
 }
 
 .btnFullWidth.secondary {

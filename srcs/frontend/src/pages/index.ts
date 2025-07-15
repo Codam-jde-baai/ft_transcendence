@@ -79,8 +79,8 @@ export function renderPage() {
 			<div class="overlay"></div>
 			<language-menu></language-menu>
 
-			<div class="middle">
-				<div class="container">
+			<div class="imiddle">
+				<div class="icontainer">
 					<h1 class="header" data-i18n="Index_Header"></h1>
 					<p data-i18n="Index_P"></p>
 

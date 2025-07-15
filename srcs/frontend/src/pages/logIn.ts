@@ -17,8 +17,8 @@ export function setupLogIn() {
 		<!-- <div class="overlay"></div> -->
 		<language-menu></language-menu>
 
-		<div class="middle">
-			<div class="container">
+		<div class="lmiddle">
+			<div class="lcontainer">
 				<h1 class="header" data-i18n="LogIn_Header"></h1>
 				
 				<div class="p1" id="login-name" data-i18n="LogIn_Name"></div>

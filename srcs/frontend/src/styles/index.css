@@ -6,11 +6,11 @@
 }
 
 /* Container for forms */
-.container {
-	@apply bg-black bg-opacity-80 p-20 rounded-lg w-[690px] h-[310px] z-[1] flex flex-col justify-center items-center min-w-fit relative;
+.icontainer {
+	@apply bg-black bg-opacity-80 p-20 rounded-lg w-[600px] h-[310px] z-[1] flex flex-col justify-center items-center min-w-fit relative;
 }
 
-.middle {
+.imiddle {
     @apply fixed top-1/2 left-1/2;
     transform: translate(-50%, -50%);
     width: 100vw;

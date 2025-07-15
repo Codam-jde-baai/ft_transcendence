@@ -22,7 +22,7 @@ export function setupSetting() {
 		<dropdown-menu></dropdown-menu>
 		
 		<div class="middle">
-		<div class="contentArea">
+		<div class="contentArea px-[20vw]"> <!-- Added px-[10vw] for horizontal padding -->
 			<h1 class="header" data-i18n="Setting_Header"></h1>
 			
 			<p class="text-left mt-2 mb-[-15px]">

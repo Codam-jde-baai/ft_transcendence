@@ -70,7 +70,7 @@
 
 /* My History Button */
 .my-history-btn {
-	@apply fixed left-[220px] top-[180px] bg-[#902063] w-[75%] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
+	@apply left-[220px] top-[180px] bg-[#902063] w-[75%] p-2 text-white cursor-pointer text-center text-lg font-sans flex justify-center rounded-md border-none;
 }
 
 .my-history-btn:hover {
@@ -78,9 +78,6 @@
 }
 
 /* Search Section */
-.search-section {
-	@apply fixed left-[220px] top-[230px] w-[75%] z-[1];
-}
 
 .search-fields {
 	@apply flex gap-4 items-center justify-center bg-black bg-opacity-80 p-4 rounded-[15px];

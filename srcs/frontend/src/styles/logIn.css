@@ -1,6 +1,6 @@
 /* logIn.css */
 
-.middle {
+.lmiddle {
     @apply fixed top-1/2 left-1/2;
     transform: translate(-50%, -50%);
     width: 100vw;
@@ -12,8 +12,8 @@
 
 
 /* Container for forms */
-.container {
-	@apply bg-[rgba(0,0,0,0.8)] p-[40px] rounded-[15px] w-[400px] h-[400px] relative z-[1] box-border justify-center;
+.lcontainer {
+	@apply bg-[rgba(0,0,0,0.8)] p-[60px] rounded-[15px] w-[600px] h-[400px] relative z-[1] box-border justify-center;
 }
 
 
