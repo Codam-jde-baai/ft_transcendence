@@ -4,6 +4,6 @@
     "tailwindcss": "^4.1.6"
   },
   "devDependencies": {
-    "@types/dompurify": "^3.2.0"
+    "@types/dompurify": "^3.2.6"
   }
 }
