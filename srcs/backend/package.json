@@ -13,6 +13,7 @@
 		"rebuild:native": "npm rebuild better-sqlite3 sodium-native"
 	},
 	"dependencies": {
+		"esbuild": "^0.25.0",
 		"@fastify/cors": "^11.0.0",
 		"@punkish/fastify-better-sqlite3": "^2.0.0",
 		"@fastify/secure-session": "^8.1.1",
@@ -30,6 +31,7 @@
 		"ws": "^8.18.2"
 	},
 	"devDependencies": {
+		"esbuild": "^0.25.0",
 		"@fastify/swagger": "^9.x.x",
 		"@fastify/swagger-ui": "^5.0.0",
 		"@types/better-sqlite3": "^7.x.x",
