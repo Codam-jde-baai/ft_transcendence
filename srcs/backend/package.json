@@ -48,6 +48,7 @@
 		],
 		"ignoredBuiltDependencies": [],
 		"overrides": {
+			"esbuild": "^0.25.0",
 			"@esbuild-kit/core-utils": "^3.2.2",
 			"@esbuild-kit/esm-loader": "^2.6.5"
 		}
