@@ -285,15 +285,26 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
                 break;
         }
     });
-
-    // GUI Setup
-	// TODO, Update GUI Based On resize
+	
+	// GUI Setup
+	window.addEventListener("resize", () => {
+		engine.resize(); // important: resize the engine first
+		gui.scaleTo(engine.getRenderWidth(), engine.getRenderHeight());
+		dynamicFontSize = Math.round(baseFontSize * (engine.getRenderWidth() / referenceWidth));
+		scoreToWinText.fontSize = dynamicFontSize;
+		player1Text.fontSize = dynamicFontSize;
+		player2Text.fontSize = dynamicFontSize;
+		winnerText.fontSize = dynamicFontSize * 2;
+	});
     const gui = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+	const baseFontSize = 36;
+	const referenceWidth = 1920;
+	let dynamicFontSize = Math.round(baseFontSize * (engine.getRenderWidth() / referenceWidth));
     //Score UI
     const scoreToWinText = new GUI.TextBlock();
     scoreToWinText.text = `${scoreToWinString}: ${scoreToWin}`;
     scoreToWinText.color = "white";
-    scoreToWinText.fontSize = 24;
+    scoreToWinText.fontSize = dynamicFontSize;
     scoreToWinText.top = "10px";
     scoreToWinText.textHorizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
     scoreToWinText.textVerticalAlignment = GUI.Control.VERTICAL_ALIGNMENT_TOP;
@@ -301,7 +312,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     const player1Text = new GUI.TextBlock();
     player1Text.text = `${player1Alias}: ${player1Score}`;
     player1Text.color = "white";
-    player1Text.fontSize = 24;
+    player1Text.fontSize = dynamicFontSize;
     player1Text.top = "10px";
     player1Text.left = "10px";
     player1Text.textHorizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
@@ -310,7 +321,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     const player2Text = new GUI.TextBlock();
     player2Text.text = `${player2Alias}: ${player2Score}`;
     player2Text.color = "white";
-    player2Text.fontSize = 24;
+    player2Text.fontSize = dynamicFontSize;
     player2Text.top = "10px";
     player2Text.left = "-10px";
     player2Text.textHorizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_RIGHT;
@@ -319,7 +330,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 	const winnerText = new GUI.TextBlock();
 	winnerText.text = "";
 	winnerText.color = "yellow";
-	winnerText.fontSize = 48;
+	winnerText.fontSize = dynamicFontSize * 2;
 	winnerText.fontStyle = "bold";
     winnerText.top = "50px";
 	winnerText.textHorizontalAlignment = GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
