@@ -168,6 +168,7 @@
 
 	"Victory_Message": "Wins!\n(Press 'Enter' To Continue)",
 	"Score_To_Win": "Score To Win",
+	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:",
 
     "EndOfFile": ""
 }

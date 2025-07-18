@@ -169,6 +169,7 @@
 
     "Victory_Message": "Wint!\n(Druk op 'Enter' om door te gaan)",
     "Score_To_Win": "Score om te winnen",
+	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:(NL)",
 
     "EndOfFile": ""
 }

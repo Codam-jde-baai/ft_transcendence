@@ -168,6 +168,7 @@
 
     "Victory_Message": "Gewonnen!\n(Drücke 'Enter', um fortzufahren)",
     "Score_To_Win": "Punktzahl zum Sieg",
+	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:(DE)",
 
     "EndOfFile": ""
 }

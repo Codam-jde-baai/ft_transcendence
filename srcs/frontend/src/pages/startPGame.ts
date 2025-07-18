@@ -206,9 +206,13 @@ async function startGameListeners(authStates:AuthState[], player1Number:number, 
         startGameButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
         startGameButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 		try {
+			const defScore:string = "4";
+			const message = getTranslation("Change_Score")
+			const scoreToWin:number = Number(prompt(`${message} ${defScore})`, defScore));
 			const options:SceneOptions = {}
 			options.p1_alias = authStates[player1Number -1].isAuthenticated ? authStates[player1Number -1].userAlias : authStates[player1Number -1].guestAlias
 			options.p2_alias = authStates[player2Number -1].isAuthenticated ? authStates[player2Number -1].userAlias : authStates[player2Number -1].guestAlias
+			options.scoreToWin = (!scoreToWin || scoreToWin <= 0) ? Number(defScore) : (scoreToWin > 11 ? 11 : scoreToWin);
 			let gamePayload:GameEndPayload = {
 				p1_alias: options.p1_alias!,
 				p2_alias: options.p2_alias!,
@@ -605,9 +609,9 @@ async function startTournamentGameListeners(authStates:AuthState[], player1Numbe
         throw new Error("startGameButton Not Found");
     }
 
-	const options:SceneOptions = {}
-	options.p1_alias = authStates[player1Number -1].isAuthenticated ? authStates[player1Number -1].userAlias : authStates[player1Number -1].guestAlias
-	options.p2_alias = authStates[player2Number -1].isAuthenticated ? authStates[player2Number -1].userAlias : authStates[player2Number -1].guestAlias
+	const options:SceneOptions = {};
+	options.p1_alias = authStates[player1Number -1].isAuthenticated ? authStates[player1Number -1].userAlias : authStates[player1Number -1].guestAlias;
+	options.p2_alias = authStates[player2Number -1].isAuthenticated ? authStates[player2Number -1].userAlias : authStates[player2Number -1].guestAlias;
 	return new Promise((resolve, reject) => { async function startTournamentGame() {
     	startGameButton.removeEventListener('click', startTournamentGame);
 		startGameButton.disabled = true;
@@ -671,9 +675,14 @@ async function startTournamentGameListeners(authStates:AuthState[], player1Numbe
 			startGameButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
 		}
 	};
-	const message = getTranslation("Upcoming_Match")
-	setTimeout(() => { alert(`${message}\n${options.p1_alias} VS ${options.p2_alias}`) }, 100);
-    startGameButton.addEventListener('click', startTournamentGame);
+	const msg1 = getTranslation("Upcoming_Match")
+	const msg2 = getTranslation("Change_Score")
+	setTimeout(() => {
+		const defScore:string = "4";
+		const scoreToWin:number = Number(prompt(`${msg1}\n${options.p1_alias} VS ${options.p2_alias}\n${msg2} ${defScore})`, defScore))
+		options.scoreToWin = (!scoreToWin || scoreToWin <= 0) ? Number(defScore) : (scoreToWin > 11 ? 11 : scoreToWin);
+	}, 100);
+	startGameButton.addEventListener('click', startTournamentGame);
 	})
 }
 

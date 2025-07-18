@@ -77,7 +77,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 	const player2Alias		= options.p2_alias ?? "P2";
 	const scoreToWinString	= options.scoreToWinString ?? "Score To Win"
 	const victoryMessage	= options.victoryMessage ?? "Wins!\n(Press 'Enter' To Continue)"
-    const scoreToWin        = options.scoreToWin ?? 2;
+    const scoreToWin        = options.scoreToWin ?? 4;
     // Loop Variables
 	let	ballDropped			= false;
 	let	ballVector			= new BABYLON.Vector3(0,0,0);
@@ -350,9 +350,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 	function declareWinner(name: string) {
 		winnerText.text = `${name} ${victoryMessage}`;
 		winnerText.isVisible = true;
-		// setTimeout(() => {
-			// winnerText.isVisible = false;
-		// }, 4000);
 	}
     return scene;
 };
