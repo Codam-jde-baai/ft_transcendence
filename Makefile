@@ -12,6 +12,7 @@ VOLUME_DATA := ${HOME}/ft_transcendence/data/* ${HOME}/ft_transcendence/cookie-k
 .DEFAULT_GOAL := help
 
 # Colors
+RED			= \033[31;1m
 GREEN		= \033[32;1m
 RESET		= \033[0m
 
@@ -99,19 +100,15 @@ push:
 	docker exec -it backend pnpm run db:push
 
 # All Docker resources are removed, stopped and deleted
-deepclean: clean
-	@echo "Cleaning up Docker resources..."
-	@echo "Stopping containers..."
-	@docker stop $$(docker ps -qa) 2>/dev/null || true
-	@echo "Removing containers..."
-	@docker rm $$(docker ps -qa) 2>/dev/null || true
-	@echo "Removing images..."
-	@docker rmi -f $$(docker images -qa) 2>/dev/null || true
-	@echo "Removing volumes..."
-	@docker volume rm $$(docker volume ls -q) 2>/dev/null || true
-	@echo "Removing networks..."
-	@docker network rm $$(docker network ls -q) 2>/dev/null || true
-	@echo "Removing certificates..."
+deepclean:
+	@echo "$(RED)Cleaning up Docker resources...$(RESET)"
+	@echo "$(RED)Stopping and removing containers...$(RESET)"
+	@$(DOCKER_COMPOSE_DEV) down
+	@$(DOCKER_COMPOSE) down
+	@echo "$(RED)Performing deep Docker system prune...$(RESET)"
+	@docker system prune -af --volumes
+	@rm -rf $(VOLUME_DATA)
+	@echo "$(RED)Removing certificates...$(RESET)"
 	@rm -rf srcs/frontend/certs
 	@rm -rf srcs/backendend/certs
 	@echo "$(GREEN)All Docker resources have been cleaned.$(RESET)"
