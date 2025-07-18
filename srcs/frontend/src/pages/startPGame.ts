@@ -472,7 +472,6 @@ async function startTournament(authStates:AuthState[]) {
 		}
 		authStates.sort((a:AuthState, b:AuthState) => a.seed! - b.seed!)
 		const playerOrder = generateBracketMatchups(rounds[0].bracketSize)
-		console.log(playerOrder);
 		for (let position:number = 0; position < rounds[0].bracketSize ; position++) {
 			if (playerOrder[position] <= playerCount)
 				authStates[playerOrder[position]-1].position = position +1
@@ -482,7 +481,6 @@ async function startTournament(authStates:AuthState[]) {
 		}
 		let winnerStates:AuthState[]
 		for (let i:number = 0; i < totalNumberOfRounds; i++) {
-			console.log(rounds[i])
 			winnerStates = await startTournamentRound(rounds[i], totalNumberOfRounds - i)
 			if (winnerStates.length > 1) {			
 				rounds[i+1] = {
@@ -593,7 +591,6 @@ async function startTournamentRound(round:Round, roundNumber:number) : Promise<A
 		for (const winnersCount = bracketSize / 2; matchIndex !== winnersCount; matchIndex++) {
 			winnerStates[matchIndex] = await startTournamentGameListeners(round.playerStates, matchIndex +1, bracketSize - matchIndex, roundNumber)
 		}
-		console.log(winnerStates);
 		return (winnerStates)
 	} catch (error) {
 		console.error("Error Setting Up The Tournament:", error);
@@ -708,7 +705,6 @@ function updateBracket(round:number, winnerAlias:string, boxWinner:number, loser
 
 	if (!winner || !loser || !nextRound) {
 		console.error("Could Not Update Tournament Bracket");
-		console.log(idWinner, idLoser, idNextRound)
 		return ;
 	}
 	winner.textContent = "W: '"+ winnerAlias + "'!";
@@ -769,13 +765,11 @@ export function updatePongPlayerStatsDisplay(display:string, stats: PlayerStats)
 
 async function recordGameResults(gamePayload: GameEndPayload): Promise<boolean> {
     try {
-        console.log("Submitting game results:", gamePayload);
         const response = await connectFunc(
             "/matches/new",
             requestBody("POST", JSON.stringify(gamePayload), "application/json")
         );
         if (response.ok) {
-            console.log("Game results recorded successfully");
             return true;
         } else {
             console.error(`Failed to record game results: ${response.status}`);
