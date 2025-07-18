@@ -9,8 +9,6 @@ export interface SceneOptions {
 	victoryMessage?: string;
 	// User Options
 	scoreToWin?: number;
-	// Ball Acceleration?
-	// Ball Speed?
 }
 
 export class Pong {
@@ -63,8 +61,8 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     const ballSize          = 0.4;
     const ballMaxAngle      = Math.PI / 4;
     const ballBaseSpeed     = 0.2
-    const ballAcceleration  = 1.05;
-    const ballMaxSpeed      = 0.4;
+    const ballAcceleration  = 1.07;
+    const ballMaxSpeed      = 0.6;
     const ballStartAngle    = Math.PI / 6;
 	const ballDropSpeed		= 0.2
     // Colours
@@ -98,12 +96,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     camera.upperBetaLimit = Math.PI / 2;
     camera.lowerRadiusLimit = 12;
     camera.upperRadiusLimit = 18;
-// engine.onResizeObservable.add(() => {
-//   if (camera instanceof BABYLON.FreeCamera || camera instanceof BABYLON.ArcRotateCamera) {
-//     camera.aspectRatio = engine.getRenderingCanvasClientRect().width / engine.getRenderingCanvasClientRect().height;
-//     camera.getProjectionMatrix(true); // force recalculation
-//   }
-// });
     // light
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 
@@ -341,6 +333,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     // Optional:
     // Add POV Change
     // Add Button Hints (Hide With h)
+	// Move Camera While Paused
 
 	function changeCameraTopDown() {
 		if (paused < 0)
