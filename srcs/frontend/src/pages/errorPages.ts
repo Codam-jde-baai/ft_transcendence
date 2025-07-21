@@ -1,4 +1,3 @@
-import { setupLogIn } from '../pages/logIn'
 import { renderPage } from '../pages/index'
 
 export function setupErrorPages(errorCode: number, errorMessage: string) {
@@ -20,7 +19,7 @@ export function setupErrorPages(errorCode: number, errorMessage: string) {
 
 	if (errorCode === 402) {
 		window.history.pushState({}, '', '/logIn');
-		setupLogIn(); // Redirect to logIn
+		renderPage();
 	}
 	document.getElementById('Index')?.addEventListener('click', (e) => {
 		e.preventDefault(); // Prevent default <a> behavior
