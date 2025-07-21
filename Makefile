@@ -108,6 +108,8 @@ deepclean:
 	@echo "$(RED)Performing deep Docker system prune...$(RESET)"
 	@docker system prune -af --volumes
 	@rm -rf $(VOLUME_DATA)
+	@echo "$(RED)Removing ft_transcendence...$(RESET)"
+	@rm -rf ${HOME}/ft_transcendence
 	@echo "$(RED)Removing certificates...$(RESET)"
 	@rm -rf srcs/frontend/certs
 	@rm -rf srcs/backendend/certs
