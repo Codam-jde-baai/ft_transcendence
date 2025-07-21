@@ -170,8 +170,8 @@
 	"Victory_Message": "Wins!\n(Press 'Enter' To Continue)",
 	"Score_To_Win": "Score To Win",
 
-	"Seeding": "Enter A Seed From 1 To ",
-	"Seeding_Error": "Invalid Seed, Please Enter A Seed From 1 To ",
+	"Seeding": "Enter A Seed From 1 To",
+	"Seeding_Error": "Invalid Seed, Please Enter A Seed From 1 To",
 	"Invalid_Seeding": "Invalid Seeding",
 	
     "EndOfFile": ""

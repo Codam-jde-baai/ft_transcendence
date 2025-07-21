@@ -384,14 +384,14 @@ async function seedPlayerListener(authStates:AuthState[], playerId:string, playe
 		let response:any = null;
 		for(let valid:boolean = false; valid !== true;) {
 			const message = getTranslation("Seeding");
-			response = prompt(`${message}${playerCount}.`)
+			response = prompt(`${message} ${playerCount}.`)
 			if (response === null)
 				return null;
 			if (Number(response) >= 1 && Number(response) <= playerCount) {
 				valid = true;
 			} else {
 				const message = getTranslation("Seeding_Error");
-				alert(`${message}${playerCount}!`)
+				alert(`${message} ${playerCount}!`)
 			}
 		}
 		seed.value = response;
