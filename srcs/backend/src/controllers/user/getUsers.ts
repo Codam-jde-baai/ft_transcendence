@@ -59,6 +59,15 @@ export const getUser = async (request: FastifyRequest, reply: FastifyReply) => {
 	}
 }
 
+export const getUserStatus = async (request: FastifyRequest, reply: FastifyReply) => {
+	try {
+		reply.code(200).send();
+	} catch (error) {
+		const errorMessage = error instanceof Error ? error.message : 'getUserStatus Error';
+		return reply.status(500).send({ error: errorMessage })
+	}
+}
+
 export const getUserAlias = async (
 	request: FastifyRequest<{ Params: { alias: string } }>,
 	reply: FastifyReply) => {

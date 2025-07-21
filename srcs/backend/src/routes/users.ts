@@ -1,5 +1,5 @@
 import { FastifyInstance } from 'fastify';
-import { getAllUsers, getUser, getUserAlias, getUserImage, getUserImageByAlias } from '../controllers/user/getUsers.ts';
+import { getAllUsers, getUser, getUserStatus, getUserAlias, getUserImage, getUserImageByAlias } from '../controllers/user/getUsers.ts';
 import { addUser, updateUserProfilePic } from '../controllers/user/setUsers.ts';
 import { loginUser, logoutUser, loginUserGame } from '../controllers/user/login.ts'
 import { deleteUser, deleteProfilePic } from '../controllers/user/deleteUser.ts'
@@ -10,6 +10,7 @@ import {
 	securitySchemes,
 	imageOptions,
 	getUserOptions,
+	getUserStatusOptions,
 	getUserAliasOptions,
 	getUsersOptions,
 	getPublicUsersOptions,
@@ -37,6 +38,7 @@ function userRoutes(fastify: FastifyInstance, options: any, done: () => void) {
 		('/user/:alias/profile-pic', { preHandler: [authenticatePrivateToken], ...imageOptionsByAlias }, getUserImageByAlias);
 	fastify.get('/users', { preHandler: [authAPI], ...getUsersOptions }, getAllUsers);
 	fastify.get('/user', { preHandler: [authenticatePrivateToken], ...getUserOptions }, getUser);
+	fastify.get('/user/status', { preHandler: [authenticatePrivateToken], ...getUserStatusOptions }, getUserStatus);
 	fastify.get<{ Params: { alias: string } }>('/useralias/:alias', { preHandler: [authenticatePrivateToken], ...getUserAliasOptions }, getUserAlias);
 	// Public Data
 	fastify.get('/public/users', { preHandler: [authAPI], ...getPublicUsersOptions }, getAllUsers);
