@@ -130,6 +130,20 @@ export const getUserOptions = {
 	}
 };
 
+export const getUserStatusOptions = {
+	schema: {
+		security: [{ apiKey: [] }],
+		summary: 'Get user by UUID',
+		tags: ['users'],
+		response: {
+			200: {},
+			402: errorResponseSchema,
+			403: errorResponseSchema,
+			500: errorResponseSchema
+		}
+	}
+};
+
 export const getUserAliasOptions = {
 	schema: {
 		security: [{ apiKey: [] }],
