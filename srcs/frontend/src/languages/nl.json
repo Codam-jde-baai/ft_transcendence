@@ -170,5 +170,9 @@
     "Victory_Message": "Wint!\n(Druk op 'Enter' om door te gaan)",
     "Score_To_Win": "Score om te winnen",
 
+    "Seeding": "Voer een zaadgetal in van 1 tot ",
+    "Seeding_Error": "Ongeldig zaadgetal, voer een zaadgetal in van 1 tot ",
+    "Invalid_Seeding": "Ongeldige zaadverdeling",
+
     "EndOfFile": ""
 }

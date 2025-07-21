@@ -279,7 +279,7 @@ export function setupTournamentPong(playerCount:number) {
 					<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full overflow-x-hidden">
 						<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
 							<div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
-								<p><span data-i18n="SnekPlayer"></span>1<span id="p1-seed" class="px-3 text-sm"></span></p>
+								<p><span data-i18n="SnekPlayer"></span>1<span id="p1-seed" class="ml-2 px-1 py-1 text-sm text-gray-500 rounded bg-white"></span></p>
 								<p class="text-center">${playerStats.alias}</p>
 								<div class="bg-red-600 p-2 rounded">
 									<p><span data-i18n="SnekW"></span> <span id="p1-wins">0</span> | <span data-i18n="SnekL"></span> <span id="p1-losses">0</span></p>
@@ -290,7 +290,7 @@ export function setupTournamentPong(playerCount:number) {
 				for (let playerNum:number = 2; playerNum <= playerCount; playerNum++) {
 					html += /*html*/ `
 								<div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
-									<p><span data-i18n="SnekPlayer"></span>${playerNum} <span id="p${playerNum}-seed" class="px-3 text-sm"></span></p>
+									<p><span data-i18n="SnekPlayer"></span>${playerNum} <span id="p${playerNum}-seed" class="ml-2 px-1 py-1 text-sm text-gray-500 rounded bg-white"></span></p>
 									<div class="flex items-center gap-4">
 										<label class="flex items-center cursor-pointer">
 											<span class="mr-2"  data-i18n="SnekG"></span>
