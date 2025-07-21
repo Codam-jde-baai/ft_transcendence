@@ -146,5 +146,11 @@
     "SnekR": "Revanche!",
     "SnekGH": "Terug naar home",
 
+    "RecentLosses" : "Recent verloren tegen",
+    "SimilarSkill" : "Vergelijkbaar niveau",
+    "SimilarGameAmount" : "Vergelijkbaar aantal potjes",
+    "Profile" : "Profiel",
+    "PokeToPlay" : "Uitdagen om te spelen",
+
     "EndOfFile": ""
 }

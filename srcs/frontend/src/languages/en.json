@@ -146,5 +146,11 @@
     "SnekR" : "Rematch!",
     "SnekGH" : "Go back to home",
 
+    "RecentLosses" : "Recently Lost Against",
+    "SimilarSkill" : "Similar skill level",
+    "SimilarGameAmount" : "Similar game amount",
+    "Profile" : "Profile",
+    "PokeToPlay" : "Poke to play",
+
     "EndOfFile": ""
 }
