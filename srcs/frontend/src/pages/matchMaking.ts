@@ -39,124 +39,7 @@ type mmTable = {
     }
 };
 
-// Mock data - replace with actual API calls
-const mockMatchMakingData: mmTable = {
-    pong: {
-        recentLoss: [
-            {
-                friends: false,
-                alias: "UserA",
-                profile_pic: { data: "base64stringA", mimeType: "image/png" },
-                status: 1,
-                win: 10,
-                loss: 5,
-                total_games: 15,
-                winrate: 0.67,
-                last_score: { self: 2, opponent: 3 }
-            },
-            {
-                friends: true,
-                alias: "UserB",
-                profile_pic: { data: "base64stringB", mimeType: "image/jpeg" },
-                status: 2,
-                win: 8,
-                loss: 7,
-                total_games: 15,
-                winrate: 0.53,
-                last_score: { self: 1, opponent: 2 }
-            }
-        ],
-        equalSkill: [
-            {
-                friends: true,
-                alias: "UserC",
-                profile_pic: { data: "base64stringC", mimeType: "image/png" },
-                status: 1,
-                win: 12,
-                loss: 3,
-                total_games: 15,
-                winrate: 0.8,
-                last_score: { self: 3, opponent: 2 }
-            },
-            {
-                friends: false,
-                alias: "UserD",
-                profile_pic: { data: "base64stringD", mimeType: "image/jpeg" },
-                status: 2,
-                win: 11,
-                loss: 4,
-                total_games: 15,
-                winrate: 0.73,
-                last_score: { self: 2, opponent: 1 }
-            }
-        ],
-        equalGameAmount: [
-            {
-                friends: true,
-                alias: "UserE",
-                profile_pic: { data: "base64stringE", mimeType: "image/png" },
-                status: 1,
-                win: 7,
-                loss: 8,
-                total_games: 15,
-                winrate: 0.47,
-                last_score: { self: 1, opponent: 3 }
-            },
-            {
-                friends: false,
-                alias: "UserF",
-                profile_pic: { data: "base64stringF", mimeType: "image/jpeg" },
-                status: 2,
-                win: 9,
-                loss: 6,
-                total_games: 15,
-                winrate: 0.6,
-                last_score: { self: 2, opponent: 2 }
-            }
-        ]
-    },
-    snake: {
-        recentLoss: [
-            {
-                friends: true,
-                alias: "SnakeUserA",
-                profile_pic: { data: "base64stringSnakeA", mimeType: "image/png" },
-                status: 1,
-                win: 5,
-                loss: 10,
-                total_games: 15,
-                winrate: 0.33,
-                last_score: { self: 150, opponent: 200 }
-            }
-        ],
-        equalSkill: [
-            {
-                friends: false,
-                alias: "SnakeUserB",
-                profile_pic: { data: "base64stringSnakeB", mimeType: "image/jpeg" },
-                status: 2,
-                win: 8,
-                loss: 7,
-                total_games: 15,
-                winrate: 0.53,
-                last_score: { self: 180, opponent: 175 }
-            }
-        ],
-        equalGameAmount: [
-            {
-                friends: true,
-                alias: "SnakeUserC",
-                profile_pic: { data: "base64stringSnakeC", mimeType: "image/png" },
-                status: 1,
-                win: 9,
-                loss: 6,
-                total_games: 15,
-                winrate: 0.6,
-                last_score: { self: 220, opponent: 190 }
-            }
-        ]
-    }
-};
+let matchmakingData: mmTable | null = null;
 
 export function setupMatchMaking(game: GameType = GameType.Pong) {
     selectedGame = game;
@@ -178,29 +61,41 @@ export function setupMatchMaking(game: GameType = GameType.Pong) {
             <div class="contentArea">
                 <h2 class="h1" data-i18n="MatchMaking">Matchmaking</h2>
                 
+                <!-- Loading indicator -->
+                <div id="loading-indicator" style="text-align: center; padding: 20px;">
+                    <p data-i18n="Loading">Loading...</p>
+                </div>
+                
                 <!-- Recent Losses Section -->
-                <h1 class="h2" data-i18n="RecentLosses">Recent Losses</h1>
-                <div class="your-friends-list-wrapper">
-                    <div class="friends-list" id="recent-losses-container">
+                    <h1 class="h2" data-i18n="RecentLosses">Recent Losses</h1>
+                    <div class="your-friends-list-wrapper">
+                        <div class="friends-list" id="recent-losses-container">
+                        </div>
                     </div>
-                </div>
 
-                <!-- Similar Skill Section -->
-                <h1 class="h2" data-i18n="SimilarSkill">Similar Skill Level</h1>
-                <div class="your-friends-list-wrapper">
-                    <div class="friends-list" id="equal-skill-container">
+                    <!-- Similar Skill Section -->
+                    <h1 class="h2" data-i18n="SimilarSkill">Similar Skill Level</h1>
+                    <div class="your-friends-list-wrapper">
+                        <div class="friends-list" id="equal-skill-container">
+                        </div>
                     </div>
-                </div>
 
-                <!-- Similar Game Amount Section -->
-                <h1 class="h2" data-i18n="SimilarGameAmount">Similar Game Experience</h1>
-                <div class="your-friends-list-wrapper">
-                    <div class="friends-list" id="equal-games-container">
+                    <!-- Similar Game Amount Section -->
+                    <h1 class="h2" data-i18n="SimilarGameAmount">Similar Game Experience</h1>
+                    <div class="your-friends-list-wrapper">
+                        <div class="friends-list" id="equal-games-container">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex flex-row justify-start">
-                <button class="cbtn secondary" data-i18n="goBack" style="width: 100px;" id="backBtn">Back</button>
+                
+                <!-- Error message -->
+                <div id="error-message" style="display: none; text-align: center; padding: 20px; color: red;">
+                    <p data-i18n="ErrorLoadingData">Error loading matchmaking data. Please try again.</p>
+                    <button class="cbtn primary" id="retryBtn" data-i18n="Retry">Retry</button>
+                </div>
+                <div class="flex flex-row justify-start">
+                    <button class="cbtn secondary" data-i18n="goBack" style="width: 100px;" id="backBtn">Back</button>
+                </div>
             </div>
         </div>
         `);
@@ -215,38 +110,75 @@ export function setupMatchMaking(game: GameType = GameType.Pong) {
         // Load initial matchmaking data
         loadMatchMakingData();
         
-        console.log('Page load selected game is: ', game);
+        console.log('Page load selected game is: ', selectedGame);
     }
 }
 
 function loadMatchMakingData() {
-    // In a real implementation, you would fetch data from your API
-    // For now, we'll use the mock data
+    showLoading();
+    
+    // Fetch matchmaking data from the API
+    connectFunc(`/matchmaking`, requestBody("GET"))
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+        })
+        .then((data: mmTable) => {
+            matchmakingData = data;
+            console.log('Matchmaking data received:', data);
+            renderMatchmakingData();
+            hideLoading();
+        })
+        .catch(error => {
+            console.error('Error loading matchmaking data:', error);
+            showError();
+            hideLoading();
+        });
+}
+
+function renderMatchmakingData() {
+    if (!matchmakingData) return;
+    
     const gameKey = selectedGame === GameType.Pong ? 'pong' : 'snake';
-    const gameData = mockMatchMakingData[gameKey];
+    const gameData = matchmakingData[gameKey];
     
     // Populate recent losses
     const recentLossesContainer = document.getElementById('recent-losses-container');
     if (recentLossesContainer) {
-        recentLossesContainer.innerHTML = gameData.recentLoss.map(user => 
-            createUserElement(user, 'recentLoss')
-        ).join('');
+        if (gameData.recentLoss.length === 0) {
+            recentLossesContainer.innerHTML = '<p class="no-users-message" data-i18n="NoRecentLosses">No recent losses found</p>';
+        } else {
+            recentLossesContainer.innerHTML = gameData.recentLoss.map(user => 
+                createUserElement(user, 'recentLoss')
+            ).join('');
+        }
     }
     
     // Populate equal skill
     const equalSkillContainer = document.getElementById('equal-skill-container');
     if (equalSkillContainer) {
-        equalSkillContainer.innerHTML = gameData.equalSkill.map(user => 
-            createUserElement(user, 'equalSkill')
-        ).join('');
+        if (gameData.equalSkill.length === 0) {
+            equalSkillContainer.innerHTML = '<p class="no-users-message" data-i18n="NoSimilarSkill">No players with similar skill level found</p>';
+        } else {
+            equalSkillContainer.innerHTML = gameData.equalSkill.map(user => 
+                createUserElement(user, 'equalSkill')
+            ).join('');
+        }
     }
     
     // Populate equal game amount
     const equalGamesContainer = document.getElementById('equal-games-container');
     if (equalGamesContainer) {
-        equalGamesContainer.innerHTML = gameData.equalGameAmount.map(user => 
-            createUserElement(user, 'equalGameAmount')
-        ).join('');
+        if (gameData.equalGameAmount.length === 0) {
+            equalGamesContainer.innerHTML = '<p class="no-users-message" data-i18n="NoSimilarExperience">No players with similar game experience found</p>';
+        } else {
+            equalGamesContainer.innerHTML = gameData.equalGameAmount.map(user => 
+                createUserElement(user, 'equalGameAmount')
+            ).join('');
+        }
     }
     
     // Refresh language after adding elements
@@ -272,21 +204,60 @@ function createUserElement(user: mmUser, type: string): string {
     `;
 }
 
+function showLoading() {
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const matchmakingContent = document.getElementById('matchmaking-content');
+    const errorMessage = document.getElementById('error-message');
+    
+    if (loadingIndicator) loadingIndicator.style.display = 'block';
+    if (matchmakingContent) matchmakingContent.style.display = 'none';
+    if (errorMessage) errorMessage.style.display = 'none';
+}
+
+function hideLoading() {
+    const loadingIndicator = document.getElementById('loading-indicator');
+    const matchmakingContent = document.getElementById('matchmaking-content');
+    
+    if (loadingIndicator) loadingIndicator.style.display = 'none';
+    if (matchmakingContent) matchmakingContent.style.display = 'block';
+}
+
+function showError() {
+    const errorMessage = document.getElementById('error-message');
+    const matchmakingContent = document.getElementById('matchmaking-content');
+    
+    if (errorMessage) errorMessage.style.display = 'block';
+    if (matchmakingContent) matchmakingContent.style.display = 'none';
+}
+
 function eventListeners() {
     const toggleSwitch = document.querySelector('#gameToggle input') as HTMLInputElement;
     const goBackButton = document.querySelector('#backBtn') as HTMLButtonElement;
+    const retryButton = document.querySelector('#retryBtn') as HTMLButtonElement;
 
     if (toggleSwitch) {
         toggleSwitch.addEventListener('change', () => {
             selectedGame = toggleSwitch.checked ? GameType.Snek : GameType.Pong;
             console.log(`Selected game: ${selectedGame}`);
-            loadMatchMakingData(); // Reload data when game changes
+            
+            // If we already have data, just re-render. Otherwise, load fresh data.
+            if (matchmakingData) {
+                renderMatchmakingData();
+            } else {
+                loadMatchMakingData();
+            }
         });
     }
 
     if (goBackButton) {
         goBackButton.addEventListener('click', () => {
             window.history.back();
+        });
+    }
+    
+    if (retryButton) {
+        retryButton.addEventListener('click', () => {
+            loadMatchMakingData();
         });
     }
 }
@@ -336,6 +307,13 @@ function setupUserActionListeners() {
         // Here you would make an API call to send a game invitation
         const gameType = selectedGame === GameType.Pong ? 'pong' : 'snake';
         
+        // Disable the button to prevent multiple clicks
+        const button = document.querySelector(`mm-items[alias="${alias}"] button[data-i18n="PokeToPlay"]`) as HTMLButtonElement;
+        if (button) {
+            button.disabled = true;
+            button.textContent = 'Sending...';
+        }
+        
         connectFunc(`/game/invite`, requestBody("POST", JSON.stringify({ 
             alias: alias, 
             gameType: gameType 
@@ -343,15 +321,45 @@ function setupUserActionListeners() {
         .then(response => {
             if (response.ok) {
                 console.log(`Game invitation sent to ${alias}`);
-                // You might want to show a success message to the user
-                // Or update the UI to show that an invitation was sent
+                // Show success feedback
+                if (button) {
+                    button.textContent = 'Sent!';
+                    button.classList.add('success');
+                    setTimeout(() => {
+                        button.disabled = false;
+                        button.textContent = 'Poke to Play';
+                        button.classList.remove('success');
+                        getLanguage(); // Re-apply translations
+                    }, 2000);
+                }
             } else {
                 console.error(`Failed to send game invitation: ${response.status}`);
-                // Show error message to user
+                // Show error feedback
+                if (button) {
+                    button.textContent = 'Failed';
+                    button.classList.add('error');
+                    setTimeout(() => {
+                        button.disabled = false;
+                        button.textContent = 'Poke to Play';
+                        button.classList.remove('error');
+                        getLanguage(); // Re-apply translations
+                    }, 2000);
+                }
             }
         })
         .catch(error => {
             console.error('Error sending game invitation:', error);
+            // Show error feedback
+            if (button) {
+                button.textContent = 'Error';
+                button.classList.add('error');
+                setTimeout(() => {
+                    button.disabled = false;
+                    button.textContent = 'Poke to Play';
+                    button.classList.remove('error');
+                    getLanguage(); // Re-apply translations
+                }, 2000);
+            }
         });
     }
 }
