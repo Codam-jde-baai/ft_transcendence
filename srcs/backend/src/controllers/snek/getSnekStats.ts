@@ -9,7 +9,7 @@ import { PlayerStats, MatchData, calculatePlayerStats } from '../../models/snek.
 export const getTopStats = async (req: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 		const snek = await db.select({
 			p1_alias: snekTable.p1_alias,
@@ -40,7 +40,7 @@ export const getMyStats = async (req: FastifyRequest, reply: FastifyReply) => {
 	try {
 		const uuid = req.session.get('uuid') as string;
 		const alias = req.session.get('alias') as string;
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 		const snek = await db.select({
 			p1_alias: snekTable.p1_alias,
@@ -81,7 +81,7 @@ export const getStatsByAlias = async (req: FastifyRequest<{ Params: { alias: str
 	let sqlite = null;
 	try {
 		const alias = req.params.alias;
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 		const snek = await db.select({
 			p1_alias: snekTable.p1_alias,

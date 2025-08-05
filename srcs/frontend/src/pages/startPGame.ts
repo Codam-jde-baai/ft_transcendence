@@ -283,7 +283,7 @@ export function setupTournamentPong(playerCount:number) {
 					<div class="flex flex-col gap-4 items-center h-full overflow-y-auto w-full overflow-x-hidden">
 						<div class="flex flex-col w-full gap-10 bg-pink-500 text-white py-4 px-4 rounded justify-center">
 							<div class="flex flex-col flex-1 gap-4 bg-red-500 py-2 px-4 rounded justify-items-center">
-								<p><span data-i18n="SnekPlayer"></span>1<span id="p1-seed" class="px-3 text-sm"></span></p>
+								<p><span data-i18n="SnekPlayer"></span>1<span id="p1-seed" class="ml-2 px-1 py-1 text-sm text-gray-500 rounded bg-white"></span></p>
 								<p class="text-center">${playerStats.alias}</p>
 								<div class="bg-red-600 p-2 rounded">
 									<p><span data-i18n="SnekW"></span> <span id="p1-wins">0</span> | <span data-i18n="SnekL"></span> <span id="p1-losses">0</span></p>
@@ -294,7 +294,7 @@ export function setupTournamentPong(playerCount:number) {
 				for (let playerNum:number = 2; playerNum <= playerCount; playerNum++) {
 					html += /*html*/ `
 								<div class="flex flex-col flex-1 gap-4 bg-green-500 py-2 px-4 rounded justify-items-center">
-									<p><span data-i18n="SnekPlayer"></span>${playerNum} <span id="p${playerNum}-seed" class="px-3 text-sm"></span></p>
+									<p><span data-i18n="SnekPlayer"></span>${playerNum} <span id="p${playerNum}-seed" class="ml-2 px-1 py-1 text-sm text-gray-500 rounded bg-white"></span></p>
 									<div class="flex items-center gap-4">
 										<label class="flex items-center cursor-pointer">
 											<span class="mr-2"  data-i18n="SnekG"></span>
@@ -336,6 +336,7 @@ export function setupTournamentPong(playerCount:number) {
 				html += /*html*/ `
 						</div>
 						<!-- Start/Post Game Buttons -->
+						<div class="text-red-300 hidden" id="invalidSeeding" data-i18n="Invalid_Seeding"></div>
 						<button class="button-main bg-gray-500 cursor-not-allowed opacity-50" id="startTournament" disabled data-i18n="SnekST"></button>
 						<button class="button-main bg-gray-500 cursor-not-allowed opacity-50 hidden" id="startGame" disabled data-i18n="SnekSG"></button>
 						<!-- Scroll Buffer -->
@@ -348,7 +349,7 @@ export function setupTournamentPong(playerCount:number) {
 				getLanguage();
 				try {
 					updatePongPlayerStatsDisplay("p1", playerStats);
-					seedPlayerListener(authStates[0], "p1");
+					seedPlayerListener(authStates, "p1", playerCount);
 					for (let playerNum:number = 2; playerNum <= playerCount; playerNum++) {
 						const playerId:string = `p${playerNum}`;
 						authStates[playerNum -1] = createAuthState()
@@ -356,7 +357,7 @@ export function setupTournamentPong(playerCount:number) {
 						FormToggleListener(authStates[playerNum -1], playerId);
 						setupLoginValidation(authStates[playerNum -1], "pong", playerId);
 						isTournamentReadyListeners(authStates, playerId);
-						seedPlayerListener(authStates[playerNum -1], playerId);
+						seedPlayerListener(authStates, playerId, playerCount);
 					}
 					startTournamentListener(authStates);
 				} catch (error:any) {
@@ -374,13 +375,33 @@ export function setupTournamentPong(playerCount:number) {
 		});
 }
 
-async function seedPlayerListener(authState:AuthState, playerId:string) {
+async function seedPlayerListener(authStates:AuthState[], playerId:string, playerCount:number) {
 	const seed = document.getElementById(`${playerId}-seed`) as HTMLInputElement
-	if (!seed) {
+	const seedButton = document.getElementById(`${playerId}-seed`) as HTMLInputElement
+	const invalidSeeding = document.getElementById(`invalidSeeding`) as HTMLButtonElement;
+	if (!(seed && seedButton && invalidSeeding)) {
 		return ;
 	}; //some error
 	seed.textContent = "(#" + playerId.slice(1) + " Seed)";
 	seed.value = playerId.slice(1);
+	seedButton.addEventListener("click", () => {
+		let response:any = null;
+		for(let valid:boolean = false; valid !== true;) {
+			const message = getTranslation("Seeding");
+			response = prompt(`${message} ${playerCount}.`)
+			if (response === null)
+				return null;
+			if (Number(response) >= 1 && Number(response) <= playerCount) {
+				valid = true;
+			} else {
+				const message = getTranslation("Seeding_Error");
+				alert(`${message} ${playerCount}!`)
+			}
+		}
+		seed.value = response;
+		seed.textContent = "(#" + response + " Seed)";
+		updateStartTournamentButton(authStates);
+	});
 }
 
 function isTournamentReadyListeners(authStates: AuthState[], playerID: string) {
@@ -408,7 +429,9 @@ function isTournamentReadyListeners(authStates: AuthState[], playerID: string) {
 
 export function updateStartTournamentButton(authStates:AuthState[]) {
 	const startTournamentButton = document.getElementById(`startTournament`) as HTMLButtonElement;
-
+	const invalidSeeding = document.getElementById(`invalidSeeding`) as HTMLButtonElement;
+	
+	invalidSeeding.classList.add('hidden')
 	if (!startTournamentButton) {
 		console.error("startTournament Button Not Found");
 		return;
@@ -422,9 +445,28 @@ export function updateStartTournamentButton(authStates:AuthState[]) {
 			return ;
 		}
 	}
-	startTournamentButton.disabled = false;
-	startTournamentButton.classList.remove('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
-	startTournamentButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+	if (!checkSeeding(playerCount)) {
+		invalidSeeding.classList.remove('hidden')
+		startTournamentButton.disabled = true;
+		startTournamentButton.classList.add('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+		startTournamentButton.classList.remove('bg-blue-500', 'hover:bg-blue-700', 'text-white');	
+	} else {
+		startTournamentButton.disabled = false;
+		startTournamentButton.classList.remove('bg-gray-500', 'cursor-not-allowed', 'opacity-50');
+		startTournamentButton.classList.add('bg-blue-500', 'hover:bg-blue-700', 'text-white');
+	}
+}
+
+function checkSeeding(playerCount:number) : boolean {
+	const seeds: string[] = [];
+	for (let playerId:number = 1; playerId <= playerCount; playerId++ ) {
+		const seed = document.getElementById(`p${playerId}-seed`) as HTMLInputElement
+		if (!seed)
+			return false;
+		seeds.push(seed.value);
+	}
+	const uniqueSeeds = new Set(seeds);
+	return uniqueSeeds.size === playerCount;
 }
 
 function startTournamentListener(authStates:AuthState[]) {

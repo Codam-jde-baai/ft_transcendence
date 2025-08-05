@@ -69,7 +69,6 @@
     "CurrentP_placeholder1": "Dit veld is altijd verplicht",
     "P1Alias": "Speler Alias",
 
-
     "Language": "Taal",
     "Home": "Home",
     "Settings": "Instellingen",
@@ -122,9 +121,10 @@
     "Snek": "Snek",
     "SwitchGame": "Wissel van spel",
     "Pong": "Pong",
-    "SPl-against": "Spelers",
+    "SPl1": "Speler1",
+    "SPl2": "Speler2",
     "SMy-score": "Mijn Score",
-    "Spl-score": "Tegenstander Score",
+    "SOpp-score": "Tegenstander Score",
     "HighestScore": "Hoogste Score",
     "WinRate": "Winstpercentage",
     "HighestScore_": "Hoogste Score:",
@@ -133,7 +133,7 @@
     "goBack": "Terug",
     
     "SnekP1": "Speler1 (WASD)",
-     "SnekPlayer": "Speler",
+    "SnekPlayer": "Speler",
     "SnekM": "Wedstrijden: ",
     "SnekW": "Gewonnen:",
     "SnekL": " Verloren: ",
@@ -170,6 +170,10 @@
     "Victory_Message": "Wint!\n(Druk op 'Enter' om door te gaan)",
     "Score_To_Win": "Score om te winnen",
 	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:(NL)",
+
+    "Seeding": "Voer een zaadgetal in van 1 tot ",
+    "Seeding_Error": "Ongeldig zaadgetal, voer een zaadgetal in van 1 tot ",
+    "Invalid_Seeding": "Ongeldige zaadverdeling",
 
     "EndOfFile": ""
 }

@@ -12,7 +12,7 @@ import { PlayerStats } from '../../models/matches.ts';
 export const getAllMatches = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 		const Matches = await db.select().from(matchesTable)
 		return reply.status(200).send(Matches);
@@ -29,7 +29,7 @@ export const getAllMatches = async (request: FastifyRequest, reply: FastifyReply
 export const getAllRecords = async (request: FastifyRequest, reply: FastifyReply) => {
 	let sqlite = null;
 	try {
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 		const users = await db.select().from(usersTable)
 		const records:PlayerStats[] = []
@@ -64,7 +64,7 @@ export const getRecord = async (request: FastifyRequest<{ Params: { alias?: stri
 			alias = request.params.alias
 		else
 			alias = request.session.alias!
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 		const user = await db.select().from(usersTable).where(eq(usersTable.alias, alias)).limit(1);
 		if (user.length !== 1)
@@ -100,7 +100,7 @@ export const getMatchesByUser = async (request: FastifyRequest, reply: FastifyRe
 	let sqlite = null;
 	try {
 		const uuid = request.session.get('uuid') as string;
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 		const Matches = await db.select().from(matchesTable).where(or(eq(matchesTable.p1_uuid, uuid), eq(matchesTable.p2_uuid, uuid)))
 		if (Matches.length === 0) {
@@ -121,7 +121,7 @@ export const getMatchesByAlias = async (request: FastifyRequest<{ Params: { alia
 	let sqlite = null;
 	try {
 		const alias = request.params.alias
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 		const Matches = await db.select().from(matchesTable).where(or(eq(matchesTable.p1_alias, alias), eq(matchesTable.p2_alias, alias)))
 		if (Matches.length === 0) {
@@ -142,7 +142,7 @@ export const getMatchesByPair = async (request: FastifyRequest<{ Params: { p1_al
 	let sqlite = null;
 	try {
 		const { p1_alias, p2_alias } = request.params;
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 		const Matches = await db.select().from(matchesTable).where(or(
 			and(eq(matchesTable.p1_alias, p1_alias), eq(matchesTable.p2_alias, p2_alias)),
@@ -174,7 +174,7 @@ export const addMatch = async (request: FastifyRequest<{ Body: createMatch }>,
 			p2_uuid: body.p2_uuid,
 			status: body.status,
 		};
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 		const createdMatch = await db.insert(matchesTable).values(matchData).returning();
 		return reply.code(201).send(createdMatch[0]);

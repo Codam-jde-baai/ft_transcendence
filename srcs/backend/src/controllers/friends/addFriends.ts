@@ -22,7 +22,7 @@ export const addFriend = async (request: FastifyRequest<{
 		const reqUUid = request.session.get('uuid') as string;
 		const reqAlias = request.session.get('alias') as string;
 
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite)
 		const receiverArray = await db.select().from(usersTable).where(eq(usersTable.alias, alias));
 

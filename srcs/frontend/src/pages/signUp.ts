@@ -1,5 +1,6 @@
 import { setupUserHome } from './home';
-import { setupLogIn } from './logIn';
+// import { setupLogIn } from './logIn';
+import { checkLogin } from './logIn';
 import { setupErrorPages } from './errorPages';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
@@ -8,6 +9,7 @@ import { eyeIcon_Button } from '../script/buttonHandling';
 import { dropDownBar } from '../script/dropDownBar';
 import { sendPicture } from '../script/sendPic';
 import { websocketManager } from '../script/socket/socketClass';
+// import { renderPage } from '.';
 
 export function setupSignUp() {
 	const root = document.getElementById('app');
@@ -69,8 +71,10 @@ export function setupSignUp() {
 		eyeIcon_Button(["show-password", "show-password_confirm", "avatar"]);
 
 		document.getElementById('LogIn')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/logIn');
-			setupLogIn();
+			// window.history.pushState({}, '', '/logIn');
+			// setupLogIn();
+			// renderPage();
+			checkLogin();
 		});
 
 		document.getElementById('T&C')?.addEventListener('click', () => {

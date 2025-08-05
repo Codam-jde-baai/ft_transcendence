@@ -1,6 +1,12 @@
-import { fillHistoryTable } from '../script/fillTable';
 import { connectFunc, requestBody } from '../script/connections';
 import { getLanguage } from '../script/language';
+
+interface MatchHistory {
+	p1_alias: string;
+	p2_alias: string;
+	winner_alias: string;
+	date: string;
+}
 
 class HistoryTable extends HTMLElement {
 	constructor() {
@@ -9,6 +15,20 @@ class HistoryTable extends HTMLElement {
 
 	connectedCallback() {
 		this.render();
+	}
+
+	private getMatchResult(match: MatchHistory): {
+		date: string,
+		player1: string,
+		player2: string,
+		winner: string,
+	} {
+		let date = match.date;
+		let player1 = match.p1_alias;
+		let player2 = match.p2_alias;
+		let winner = match.winner_alias;
+
+		return { date, player1, player2, winner };
 	}
 
 	render() {
@@ -24,11 +44,32 @@ class HistoryTable extends HTMLElement {
 			}
 		}).then(() => {
 			if (aliasName) {
-				fillHistoryTable(aliasName).then((entryData: { date: string; player1: string; player2: string; winner: string }[] | null) => {
-					if (entryData) {
-						
+			
+				// Get the match history data
+				const urlParams = new URLSearchParams(window.location.search);
+				const alias1 = urlParams.get('alias1');
+				const alias2 = urlParams.get('alias2');
+				const alias = urlParams.get('alias');
+
+				let pongAPI: Promise<Response>;
+				if (alias) {
+					pongAPI = connectFunc(`/matches/${alias}`, requestBody("GET", null));
+				} else if (alias1 && alias2) {
+					pongAPI = connectFunc(`/matches/${alias1}/${alias2}`, requestBody("GET", null));
+				} else {
+					pongAPI = connectFunc(`/matches`, requestBody("GET", null));
+				}
+				
+				return pongAPI.then(response => {
+					if (response.ok) {
+						return response.json();
+					}
+					throw new Error('Failed to fetch match history');	
+				}).then((MatchHistory: MatchHistory[]) => {
 						let rowsHtml = "";
-						entryData.forEach((entry: any) => {
+
+						MatchHistory.forEach((match: MatchHistory) => {
+							const entry = this.getMatchResult(match);
 
 							rowsHtml += `
 								<tr>
@@ -58,10 +99,11 @@ class HistoryTable extends HTMLElement {
 						`);
 
 						getLanguage();
-					}
-				});
-			}
-		});
+					});
+				}
+			}).catch(() => {
+				this.innerHTML = `<div class="error">Failed to load match history</div>`;
+			});
 	}
 }
 

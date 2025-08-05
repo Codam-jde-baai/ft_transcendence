@@ -21,7 +21,6 @@ export function setupMatchHistory() {
 	const root = document.getElementById('app');
 	const storedAlias = localStorage.getItem('myAlias');
 	if (!storedAlias) {
-		console.error("Can't find user alias");
 		fillTopbar(true);
 		window.location.reload();
 		return;
@@ -52,86 +51,86 @@ export function setupMatchHistory() {
 			setupErrorPages(response.status, response.statusText);
 		}
 	})
-		.then((matchHistory: matchHistory[]) => {
-			let matches: number = matchHistory.length;
-			console.log(matchHistory); // use this data in the table
-			if (root) {
-				root.innerHTML = "";
-				root.insertAdjacentHTML("beforeend", /*html*/`
-		<link rel="stylesheet" href="src/styles/history.css"> <!-- Link to the CSS file -->
-		<div class="overlay"></div>
-		<dropdown-menu></dropdown-menu>
-		
-		<!-- Switching between games -->
-		<button class="game-btn-full" id="SnekHistory">
-			<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
-		</button>
-		
-		<!-- My History Button -->
-		<button class="my-history-btn" id="MyHistoryBtn">
-			<span data-i18n="MyHistory"></span>
-		</button>
-		
-		<!-- Search Section -->
-		<div class="search-section">
-			<div class="search-fields">
-				<input type="text" id="alias1Input" class="alias-input" data-i18n-placeholder="P1Alias">
-				<button class="find-btn" id="FindBtn">
-					<span data-i18n="btn_find"></span>
+	.then((matchHistory: matchHistory[]) => {
+		let matches: number = matchHistory.length;
+		if (root) {
+			root.innerHTML = "";
+			root.insertAdjacentHTML("beforeend", /*html*/`
+				<link rel="stylesheet" href="src/styles/history.css"> <!-- Link to the CSS file -->
+				<div class="overlay"></div>
+				<dropdown-menu></dropdown-menu>
+				
+				<!-- Switching between games -->
+				<button class="game-btn-full" id="SnekHistory">
+					<span data-i18n="SwitchGame"></span> <img src="src/Pictures/game-snek.png">
 				</button>
-			</div>
-		</div>
-		
-		<div class="imiddle">
-			<div class="hcontainer">
-				<h1 class="Pongheader" data-i18n="Pong"></h1>
-				<h1 class="header" data-i18n="History"></h1>
-				<p class="p1">${displayedAlias}</p>
-				<p class="p1 text-red-600" ${matches === 0 ? '' : 'hidden'}><span data-i18n="ErrorMSG_Matches"></span></p>
-				${matches === 0 ? '' : '<history-table></history-table>'}
+				
+				<!-- My History Button -->
+				<button class="my-history-btn" id="MyHistoryBtn">
+					<span data-i18n="MyHistory"></span>
+				</button>
+				
+				<!-- Search Section -->
+				<div class="search-section">
+					<div class="search-fields">
+						<input type="text" id="alias1Input" class="alias-input" data-i18n-placeholder="P1Alias">
+						<button class="find-btn" id="FindBtn">
+							<span data-i18n="btn_find"></span>
+						</button>
+					</div>
+				</div>
+				
+				<div class="imiddle">
+					<div class="hcontainer">
+						<h1 class="Pongheader" data-i18n="Pong"></h1>
+						<h1 class="header" data-i18n="History"></h1>
+						<p class="p1">${displayedAlias}</p>
+						<p class="p1 text-red-600" ${matches === 0 ? '' : 'hidden'}><span data-i18n="ErrorMSG_Matches"></span></p>
+						${matches === 0 ? '' : '<history-table></history-table>'}
 
-			</div>
-		</div>
-		`);
+					</div>
+				</div>
+				`);
 
-				getLanguage();
-				dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
-				fillTopbar();
-				setupNavigation();
-				setupMatchSearchFunctionality();
+			getLanguage();
+			dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
+			fillTopbar();
+			setupNavigation();
+			setupMatchSearchFunctionality();
 
-				document.getElementById('SnekHistory')?.addEventListener('click', () => {
-					const url = new URL(window.location.href);
-					const searchParams = url.search;
-					window.location.href = `/snekHistory${searchParams}`;
-					setupSnekMatchHistory();
-				});
+			document.getElementById('SnekHistory')?.addEventListener('click', () => {
+				const url = new URL(window.location.href);
+				const searchParams = url.search;
+				window.location.href = `/snekHistory${searchParams}`;
+				setupSnekMatchHistory();
+			});
 
-				document.getElementById('MyHistoryBtn')?.addEventListener('click', () => {
-					window.location.href = '/history';
-				});
+			document.getElementById('MyHistoryBtn')?.addEventListener('click', () => {
+				window.location.href = '/history';
+			});
 
-				connectFunc(`/user`, requestBody("GET", null))
-					.then((userInfoResponse) => {
-						if (userInfoResponse.ok) {
-							userInfoResponse.json().then((data) => {
+			connectFunc(`/user`, requestBody("GET", null))
+				.then((userInfoResponse) => {
+					if (userInfoResponse.ok) {
+						userInfoResponse.json().then((data) => {
 
-								// Alias Name
-								const aliasElem = document.getElementById("historyAliasName");
-								if (aliasElem)
-									aliasElem.textContent = data.alias;
+							// Alias Name
+							const aliasElem = document.getElementById("historyAliasName");
+							if (aliasElem)
+								aliasElem.textContent = data.alias;
 
-							});
-						} else {
-							window.history.pushState({}, '', '/errorPages');
-							setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
-						}
-					})
-			}
-		})
+						});
+					} else {
+						window.history.pushState({}, '', '/errorPages');
+						setupErrorPages(userInfoResponse.status, userInfoResponse.statusText);
+					}
+				})
+		}
+	});
 }
 
 function setupMatchSearchFunctionality() {
+
 	document.getElementById('FindBtn')?.addEventListener('click', () => {
 		const alias1Input = document.getElementById('alias1Input') as HTMLInputElement;
 		const alias1 = DOMPurify.sanitize(alias1Input.value.trim());
@@ -141,7 +140,7 @@ function setupMatchSearchFunctionality() {
 			alert(message);
 			return;
 		}
-
+	
 		let url: string;
 		url = `/history?alias=${encodeURIComponent(alias1)}`;
 		window.location.href = url;

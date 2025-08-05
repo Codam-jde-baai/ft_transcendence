@@ -121,9 +121,10 @@
     "Snek": "Snek",
     "SwitchGame": "Switch Game",
     "Pong": "Pong",
-    "SPl-against": "Players",
+    "SPl1": "Player1",
+    "SPl2": "Player2",
     "SMy-score": "My Score",
-    "Spl-score": "Opponent Score",
+    "SOpp-score": "Opponent Score",
     "HighestScore": "Highest Score",
     "WinRate": "Win Rate",
     "HighestScore_": "Highest Score:",
@@ -170,5 +171,9 @@
 	"Score_To_Win": "Score To Win",
 	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:",
 
+	"Seeding": "Enter A Seed From 1 To ",
+	"Seeding_Error": "Invalid Seed, Please Enter A Seed From 1 To ",
+	"Invalid_Seeding": "Invalid Seeding",
+	
     "EndOfFile": ""
 }

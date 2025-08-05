@@ -121,9 +121,10 @@
     "Snek": "Snek",
     "SwitchGame": "Spiel wechseln",
     "Pong": "Pong",
-    "SPl-against": "Spieler",
+    "SPl1": "Spieler1",
+    "SPl2": "Spieler2",
     "SMy-score": "Mein Punktestand",
-    "Spl-score": "Gegnerischer Punktestand",
+    "SOpp-score": "Gegnerischer Punktestand",
     "HighestScore": "Höchste Punktzahl",
     "WinRate": "Gewinnrate",
     "HighestScore_": "Höchste Punktzahl:",
@@ -169,6 +170,10 @@
     "Victory_Message": "Gewonnen!\n(Drücke 'Enter', um fortzufahren)",
     "Score_To_Win": "Punktzahl zum Sieg",
 	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:(DE)",
+
+    "Seeding": "Geben Sie einen Sitz von 1 bis ",
+    "Seeding_Error": "Ungültiger Sitz, bitte geben Sie einen Sitz von 1 bis ",
+    "Invalid_Seeding": "Ungültige Setzung",
 
     "EndOfFile": ""
 }

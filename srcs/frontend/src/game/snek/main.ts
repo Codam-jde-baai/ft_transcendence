@@ -65,7 +65,6 @@ export async function startSnek(app: Application, p1alias: string, p2alias: stri
   gameActive = true;
   await countDownStart(app);
   const winner = await setupGame(app, p1alias, p2alias);
-  console.log("winner data:", winner);
   gameActive = false;
   return winner;
 }
@@ -75,7 +74,6 @@ export async function restartSnek(app: Application, p1alias: string, p2alias: st
   gameActive = true;
   await countDownStart(app);
   const winner = await setupGame(app, p1alias, p2alias);
-  console.log("winner data:", winner);
   gameActive = false;
   return winner;
 }

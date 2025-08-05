@@ -236,7 +236,6 @@ async function recordGameResults(gameData: gameEndData): Promise<boolean> {
             payload.p2_uuid = DOMPurify.sanitize(authState.userUuid);
         }
 
-        console.log("Submitting game results:", payload);
 
         // Make the API call
         const response = await connectFunc(
@@ -245,7 +244,7 @@ async function recordGameResults(gameData: gameEndData): Promise<boolean> {
         );
 
         if (response.ok) {
-            console.log("Game results recorded successfully");
+            console.error("Game results recorded successfully");
             return true;
         } else {
             console.error(`Failed to record game results: ${response.status}`);
@@ -280,13 +279,10 @@ async function startGameListeners(app: Application): Promise<void> {
 
         try {
             const gameData: gameEndData = await startSnek(app, player1Name, player2Name);
-            console.log("Game ended with data:", gameData);
 
             // Record game results
             const recordSuccess = await recordGameResults(gameData);
-            if (recordSuccess) {
-                console.log("Game results recorded successfully");
-            } else {
+            if (!recordSuccess) {
                 console.warn("Failed to record game results");
             }
 
@@ -313,13 +309,10 @@ async function startGameListeners(app: Application): Promise<void> {
 
         try {
             const gameData: gameEndData = await restartSnek(app, player1Name, player2Name);
-            console.log("Restarted Game results:", gameData);
 
             // Record game results
             const recordSuccess = await recordGameResults(gameData);
-            if (recordSuccess) {
-                console.log("Game results recorded successfully");
-            } else {
+            if (!recordSuccess) {
                 console.warn("Failed to record game results");
             }
 

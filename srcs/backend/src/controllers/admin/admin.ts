@@ -63,7 +63,7 @@ export const adminDeleteUser = async (request: FastifyRequest<{
 	let sqlite = null;
 	try {
 		const username = request.body.username
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 		const result = await db.delete(usersTable).where(eq(usersTable.username, username));
 		if (result.changes === 0) {
@@ -90,7 +90,7 @@ export const adminUpdateUserPassword = async (request: FastifyRequest<{
 	let sqlite = null;
 	try {
 		const { username, newPassword } = request.body
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 		const User = await db.select().from(usersTable).where(eq(usersTable.username, username));
 		if (User.length === 0) {

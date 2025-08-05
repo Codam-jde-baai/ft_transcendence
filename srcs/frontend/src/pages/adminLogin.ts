@@ -1,5 +1,4 @@
 import { setupAdmin } from './admin';
-import { setupLogIn } from './logIn';
 import { getLanguage } from '../script/language';
 import { connectFunc, requestBody, inputToContent } from '../script/connections';
 import { errorDisplay } from '../script/errorFunctions';
@@ -31,10 +30,6 @@ export function setupAdminLogIn() {
 				<div class="buttons">
 					<button class="btn" id="Admin" data-i18n="btn_LogIn"></button>
 				</div>
-				<p>
-					<span data-i18n="SignUp_P"></span>
-					<a id="LogIn" class="cursor-pointer text-pink-600 underline" data-i18n="btn_LogIn"></a>
-				</p>
 			</div>
 		</div>
 		`);
@@ -42,12 +37,6 @@ export function setupAdminLogIn() {
 		getLanguage();
 		dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 		eyeIcon_Button(["show-password"]);
-
-		document.getElementById('LogIn')?.addEventListener('click', () => {
-			window.history.pushState({}, '', '/logIn');
-			setupLogIn();
-		});
-
 
 		document.getElementById('Admin')?.addEventListener('click', () => {				
 			const content: string = inputToContent(["admin", "password"])

@@ -64,17 +64,16 @@ function eventListeners(selectedGame:GameType) {
 	toggleSwitch.addEventListener('change', () => {
 		selectedGame = toggleSwitch.checked ? GameType.Snek : GameType.Pong;
 		toggleSwitch.checked ? tournamentButton.classList.add('hidden') : tournamentButton.classList.remove('hidden')
-		console.log(`Selected game: ${selectedGame}`);
 	});
 
 	quickPlayButton.addEventListener('click', () => {
-		selectedGame === GameType.Pong ? console.log("Pong Quick Play") : console.log("Snek Quick Play");
+		// selectedGame === GameType.Pong ? console.log("Pong Quick Play") : console.log("Snek Quick Play");
 		window.history.pushState({}, '', `/${selectedGame.toLowerCase()}QuickPlay`);
 		selectedGame === GameType.Pong ? setupQuickPong() : setupQuickSnek();
 	});
 
 	tournamentButton.addEventListener('click', () => {
-		selectedGame === GameType.Pong ? console.log("Pong Tournament") : console.log("Snek Tournament");
+		// selectedGame === GameType.Pong ? console.log("Pong Tournament") : console.log("Snek Tournament");
 		window.history.pushState({}, '', `/${selectedGame.toLowerCase()}Tournament`);
 		const playerCount: number | null = playerCountPopUp()
 		if (playerCount)
@@ -82,7 +81,7 @@ function eventListeners(selectedGame:GameType) {
 	});
 
 	matchMakingButton.addEventListener('click', () => {
-		selectedGame === GameType.Pong ? console.log("Pong Match Making") : console.log("Snek Match Making");
+		// selectedGame === GameType.Pong ? console.log("Pong Match Making") : console.log("Snek Match Making");
 		window.location.href = `/matchMaking`;
 		setupMatchMaking(selectedGame);
 	});

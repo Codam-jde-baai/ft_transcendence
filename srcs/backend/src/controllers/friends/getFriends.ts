@@ -11,7 +11,7 @@ export const getFriends = async (request: FastifyRequest<{ Params: { alias: stri
 	try {
 		const alias = request.params.alias;
 
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 
 		const userExist = await db.select().from(usersTable).where(eq(usersTable.alias, alias)).limit(1);
@@ -108,7 +108,7 @@ export const getMyFriends = async (request: FastifyRequest, reply: FastifyReply)
 	try {
 		const uuid = request.session.get('uuid') as string;
 
-		sqlite = new Database('./data/data.db', { verbose: console.log })
+		sqlite = new Database('./data/data.db' )
 		const db = drizzle(sqlite);
 
 		const userExist = await db.select().from(usersTable).where(eq(usersTable.uuid, uuid)).limit(1);

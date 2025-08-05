@@ -38,10 +38,6 @@ function connectAuthentication(socket: WebSocket, req: FastifyRequest): { uuid: 
     try {
         uuid = req.session.get('uuid');
         alias = req.session.get('alias');
-        console.log('Session data retrieved:', {
-            uuid: uuid ? 'present' : 'missing',
-            alias: alias ? 'present' : 'missing'
-        });
     } catch (error) {
         socket.close(1008, 'Session access error');
         return null;
@@ -93,7 +89,6 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
             return;
         }
         if (userConn.isAlive === false) {
-            console.log(`No heartbeat from ${alias} (${uuid}), terminating connection.`);
             socket.terminate();
             handleDisconnection(uuid, alias);
             return;
@@ -112,14 +107,11 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
     socket.on('pong', () => {
         const userConn = connectedUsers.get(uuid);
         if (userConn) userConn.isAlive = true;
-        console.log(`Heartbeat received from ${alias} (${uuid})`);
     });
     socket.on('message', async (message: Buffer) => {
         try {
             const rawData = JSON.parse(message.toString());
-            console.log(`Received message from ${alias} (${uuid}):`, rawData);
             if (!isReceiveMessage(rawData)) {
-                console.log(`Invalid message format from ${alias}:`, rawData);
                 sendMessageToSocket(socket, createErrorMessage('Invalid message format'));
                 return;
             }
@@ -135,25 +127,20 @@ export const newUserConnection = async (socket: WebSocket, req: FastifyRequest) 
                     break;
                 default:
                     const _exhaustive: never = data;
-                    console.log(`Unhandled message type:`, data);
             }
         } catch (error) {
-            console.error('Error parsing WebSocket message:', error);
             sendMessageToSocket(socket, createErrorMessage('Invalid message format'));
         }
     });
     socket.on('close', async (code: number, reason: Buffer) => {
-        console.log(`User ${alias} (${uuid}) disconnected with code ${code}: ${reason.toString()}`);
         await handleDisconnection(uuid, alias);
     });
     socket.on('error', async (error: Error) => {
-        console.error(`WebSocket error for user ${alias} (${uuid}):`, error);
         await handleDisconnection(uuid, alias);
     });
 };
 
 async function handleDisconnection(uuid: string, alias: string) {
-    console.log(`Handling disconnection for ${alias} (${uuid})`);
     const heartbeat = heartbeatIntervals.get(uuid);
     if (heartbeat) {
         clearInterval(heartbeat);
@@ -166,7 +153,6 @@ async function handleDisconnection(uuid: string, alias: string) {
 
 // Clean up function for server shutdown
 export function cleanupConnections() {
-    console.log('Cleaning up all WebSocket connections');
     heartbeatIntervals.forEach((interval) => {
         clearInterval(interval);
     });
@@ -182,7 +168,6 @@ async function updateUserStatusInDB(uuid: string, status: typeof userStatus[keyo
         await db.update(usersTable)
             .set({ status: status })
             .where(eq(usersTable.uuid, uuid));
-        console.log(`Updated user ${uuid} status to ${status} in database`);
     } catch (error) {
         console.error('Failed to update user status in database:', error);
     } finally {
@@ -257,7 +242,6 @@ async function handleStatusUpdate(uuid: string, alias: string, status: 'online' 
             msg = 'went offline';
             break;
         default:
-            console.log(`Invalid status: ${status}`);
             return;
     }
     await updateUserStatusInDB(uuid, dbStatus);
@@ -280,7 +264,6 @@ export function getUserConnectionCount(): number {
 }
 
 export function sendMessageToUser(uuid: string, message: SendMessage): boolean {
-    console.log(`Sending message to user ${uuid}:`, message);
 
     const userConnection = connectedUsers.get(uuid);
     if (userConnection && userConnection.socket.readyState === WebSocket.OPEN) {
@@ -288,7 +271,7 @@ export function sendMessageToUser(uuid: string, message: SendMessage): boolean {
             sendMessageToSocket(userConnection.socket, message);
             return true;
         } catch (error) {
-            console.error(`Failed to send message to user ${uuid}:`, error);
+            console.error(`Failed to send message to user:`, error);
             connectedUsers.delete(uuid);
             return false;
         }

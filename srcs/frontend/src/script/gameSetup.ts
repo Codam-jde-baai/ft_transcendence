@@ -271,7 +271,6 @@ export function showLoginStatus(statusElement: HTMLElement, message: string, isS
 
 // calls login API
 export async function validateLogin(username: string, password: string): Promise<UserData | null> {
-	console.log(`Attempting to login with username: ${username}`);
 
 	try {
 		const response = await connectFunc(
@@ -366,7 +365,6 @@ export function newPlayersButton(authState:AuthState, playerId?:string) {
         // resetGame(app);
         updateStartGameButton(authState, player);
 
-        console.log("New players button clicked");
     });
 }
 

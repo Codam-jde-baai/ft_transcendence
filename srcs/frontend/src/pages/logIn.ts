@@ -8,6 +8,20 @@ import { dropDownBar } from '../script/dropDownBar';
 import { websocketManager } from '../script/socket/socketClass';
 // import { setupAdminLogIn} from './adminLogin';
 
+export async function checkLogin() {
+	try {
+		const response = await connectFunc("/user/status", requestBody("GET"))
+		if (response.ok) {
+			window.history.pushState({}, '', '/home');
+			setupUserHome(true);
+		} else {
+			setupLogIn();
+		}
+	} catch (error) {
+		console.error('Login error:', error);
+	}
+}
+
 export function setupLogIn() {
 	const root = document.getElementById('app');
 	if (root) {

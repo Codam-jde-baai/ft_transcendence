@@ -27,7 +27,7 @@ export const updateUser = async (request: FastifyRequest<{
 		let user = null;
 		let storedHash = '$argon2id$v=19$m=65536,t=3,p=4$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
 
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db');
 		const db = drizzle(sqlite);
 		const userArray = await db.select().from(usersTable).where(eq(usersTable.uuid, uuid));
 
@@ -70,7 +70,7 @@ export const setOnline = async (
 	let sqlite = null;
 	try {
 		const { uuid } = request.params;
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db');
 		const db = drizzle(sqlite);
 		const userArray = await db.update(usersTable)
 			.set({ status: userStatus.ONLINE })
@@ -95,7 +95,7 @@ export const setOffline = async (
 	let sqlite = null;
 	try {
 		const { uuid } = request.params;
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db');
 		const db = drizzle(sqlite);
 		const userArray = await db.update(usersTable)
 			.set({ status: userStatus.OFFLINE })

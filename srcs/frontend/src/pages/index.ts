@@ -1,5 +1,5 @@
 import '../styles/index.css';
-import { setupLogIn } from './logIn';
+import { checkLogin, setupLogIn } from './logIn';
 import { setupSignUp } from './signUp';
 import { setupUserHome } from './home';
 import { setupSetting } from './setting';
@@ -96,8 +96,9 @@ export function renderPage() {
 			dropDownBar(["dropdown-btn", "language-btn", "language-content"]);
 
 			document.getElementById('LogIn')?.addEventListener('click', () => {
-				window.history.pushState({}, '', '/logIn');
-				renderPage();
+				// window.history.pushState({}, '', '/logIn');
+				// renderPage();
+				checkLogin();
 			});
 
 			document.getElementById('SignUp')?.addEventListener('click', () => {

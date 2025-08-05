@@ -40,7 +40,7 @@ export const addUser = async (request: FastifyRequest<{
 		validateUser(userData);
 
 		// Add to database
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 		const createdUser = await db.insert(usersTable).values(userData).returning();
 		request.session.set('uuid', createdUser[0].uuid);
@@ -81,7 +81,7 @@ export const updateUserProfilePic = async (request: FastifyRequest, reply: Fasti
 		validateProfilePic(profilePic);
 
 		// Update database
-		sqlite = new Database('./data/data.db', { verbose: console.log });
+		sqlite = new Database('./data/data.db' );
 		const db = drizzle(sqlite);
 		const existingUser = await db.select().from(usersTable).where(eq(usersTable.uuid, uuid));
 
