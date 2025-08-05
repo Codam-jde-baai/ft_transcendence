@@ -43,9 +43,6 @@ export class Pong {
 			});
 		});
     }
-
-
-
 }
 
 function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options: SceneOptions, setWinner: (winner:number) => void): BABYLON.Scene {
@@ -65,6 +62,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     const ballMaxSpeed      = 0.6;
     const ballStartAngle    = Math.PI / 6;
 	const ballDropSpeed		= 0.2
+	const zLimit			= groundHeight / 2 - ballSize / 2;
     // Colours
     const paddle1Colour     = new BABYLON.Color3(0, 0, 1);
     const paddle2Colour     = new BABYLON.Color3(1, 0, 0);
@@ -96,8 +94,11 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     camera.upperBetaLimit = Math.PI / 2;
     camera.lowerRadiusLimit = 12;
     camera.upperRadiusLimit = 18;
-    // light
-    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
+    // Light
+	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0.6), scene);
+	light.specular = new BABYLON.Color3(0.7, 0.6, 0.7);
+	light.groundColor = new BABYLON.Color3(0.2, 0.15, 0.1);
+	light.intensity = 0.7; 
 
     // Ground, Playing Field
     const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: groundWidth, height: groundHeight}, scene);
@@ -157,7 +158,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
         if (paused >= 0)
         {
 			if (paused) {
-            // Surrender
+            // Surrender?
 			}
             return ;
         }
@@ -182,9 +183,13 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 			ball.position.addInPlace(ballVector);
 		}
         // Ball Boundaries
-        if (ball.position.z > 1 * (groundHeight / 2) - .5 || ball.position.z < -1 * (groundHeight / 2) + .5) {
-            ballVector.z = -ballVector.z;
-        }
+		if (ball.position.z > zLimit) {
+			ball.position.z = zLimit;
+			ballVector.z = -ballVector.z;
+		} else if (ball.position.z < -zLimit) {
+			ball.position.z = -zLimit;
+			ballVector.z = -ballVector.z;
+		}
 
 
         // Paddle/Ball Collision
@@ -196,6 +201,10 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
             ballSpeed = Math.min(ballSpeed * ballAcceleration, ballMaxSpeed)
             ballVector.x = ballSpeed * Math.cos(bounceAngle) * direction;
             ballVector.z = ballSpeed * Math.sin(bounceAngle);
+			if (direction === 1)
+    			ball.position.x = paddle.position.x + (paddleWidth / 2) + (ballSize / 2);
+			else
+    			ball.position.x = paddle.position.x - (paddleWidth / 2) - (ballSize / 2);
         };
         const checkCollision = (paddle:BABYLON.Mesh) => {
             return Math.abs(ball.position.x - paddle.position.x) < ballSize / 2 + paddleWidth / 2 &&
@@ -280,7 +289,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 	
 	// GUI Setup
 	window.addEventListener("resize", () => {
-		engine.resize(); // important: resize the engine first
+		engine.resize();
 		gui.scaleTo(engine.getRenderWidth(), engine.getRenderHeight());
 		dynamicFontSize = Math.round(baseFontSize * (engine.getRenderWidth() / referenceWidth));
 		scoreToWinText.fontSize = dynamicFontSize;
