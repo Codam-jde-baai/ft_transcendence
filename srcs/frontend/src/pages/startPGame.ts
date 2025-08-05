@@ -765,8 +765,10 @@ async function startPong(gamePayload:GameEndPayload, options:SceneOptions): Prom
 			throw new Error("Canvas Element With Id 'renderCanvas' Not Found.");
 		const game = new Pong(canvas, options);
 		canvas.style.display = "block";
+		canvas.style.pointerEvents = "auto";
 		const winner_id = await game.run();
 		canvas.style.display = "none";
+		canvas.style.pointerEvents = "none";
 		gamePayload.status = winner_id
 		gamePayload.winner_alias = winner_id === 1 ? gamePayload.p1_alias : gamePayload.p2_alias
 	} catch (error) {

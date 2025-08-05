@@ -1,6 +1,7 @@
 import * as BABYLON from '@babylonjs/core'
 import * as GUI from '@babylonjs/gui'
 import { getTranslation } from '../script/language';
+import { createMouse } from '../game/snek/mouse';
 
 export interface SceneOptions {
 	p1_alias?: string;
@@ -89,7 +90,10 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     // Camera: ArcRotate to get a good view of the pong field
     const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 4, 15, BABYLON.Vector3.Zero(), scene);
     camera.attachControl(canvas, true);
-    camera.inputs.removeByType("ArcRotateCameraKeyboardMoveInput");
+	camera.inputs.attached.keyboard.detachControl();
+	camera.inputs.attached.pointers.detachControl();
+	camera.inputs.attached.mousewheel.detachControl();
+    // camera.inputs.removeByType("ArcRotateCameraKeyboardMoveInput");
     camera.lowerBetaLimit = 1;
     camera.upperBetaLimit = Math.PI / 2;
     camera.lowerRadiusLimit = 12;
@@ -244,13 +248,20 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 			}
         }
     });
-
     // Controls
     window.addEventListener("keydown", (evt) => {
         const key = evt.key.toLowerCase();
 		switch(key) {
             case "p":
                 paused *= -1;
+    			if (paused >= 0) {
+					camera.inputs.attached.pointers.attachControl();
+					camera.inputs.attached.mousewheel.attachControl();
+				}
+				else {
+					camera.inputs.attached.pointers.detachControl();
+					camera.inputs.attached.mousewheel.detachControl();
+				}
                 break;
             case "w":
                 paddle1Direction = 1;
