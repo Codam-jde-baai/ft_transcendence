@@ -35,43 +35,25 @@ export function fillSnek() {
 		})
 
 	// LeaderBoard
-	// const leaderboardResponse = connectFunc(`/snekHistory/all`, requestBody("GET", null));
-	// leaderboardResponse.then((leaderboardResponse) => {
-	// 	if (leaderboardResponse.ok) {
-	// 		leaderboardResponse.json().then((data) => {
-
-	// 			// find the 3 best users scores
-	// 			console.log("Snek leaderBoard: ", data);
-	// 			findBestSnekUsers(data);
-	// 		});
-	// 	} else {
-	// 		window.history.pushState({}, '', '/errorPages');
-	// 		setupErrorPages(leaderboardResponse.status, leaderboardResponse.statusText);
-	// 	}
-	// })
-	const leadResponse = connectFunc(`/snek/stats/top`, requestBody("GET", null));
-	leadResponse.then((leadResponse) => {
-		if (leadResponse.ok) {
-			leadResponse.json().then((data) => {
+	const leaderboardResponse = connectFunc(`/snekHistory/all`, requestBody("GET", null));
+	leaderboardResponse.then((leaderboardResponse) => {
+		if (leaderboardResponse.ok) {
+			leaderboardResponse.json().then((data) => {
 
 				// find the 3 best users scores
-				console.log("Snek top: ", data);
-				// findBestSnekUsers(data);
+				findBestSnekUsers(data);
 			});
 		} else {
-			console.log("ERROR");
+			window.history.pushState({}, '', '/errorPages');
+			setupErrorPages(leaderboardResponse.status, leaderboardResponse.statusText);
 		}
 	})
 }
 
 // Match interface
 interface Match {
-	id: number;
 	p1_alias: string;
 	p1_score: number;
-	p2_alias: string;
-	p2_isGuest: boolean;
-	p2_score: number;
 }
 
 function findBestSnekUsers(data: Match[]) {
@@ -88,23 +70,20 @@ function findBestSnekUsers(data: Match[]) {
 		.sort((a, b) => b[1] - a[1])
 		.map(entry => entry[0]);
 
-	// Get the top 3 unique aliases
+	// Get the top 3 aliases
 	const topThreeAliases = sortedAliases.slice(0, 3);
-	// console.log("top3alias: ", sortedAliases);
 
 	topThreeAliases.forEach((alias, index) => {
-		console.log("alias: ", alias);
 		const topResponse = connectFunc(`/snek/stats/${alias}`, requestBody("GET", null));
 
 		topResponse.then((topResponse) => {
 			if (topResponse.ok) {
 				topResponse.json().then((topData) => {
-					console.log("topdata: ", topData);
 
 					// Alias-name
 					const aliasElem = document.getElementById(`aliasName${index + 1}`);
 					if (aliasElem)
-						aliasElem.textContent = topData.alias;
+						aliasElem.textContent = alias;
 
 					// Highest Score
 					const scoreElem = document.getElementById(`hScore${index + 1}`);
