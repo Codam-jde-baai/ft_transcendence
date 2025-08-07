@@ -32,7 +32,6 @@ export const getTopStats = async (req: FastifyRequest, reply: FastifyReply) => {
 	finally {
 		if (sqlite) sqlite.close();
 	}
-
 }
 
 export const getMyStats = async (req: FastifyRequest, reply: FastifyReply) => {

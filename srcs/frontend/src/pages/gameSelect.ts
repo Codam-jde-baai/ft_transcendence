@@ -37,6 +37,7 @@ export function setupGameSelect(gameInput?:string) {
 				<h2 class="h2" data-i18n="Game_Header"></h2>
 				<button class="cbtn" data-i18n="QuickPlay" style="width: 200px;" id="quickPlay"></button>
 				<button class="cbtn" data-i18n="Tournament" style="width: 200px;" id="Tournament"></button>
+				<!-- Might not need this btn for pong -->
 				<button class="cbtn" data-i18n="MatchMaking" style="width: 200px;" id="matchMaking"></button>
 			</div>
 		</div>

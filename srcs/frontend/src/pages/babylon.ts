@@ -97,7 +97,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     camera.lowerBetaLimit = 1;
     camera.upperBetaLimit = Math.PI / 2;
     camera.lowerRadiusLimit = 12;
-    camera.upperRadiusLimit = 18;
+    camera.upperRadiusLimit = 70;
     // Light
 	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0.6), scene);
 	light.specular = new BABYLON.Color3(0.7, 0.6, 0.7);
@@ -362,12 +362,12 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 			camera.lowerBetaLimit = 0;
     		camera.upperBetaLimit = 0;
     		camera.lowerRadiusLimit = 12;
-    		camera.upperRadiusLimit = 18;
+    		camera.upperRadiusLimit = 70;
 		} else {
 			camera.lowerBetaLimit = 1;
     		camera.upperBetaLimit = Math.PI / 2;
     		camera.lowerRadiusLimit = 12;
-    		camera.upperRadiusLimit = 18;
+    		camera.upperRadiusLimit = 70;
 		}
 	}
 

@@ -35,17 +35,31 @@ export function fillSnek() {
 		})
 
 	// LeaderBoard
-	const leaderboardResponse = connectFunc(`/snekHistory/all`, requestBody("GET", null));
-	leaderboardResponse.then((leaderboardResponse) => {
-		if (leaderboardResponse.ok) {
-			leaderboardResponse.json().then((data) => {
+	// const leaderboardResponse = connectFunc(`/snekHistory/all`, requestBody("GET", null));
+	// leaderboardResponse.then((leaderboardResponse) => {
+	// 	if (leaderboardResponse.ok) {
+	// 		leaderboardResponse.json().then((data) => {
+
+	// 			// find the 3 best users scores
+	// 			console.log("Snek leaderBoard: ", data);
+	// 			findBestSnekUsers(data);
+	// 		});
+	// 	} else {
+	// 		window.history.pushState({}, '', '/errorPages');
+	// 		setupErrorPages(leaderboardResponse.status, leaderboardResponse.statusText);
+	// 	}
+	// })
+	const leadResponse = connectFunc(`/snek/stats/top`, requestBody("GET", null));
+	leadResponse.then((leadResponse) => {
+		if (leadResponse.ok) {
+			leadResponse.json().then((data) => {
 
 				// find the 3 best users scores
-				findBestSnekUsers(data);
+				console.log("Snek top: ", data);
+				// findBestSnekUsers(data);
 			});
 		} else {
-			window.history.pushState({}, '', '/errorPages');
-			setupErrorPages(leaderboardResponse.status, leaderboardResponse.statusText);
+			console.log("ERROR");
 		}
 	})
 }
@@ -68,23 +82,24 @@ function findBestSnekUsers(data: Match[]) {
 		if (!aliasScores.has(match.p1_alias) || aliasScores.get(match.p1_alias)! < match.p1_score) {
 			aliasScores.set(match.p1_alias, match.p1_score);
 		}
-		if (!aliasScores.has(match.p2_alias) || aliasScores.get(match.p2_alias)! < match.p2_score) {
-			aliasScores.set(match.p2_alias, match.p2_score);
-		}
 	});
+
 	const sortedAliases = Array.from(aliasScores.entries())
 		.sort((a, b) => b[1] - a[1])
 		.map(entry => entry[0]);
 
 	// Get the top 3 unique aliases
-	const topThreeAliases = sortedAliases.slice(0, 3).map(alias => alias.replace("(guest) ", ""));
+	const topThreeAliases = sortedAliases.slice(0, 3);
+	// console.log("top3alias: ", sortedAliases);
 
 	topThreeAliases.forEach((alias, index) => {
+		console.log("alias: ", alias);
 		const topResponse = connectFunc(`/snek/stats/${alias}`, requestBody("GET", null));
 
 		topResponse.then((topResponse) => {
 			if (topResponse.ok) {
 				topResponse.json().then((topData) => {
+					console.log("topdata: ", topData);
 
 					// Alias-name
 					const aliasElem = document.getElementById(`aliasName${index + 1}`);
