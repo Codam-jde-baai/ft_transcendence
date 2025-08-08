@@ -1,7 +1,6 @@
 import * as BABYLON from '@babylonjs/core'
 import * as GUI from '@babylonjs/gui'
 import { getTranslation } from '../script/language';
-import { createMouse } from '../game/snek/mouse';
 
 export interface SceneOptions {
 	p1_alias?: string;
@@ -279,7 +278,8 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
             	changeCameraTopDown();
 				break;
 			case "enter":
-				setWinner(winner_id);
+				if (paused === 0)
+					setWinner(winner_id);
 				break;
         }
     });
@@ -353,7 +353,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     // Optional:
     // Add POV Change
     // Add Button Hints (Hide With h)
-	// Move Camera While Paused
 
 	function changeCameraTopDown() {
 		if (paused < 0)
