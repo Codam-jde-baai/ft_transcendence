@@ -171,13 +171,9 @@
     "Score_To_Win": "Score om te winnen",
 	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:(NL)",
 
-    "Seeding": "Voer een zaadgetal in van 1 tot ",
-    "Seeding_Error": "Ongeldig zaadgetal, voer een zaadgetal in van 1 tot ",
-    "Invalid_Seeding": "Ongeldige zaadverdeling",
-
-    "Seeding": "Voer een zaadgetal in van 1 tot ",
-    "Seeding_Error": "Ongeldig zaadgetal, voer een zaadgetal in van 1 tot ",
-    "Invalid_Seeding": "Ongeldige zaadverdeling",
+    "Seeding": "Voer een rangschikking in van 1 tot ",
+    "Seeding_Error": "Ongeldige rangschikking, voer een rang in van 1 tot ",
+    "Invalid_Seeding": "Ongeldige rangschikking",
 
     "EndOfFile": ""
 }

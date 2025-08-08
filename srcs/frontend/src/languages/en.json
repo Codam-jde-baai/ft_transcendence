@@ -171,8 +171,8 @@
 	"Score_To_Win": "Score To Win",
 	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:",
 
-	"Seeding": "Enter A Seed From 1 To ",
-	"Seeding_Error": "Invalid Seed, Please Enter A Seed From 1 To ",
+	"Seeding": "Enter A Seed From 1 To",
+	"Seeding_Error": "Invalid Seed, Please Enter A Seed From 1 To",
 	"Invalid_Seeding": "Invalid Seeding",
 	
     "EndOfFile": ""
