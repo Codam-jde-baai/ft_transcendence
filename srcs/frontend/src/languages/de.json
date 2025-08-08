@@ -169,14 +169,11 @@
 
     "Victory_Message": "Gewonnen!\n(Drücke 'Enter', um fortzufahren)",
     "Score_To_Win": "Punktzahl zum Sieg",
+	"UI_Controls": "P:(Pausieren)   T:(Draufsicht)   H:(Hilfe)",
 	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:(DE)",
 
-    "Seeding": "Geben Sie einen Sitz von 1 bis ",
-    "Seeding_Error": "Ungültiger Sitz, bitte geben Sie einen Sitz von 1 bis ",
-    "Invalid_Seeding": "Ungültige Setzung",
-
-    "Seeding": "Geben Sie einen Sitz von 1 bis ",
-    "Seeding_Error": "Ungültiger Sitz, bitte geben Sie einen Sitz von 1 bis ",
+    "Seeding": "Geben Sie einen Sitz von 1 bis",
+    "Seeding_Error": "Ungültiger Sitz, bitte geben Sie einen Sitz von 1 bis",
     "Invalid_Seeding": "Ungültige Setzung",
 
     "EndOfFile": ""
