@@ -108,6 +108,7 @@ class SnekTable extends HTMLElement {
 					}).then((snekMatchHistory: SnekMatchHistory[]) => {
 						let rowsSHtml = "";
 
+
 						snekMatchHistory.forEach((match: SnekMatchHistory) => {
 							const result = this.getMatchResult(match, aliasName as string);
 
