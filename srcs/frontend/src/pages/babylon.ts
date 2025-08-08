@@ -75,7 +75,7 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 	const player2Alias		= options.p2_alias ?? "P2";
 	const scoreToWinString	= options.scoreToWinString ?? "Score To Win"
 	const victoryMessage	= options.victoryMessage ?? "Wins!\n(Press 'Enter' To Continue)"
-	const uiMessage			= options.uiMessage ?? "P:(Pause)   T:(Top View)   H:(Toggle Help)";
+	const uiMessage			= options.uiMessage ?? "P:(Pause)   T:(Top View)   H:(Help)";
     const scoreToWin        = options.scoreToWin ?? 4;
     // Loop Variables
 	let	ballDropped			= false;

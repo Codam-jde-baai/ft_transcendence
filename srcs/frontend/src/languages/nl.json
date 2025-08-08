@@ -169,6 +169,7 @@
 
     "Victory_Message": "Wint!\n(Druk op 'Enter' om door te gaan)",
     "Score_To_Win": "Score om te winnen",
+	"UI_Controls": "P:(Pauzeren)   T:(Top Perspectief)   H:(Hulp)",
 	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:(NL)",
 
     "Seeding": "Voer een rangschikking in van 1 tot ",

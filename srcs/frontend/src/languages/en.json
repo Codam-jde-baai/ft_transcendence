@@ -169,6 +169,7 @@
 
 	"Victory_Message": "Wins!\n(Press 'Enter' To Continue)",
 	"Score_To_Win": "Score To Win",
+	"UI_Controls": "P:(Pause)   T:(Top View)   H:(Help)",
 	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:",
 
 	"Seeding": "Enter A Seed From 1 To",
