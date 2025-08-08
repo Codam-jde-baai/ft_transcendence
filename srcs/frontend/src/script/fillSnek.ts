@@ -34,8 +34,7 @@ export function fillSnek() {
 			}
 		})
 
-	// LeaderBoard
-	const leaderboardResponse = connectFunc(`/snekHistory/all`, requestBody("GET", null));
+	const leaderboardResponse = connectFunc(`/snek/stats/top`, requestBody("GET", null));
 	leaderboardResponse.then((leaderboardResponse) => {
 		if (leaderboardResponse.ok) {
 			leaderboardResponse.json().then((data) => {
@@ -52,64 +51,47 @@ export function fillSnek() {
 
 // Match interface
 interface Match {
-	p1_alias: string;
-	p1_score: number;
+    alias: string,
+    matches: number,
+    wins: number,
+    losses: number,
+    winrate: number,
+    avg_score: number,
+    highest_score: number
 }
 
 function findBestSnekUsers(data: Match[]) {
 
-	// Store the highest score for each alias
-	const aliasScores = new Map<string, number>();
-	data.forEach(match => {
-		if (!aliasScores.has(match.p1_alias) || aliasScores.get(match.p1_alias)! < match.p1_score) {
-			aliasScores.set(match.p1_alias, match.p1_score);
+	var index = 0;
+	data.forEach((user) => {
+		if (user)
+		{
+			// Alias-name
+			const aliasElem = document.getElementById(`aliasName${index + 1}`);
+			if (aliasElem)
+				aliasElem.textContent = user.alias;
+
+			// Highest Score
+			const scoreElem = document.getElementById(`hScore${index + 1}`);
+			if (scoreElem)
+				scoreElem.textContent = user.highest_score?.toString() || "0";
+			
+			// Win Rate
+			const winRateElem = document.getElementById(`WRate${index + 1}`);
+			if (winRateElem)
+				winRateElem.textContent = user.winrate?.toString() + "%" || "0";
+			
+			// Win
+			const winElem = document.getElementById(`SWin${index + 1}`);
+			if (winElem)
+				winElem.textContent = user.wins?.toString() || "0";
+			
+			// Losses
+			const lossElem = document.getElementById(`Sloss${index + 1}`);
+			if (lossElem)
+				lossElem.textContent = user.losses?.toString() || "0";
+
+			index++;
 		}
-	});
-
-	const sortedAliases = Array.from(aliasScores.entries())
-		.sort((a, b) => b[1] - a[1])
-		.map(entry => entry[0]);
-
-	// Get the top 3 aliases
-	const topThreeAliases = sortedAliases.slice(0, 3);
-
-	topThreeAliases.forEach((alias, index) => {
-		const topResponse = connectFunc(`/snek/stats/${alias}`, requestBody("GET", null));
-
-		topResponse.then((topResponse) => {
-			if (topResponse.ok) {
-				topResponse.json().then((topData) => {
-
-					// Alias-name
-					const aliasElem = document.getElementById(`aliasName${index + 1}`);
-					if (aliasElem)
-						aliasElem.textContent = alias;
-
-					// Highest Score
-					const scoreElem = document.getElementById(`hScore${index + 1}`);
-					if (scoreElem)
-						scoreElem.textContent = topData.highest_score?.toString() || "0";
-
-					// Win Rate
-					const winRateElem = document.getElementById(`WRate${index + 1}`);
-					if (winRateElem)
-						winRateElem.textContent = topData.winrate?.toString() + "%" || "0";
-
-					// Win
-					const winElem = document.getElementById(`SWin${index + 1}`);
-					if (winElem)
-						winElem.textContent = topData.wins?.toString() || "0";
-
-					// Losses
-					const lossElem = document.getElementById(`Sloss${index + 1}`);
-					if (lossElem)
-						lossElem.textContent = topData.losses?.toString() || "0";
-				});
-			} else {
-				window.history.pushState({}, '', '/errorPages');
-				setupErrorPages(topResponse.status, topResponse.statusText);
-			}
-		})
-
 	});
 }

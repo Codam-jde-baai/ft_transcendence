@@ -23,7 +23,7 @@ export type createSnek = InferInsertModel<typeof snekTable>;
 */
 
 export interface PlayerStats {
-    alias: string;
+    uuid: string;
     matches: number;
     wins: number;
     losses: number;
@@ -32,8 +32,8 @@ export interface PlayerStats {
     highest_score: number;
 }
 export interface MatchData {
-    p1_alias: string;
-    p2_alias: string;
+    p1_uuid: string;
+    p2_uuid?: string;
     winner_id: number;
     p1_score: number;
     p2_score: number;
@@ -51,10 +51,10 @@ export const calculatePlayerStats = (matches: MatchData[]): PlayerStats[] => {
 
     const playerStats = new Map<string, InternalPlayerStats>();
     for (const match of matches) {
-        const initializePlayer = (alias: string) => {
-            if (!playerStats.has(alias)) {
-                playerStats.set(alias, {
-                    alias,
+        const initializePlayer = (uuid: string) => {
+            if (!playerStats.has(uuid)) {
+                playerStats.set(uuid, {
+                    uuid,
                     matches: 0,
                     wins: 0,
                     losses: 0,
@@ -64,26 +64,33 @@ export const calculatePlayerStats = (matches: MatchData[]): PlayerStats[] => {
                     totalScore: 0
                 });
             }
-            return playerStats.get(alias)!;
+            return playerStats.get(uuid)!;
         };
-        const p1 = initializePlayer(match.p1_alias);
-        const p2 = initializePlayer(match.p2_alias);
+        const p1 = initializePlayer(match.p1_uuid);
+        var p2 = null;
+        if (match.p2_uuid)
+            p2 = initializePlayer(match.p2_uuid);
 
         p1.matches++;
-        p2.matches++;
+        if (p2)
+            p2.matches++;
 
         if (match.winner_id === 1) {
             p1.wins++;
-            p2.losses++;
+            if (p2)
+                p2.losses++;
         } else if (match.winner_id === 2) {
             p1.losses++;
-            p2.wins++;
+            if (p2)
+                p2.wins++;
         }
         p1.totalScore += match.p1_score;
-        p2.totalScore += match.p2_score;
+        if (p2)
+            p2.totalScore += match.p2_score;
 
         p1.highest_score = Math.max(p1.highest_score, match.p1_score);
-        p2.highest_score = Math.max(p2.highest_score, match.p2_score);
+        if (p2)
+            p2.highest_score = Math.max(p2.highest_score, match.p2_score);
     }
 
     const result = Array.from(playerStats.values()).map(player => {
@@ -91,7 +98,7 @@ export const calculatePlayerStats = (matches: MatchData[]): PlayerStats[] => {
         const avg_score = player.matches > 0 ? player.totalScore / player.matches : 0;
 
         return {
-            alias: player.alias,
+            uuid: player.uuid,
             matches: player.matches,
             wins: player.wins,
             losses: player.losses,
