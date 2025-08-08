@@ -169,7 +169,8 @@
 
     "Victory_Message": "Wint!\n(Druk op 'Enter' om door te gaan)",
     "Score_To_Win": "Score om te winnen",
-	"Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:(NL)",
+	  "UI_Controls": "P:(Pauzeren)   T:(Top Perspectief)   H:(Hulp)",
+	  "Change_Score": "Change The Score Needed To Win The Game?\t(Max: 11, Default:(NL)",
 
     "Seeding": "Voer een zaadgetal in van 1 tot ",
     "Seeding_Error": "Ongeldig zaadgetal, voer een zaadgetal in van 1 tot ",
@@ -180,6 +181,7 @@
     "SimilarGameAmount" : "Vergelijkbaar aantal potjes",
     "Profile" : "Profiel",
     "PokeToPlay" : "Uitdagen om te spelen",
+
 
     "EndOfFile": ""
 }
