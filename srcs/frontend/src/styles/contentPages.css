@@ -136,7 +136,7 @@
 }
 
 .small-btn {
-	@apply px-4 py-2 rounded-md font-semibold cursor-pointer border-none;
+	@apply px-4 py-2 rounded-md cursor-pointer border-none;
 	background-color: var(--color-btn-bg);
 	color: var(--color-text);
 }

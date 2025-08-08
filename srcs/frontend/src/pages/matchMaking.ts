@@ -59,6 +59,8 @@ export function setupMatchMaking(game: GameType = GameType.Pong) {
                 <span class="toggle-option" data-i18n="btn_PlaySnek">Snake</span>
 		    </label>
             <div class="contentArea">
+            <div class="w-[840px] h-0 invisible"></div>
+
                 <h2 class="h1" data-i18n="MatchMaking">Matchmaking</h2>
                 
                 <!-- Loading indicator -->

@@ -78,8 +78,8 @@ export const getMatchmakingData = async (request: FastifyRequest, reply: Fastify
 			const lastPongMatch = await db.select().from(matchesTable).where(
 				and(
 					or(
-						and(eq(matchesTable.p1_alias, user.alias), eq(matchesTable.p2_alias, currentUserAlias)),
-						and(eq(matchesTable.p1_alias, currentUserAlias), eq(matchesTable.p2_alias, user.alias))
+						and(eq(matchesTable.p1_uuid, userUuid), eq(matchesTable.p2_uuid, user.uuid)),
+						and(eq(matchesTable.p1_uuid, user.uuid), eq(matchesTable.p2_uuid, userUuid))
 					),
 					ne(matchesTable.status, matchStatus.INTERRUPTED)
 				)
@@ -88,13 +88,15 @@ export const getMatchmakingData = async (request: FastifyRequest, reply: Fastify
 			let pongLastScore = { self: 0, opponent: 0 };
 			if (lastPongMatch.length > 0) {
 				const match = lastPongMatch[0];
-				// For Pong, we use match results (simplified scoring)
-				if (match.p1_alias === user.alias) {
+				// FIXED: Calculate score from current user's perspective
+				if (match.p1_uuid === userUuid) {
+					// Current user was player 1, other user was player 2
 					pongLastScore = {
 						self: match.status === matchStatus.P1_WINNER ? 1 : 0,
 						opponent: match.status === matchStatus.P2_WINNER ? 1 : 0
 					};
 				} else {
+					// Current user was player 2, other user was player 1
 					pongLastScore = {
 						self: match.status === matchStatus.P2_WINNER ? 1 : 0,
 						opponent: match.status === matchStatus.P1_WINNER ? 1 : 0
@@ -113,8 +115,8 @@ export const getMatchmakingData = async (request: FastifyRequest, reply: Fastify
 			const lastSnakeMatch = await db.select().from(snekTable).where(
 				and(
 					or(
-						and(eq(snekTable.p1_alias, user.alias), eq(snekTable.p2_alias, currentUserAlias)),
-						and(eq(snekTable.p1_alias, currentUserAlias), eq(snekTable.p2_alias, user.alias))
+						and(eq(snekTable.p1_uuid, userUuid), eq(snekTable.p2_uuid, user.uuid)),
+						and(eq(snekTable.p1_uuid, user.uuid), eq(snekTable.p2_uuid, userUuid))
 					),
 					ne(snekTable.winner_id, eWinner.NOWINNER)
 				)
@@ -123,7 +125,7 @@ export const getMatchmakingData = async (request: FastifyRequest, reply: Fastify
 			let snakeLastScore = { self: 0, opponent: 0 };
 			if (lastSnakeMatch.length > 0) {
 				const match = lastSnakeMatch[0];
-				if (match.p1_alias === user.alias) {
+				if (match.p1_uuid === userUuid) {
 					snakeLastScore = {
 						self: match.p1_score || 0,
 						opponent: match.p2_score || 0
@@ -214,7 +216,8 @@ export const getMatchmakingData = async (request: FastifyRequest, reply: Fastify
 			}
 
 			users.forEach(user => {
-				// Check if user has recent losses against current user
+				// FIXED: Check if CURRENT USER has recent losses against this user
+				// (meaning current user scored less than the opponent)
 				if (user.last_score.self < user.last_score.opponent) {
 					recentLoss.push(user);
 				}

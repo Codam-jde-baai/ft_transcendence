@@ -67,16 +67,16 @@ class mmItems extends HTMLElement {
 		// Determine what additional info to show based on type
 		let additionalInfo = "";
 		if (type === "recentLoss") {
-			additionalInfo = `<p class="match-info">Last Score: You ${lastScoreSelf} - ${lastScoreOpponent} ${alias}</p>`;
+			additionalInfo = `<p class="match-info">Last Score:<br>You ${lastScoreSelf} - ${lastScoreOpponent} ${alias}</p>`;
 		} else if (type === "equalSkill") {
-			additionalInfo = `<p class="match-info">Winrate: ${winratePercent}%</p>`;
+			additionalInfo = `<p class="match-info">Winrate:<br>${winratePercent}%</p>`;
 		} else if (type === "equalGameAmount") {
-			additionalInfo = `<p class="match-info">Games Played: ${totalGames}</p>`;
+			additionalInfo = `<p class="match-info">Games Played:<br>${totalGames}</p>`;
 		}
 
 		this.innerHTML = "";
 		this.insertAdjacentHTML("beforeend", /*html*/`
-        <div class="publicUser">
+        <div class="publicUser items-center">
 			<div class="statusProfile">
 				<span class="statusIndicator ${isFriend === true ? userStatus : 'hidden'}"></span>
 				<div class="profile-content">
@@ -88,8 +88,8 @@ class mmItems extends HTMLElement {
 			<p> ${additionalInfo} </p>
 
             <div class="action-buttons">
-				<button class="btn" data-i18n="Profile">Profile</button>
-				<button class="btn primary" data-i18n="PokeToPlay">Poke to Play</button>
+				<button class="small-btn" data-i18n="Profile">Profile</button>
+				<button class="small-btn primary" data-i18n="PokeToPlay">Poke to Play</button>
 			</div>
 		</div>`);
 	}
