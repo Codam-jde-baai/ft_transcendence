@@ -16,6 +16,7 @@ import sessionKey from './config/session-key.ts';
 import { cleanupConnections } from './controllers/websocket/userStatus.ts';
 import fs from 'fs';
 import matchmakingRoutes from './routes/matchMaking.ts';
+import { authenticatePrivateToken } from './routes/authentication.ts';
 
 const fastify = Fastify({
 	logger: true,
@@ -121,6 +122,10 @@ fastify.register(adminRoutes);
 fastify.register(snekRoutes);
 fastify.register(socketRoutes);
 fastify.register(matchmakingRoutes);
+
+fastify.get('/auth/check', { preHandler: authenticatePrivateToken }, async (request, reply) => {
+	reply.send({ loggedIn: true });
+});
 
 const start = async () => {
 	try {

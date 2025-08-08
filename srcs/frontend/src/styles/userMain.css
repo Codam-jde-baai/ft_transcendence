@@ -100,7 +100,7 @@
 	@apply flex flex-col gap-1 mr-4;
 }
 .notification-field {
-	@apply bg-[#7a1b52] opacity-0 rounded px-2 py-1 min-h-[20px] flex items-center;
+	@apply rounded px-2 py-1 min-h-[20px] flex items-center;
 }
 .notification-alias {
 	@apply text-white text-sm font-medium max-w-[100px] truncate;

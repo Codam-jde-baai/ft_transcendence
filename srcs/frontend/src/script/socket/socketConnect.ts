@@ -1,3 +1,4 @@
+import { connectFunc, requestBody } from "../connections";
 import { websocketManager } from "./socketClass";
 
 let listenersSetup = false;
@@ -14,19 +15,21 @@ function setupWebSocketEventListeners() {
 
     setupUserStatusTracking();
 
-    document.addEventListener('visibilitychange', () => {
+    document.addEventListener('visibilitychange', async () => {
         if (document.visibilityState === 'visible') {
-            if (!websocketManager.isConnected() && isUserLoggedIn()) {
+            if (!websocketManager.isConnected() && await isUserLoggedIn()) {
                 websocketManager.connect().catch(console.error);
             }
         }
     });
 
-    if (isUserLoggedIn()) {
-        websocketManager.connect()
-            .then(() => websocketManager.updateStatus('online'))
-            .catch(console.error);
-    }
+    (async () => {
+        if (await isUserLoggedIn()) {
+            websocketManager.connect()
+                .then(() => websocketManager.updateStatus('online'))
+                .catch(console.error);
+        }
+    })();
 }
 
 function setupUserStatusTracking() {
@@ -40,8 +43,9 @@ function setupUserStatusTracking() {
     });
 }
 
-function isUserLoggedIn(): boolean {
-    const protectedRoutes = ['/home', '/setting', '/friends', '/history', '/startPGame', '/startSGame', '/snek', '/snekHistory'];
-    const currentPath = window.location.pathname;
-    return protectedRoutes.includes(currentPath);
+async function isUserLoggedIn(): Promise<boolean> {
+    const response = await connectFunc("/auth/check", requestBody("GET", null))
+    if (response.ok)
+        return true;
+    return false;
 }

@@ -11,7 +11,7 @@ class mmItems extends HTMLElement {
 	}
 
 	setupEventListeners() {
-		const buttons = this.querySelectorAll('button.btn');
+		const buttons = this.querySelectorAll('button.small-btn');
 
 		buttons.forEach(button => {
 			button.addEventListener('click', () => {
@@ -88,8 +88,8 @@ class mmItems extends HTMLElement {
 			<p> ${additionalInfo} </p>
 
             <div class="action-buttons">
-				<button class="small-btn" data-i18n="Profile">Profile</button>
-				<button class="small-btn primary" data-i18n="PokeToPlay">Poke to Play</button>
+				<button class="small-btn" data-i18n="History"></button>
+				<button class="small-btn" data-i18n="PokeToPlay"></button>
 			</div>
 		</div>`);
 	}

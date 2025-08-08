@@ -5,6 +5,7 @@ import { setupNavigation } from '../script/menuNavigation';
 import { connectFunc, requestBody } from "../script/connections";
 import { GameType } from './gameSelect';
 import '../component/matchMakingField.ts';
+import { setupMatchHistory } from './history.ts';
 
 let selectedGame: GameType;
 
@@ -112,7 +113,6 @@ export function setupMatchMaking(game: GameType = GameType.Pong) {
         // Load initial matchmaking data
         loadMatchMakingData();
 
-        console.log('Page load selected game is: ', selectedGame);
     }
 }
 
@@ -130,7 +130,6 @@ function loadMatchMakingData() {
         })
         .then((data: mmTable) => {
             matchmakingData = data;
-            console.log('Matchmaking data received:', data);
             renderMatchmakingData();
             hideLoading();
         })
@@ -235,14 +234,10 @@ function showError() {
 function eventListeners() {
     const toggleSwitch = document.querySelector('#gameToggle input') as HTMLInputElement;
     const goBackButton = document.querySelector('#backBtn') as HTMLButtonElement;
-    const retryButton = document.querySelector('#retryBtn') as HTMLButtonElement;
 
     if (toggleSwitch) {
         toggleSwitch.addEventListener('change', () => {
             selectedGame = toggleSwitch.checked ? GameType.Snek : GameType.Pong;
-            console.log(`Selected game: ${selectedGame}`);
-
-            // If we already have data, just re-render. Otherwise, load fresh data.
             if (matchmakingData) {
                 renderMatchmakingData();
             } else {
@@ -254,12 +249,6 @@ function eventListeners() {
     if (goBackButton) {
         goBackButton.addEventListener('click', () => {
             window.history.back();
-        });
-    }
-
-    if (retryButton) {
-        retryButton.addEventListener('click', () => {
-            loadMatchMakingData();
         });
     }
 }
@@ -282,9 +271,8 @@ function setupUserActionListeners() {
         }>;
 
         const { action, alias } = customEvent.detail;
-
         switch (action) {
-            case 'Profile':
+            case 'History':
                 viewUserProfile(alias);
                 break;
             case 'PokeToPlay':
@@ -293,18 +281,13 @@ function setupUserActionListeners() {
         }
     });
 
-    // Action handler functions
+    // Action handler functions history?alias=alias2
     function viewUserProfile(alias: string) {
-        // Navigate to user profile or show profile modal
-        console.log(`Viewing profile for: ${alias}`);
-        // You can implement this similar to how viewUserHistory works in friends.ts
-        window.history.pushState({ userData: alias }, '', `/profile?alias=${alias}`);
-        // setupUserProfile(); // You would need to implement this function
+        window.history.pushState({ userData: alias }, '', `/history?alias=${alias}`);
+        setupMatchHistory();
     }
 
     function pokeUserToPlay(alias: string) {
-        // Send a game invitation to the user
-        console.log(`Poking ${alias} to play ${selectedGame}`);
 
         // Here you would make an API call to send a game invitation
         const gameType = selectedGame === GameType.Pong ? 'pong' : 'snake';
@@ -322,7 +305,6 @@ function setupUserActionListeners() {
         }), "application/json"))
             .then(response => {
                 if (response.ok) {
-                    console.log(`Game invitation sent to ${alias}`);
                     // Show success feedback
                     if (button) {
                         button.textContent = 'Sent!';
