@@ -24,7 +24,7 @@ export function setupGameSelect(gameInput?:string) {
 		<div class="overlay"></div>
 		<dropdown-menu></dropdown-menu>
 		<div class="middle" id="middle">
-			<div class="flex flex-row space-x-6">
+			<div class="flex flex-row space-x-6 gap-6 ml-[50px]">
 				<img src="src/Pictures/game-pong.png" style="width: 100px; height: 100px;">
 				<img src="src/Pictures/game-snek.png" style="width: 100px; height: 100px;">
 			</div>

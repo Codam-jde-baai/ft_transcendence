@@ -7,7 +7,7 @@
 
 /* All for the Middle */
 .fmiddle {
-    @apply min-h-fit fixed top-[200px] rounded-[15px] w-[85%] h-[70%] z-[1] space-y-4 items-center justify-items-stretch;
+    @apply min-h-fit fixed top-[200px] rounded-[15px] w-[80%] h-[70%] z-[1] space-y-4 items-center justify-items-stretch;
     transform: translateX(-40%)
 }
 
@@ -68,7 +68,7 @@
 
 /* Search Bar Styling */
 .userSearch {
-    @apply min-h-fit w-[700px] p-2.5 mb-4 rounded text-[15px] font-sans ml-[43px] relative;
+    @apply min-h-fit w-[90%] p-2.5 mb-4 rounded text-[15px] font-sans ml-[43px] relative;
 }
 .search-container {
     @apply w-full left-[240px] top-[230px];
@@ -85,7 +85,7 @@
     @apply bg-[#902063];
 }
 .search-results {
-    @apply flex flex-col w-[697px] mt-[-15px] ml-[-20px] mb-[-35px];
+    @apply flex flex-col w-[697px] mt-[-15px] ml-[43px] mb-[-35px];
 }
 
 /* Status icon */
