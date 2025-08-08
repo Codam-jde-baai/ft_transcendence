@@ -31,7 +31,6 @@ export class Pong {
 			if (this._onGameEndCallback)
 				this._onGameEndCallback(winner_id);
 		})
-
     }
 
     run(): Promise<number> {
@@ -49,7 +48,6 @@ export class Pong {
 
 function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options: SceneOptions, setWinner: (winner:number) => void): BABYLON.Scene {
     const scene = new BABYLON.Scene(engine);
-
     // Adjustable Variables
     const groundWidth       = 20;
     const groundHeight      = 10;
@@ -87,9 +85,9 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     let player1Score        = 0;
     let player2Score        = 0;
 	let winner_id			= 0;
-
     // Camera For 3D View
     const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 4, 15, BABYLON.Vector3.Zero(), scene);
+	scene.activeCamera = camera;
     camera.attachControl(canvas, true);
 	camera.inputs.attached.keyboard.detachControl();
 	camera.inputs.attached.pointers.detachControl();
@@ -108,14 +106,11 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 	topDownCamera.lowerBetaLimit = 0.01;
 	topDownCamera.lowerRadiusLimit = 12;
     topDownCamera.upperRadiusLimit = 70;
-
-	scene.activeCamera = camera;
     // Light
 	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0.6), scene);
 	light.specular = new BABYLON.Color3(0.7, 0.6, 0.7);
 	light.groundColor = new BABYLON.Color3(0.2, 0.15, 0.1);
 	light.intensity = 0.7; 
-
     // Ground, Playing Field
     const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: groundWidth, height: groundHeight}, scene);
     ground.position.y = -1;
@@ -137,13 +132,11 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
         ],
         updatable: false
     }, scene);
-
     const lineMat = new BABYLON.StandardMaterial("lineMat", scene);
     lineMat.emissiveColor = goalColour;
     lineMat.disableLighting = true; 
     line1.material = lineMat;
     line2.material = lineMat;
-
     // Generate Paddles
     const paddle1 = BABYLON.MeshBuilder.CreateBox("paddle1", {width: paddleWidth, height: paddleHeight, depth: paddleDepth}, scene);
     paddle1.position.x = -1 * groundWidth / 2 + paddleWidth;
@@ -160,27 +153,23 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     const paddle2Mat = new BABYLON.StandardMaterial("paddle2Mat", scene);
     paddle2Mat.diffuseColor = paddle2Colour;
     paddle2.material = paddle2Mat;
-
     // Generate Ball
     const ball = BABYLON.MeshBuilder.CreateSphere("ball", {diameter: ballSize}, scene);
     ball.position.set(0, 5, 0)
     const ballMat = new BABYLON.StandardMaterial("ballMat", scene);
     ballMat.diffuseColor = ballColour;
     ball.material = ballMat;
-
     // Loop
     scene.onBeforeRenderObservable.add(() => {
         // Pause Game
         if (paused >= 0)
             return ;
-
         // Move Paddles
         paddle1.position.z += paddle1Direction * paddleSpeed;
         paddle2.position.z += paddle2Direction * paddleSpeed;
         // Paddle Boundaries
 		paddle1.position.z = Math.min(Math.max(paddle1.position.z, -1 * (groundHeight / 2) + paddleDepth / 2), 1 * (groundHeight / 2) - paddleDepth / 2);
         paddle2.position.z = Math.min(Math.max(paddle2.position.z, -1 * (groundHeight / 2) + paddleDepth / 2), 1 * (groundHeight / 2) - paddleDepth / 2);
-
         // Move Ball
 		if (!ballDropped) {
 			if (ball.position.y > 0) {
@@ -201,7 +190,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 			ball.position.z = -zLimit;
 			ballVector.z = -ballVector.z;
 		}
-
         // Paddle/Ball Collision
         const handlePaddleCollision = (paddle:BABYLON.Mesh, direction:number) => {
             const contactPoint = ball.position.z - paddle.position.z;
@@ -226,7 +214,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
         if (checkCollision(paddle2) && ballVector.x > 0) {
             handlePaddleCollision(paddle2, -1);
         }
-
         // Scoring
         if (ball.position.x < -groundWidth / 2 + paddleWidth + ballSize / 2 || ball.position.x > groundWidth / 2 - paddleWidth - ballSize / 2) {
             // Track Score
@@ -286,7 +273,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 				break;
         }
     });
-
     window.addEventListener("keyup", (evt) => {
         const key = evt.key.toLowerCase();
 		switch(key) {
@@ -300,7 +286,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
                 break;
         }
     });
-	
 	// GUI Setup
 	window.addEventListener("resize", () => {
 		engine.resize();
@@ -318,7 +303,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 		p2Controls.top = `${uiSpacing}px`;
 		uiControls.top = `${uiSpacing}px`;
 	});
-    
 	const gui = GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 	const baseFontSize = 36;
 	const referenceWidth = 1920;
@@ -397,9 +381,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 	uiControls.isVisible = true;
 	gui.addControl(uiControls);
 
-    // Optional:
-    // Add POV Change
-
 	function changeCameraTopDown() {
 		if (paused < 0)
 			return ;
@@ -410,7 +391,6 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 			camera.inputs.attached.mousewheel.attachControl();
 		} else {
 			scene.activeCamera = topDownCamera;
-			// topDownCamera.inputs.attached.pointers.attachControl();
 			topDownCamera.inputs.attached.mousewheel.attachControl();
 		}
 		currentCamera.inputs.attached.pointers.detachControl();
