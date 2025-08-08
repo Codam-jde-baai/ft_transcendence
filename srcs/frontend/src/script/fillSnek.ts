@@ -51,21 +51,20 @@ export function fillSnek() {
 
 // Match interface
 interface Match {
-    alias: string,
-    matches: number,
-    wins: number,
-    losses: number,
-    winrate: number,
-    avg_score: number,
-    highest_score: number
+	alias: string,
+	matches: number,
+	wins: number,
+	losses: number,
+	winrate: number,
+	avg_score: number,
+	highest_score: number
 }
 
 function findBestSnekUsers(data: Match[]) {
 
 	var index = 0;
 	data.forEach((user) => {
-		if (user)
-		{
+		if (user) {
 			// Alias-name
 			const aliasElem = document.getElementById(`aliasName${index + 1}`);
 			if (aliasElem)
@@ -75,17 +74,17 @@ function findBestSnekUsers(data: Match[]) {
 			const scoreElem = document.getElementById(`hScore${index + 1}`);
 			if (scoreElem)
 				scoreElem.textContent = user.highest_score?.toString() || "0";
-			
+
 			// Win Rate
 			const winRateElem = document.getElementById(`WRate${index + 1}`);
 			if (winRateElem)
 				winRateElem.textContent = user.winrate?.toString() + "%" || "0";
-			
+
 			// Win
 			const winElem = document.getElementById(`SWin${index + 1}`);
 			if (winElem)
 				winElem.textContent = user.wins?.toString() || "0";
-			
+
 			// Losses
 			const lossElem = document.getElementById(`Sloss${index + 1}`);
 			if (lossElem)
