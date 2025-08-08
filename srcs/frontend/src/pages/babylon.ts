@@ -66,8 +66,8 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 	const ballDropSpeed		= 0.2
 	const zLimit			= groundHeight / 2 - ballSize / 2;
     // Colours
-    const paddle1Colour     = new BABYLON.Color3(0, 0, 1);
-    const paddle2Colour     = new BABYLON.Color3(1, 0, 0);
+    const paddle1Colour     = new BABYLON.Color3(1, 0, 0);
+    const paddle2Colour     = new BABYLON.Color3(0, 0, 1);
     const ballColour        = new BABYLON.Color3(1, 1, 1);
     const goalColour        = new BABYLON.Color3(0, 1, 0);
     // User Variables
@@ -88,17 +88,28 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
     let player2Score        = 0;
 	let winner_id			= 0;
 
-
-    // Camera: ArcRotate to get a good view of the pong field
+    // Camera For 3D View
     const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 4, 15, BABYLON.Vector3.Zero(), scene);
     camera.attachControl(canvas, true);
 	camera.inputs.attached.keyboard.detachControl();
 	camera.inputs.attached.pointers.detachControl();
 	camera.inputs.attached.mousewheel.detachControl();
-    camera.lowerBetaLimit = 1;
+    camera.lowerBetaLimit = 0.1;
     camera.upperBetaLimit = Math.PI / 2;
     camera.lowerRadiusLimit = 12;
     camera.upperRadiusLimit = 70;
+	// TopDown Camera
+	const topDownCamera = new BABYLON.ArcRotateCamera("topDownCamera", -Math.PI / 2, 0.01, 15, new BABYLON.Vector3(0, 0, 0.5), scene);
+	topDownCamera.attachControl(canvas, true);
+	topDownCamera.inputs.attached.keyboard.detachControl();
+	topDownCamera.inputs.attached.pointers.detachControl();
+	topDownCamera.inputs.attached.mousewheel.detachControl();
+	topDownCamera.lowerBetaLimit = 0.01;
+	topDownCamera.lowerBetaLimit = 0.01;
+	topDownCamera.lowerRadiusLimit = 12;
+    topDownCamera.upperRadiusLimit = 70;
+
+	scene.activeCamera = camera;
     // Light
 	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0.6), scene);
 	light.specular = new BABYLON.Color3(0.7, 0.6, 0.7);
@@ -392,26 +403,29 @@ function createScene(engine: BABYLON.Engine, canvas: HTMLCanvasElement, options:
 	function changeCameraTopDown() {
 		if (paused < 0)
 			return ;
-		if (camera.lowerBetaLimit) {
-			camera.lowerBetaLimit = 0;
-    		camera.upperBetaLimit = 0;
-    		camera.lowerRadiusLimit = 12;
-    		camera.upperRadiusLimit = 70;
-		} else {
-			camera.lowerBetaLimit = 1;
-    		camera.upperBetaLimit = Math.PI / 2;
-    		camera.lowerRadiusLimit = 12;
-    		camera.upperRadiusLimit = 70;
-		}
-	}
-
-	function changeCameraLock() {
-		if (paused >= 0) {
+		const currentCamera = scene.activeCamera;
+		if (currentCamera === topDownCamera) {
+			scene.activeCamera = camera;
 			camera.inputs.attached.pointers.attachControl();
 			camera.inputs.attached.mousewheel.attachControl();
 		} else {
-			camera.inputs.attached.pointers.detachControl();
-			camera.inputs.attached.mousewheel.detachControl();
+			scene.activeCamera = topDownCamera;
+			// topDownCamera.inputs.attached.pointers.attachControl();
+			topDownCamera.inputs.attached.mousewheel.attachControl();
+		}
+		currentCamera.inputs.attached.pointers.detachControl();
+		currentCamera.inputs.attached.mousewheel.detachControl();
+	}
+
+	function changeCameraLock() {
+		const currentCamera = scene.activeCamera;
+		if (paused >= 0) {
+			currentCamera.inputs.attached.mousewheel.attachControl();
+			if (currentCamera === camera)
+				currentCamera.inputs.attached.pointers.attachControl();
+		} else {
+			currentCamera.inputs.attached.pointers.detachControl();
+			currentCamera.inputs.attached.mousewheel.detachControl();
 		}
 	}
 
