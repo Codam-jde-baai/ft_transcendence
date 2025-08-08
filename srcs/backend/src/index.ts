@@ -15,6 +15,7 @@ import socketRoutes from './routes/websocket.ts';
 import sessionKey from './config/session-key.ts';
 import { cleanupConnections } from './controllers/websocket/userStatus.ts';
 import fs from 'fs';
+import matchmakingRoutes from './routes/matchMaking.ts';
 
 const fastify = Fastify({
 	logger: true,
@@ -29,7 +30,7 @@ const fastify = Fastify({
 	https: {
 		key: fs.readFileSync('/app/certs/localhost-key.pem'),
 		cert: fs.readFileSync('/app/certs/localhost.pem'),
-  },
+	},
 })
 
 fastify.register(fastifyCors, {
@@ -119,6 +120,7 @@ fastify.register(matchesRoutes);
 fastify.register(adminRoutes);
 fastify.register(snekRoutes);
 fastify.register(socketRoutes);
+fastify.register(matchmakingRoutes);
 
 const start = async () => {
 	try {

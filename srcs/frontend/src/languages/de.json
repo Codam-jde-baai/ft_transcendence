@@ -175,9 +175,11 @@
     "Seeding_Error": "Ungültiger Sitz, bitte geben Sie einen Sitz von 1 bis ",
     "Invalid_Seeding": "Ungültige Setzung",
 
-    "Seeding": "Geben Sie einen Sitz von 1 bis ",
-    "Seeding_Error": "Ungültiger Sitz, bitte geben Sie einen Sitz von 1 bis ",
-    "Invalid_Seeding": "Ungültige Setzung",
+    "RecentLosses" : "Kürzlich verloren gegen",
+    "SimilarSkill" : "Ähnliches Können",
+    "SimilarGameAmount" : "Ähnliche Spielanzahl",
+    "Profile" : "Profil",
+    "PokeToPlay" : "Anstupsen",
 
     "EndOfFile": ""
 }
